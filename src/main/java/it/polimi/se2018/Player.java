@@ -8,18 +8,18 @@ public class Player {
     private Date firstSeen;
     private Boolean online;
     private Boolean inGame;
-    private GameHandler lastGameJoined;
+    private Lobby lastGameJoined;
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
 
     public Player() {
     }
 
-    public void requestGameConnection(GameHandler game){
+    public void requestGameConnection(Lobby game){
 
     }
 
-    public void requestGameDisconnection(GameHandler game){
+    public void requestGameDisconnection(Lobby game){
 
     }
 

@@ -21,7 +21,7 @@ public class Server {
         private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
         private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
-        private ArrayList<GameHandler> activeGames = new ArrayList<GameHandler>();
+        private ArrayList<Lobby> activeGames = new ArrayList<Lobby>();
 
         private static Server instance = null;
 
@@ -69,11 +69,11 @@ public class Server {
 
         // this method will be called from one of the connection server
         public void addGame (String gameName, Player admin){
-            GameHandler game = new GameHandler(gameName, admin,false);
+            Lobby game = new Lobby(gameName, admin,false);
             activeGames.add(game);
         }
 
-        public void removeGame(GameHandler game){
+        public void removeGame(Lobby game){
             activeGames.remove(game);
 
         }
