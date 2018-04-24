@@ -12,27 +12,27 @@ public class Dice {
     }
 
     public String getColor() {
-
+        return color;
     }
 
-    public int getNuber() {
-
+    public int getNumberber() {
+        return number;
     }
 
     public String getLocation() {
-
+        return location;
     }
 
     public int getId() {
-
+        return id;
     }
 
     public void setNumber(int number) {
-
+        this.number = number;
     }
 
     public void setLocation(String location) {
-
+        this.location = location;
     }
 }
 
