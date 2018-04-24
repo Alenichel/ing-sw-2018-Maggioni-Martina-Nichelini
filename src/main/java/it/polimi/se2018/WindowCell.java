@@ -13,19 +13,19 @@ public class WindowCell {
     }
 
     public String getColorConstraint() {
-        return getColorConstraint();
+        return colorConstraint;
     }
 
     public int getRow() {
-        return getRow();
+        return row;
     }
 
     public int getColumn() {
-        return getColumn();
+        return column;
     }
 
     public int getNumberConstraint() {
-        return getNumberConstraint();
+        return numberConstraint;
     }
 }
 
