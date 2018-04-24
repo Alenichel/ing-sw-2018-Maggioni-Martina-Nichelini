@@ -17,10 +17,11 @@ public class Server {
         private int defaultMatchmakingTimer;
         private int defaultMoveTimer;
 
-        private static final String home_path = System.getProperty("user.home");
-        private static final String configurationFileName = "/sagrada_server_conf.xml";
+        private static final String HOME_PATH = System.getProperty("user.home");
+        private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
-        //private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
+        private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
+        private ArrayList<GameHandler> activeGames = new ArrayList<GameHandler>();
 
         private static Server instance = null;
 
@@ -44,7 +45,7 @@ public class Server {
         }
 
         private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException, FileNotFoundException {
-                File configurationFile = new File(home_path + configurationFileName);
+                File configurationFile = new File(HOME_PATH + CONFIGURATION_FILENAME);
                 DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
                 Document doc = documentBuilder.parse(configurationFile);
@@ -64,6 +65,17 @@ public class Server {
 
         public int getServerPort() {
             return this.port;
+        }
+
+        // this method will be called from one of the connection server
+        public void addGame (String gameName, Player admin){
+            GameHandler game = new GameHandler(gameName, admin,false);
+            activeGames.add(game);
+        }
+
+        public void removeGame(GameHandler game){
+            activeGames.remove(game);
+
         }
 
 }
