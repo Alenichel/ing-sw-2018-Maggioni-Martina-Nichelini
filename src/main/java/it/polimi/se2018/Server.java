@@ -51,7 +51,7 @@ public class Server {
                 Document doc = documentBuilder.parse(configurationFile);
 
                 this.port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
-                this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakinTimer").item(0).getTextContent());
+                this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakingTimer").item(0).getTextContent());
                 this.defaultMoveTimer = Integer.parseInt(doc.getElementsByTagName("defaultMoveTimer").item(0).getTextContent());
         }
 
