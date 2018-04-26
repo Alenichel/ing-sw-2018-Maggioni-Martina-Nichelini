@@ -1,7 +1,7 @@
 package it.polimi.se2018;
 import java.util.ArrayList;
 
-public class Lobby {
+public class Room {
     private int gameId;
     private String gameName;
     private boolean singlePlayerMode;
@@ -12,7 +12,7 @@ public class Lobby {
     private static final int  numberOfRound = 10;
     private int currentRound;
 
-    public Lobby(String name, Player admin, Boolean singlePlayer){
+    public Room(String name, Player admin, Boolean singlePlayer){
         this.gameId = this.hashCode();
         this.gameName = name;
         this.singlePlayerMode = singlePlayer;

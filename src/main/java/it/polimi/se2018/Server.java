@@ -21,7 +21,7 @@ public class Server {
         private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
         private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
-        private ArrayList<Lobby> activeGames = new ArrayList<Lobby>();
+        private ArrayList<Room> activeGames = new ArrayList<Room>();
 
         private static Server instance = null;
 
@@ -30,7 +30,7 @@ public class Server {
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
-                System.out.println("[*] Configuration file not found in " + home_path + configurationFileName + "\n[*] Aborting..");
+                System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
                 System.exit(1);
             } catch (IOException | SAXException | ParserConfigurationException e) {
                 e.printStackTrace();
@@ -69,11 +69,11 @@ public class Server {
 
         // this method will be called from one of the connection server
         public void addGame (String gameName, Player admin){
-            Lobby game = new Lobby(gameName, admin,false);
+            Room game = new Room(gameName, admin,false);
             activeGames.add(game);
         }
 
-        public void removeGame(Lobby game){
+        public void removeGame(Room game){
             activeGames.remove(game);
 
         }
