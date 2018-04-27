@@ -68,12 +68,12 @@ public class Server {
         }
 
         // this method will be called from one of the connection server
-        public void addGame (String gameName, Player admin){
+        public void addRoom (String gameName, Player admin){
             Room game = new Room(gameName, admin,false);
             activeGames.add(game);
         }
 
-        public void removeGame(Room game){
+        public void removeRoom(Room game){
             activeGames.remove(game);
 
         }
