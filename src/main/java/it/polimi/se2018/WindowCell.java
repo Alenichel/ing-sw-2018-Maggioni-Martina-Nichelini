@@ -5,7 +5,7 @@ public class WindowCell {
     private int row;
     private int column;
     private String colorConstraint;
-    private String numberConstraint;
+    private int numberConstraint;
     private Dice assignedDice;
 
 

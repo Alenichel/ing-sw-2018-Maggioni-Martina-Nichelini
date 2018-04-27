@@ -3,7 +3,7 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private ArrayList<Dice> bag = new ArrayLst<Dice>();
+    private ArrayList<Dice> bag = new ArrayList<Dice>();
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<WindowPatternCard>();
     private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<ObjectiveCard>();
     private ArrayList<ToolCard> toolCards = new ArrayList<ToolCard>();
