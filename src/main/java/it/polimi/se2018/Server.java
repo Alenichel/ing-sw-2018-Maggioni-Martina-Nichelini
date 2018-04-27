@@ -44,7 +44,7 @@ public class Server {
             return instance;
         }
 
-        private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException{
+        private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
                 File configurationFile = new File(HOME_PATH + CONFIGURATION_FILENAME);
                 DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
@@ -78,7 +78,7 @@ public class Server {
         }
 
         public void addPlayer (Player player){
-            onlinePlayers.add(Player);
+            onlinePlayers.add(player);
         }
 
         public void removePlayer (Player player){
