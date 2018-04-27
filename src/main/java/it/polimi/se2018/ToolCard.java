@@ -7,8 +7,8 @@ public class ToolCard extends Card{
     private ToolCardEffectStrategy toolCardEffect;
     private Game gameReference;
 
-    public void toolCard(Game game){
-
+    public void toolCard(ToolCardEffectStrategy toolCardEffect){
+        this.toolCardEffect = toolCardEffect;
     }
 
     public void setUsed(boolean value){
@@ -23,8 +23,8 @@ public class ToolCard extends Card{
         return description;
     }
 
-    public void executeEffect(){
-        
+    public int executeEffect(){
+        return toolCardEffect.executeEffect();
     }
 
 }
