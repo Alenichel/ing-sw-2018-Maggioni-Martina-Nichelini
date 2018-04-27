@@ -1,5 +1,5 @@
 package it.polimi.se2018;
 
 public interface ScorePointStrategy {
-    public int scoreEffect();
+    public int scorePoint();
 }
