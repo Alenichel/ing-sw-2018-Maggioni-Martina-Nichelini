@@ -8,6 +8,6 @@ public class PublicObjectiveCard extends ObjectiveCard{
     }
 
     public int scorePoint(){
-        return scorePointStrategy.scoreEffect();
+        return scorePointStrategy.scorePoint();
     }
 }

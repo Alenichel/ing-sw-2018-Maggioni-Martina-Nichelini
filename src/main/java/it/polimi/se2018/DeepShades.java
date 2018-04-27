@@ -2,7 +2,7 @@ package it.polimi.se2018;
 
 public class DeepShades implements ScorePointStrategy{
     @Override
-    public int scoreEffect() {
+    public int scorePoint() {
         return 1;
     }
 }
