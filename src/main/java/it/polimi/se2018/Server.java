@@ -20,8 +20,8 @@ public class Server {
         private static final String HOME_PATH = System.getProperty("user.home");
         private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
-        private ArrayList<Player> onlinePlayers = new ArrayList<Player>();
-        private ArrayList<Room> activeGames = new ArrayList<Room>();
+        private ArrayList<Player> onlinePlayers = new ArrayList<>();
+        private ArrayList<Room> activeGames = new ArrayList<>();
 
         private static Server instance = null;
 
@@ -44,7 +44,7 @@ public class Server {
             return instance;
         }
 
-        private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException, FileNotFoundException {
+        private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException{
                 File configurationFile = new File(HOME_PATH + CONFIGURATION_FILENAME);
                 DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
@@ -67,7 +67,6 @@ public class Server {
             return this.port;
         }
 
-        // this method will be called from one of the connection server
         public void addRoom (String gameName, Player admin){
             Room game = new Room(gameName, admin,false);
             activeGames.add(game);
@@ -76,6 +75,14 @@ public class Server {
         public void removeRoom(Room game){
             activeGames.remove(game);
 
+        }
+
+        public void addPlayer (Player player){
+            onlinePlayers.add(Player);
+        }
+
+        public void removePlayer (Player player){
+            onlinePlayers.remove(player);
         }
 
 }
