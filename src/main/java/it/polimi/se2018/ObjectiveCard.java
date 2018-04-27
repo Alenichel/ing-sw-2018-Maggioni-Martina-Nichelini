@@ -6,10 +6,14 @@ public class ObjectiveCard extends Card{
     private Game gameReference;
 
     public void objectiveCard (Game game){
-        
+
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public int scorePoint(){
+        
     }
 }
