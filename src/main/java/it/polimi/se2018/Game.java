@@ -3,30 +3,24 @@ import java.util.ArrayList;
 
 public class Game {
 
-    private ArrayList<Dice> bag = new ArrayList<Dice>();
-    private ArrayList<WindowPatternCard> patternCards = new ArrayList<WindowPatternCard>();
-    private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<ObjectiveCard>();
-    private ArrayList<ToolCard> toolCards = new ArrayList<ToolCard>();
-    private ArrayList<Player> players = new ArrayList<Player>();
+    private int id;
+    private ArrayList<Dice> bag = new ArrayList<>();
+    private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
+    private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
+    private ArrayList<ToolCard> toolCards = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
 
     public Game() {
+        this.id = this.hashCode();
 
     }
 
-    public void nextRound() {
-
+    public void addPlayer(Player player){
+        players.add(player);
     }
 
-    public String showStats() {
-
-    }
-
-    public void givePatternCards() {
-
-    }
-
-    public void initializePatternCards() {
-
+    public void removePlayer(Player player){
+        players.remove(player);
     }
 }
 
