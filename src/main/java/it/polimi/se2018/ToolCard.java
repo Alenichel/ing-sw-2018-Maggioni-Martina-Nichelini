@@ -7,7 +7,7 @@ public class ToolCard extends Card{
     private ToolCardEffectStrategy toolCardEffect;
     private Game gameReference;
 
-    public void toolCard(ToolCardEffectStrategy toolCardEffect){
+    public ToolCard(ToolCardEffectStrategy toolCardEffect){
         this.toolCardEffect = toolCardEffect;
     }
 
