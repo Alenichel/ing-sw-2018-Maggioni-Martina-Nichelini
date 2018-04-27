@@ -14,7 +14,7 @@ public class WindowPatternCard extends Card{
     }
 
     public WindowCell getCell(int row, int column){
-        
+        return null;
     }
 
 }
