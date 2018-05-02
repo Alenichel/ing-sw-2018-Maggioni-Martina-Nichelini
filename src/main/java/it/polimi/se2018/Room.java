@@ -10,6 +10,9 @@ public class Room {
     private int maxNOfPlayers;
     private int numberOfConnectedPlayer;
     private ArrayList <Player> listOfConnectedPlayer = new ArrayList<>();
+    private Game gameAssociated;
+    private GameController gameControllerAssociated;
+    private ArrayList <Player> disconnectedClients = new ArrayList<>();
 
     public Room(String name, Player admin, Boolean singlePlayer){
         this.roomId = this.hashCode();
@@ -19,6 +22,8 @@ public class Room {
 
         this.maxNOfPlayers = singlePlayerMode ? 1 : 4;
         this.numberOfConnectedPlayer = 1;
+        this.gameAssociated = null; //no game associated at room initialization
+        this.gameControllerAssociated = null; //no gameController associated at room initialization
         listOfConnectedPlayer.add(admin);
     }
 
@@ -39,12 +44,41 @@ public class Room {
         return listOfConnectedPlayer;
     }
 
+    public void addDisconnectedClient(Player player){
+        disconnectedClients.add(player);
+    }
+
+    public List<Player> getListOfDisconnectedClients(){
+        return disconnectedClients;
+    }
+
+    public boolean isADisconnectedClient(Player player){
+        if (this.disconnectedClients.contains(player)) return true;
+        else return false;
+    }
+
     public boolean getStarted(){
         return started;
     }
 
     public void setStarted(boolean status){
         this.started = status;
+    }
+
+    public void setGameAssociated(Game game){
+        this.gameAssociated = game;
+    }
+
+    public Game getGameAssociated() {
+        return gameAssociated;
+    }
+
+    public void setGameControllerAssociated(GameController controller){
+        this.gameControllerAssociated = controller;
+    }
+
+    public GameController getGameControllerAssociated() {
+        return gameControllerAssociated;
     }
 
     public String getRoomName(){
