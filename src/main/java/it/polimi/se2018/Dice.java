@@ -8,7 +8,7 @@ public class Dice {
     private String location;
 
     public Dice(){
-
+        //Dice constructor
     }
 
     public String getColor() {
@@ -34,5 +34,10 @@ public class Dice {
     public void setLocation(String location) {
         this.location = location;
     }
+
+    public void rollDice(){
+        //rolldice
+    }
+
 }
 
