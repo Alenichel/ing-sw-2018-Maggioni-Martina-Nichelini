@@ -1,8 +1,13 @@
 package it.polimi.se2018;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
-public class Room {
+public class Room extends java.util.Observable{
+
+    private List<Observer> observers = new ArrayList<>();
+
     private int roomId;
     private String roomName;
     private boolean singlePlayerMode;
@@ -33,19 +38,22 @@ public class Room {
 
         listOfConnectedPlayer.add(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer + 1;
+        this.notifyObservers();
     }
 
     public void removePlayer(Player player){
         listOfConnectedPlayer.remove(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer - 1;
+        this.notifyObservers();
     }
 
-    public List<Player> getListOfConnectedPlayer() {
+    public List<Player> getListOfConnectedPlayers() {
         return listOfConnectedPlayer;
     }
 
     public void addDisconnectedClient(Player player){
         disconnectedClients.add(player);
+        this.notifyObservers();
     }
 
     public List<Player> getListOfDisconnectedClients(){
@@ -63,10 +71,12 @@ public class Room {
 
     public void setStarted(boolean status){
         this.started = status;
+        this.notifyObservers();
     }
 
     public void setGameAssociated(Game game){
         this.gameAssociated = game;
+        this.notifyObservers();
     }
 
     public Game getGameAssociated() {
@@ -75,6 +85,7 @@ public class Room {
 
     public void setGameControllerAssociated(GameController controller){
         this.gameControllerAssociated = controller;
+        this.notifyObservers();
     }
 
     public GameController getGameControllerAssociated() {
@@ -88,4 +99,23 @@ public class Room {
     public int getRoomId(){
         return this.roomId;
     }
+
+    @Override
+    public void addObserver(Observer o){
+        this.observers.add(o);
+    }
+
+    @Override
+    public void deleteObserver(Observer o){
+        this.observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(){
+        if (this.hasChanged()){
+            for (Observer observer :observers) {observer.update(this, null);}
+        }
+        this.clearChanged();
+    }
+
 }
