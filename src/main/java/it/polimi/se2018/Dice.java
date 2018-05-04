@@ -1,21 +1,28 @@
 package it.polimi.se2018;
 
+import java.awt.*;
+
 public class Dice {
 
     private int id;
     private int number;
-    private String color;
+    private Color color;
     private String location;
 
-    public Dice(){
+    public Dice(int number, Color color, String location){
         //Dice constructor
+        this.id = this.hashCode();
+        this.number = number;
+        this.color = color;
+        this.location = location;
+
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public int getNumberber() {
+    public int getNumber() {
         return number;
     }
 
