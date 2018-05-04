@@ -15,7 +15,7 @@ public class Dice {
         return color;
     }
 
-    public int getNumberber() {
+    public int getNumber() {
         return number;
     }
 
