@@ -7,8 +7,13 @@ public class Dice {
     private String color;
     private String location;
 
-    public Dice(){
+    public Dice(int number, String color, String location){
         //Dice constructor
+        this.id = this.hashCode();
+        this.number = number;
+        this.color = color;
+        this.location = location;
+
     }
 
     public String getColor() {
