@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 
-public class RoomView {
+public class RoomView implements Observer {
 
     private RoomController rc;
     protected JTextField textField;
@@ -38,5 +40,10 @@ public class RoomView {
             System.out.println(rc.getState());
             textField.setText(rc.getState().toString());
         }
+    }
+
+    @Override
+    public void update(Observable o, Object arg){
+        ;
     }
 }
