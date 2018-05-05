@@ -32,5 +32,9 @@ public class WindowCell {
     public Dice getAssignedDice() {
         return assignedDice;
     }
+
+    public void setAssignedDice(Dice assignedDice) {
+        this.assignedDice = assignedDice;
+    }
 }
 
