@@ -7,40 +7,57 @@ import it.polimi.se2018.WindowPatternCard;
 
 public class Lathekin implements ToolCardEffectStrategy{
 
-    private Dice dice1;
-    private Dice dice2;
-    private WindowPatternCard windowPatternCard;
-    private WindowCell windowCell1;
-    private WindowCell windowCell2;
 
-    public Lathekin(Dice dice1, Dice dice2, WindowPatternCard windowPatternCard, WindowCell windowCell1, WindowCell windowCell2){
-        this.dice1 = dice1;
-        this.dice2 = dice2;
+    private WindowPatternCard windowPatternCard;
+    //Dice 1
+    private WindowCell windowCellStart1;
+    private WindowCell windowCellArrive1;
+    //Dice 2
+    private WindowCell windowCellStart2;
+    private WindowCell windowCellArrive2;
+
+    public Lathekin(WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1, WindowCell windowCellStart2, WindowCell windowCellArrive2){
         this.windowPatternCard = windowPatternCard;
-        this.windowCell1 = windowCell1;
-        this.windowCell2 = windowCell2;
+        this.windowCellStart1 = windowCellStart1;
+        this.windowCellArrive1 = windowCellArrive1;
+        this.windowCellStart2 = windowCellStart2;
+        this.windowCellArrive2 = windowCellArrive2;
     }
 
-    public Lathekin(Lathekin lathekin, Dice dice1, Dice dice2, WindowPatternCard windowPatternCard,  WindowCell windowCell1, WindowCell windowCell2){
-        this.dice1 = dice1;
-        this.dice2 = dice2;
+    public Lathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1,  WindowCell windowCellStart2, WindowCell windowCellArrive2){
         this.windowPatternCard = windowPatternCard;
-        this.windowCell1 = windowCell1;
-        this.windowCell2 = windowCell2;
+        this.windowCellStart1 = windowCellStart1;
+        this.windowCellArrive1 = windowCellArrive1;
+        this.windowCellStart2 = windowCellStart2;
+        this.windowCellArrive2 = windowCellArrive2;
     }
 
     @Override
     public int executeEffect() {
-        int column1 = windowCell1.getColumn();
-        int column2 = windowCell2.getColumn();
-        int row1 = windowCell1.getRow();
-        int row2 = windowCell2.getRow();
-
-        windowPatternCard.getCell(column2, row2).setAssignedDice(windowPatternCard.getCell(column1, row1).getAssignedDice());
-
         Dice emptyDice = new Dice(0, null, null);
-        windowPatternCard.getCell(column1, row2). setAssignedDice(emptyDice);
-        
+
+        int startColumn1 = windowCellStart1.getColumn();
+        int arriveColumn1 = windowCellArrive1.getColumn();
+        int startRow1 = windowCellStart1.getRow();
+        int arriveRow1 = windowCellArrive1.getRow();
+        int startColumn2 = windowCellStart2.getColumn();
+        int arriveColumn2 = windowCellArrive2.getColumn();
+        int startRow2 = windowCellStart2.getRow();
+        int arriveRow2 = windowCellArrive2.getRow();
+
+
+        //Probabilmente dobbiamo richiamare il metodo insertDice in Windows Pattern al posto di setAssignedDice di WindowCell in modo da poter controllare ad esempio che la destinazione non sia occupata
+
+        windowPatternCard.getCell(arriveColumn1, arriveRow1).setAssignedDice(windowPatternCard.getCell(startColumn1, startRow1).getAssignedDice());
+        windowPatternCard.getCell(startColumn1, arriveRow1). setAssignedDice(emptyDice);
+
+
+
+        windowPatternCard.getCell(arriveColumn2, arriveRow2).setAssignedDice(windowPatternCard.getCell(startColumn2, startRow2).getAssignedDice());
+        windowPatternCard.getCell(startColumn2, arriveRow2). setAssignedDice(emptyDice);
+
+
+
         return 0;
     }
 }
