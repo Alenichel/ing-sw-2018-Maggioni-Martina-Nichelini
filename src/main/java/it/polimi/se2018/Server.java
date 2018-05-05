@@ -72,8 +72,8 @@ public class Server {
             activeGames.add(game);
         }
 
-        public void removeRoom(Room game){
-            activeGames.remove(game);
+        public void removeRoom(Room room){
+            activeGames.remove(room);
 
         }
 
