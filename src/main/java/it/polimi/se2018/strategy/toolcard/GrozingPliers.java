@@ -5,8 +5,8 @@ import it.polimi.se2018.ToolCardEffectStrategy;
 
 public class GrozingPliers implements ToolCardEffectStrategy {
 
-    Dice draftedDice;
-    boolean increase;
+    private Dice draftedDice;
+    private boolean increase;
 
     public GrozingPliers(Dice draftedDice, boolean increase) {
         this.draftedDice = draftedDice;
