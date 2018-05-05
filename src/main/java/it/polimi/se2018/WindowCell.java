@@ -28,5 +28,13 @@ public class WindowCell {
     public int getNumberConstraint() {
         return numberConstraint;
     }
+
+    public Dice getAssignedDice() {
+        return assignedDice;
+    }
+
+    public void setAssignedDice(Dice assignedDice) {
+        this.assignedDice = assignedDice;
+    }
 }
 
