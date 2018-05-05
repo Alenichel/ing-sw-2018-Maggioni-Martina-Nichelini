@@ -4,7 +4,7 @@ import it.polimi.se2018.Dice;
 import it.polimi.se2018.ToolCardEffectStrategy;
 
 public class GrindingStone implements ToolCardEffectStrategy{
-    Dice draftedDice;
+    private Dice draftedDice;
 
     public GrindingStone(Dice draftedDice){
         this.draftedDice = draftedDice;
