@@ -7,7 +7,7 @@ public class PublicObjectiveCard extends ObjectiveCard{
         this.scorePointStrategy = scorePointStrategy;
     }
 
-    public int scorePoint(){
-        return scorePointStrategy.scorePoint();
+    public int scorePoint(WindowPatternCard windowPatternCard){
+        return scorePointStrategy.scorePoint(windowPatternCard);
     }
 }
