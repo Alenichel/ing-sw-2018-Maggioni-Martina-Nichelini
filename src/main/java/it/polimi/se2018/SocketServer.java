@@ -2,23 +2,27 @@ package it.polimi.se2018;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.io.PrintWriter;
 
-public class SocketServer {
+public class SocketServer extends Thread {
 
-    public static void main(String[] args) throws IOException {
+    private ServerSocket ssocket;
 
-        System.out.println( "Hello World!" );
-
-        ServerSocket listener = new ServerSocket(9090);
-
-        Socket socket = listener.accept();
-
-        PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-        socket.close();
-        listener.close();
-
-        System.out.println( "Farewell" );
+    @Override
+    public void run() {
+        try {
+            ssocket = new ServerSocket(9091);
+            System.out.println("Listening");
+            while (true) {
+                Socket socket = this.ssocket.accept();
+                SocketThread socketThread;
+                socketThread = new SocketThread(socket);
+                socketThread.start();
+            }
+        } catch (IOException e){
+            assert false;
+        }
     }
 }
+
+
 
