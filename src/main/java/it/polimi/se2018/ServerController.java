@@ -24,8 +24,8 @@ public class ServerController {
     }
 
 
-    public void createRoom(Room room) {
-        server.addRoom(String gameName, Player admin);
+    public void createRoom(String gameName, Player admin) {
+        server.addRoom(gameName, admin);
     }
 
     public void deleteRoom(Room room) {
