@@ -10,8 +10,9 @@ public class GrindingStone implements ToolCardEffectStrategy{
         this.draftedDice = draftedDice;
     }
 
-    public GrindingStone(GrindingStone grindingStone, Dice draftedDice){
-        this.draftedDice = draftedDice;
+    public GrindingStone refactorGrindingStone(GrindingStone grindingStone, Dice draftedDice){
+        grindingStone.draftedDice = draftedDice;
+        return grindingStone;
     }
 
 

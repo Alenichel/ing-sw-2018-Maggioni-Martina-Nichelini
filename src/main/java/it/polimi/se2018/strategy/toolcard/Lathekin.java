@@ -24,12 +24,13 @@ public class Lathekin implements ToolCardEffectStrategy{
         this.windowCellArrive2 = windowCellArrive2;
     }
 
-    public Lathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1,  WindowCell windowCellStart2, WindowCell windowCellArrive2){
-        this.windowPatternCard = windowPatternCard;
-        this.windowCellStart1 = windowCellStart1;
-        this.windowCellArrive1 = windowCellArrive1;
-        this.windowCellStart2 = windowCellStart2;
-        this.windowCellArrive2 = windowCellArrive2;
+    public Lathekin refactorLathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1,  WindowCell windowCellStart2, WindowCell windowCellArrive2){
+        lathekin.windowPatternCard = windowPatternCard;
+        lathekin.windowCellStart1 = windowCellStart1;
+        lathekin.windowCellArrive1 = windowCellArrive1;
+        lathekin.windowCellStart2 = windowCellStart2;
+        lathekin.windowCellArrive2 = windowCellArrive2;
+        return lathekin;
     }
 
     @Override
@@ -47,11 +48,12 @@ public class Lathekin implements ToolCardEffectStrategy{
 
 
         //Probabilmente dobbiamo richiamare il metodo insertDice in Windows Pattern al posto di setAssignedDice di WindowCell in modo da poter controllare ad esempio che la destinazione non sia occupata
-
+        //Check if the destination of the dices is free
+        if(windowCellArrive1.getAssignedDice() != null || windowCellArrive2.getAssignedDice()!=null){
+            return 1;
+        }
         windowPatternCard.getCell(arriveColumn1, arriveRow1).setAssignedDice(windowPatternCard.getCell(startColumn1, startRow1).getAssignedDice());
         windowPatternCard.getCell(startColumn1, arriveRow1). setAssignedDice(emptyDice);
-
-
 
         windowPatternCard.getCell(arriveColumn2, arriveRow2).setAssignedDice(windowPatternCard.getCell(startColumn2, startRow2).getAssignedDice());
         windowPatternCard.getCell(startColumn2, arriveRow2). setAssignedDice(emptyDice);

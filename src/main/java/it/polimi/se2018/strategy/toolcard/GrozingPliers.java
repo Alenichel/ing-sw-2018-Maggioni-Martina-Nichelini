@@ -13,12 +13,10 @@ public class GrozingPliers implements ToolCardEffectStrategy {
         this.increase = increase;
     }
 
-    public GrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
-
-        //Non devo riferirmi all'oggetto grozingPliers?????
-
-        this.draftedDice = draftedDice;
-        this.increase = increase;
+    public GrozingPliers refactorGrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
+        grozingPliers.draftedDice = draftedDice;
+        grozingPliers.increase = increase;
+        return grozingPliers;
     }
 
 
