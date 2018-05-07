@@ -17,10 +17,12 @@ public class ServerController {
 
     public void connectPlayer (Player player) {
         server.addPlayer(player);
+        player.setOnline(true);
     }
 
     public void disconnectPlayer (Player player) {
         server.removePlayer(player);
+        player.setOnline(false);
     }
 
 
