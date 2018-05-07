@@ -47,9 +47,8 @@ public class Lathekin implements ToolCardEffectStrategy{
         int arriveRow2 = windowCellArrive2.getRow();
 
 
-        //Probabilmente dobbiamo richiamare il metodo insertDice in Windows Pattern al posto di setAssignedDice di WindowCell in modo da poter controllare ad esempio che la destinazione non sia occupata
         //Check if the destination of the dices is free
-        if(windowCellArrive1.getAssignedDice() != null || windowCellArrive2.getAssignedDice()!=null){
+        if(!windowCellArrive1.isEmpty() || !windowCellArrive2.isEmpty()){
             return 1;
         }
         windowPatternCard.getCell(arriveColumn1, arriveRow1).setAssignedDice(windowPatternCard.getCell(startColumn1, startRow1).getAssignedDice());
