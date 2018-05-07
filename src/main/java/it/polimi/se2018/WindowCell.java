@@ -1,19 +1,25 @@
 package it.polimi.se2018;
 
+import java.awt.*;
+
 public class WindowCell {
 
     private int row;
     private int column;
-    private String colorConstraint;
-    private int numberConstraint;
+    private Color colorConstraint;
+    private String numberConstraint;
     private Dice assignedDice;
 
 
-    public WindowCell() {
-
+    public WindowCell(Color colorConstraint, String numberConstraint ) {
+        if (colorConstraint == null){
+            this.numberConstraint = numberConstraint;
+        } else {
+            this.colorConstraint = colorConstraint;
+        }
     }
 
-    public String getColorConstraint() {
+    public Color getColorConstraint() {
         return colorConstraint;
     }
 
@@ -25,7 +31,7 @@ public class WindowCell {
         return column;
     }
 
-    public int getNumberConstraint() {
+    public String getNumberConstraint() {
         return numberConstraint;
     }
 
