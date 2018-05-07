@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.Exception.ToolCardException;
+
 public class ToolCard extends Card{
     private String diceColor;
     private String description;
@@ -24,7 +26,12 @@ public class ToolCard extends Card{
     }
 
     public int executeEffect(){
-        return toolCardEffect.executeEffect();
+        try{
+            return toolCardEffect.executeEffect();
+        }catch (ToolCardException e){
+            e.printStackTrace();
+            return 0;
+        }
     }
 
 }

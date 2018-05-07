@@ -3,6 +3,7 @@ package it.polimi.se2018.strategy.toolcard;
 import it.polimi.se2018.Dice;
 import it.polimi.se2018.Exception.EmptyWindowCellException;
 import it.polimi.se2018.Exception.NotEmptyWindowCellException;
+import it.polimi.se2018.Exception.ToolCardException;
 import it.polimi.se2018.ToolCardEffectStrategy;
 import it.polimi.se2018.WindowCell;
 import it.polimi.se2018.WindowPatternCard;
@@ -38,7 +39,7 @@ public class Lathekin implements ToolCardEffectStrategy{
     }
 
     @Override
-    public int executeEffect() {
+    public int executeEffect() throws ToolCardException {
         Dice emptyDice = new Dice(0, null, null);
 
         int startColumn1 = windowCellStart1.getColumn();
@@ -52,21 +53,13 @@ public class Lathekin implements ToolCardEffectStrategy{
 
 
         //Check if the destination of the dices is free
-        try{
             if(!windowCellArrive1.isEmpty()){ throw new NotEmptyWindowCellException("windows cell 1 is not empty"); }
             if(!windowCellArrive2.isEmpty()){ throw new NotEmptyWindowCellException("windows cell 2 is not empty"); }
-        }catch(NotEmptyWindowCellException e) {
-            //ask for a new WindowCell
-        }
+
 
         //Check if the source of the dices is notEmpty
-
-        try{
             if(windowCellStart1.isEmpty()){ throw new EmptyWindowCellException("windows cell 1 is empty"); }
             if(windowCellStart2.isEmpty()){ throw new EmptyWindowCellException("windows cell 2 is empty"); }
-        }catch (EmptyWindowCellException e ){
-            //ask for a new WindowCell
-        }
 
         //bisogna controllare i vincoli
         windowPatternCard.getCell(arriveColumn1, arriveRow1).setAssignedDice(windowPatternCard.getCell(startColumn1, startRow1).getAssignedDice());
