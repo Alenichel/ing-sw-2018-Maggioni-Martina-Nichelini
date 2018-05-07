@@ -12,23 +12,17 @@ public class Player {
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
 
-    public Player() {
+
+    public Player(String nickname) {
+        this.nickname = nickname;
     }
 
-    public void requestGameConnection(Room game){
-
+    public void setOnline(Boolean status){
+        this.online = status;
     }
 
-    public void requestGameDisconnection(Room game){
-
-    }
-
-    public WindowPatternCard getActivePatternCard() {
-        return activePatternCard;
-    }
-
-    public ObjectiveCard getPrivateObjectiveCard() {
-        return privateObjectiveCard;
+    public Boolean getOnline(){
+        return this.online;
     }
 
     public void assignPatternCard(WindowPatternCard card){
@@ -36,9 +30,17 @@ public class Player {
         else activePatternCard = card;
     }
 
+    public WindowPatternCard getActivePatternCard() {
+        return activePatternCard;
+    }
+
     public void assignObjectiveCard(ObjectiveCard card){
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
+    }
+
+    public ObjectiveCard getPrivateObjectiveCard() {
+        return privateObjectiveCard;
     }
 
 
