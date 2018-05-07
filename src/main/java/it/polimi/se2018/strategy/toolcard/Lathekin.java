@@ -1,6 +1,8 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.Dice;
+import it.polimi.se2018.Exception.EmptyWindowCellException;
+import it.polimi.se2018.Exception.NotEmptyWindowCellException;
 import it.polimi.se2018.ToolCardEffectStrategy;
 import it.polimi.se2018.WindowCell;
 import it.polimi.se2018.WindowPatternCard;
@@ -17,11 +19,13 @@ public class Lathekin implements ToolCardEffectStrategy{
     private WindowCell windowCellArrive2;
 
     public Lathekin(WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1, WindowCell windowCellStart2, WindowCell windowCellArrive2){
-        this.windowPatternCard = windowPatternCard;
-        this.windowCellStart1 = windowCellStart1;
-        this.windowCellArrive1 = windowCellArrive1;
-        this.windowCellStart2 = windowCellStart2;
-        this.windowCellArrive2 = windowCellArrive2;
+        //this.windowPatternCard = windowPatternCard;
+        //this.windowCellStart1 = windowCellStart1;
+        //this.windowCellArrive1 = windowCellArrive1;
+        //this.windowCellStart2 = windowCellStart2;
+        //this.windowCellArrive2 = windowCellArrive2;
+
+        refactorLathekin(this, windowPatternCard, windowCellStart1, windowCellArrive1, windowCellStart2, windowCellArrive2);
     }
 
     public Lathekin refactorLathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell windowCellStart1, WindowCell windowCellArrive1,  WindowCell windowCellStart2, WindowCell windowCellArrive2){
@@ -48,9 +52,23 @@ public class Lathekin implements ToolCardEffectStrategy{
 
 
         //Check if the destination of the dices is free
-        if(!windowCellArrive1.isEmpty() || !windowCellArrive2.isEmpty()){
-            return 1;
+        try{
+            if(!windowCellArrive1.isEmpty()){ throw new NotEmptyWindowCellException("windows cell 1 is not empty"); }
+            if(!windowCellArrive2.isEmpty()){ throw new NotEmptyWindowCellException("windows cell 2 is not empty"); }
+        }catch(NotEmptyWindowCellException e) {
+            //ask for a new WindowCell
         }
+
+        //Check if the source of the dices is notEmpty
+
+        try{
+            if(windowCellStart1.isEmpty()){ throw new EmptyWindowCellException("windows cell 1 is empty"); }
+            if(windowCellStart2.isEmpty()){ throw new EmptyWindowCellException("windows cell 2 is empty"); }
+        }catch (EmptyWindowCellException e ){
+            //ask for a new WindowCell
+        }
+
+        //bisogna controllare i vincoli
         windowPatternCard.getCell(arriveColumn1, arriveRow1).setAssignedDice(windowPatternCard.getCell(startColumn1, startRow1).getAssignedDice());
         windowPatternCard.getCell(startColumn1, arriveRow1). setAssignedDice(emptyDice);
 
