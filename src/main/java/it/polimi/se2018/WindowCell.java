@@ -36,5 +36,9 @@ public class WindowCell {
     public void setAssignedDice(Dice assignedDice) {
         this.assignedDice = assignedDice;
     }
+
+    public boolean isEmpty(){
+        return null == assignedDice;
+    }
 }
 
