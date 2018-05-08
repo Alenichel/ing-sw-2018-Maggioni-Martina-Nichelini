@@ -55,7 +55,6 @@ public class WindowPatternCard extends Card{
 
         int counter = 1;
         for (String nr : numberRestrictions) {
-            System.out.println(nr);
             NodeList nRestriction = number.getElementsByTagName(nr);
             Element n = (Element) nRestriction.item(0);
             NodeList coordinateXList = n.getElementsByTagName("x");
@@ -80,13 +79,10 @@ public class WindowPatternCard extends Card{
                     grid[Integer.parseInt(axs.get(i)) - 1][Integer.parseInt(ays.get(i)) - 1] = new WindowCell(counter);
                 }
                 counter++;
-                System.out.println(axs);
-                System.out.println(ays);
             }
         }
 
         for (String cr : colorRestrictions){
-            System.out.println(cr);
             NodeList cRestriction = color.getElementsByTagName(cr);
             Element c = (Element) cRestriction.item(0);
             NodeList coordinateXList = c.getElementsByTagName("x");
@@ -109,9 +105,6 @@ public class WindowPatternCard extends Card{
                         grid[Integer.parseInt(axs.get(i)) - 1][Integer.parseInt(ays.get(i)) - 1] = new WindowCell(cr);
                     } //end if
                 }//end for
-
-                System.out.println(axs);
-                System.out.println(ays);
             }//end if
         }//end method
     }
