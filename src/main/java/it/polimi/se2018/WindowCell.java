@@ -6,20 +6,22 @@ public class WindowCell {
 
     private int row;
     private int column;
-    private Color colorConstraint;
-    private String numberConstraint;
+    private String colorConstraint;
+    private int numberConstraint;
     private Dice assignedDice;
 
 
-    public WindowCell(Color colorConstraint, String numberConstraint ) {
-        if (colorConstraint == null){
-            this.numberConstraint = numberConstraint;
-        } else {
-            this.colorConstraint = colorConstraint;
-        }
+    public WindowCell(int numberConstraint) {
+        this.numberConstraint = numberConstraint;
+        this.colorConstraint = null;
     }
 
-    public Color getColorConstraint() {
+    public WindowCell(String colorConstraint){
+        this.numberConstraint = 0;
+        this.colorConstraint = colorConstraint;
+    }
+
+    public String getColorConstraint() {
         return colorConstraint;
     }
 
@@ -31,7 +33,7 @@ public class WindowCell {
         return column;
     }
 
-    public String getNumberConstraint() {
+    public int getNumberConstraint() {
         return numberConstraint;
     }
 
