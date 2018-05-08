@@ -6,31 +6,27 @@ import it.polimi.se2018.WindowPatternCard;
 
 public class RowShadeVariety implements ScorePointStrategy{
 
-    private WindowPatternCard windowPatternCard;
-    private WindowCell a;
-    private int i;
-    private int j;
-
-    public RowShadeVariety(WindowPatternCard windowPatternCard, WindowCell a, int i, int j) {
-        this.windowPatternCard = windowPatternCard;
-        this.a = a;
-        this.i = i;
-        this.j = j;
-    }
-
-    public RowShadeVariety(RowShadeVariety rowShadeVariety, WindowPatternCard windowPatternCard, WindowCell a, int i, int j) {
-        this.windowPatternCard = windowPatternCard;
-        this.a = a;
-        this.i = i;
-        this.j = j;
+    private boolean compareCellsNumber(WindowCell a, WindowCell b) {
+        if (a == null || b == null) return false;
+        if (a.getAssignedDice() == null || b.getAssignedDice() == null) return false;
+        else {
+            if (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber()) return true;
+            else return false;
+        }
     }
 
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
-        for (i = 0; i < 4; i++)
-            if (a[i][j].getNumber() != a[i][j + 1].getNumber() && a[i][j].getNumber() != a[i][j + 2].getNumber() && a[i][j].getNumber() != a[i][j + 3].getNumber() && a[i][j].getNumber() != a[i][j + 4].getNumber());
-        //player.score +=6;
-
+        int scoreCounter = 0;
+        WindowCell[][] grid = windowPatternCard.getGrid();
+        for (int i=0; i<4; i++)
+            for (int j=0; j<5; j++)
+                if ((i != j && compareCellsNumber(grid[i][j], grid[i][0])) &&
+                        (i != j && compareCellsNumber(grid[i][j], grid[i][1])) &&
+                        (i != j && compareCellsNumber(grid[i][j], grid[i][2])) &&
+                        (i != j && compareCellsNumber(grid[i][j], grid[i][3])) &&
+                        (i != j && compareCellsNumber(grid[i][j], grid[i][4])))
+                {scoreCounter +=6;}
         return 0;
     }
 }
