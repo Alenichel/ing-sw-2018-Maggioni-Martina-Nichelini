@@ -6,10 +6,10 @@ public class Dice {
 
     private int id;
     private int number;
-    private Color color;
+    private String color;
     private String location;
 
-    public Dice(int number, Color color, String location){
+    public Dice(int number, String color, String location){
         //Dice constructor
         this.id = this.hashCode();
         this.number = number;
@@ -18,7 +18,7 @@ public class Dice {
 
     }
 
-    public Color getColor() {
+    public String getColor() {
         return color;
     }
 
