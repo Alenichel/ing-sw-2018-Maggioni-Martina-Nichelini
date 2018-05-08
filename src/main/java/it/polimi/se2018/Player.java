@@ -24,14 +24,19 @@ public class Player {
     public Boolean getOnline(){
         return this.online;
     }
+    public ObjectiveCard getPrivateObjectiveCard() {
+        return privateObjectiveCard;
+    }
+    public WindowPatternCard getActivePatternCard() {
+        return activePatternCard;
+    }
+    public String getNickname() {
+        return nickname;
+    }
 
     public void assignPatternCard(WindowPatternCard card){
         if (!inGame) throw new IllegalArgumentException();
         else activePatternCard = card;
-    }
-
-    public WindowPatternCard getActivePatternCard() {
-        return activePatternCard;
     }
 
     public void assignObjectiveCard(ObjectiveCard card){
@@ -39,9 +44,6 @@ public class Player {
         else privateObjectiveCard = card;
     }
 
-    public ObjectiveCard getPrivateObjectiveCard() {
-        return privateObjectiveCard;
-    }
 
 
 }
