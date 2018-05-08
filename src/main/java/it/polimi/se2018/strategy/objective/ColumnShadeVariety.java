@@ -6,31 +6,27 @@ import it.polimi.se2018.WindowPatternCard;
 
 public class ColumnShadeVariety implements ScorePointStrategy {
 
-    private WindowPatternCard windowPatternCard;
-    private WindowCell a;
-    private int i;
-    private int j;
-
-    public ColumnShadeVariety(WindowPatternCard windowPatternCard, WindowCell a, int i, int j) {
-        this.windowPatternCard = windowPatternCard;
-        this.a = a;
-        this.i = i;
-        this.j = j;
-    }
-
-    public ColumnShadeVariety(ColumnShadeVariety columnShadeVariety, WindowPatternCard windowPatternCard, WindowCell a, int i, int j) {
-        this.windowPatternCard = windowPatternCard;
-        this.a = a;
-        this.i = i;
-        this.j = j;
+    private boolean compareCellsNumber(WindowCell a, WindowCell b) {
+        if (a == null || b == null) return false;
+        if (a.getAssignedDice() == null || b.getAssignedDice() == null) return false;
+        else {
+            if (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber()) return true;
+            else return false;
+        }
     }
 
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
+        int scoreCounter = 0;
+        WindowCell[][] grid = windowPatternCard.getGrid();
         for (int j = 0; j < 5; j++)
-            if (a[i][j].getNumber() != a[i + 1][j].getNumber() && a[i][j].getNumber() != a[i + 2][j].getNumber() && a[i][j].getNumber() != a[i+3][j].getNumber()) ;
-        //player.score +=4;
+            for (int i = 0; i < 4; i++)
+                if ((i != j && compareCellsNumber(grid[i][j], grid[0][j])) &&
+                   (i != j && compareCellsNumber(grid[i][j], grid[1][j])) &&
+                   (i != j && compareCellsNumber(grid[i][j], grid[2][j])) &&
+                   (i != j && compareCellsNumber(grid[i][j], grid[3][j]))) {
+                    scoreCounter += 4;
+                }
         return 0;
     }
 }
-
