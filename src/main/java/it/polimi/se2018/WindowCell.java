@@ -3,9 +3,10 @@ package it.polimi.se2018;
 import java.awt.*;
 
 public class WindowCell {
-
+    //----servono?----
     private int row;
     private int column;
+    //----------------
     private String colorConstraint;
     private int numberConstraint;
     private Dice assignedDice;
@@ -45,6 +46,13 @@ public class WindowCell {
         this.assignedDice = assignedDice;
     }
 
+    public void setColorConstraint(String colorConstraint){
+         this.colorConstraint = colorConstraint;
+    }
+
+    public void setNumberConstraint (int numberConstraint){
+        this.numberConstraint = numberConstraint;
+    }
     public boolean isEmpty(){
         return null == assignedDice;
     }

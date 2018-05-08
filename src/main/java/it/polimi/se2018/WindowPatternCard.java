@@ -113,4 +113,8 @@ public class WindowPatternCard extends Card{
         return null;
     }
 
+    public WindowCell[][] getGrid(){
+        return this.grid;
+    }
+
 }
