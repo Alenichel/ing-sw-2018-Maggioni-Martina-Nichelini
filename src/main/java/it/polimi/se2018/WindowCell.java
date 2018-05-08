@@ -12,6 +12,9 @@ public class WindowCell {
     private Dice assignedDice;
 
 
+    public WindowCell(){
+    }
+
     public WindowCell(int numberConstraint) {
         this.numberConstraint = numberConstraint;
         this.colorConstraint = null;
@@ -53,6 +56,7 @@ public class WindowCell {
     public void setNumberConstraint (int numberConstraint){
         this.numberConstraint = numberConstraint;
     }
+
     public boolean isEmpty(){
         return null == assignedDice;
     }
