@@ -65,29 +65,33 @@ public class WindowPatternCard extends Card {
         string+= "                          \n";
         string += ""+player.getNickname()+"\n";
         for (WindowCell[] line : grid) {
-            string+="--------------------------------------------\n";
-            string+="|   ";
+            string+="----------------------------------------------------------------\n";
+            string += "|  ";
             for (WindowCell cell : line) {
                 if(cell != null) {
                     if(cell.getAssignedDice() == null) {
                         //dado non insierito
                         if (cell.getColorConstraint() != null)
-                            string += cell.getColorConstraint().substring(0, 1);
+                            string += "  "+cell.getColorConstraint().substring(0, 1);
                         else if (cell.getNumberConstraint() != 0)
-                            string += cell.getNumberConstraint();
+                            string += "  " + cell.getNumberConstraint();
                         else if (cell.getAssignedDice() != null)
-                            string += " "+cell.getAssignedDice().getNumber()+ "  ";
+                            string += cell.getAssignedDice().getNumber();
                     }else{
                         //dado inserito
                         string += cell.getAssignedDice().getNumber() + cell.getAssignedDice().getColor().substring(0,1);
+                        if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
+                            //vincoli di colore con dado inserito
+                            string += "*";
+                        }
                     }
                 }
-                else string += "  ";
-                string += "    |   ";
+                else string += "   ";
+                string += "     |    ";
             }
             string += "\n";
         }
-        string+="--------------------------------------------\n";
+        string+="----------------------------------------------------------------\n";
         string+= "                          \n";
         return string;
     }
