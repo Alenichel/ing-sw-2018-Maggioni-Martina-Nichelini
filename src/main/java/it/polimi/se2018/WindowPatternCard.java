@@ -18,16 +18,11 @@ public class WindowPatternCard extends Card {
     private WindowCell[][] grid = new WindowCell[4][5];
     private Player player;
 
-    private static final String WINDOWSPATTERNCARD_PATH = "resources";
-
-
-
     public WindowPatternCard(String name) {
         this.name = name;
         try {
             loadConfiguration();
         } catch (FileNotFoundException e) {
-            System.out.println("[*] Configuration file not found in " + WINDOWSPATTERNCARD_PATH + "/" + name + "\n[*] Aborting..");
             System.exit(1);
         } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -95,7 +90,8 @@ public class WindowPatternCard extends Card {
 
 
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-        File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name);
+        String WINDOWSPATTERNCARD_PATH = "resources";
+        File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name + ".xml");
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = documentBuilder.parse(configurationFile);
