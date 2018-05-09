@@ -2,7 +2,10 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.message.Message;
 
-public class RoomController {
+import java.util.Observer;
+import java.util.Observable;
+
+public class RoomController implements Observer {
 
     public final Room room;
     private RoomControllerState state;
@@ -24,23 +27,21 @@ public class RoomController {
         state.disconnectPlayer(this, player);
     }
 
-    private void setState(RoomControllerState state){
+    public void setState(RoomControllerState state){
         this.state = state;
     }
 
-    private RoomControllerState getState(){
+    public RoomControllerState getState(){
         return this.state;
     }
 
-    private Room getAssociatedRoom(){
-        return this.room;
-    }
-
-    public void update(Message msg){
-        switch(msg.getMessageType()){
+    public void update(Observable observable, Object msg){
+        switch(((Message)msg).getMessageType()){
             case "ConnectionMessage":
                 this.connectPlayer(new Player("Ciao"));
                 break;
         }
     }
+
+
 }
