@@ -1,0 +1,50 @@
+<symhonyOfLight>
+    <number>
+      <one>
+        <x>5</x>
+        <y>1</y>
+      </one>
+      <two>
+         <x>1 4</x>
+         <y>1 2</y>
+      </two>
+      <three>
+         <x>2</x>
+         <y>4</y>
+      </three>
+      <four>
+         <x>3</x>
+         <y>3</y>
+      </four>
+      <five>
+         <x>3 4</x> 
+         <y>1 4</y>
+      </five>
+      <six>
+         <x>2</x> 
+         <y>2</y>
+      </six>
+    </number>
+    <color>
+      <red>
+        <x>5</x>
+        <y>2</y>
+      </red>
+      <yellow>
+        <x>1</x>
+        <y>2</y>
+      </yellow>
+      <green>
+        <x>4</x>
+        <y>3</y>
+      </green>
+      <blue>
+        <x>2</x>
+        <y>3</y>
+      </blue>
+      <purple>
+        <x>3</x>
+        <y>2</y>
+      </purple>
+    </color>
+</symhonyOfLight>
