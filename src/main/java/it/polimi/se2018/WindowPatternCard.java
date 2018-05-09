@@ -160,7 +160,11 @@ public class WindowPatternCard extends Card {
 
     public boolean isValidRestriction(WindowCell windowCell, Dice dice){
         //check color and number constraint
+        if(dice.getColor() != null && dice.getNumber() != 0)
+        if(windowCell.getNumberConstraint() != 0 && windowCell.getColorConstraint() != null)
         return windowCell.getNumberConstraint() == dice.getNumber() || windowCell.getColorConstraint() == dice.getColor();
+
+        return false;
     }
 
     public boolean isValidInsert( WindowCell windowCell, Dice dice){
