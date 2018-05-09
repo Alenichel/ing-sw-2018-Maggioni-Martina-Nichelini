@@ -1,0 +1,50 @@
+<batllo>
+    <number>
+      <one>
+        <x>1</x>
+        <y>4</y>
+      </one>
+      <two>
+         <x>5</x>
+         <y>3</y>
+      </two>
+      <three>
+         <x>5 1</x>
+         <y>4 3</y>
+      </three>
+      <four>
+         <x>2 4</x>
+         <y>4 2</y>
+      </four>
+      <five>
+         <x>2 4</x> 
+         <y>2 4</y>
+      </five>
+      <six>
+         <x>3</x> 
+         <y>1</y>
+      </six>
+    </number>
+    <color>
+        <red>     
+            <x>3</x> 
+            <y>4</y>
+        </red>
+        <yellow>     
+            <x>3</x> 
+            <y>3</y>
+        </yellow>
+        <green>     
+            <x>2</x> 
+            <y>3</y>
+        </green>
+        <blue>     
+            <x>3</x> 
+            <y>2</y>
+        </blue>
+        <purple>     
+            <x>4</x> 
+            <y>3</y>
+        </purple>
+    </color>
+</batllo>
