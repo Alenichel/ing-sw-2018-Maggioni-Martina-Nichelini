@@ -10,11 +10,11 @@ public class Dice {
     private String color;
     private String location;
 
-    public Dice(int number, String color, String location){
+    public Dice(String Color, String location){
         //Dice constructor
         this.id = this.hashCode();
-        this.number = number;
         this.color = color;
+        this.rollDice();
         this.location = location;
 
     }
