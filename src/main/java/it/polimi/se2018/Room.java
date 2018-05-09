@@ -3,14 +3,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+/**
+ * Room class is the class that represents the canonical room where online game are setupped up.
+ */
 public class Room extends java.util.Observable{
 
     private List<Observer> observers = new ArrayList<>();
 
-    private int roomId;
     private String roomName;
     private boolean singlePlayerMode;
-    private boolean started;
     private int maxNOfPlayers;
     private int numberOfConnectedPlayer;
     private ArrayList <Player> listOfConnectedPlayer = new ArrayList<>();
@@ -18,12 +19,15 @@ public class Room extends java.util.Observable{
     private GameController gameControllerAssociated;
     private ArrayList <Player> disconnectedClients = new ArrayList<>();
 
+    /**
+     * Class constructor
+     * @param name Name to assign to the room
+     * @param admin Player to be recognized as admin in room handling operation
+     * @param singlePlayer True if the game is a single player game, False if is a standard multiplayer game
+     */
     public Room(String name, Player admin, Boolean singlePlayer){
-        this.roomId = this.hashCode();
         this.roomName = name;
         this.singlePlayerMode = singlePlayer;
-        this.started = false;
-
         this.maxNOfPlayers = singlePlayerMode ? 1 : 4;
         this.numberOfConnectedPlayer = 1;
         this.gameAssociated = null; //no game associated at room initialization
@@ -31,7 +35,11 @@ public class Room extends java.util.Observable{
         listOfConnectedPlayer.add(admin);
     }
 
-    // you can add a player only if there is an empty seat in the room
+    /**
+     * Adds player to the list of player
+     * @author: Alessandro Nichelini
+     * @param player Player to be added
+     */
     public void addPlayer(Player player){
         if (numberOfConnectedPlayer + 1 > maxNOfPlayers) throw new IndexOutOfBoundsException("The room is full");
 
@@ -40,62 +48,100 @@ public class Room extends java.util.Observable{
         this.notifyObservers();
     }
 
+    /**
+     * Removes player from list of player
+     * @author: Alessandro Nichelini
+     * @param player Player to be removed
+     */
     public void removePlayer(Player player){
         listOfConnectedPlayer.remove(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer - 1;
         this.notifyObservers();
     }
 
+    /**
+     * Returns list of players that are currently connected to the room
+     * @author: Alessandro Nichelini
+     * @return List of player
+     */
     public List<Player> getListOfConnectedPlayers() {
         return listOfConnectedPlayer;
     }
 
+    /**
+     * Adds player to the list of disconnected players
+     * @author: Alessandro Nichelini
+     * @param player Player to be added to the list
+     */
     public void addDisconnectedClient(Player player){
         disconnectedClients.add(player);
         this.notifyObservers();
     }
 
+    /**
+     * Returns list of player that previosly disconeccted from the game associated with the room
+     * @author: Alessandro Nichelini
+     * @return List of player
+     */
     public List<Player> getListOfDisconnectedClients(){
         return disconnectedClients;
     }
 
+    /**
+     * Returns True if the player is on the list of disconnected player, otherwise it returns False
+     * @author: Alessandro Nichelini
+     * @param player Player it's needed to be checked.
+     * @return boolean
+     */
     public boolean isADisconnectedClient(Player player){
         return this.disconnectedClients.contains(player);
     }
 
-    public boolean getStarted(){
-        return started;
-    }
-
-    public void setStarted(boolean status){
-        this.started = status;
-        this.notifyObservers();
-    }
-
+    /**
+     * Associates a class game to this class
+     * @author: Alessandro Nichelini
+     * @param game Game class to be associated
+     */
     public void setGameAssociated(Game game){
         this.gameAssociated = game;
         this.notifyObservers();
     }
 
+    /**
+     * Returns the game associated to this room
+     * @author: Alessandro Nichelini
+     * @return Game
+     */
     public Game getGameAssociated() {
         return gameAssociated;
     }
 
+    /**
+     * Associates a game controller to this class
+     * @author: Alessandro Nichelini
+     * @param controller Controller to be associated
+     */
     public void setGameControllerAssociated(GameController controller){
         this.gameControllerAssociated = controller;
         this.notifyObservers();
     }
 
+    /**
+     * Returns the game associated with this room
+     * @author: Alessandro Nichelini
+     * @return GamecController
+     */
     public GameController getGameControllerAssociated() {
         return gameControllerAssociated;
     }
 
+    /**
+     * Returns the name of the room
+     * @author: Alessandro Nichelini
+     * @return String
+     */
     public String getRoomName(){
         return this.roomName;
-    }
-
-    public int getRoomId(){
-        return this.roomId;
     }
 
     @Override
