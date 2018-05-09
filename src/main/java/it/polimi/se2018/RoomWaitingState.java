@@ -4,8 +4,9 @@ public class RoomWaitingState implements RoomControllerState{
 
     @Override
     public void launchGame(RoomController context) {
-        context.room.setGameAssociated(new Game());
-        context.room.setGameControllerAssociated(new GameController());
+        Game newGame = new Game(context.room.getListOfConnectedPlayers());
+        context.room.setGameAssociated(newGame);
+        context.room.setGameControllerAssociated(new GameController(newGame));
         context.setState(new RoomWaitingState());
     }
 
