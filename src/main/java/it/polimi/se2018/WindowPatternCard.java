@@ -170,6 +170,15 @@ public class WindowPatternCard extends Card {
     public boolean isValidInsert( WindowCell windowCell, Dice dice){
         int diceNumber = dice.getNumber();
         String diceColor = dice.getColor();
+        String colorUp = "";
+        String colorDown = "";
+        String colorLeft = "";
+        String colorRight = "";
+
+        int numberUp = 0;
+        int numberDown = 0;
+        int numberLeft = 0;
+        int numberRight = 0;
 
         int windowCellX = windowCell.getColumn();
         int windowCellY = windowCell.getRow();
@@ -179,15 +188,26 @@ public class WindowPatternCard extends Card {
         WindowCell windowCellLeft = this.getCell(windowCellX-1, windowCellY);
         WindowCell windowCellRight = this.getCell(windowCellX+1, windowCellY);
 
-        String colorUp = windowCellUp.getAssignedDice().getColor();
-        String colorDown = windowCellDown.getAssignedDice().getColor();
-        String colorLeft = windowCellLeft.getAssignedDice().getColor();
-        String colorRight = windowCellRight.getAssignedDice().getColor();
+        if(windowCellUp.getAssignedDice() != null){
+            colorUp = windowCellUp.getAssignedDice().getColor();
+            numberUp = windowCellUp.getAssignedDice().getNumber();
+        }
 
-        int numberUp = windowCellUp.getAssignedDice().getNumber();
-        int numberDown = windowCellDown.getAssignedDice().getNumber();
-        int numberLeft = windowCellLeft.getAssignedDice().getNumber();
-        int numberRight = windowCellRight.getAssignedDice().getNumber();
+        if(windowCellDown.getAssignedDice() != null) {
+            colorDown = windowCellDown.getAssignedDice().getColor();
+            numberDown = windowCellDown.getAssignedDice().getNumber();
+        }
+        if (windowCellLeft.getAssignedDice() != null){
+            colorLeft = windowCellLeft.getAssignedDice().getColor();
+            numberLeft = windowCellLeft.getAssignedDice().getNumber();
+        }
+
+        if(windowCellRight.getAssignedDice() != null){
+            colorRight = windowCellRight.getAssignedDice().getColor();
+            numberRight = windowCellRight.getAssignedDice().getNumber();
+        }
+
+
 
         return diceNumber != numberUp &&
                 diceNumber != numberDown &&
