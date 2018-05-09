@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Player {
@@ -10,6 +11,7 @@ public class Player {
     private Boolean inGame;
     private Room lastGameJoined;
     private WindowPatternCard activePatternCard;
+    private ArrayList<WindowPatternCard> patternCardPool;
     private ObjectiveCard privateObjectiveCard;
 
 
@@ -34,6 +36,14 @@ public class Player {
         return nickname;
     }
 
+    public void setPatternCardPool(ArrayList<WindowPatternCard> patternCardPool) {
+        this.patternCardPool = patternCardPool;
+    }
+
+    public ArrayList<WindowPatternCard> getPatternCardPool() {
+        return patternCardPool;
+    }
+
     public void assignPatternCard(WindowPatternCard card){
         if (!inGame) throw new IllegalArgumentException();
         else activePatternCard = card;
@@ -43,6 +53,8 @@ public class Player {
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
     }
+
+
 
 
 
