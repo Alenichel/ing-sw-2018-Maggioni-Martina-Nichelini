@@ -1,7 +1,6 @@
 package it.polimi.se2018;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
 import java.util.Observer;
 
 public class Room extends java.util.Observable{
@@ -61,8 +60,7 @@ public class Room extends java.util.Observable{
     }
 
     public boolean isADisconnectedClient(Player player){
-        if (this.disconnectedClients.contains(player)) return true;
-        else return false;
+        return this.disconnectedClients.contains(player);
     }
 
     public boolean getStarted(){
