@@ -1,9 +1,10 @@
 package it.polimi.se2018;
 
+
 import java.awt.*;
+import java.util.Random;
 
 public class Dice {
-
     private int id;
     private int number;
     private String color;
@@ -43,7 +44,19 @@ public class Dice {
     }
 
     public void rollDice(){
-        //rolldice
+        Random rand = new Random();
+        this.number =rand.nextInt(4)+1;
+    }
+
+    public String toString(){
+        String string ="**  ";
+        string += this.number;
+        string += " ";
+        string += this.color;
+        string += " ";
+        string += this.location;
+        string += "  **";
+        return string;
     }
 
 }
