@@ -46,8 +46,9 @@ public class GameController implements Observer{
     private void onPatternCardSelection(SelectionMessage message) throws InvalidClassException {
         if (message.getChosenItem() instanceof WindowPatternCard ){
             Player targetPlayer = gameReference.getPlayers().get(message.getPlayerNumber());
-            targetPlayer.setActivePatternCard((WindowPatternCard)(message.getChosenItem()));
             targetPlayer.setPatternCardPool(null);
+            targetPlayer.setActivePatternCard((WindowPatternCard)(message.getChosenItem()));
+            gameReference.addWindowPatternCard((WindowPatternCard) message.getChosenItem());
             this.gameReference.notifyAll();
         } else {
             throw new InvalidClassException("Received: " + message.getChosenItem() + "but requested WindowPatternCard");
