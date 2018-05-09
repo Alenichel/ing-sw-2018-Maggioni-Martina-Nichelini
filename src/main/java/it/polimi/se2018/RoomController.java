@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.message.Message;
+
 public class RoomController {
 
     public final Room room;
@@ -10,27 +12,35 @@ public class RoomController {
         this.state = state;
     }
 
-    public void launchGame(){
+    private void launchGame(){
         state.launchGame(this);
     }
 
-    public void connectPlayer( Player player){
+    private void connectPlayer( Player player){
         state.connectPlayer(this, player);
     }
 
-    public void disconnectPlayer(Player player){
+    private void disconnectPlayer(Player player){
         state.disconnectPlayer(this, player);
     }
 
-    public void setState(RoomControllerState state){
+    private void setState(RoomControllerState state){
         this.state = state;
     }
 
-    public RoomControllerState getState(){
+    private RoomControllerState getState(){
         return this.state;
     }
 
-    public Room getAssociatedRoom(){
+    private Room getAssociatedRoom(){
         return this.room;
+    }
+
+    public void update(Message msg){
+        switch(msg.getMessageType()){
+            case "ConnectionMessage":
+                this.connectPlayer(new Player("Ciao"));
+                break;
+        }
     }
 }
