@@ -40,7 +40,7 @@ public class Lathekin implements ToolCardEffectStrategy{
 
     @Override
     public int executeEffect() throws ToolCardException {
-        Dice emptyDice = new Dice(0, null, null);
+        Dice emptyDice = new Dice("red", "nowhere");
 
         int startColumn1 = windowCellStart1.getColumn();
         int arriveColumn1 = windowCellArrive1.getColumn();
