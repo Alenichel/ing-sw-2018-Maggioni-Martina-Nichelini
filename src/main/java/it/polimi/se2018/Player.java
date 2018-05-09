@@ -39,7 +39,9 @@ public class Player {
     public void setPatternCardPool(ArrayList<WindowPatternCard> patternCardPool) {
         this.patternCardPool = patternCardPool;
     }
-
+    public void setLastGameJoined(Room game){
+        this.lastGameJoined = game;
+    }
     public ArrayList<WindowPatternCard> getPatternCardPool() {
         return patternCardPool;
     }
