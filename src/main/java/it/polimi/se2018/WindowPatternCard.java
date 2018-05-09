@@ -16,7 +16,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 public class WindowPatternCard extends Card {
     private WindowCell[][] grid = new WindowCell[4][5];
-    private Player player;
 
     public WindowPatternCard(String name) {
         this.name = name;
@@ -38,9 +37,6 @@ public class WindowPatternCard extends Card {
 
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
 
 
     public WindowCell getCell(int row, int column) {
@@ -55,7 +51,6 @@ public class WindowPatternCard extends Card {
     public String toString() {
         String string ="";
         string+= "                          \n";
-        string += ""+player.getNickname()+"\n";
         for (WindowCell[] line : grid) {
             string+="----------------------------------------------------------------\n";
             string += "|  ";
