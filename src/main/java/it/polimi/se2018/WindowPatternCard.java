@@ -202,11 +202,11 @@ public class WindowPatternCard extends Card {
     public void insertDice(Dice dice, WindowCell windowCell , boolean checkRestriction) throws ForbiddenDiceInsert{
         if(checkRestriction){
             if(!isValidRestriction(windowCell, dice)){
-                throw new ForbiddenDiceInsert("ciao");
+                throw new ForbiddenDiceInsert("inserDice Exception");
             }
         }
         if(!isValidInsert(windowCell, dice)){
-            throw new ForbiddenDiceInsert("ciao");
+            throw new ForbiddenDiceInsert("invalid Exception");
         }
         this.getCell(windowCell.getRow(), windowCell.getColumn()).setAssignedDice(dice);
     }
