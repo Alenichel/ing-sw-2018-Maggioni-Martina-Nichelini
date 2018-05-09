@@ -3,15 +3,11 @@ package it.polimi.se2018;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.w3c.dom.Text;
 import org.xml.sax.SAXException;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -22,15 +18,16 @@ public class WindowPatternCard extends Card {
     private WindowCell[][] grid = new WindowCell[4][5];
     private Player player;
 
-    private static final String HOME_PATH = System.getProperty("user.home");
-    private static final String CONFIGURATION_FILENAME = "/virtus.xml";
+    private static final String WINDOWSPATTERNCARD_PATH = "resources";
 
 
-    public WindowPatternCard() {
+
+    public WindowPatternCard(String name) {
+        this.name = name;
         try {
             loadConfiguration();
         } catch (FileNotFoundException e) {
-            System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
+            System.out.println("[*] Configuration file not found in " + WINDOWSPATTERNCARD_PATH + "/" + name + "\n[*] Aborting..");
             System.exit(1);
         } catch (IOException | SAXException | ParserConfigurationException e) {
             e.printStackTrace();
@@ -98,7 +95,7 @@ public class WindowPatternCard extends Card {
 
 
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-        File configurationFile = new File(HOME_PATH + CONFIGURATION_FILENAME);
+        File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name);
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
         Document doc = documentBuilder.parse(configurationFile);
@@ -154,7 +151,7 @@ public class WindowPatternCard extends Card {
             String ys;
             List<String> axs;
             List<String> ays;
-            if (coordinateX != null) { //check if there are null values;
+            if (coordinateX != null) {
                 xs = coordinateX.getFirstChild().getNodeValue();
                 ys = coordinateY.getFirstChild().getNodeValue();
                 axs = Arrays.asList(xs.split(" "));
@@ -168,6 +165,4 @@ public class WindowPatternCard extends Card {
             }//end if
         }//end method
     }
-
-
 }
