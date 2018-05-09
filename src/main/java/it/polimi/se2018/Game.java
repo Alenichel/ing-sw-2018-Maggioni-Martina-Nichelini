@@ -9,7 +9,7 @@ public class Game {
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
     private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
-    private final List<Player> players = new ArrayList<>();
+    private final List<Player> players;
 
 
     //private Player activePlayer;
