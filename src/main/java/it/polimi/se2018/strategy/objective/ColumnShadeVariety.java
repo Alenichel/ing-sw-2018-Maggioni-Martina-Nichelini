@@ -27,6 +27,6 @@ public class ColumnShadeVariety implements ScorePointStrategy {
                    (i != j && compareCellsNumber(grid[i][j], grid[3][j]))) {
                     scoreCounter += 4;
                 }
-        return 0;
+        return scoreCounter;
     }
 }

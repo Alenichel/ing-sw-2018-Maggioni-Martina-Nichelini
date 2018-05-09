@@ -29,7 +29,7 @@ public class RowColorVariety implements ScorePointStrategy {
                    (i != j && compareCellsColor(grid[i][j], grid[i][3])) &&
                    (i != j && compareCellsColor(grid[i][j], grid[i][4])))
             {scoreCounter +=6;}
-        return 0;
+        return scoreCounter;
     }
 
 }

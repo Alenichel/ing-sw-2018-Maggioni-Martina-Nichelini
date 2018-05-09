@@ -26,6 +26,6 @@ public class ColumnColorVariety implements ScorePointStrategy {
                    (i != j && compareCellsColor(grid[i][j], grid[2][j])) &&
                    (i != j && compareCellsColor(grid[i][j], grid[3][j])))
                 {scoreCounter += 5;}
-        return 0;
+        return scoreCounter;
     }
 }
