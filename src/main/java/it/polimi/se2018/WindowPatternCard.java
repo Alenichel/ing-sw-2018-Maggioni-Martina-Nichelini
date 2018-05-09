@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.Exception.ForbiddenDiceInsert;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -162,18 +163,17 @@ public class WindowPatternCard extends Card {
         return windowCell.getNumberConstraint() == dice.getNumber() || windowCell.getColorConstraint() == dice.getColor();
     }
 
-    public boolean isValidInsert(WindowPatternCard windowPatternCard, Dice dice, WindowCell windowCell){
+    public boolean isValidInsert( WindowCell windowCell, Dice dice){
         int diceNumber = dice.getNumber();
         String diceColor = dice.getColor();
-
 
         int windowCellX = windowCell.getColumn();
         int windowCellY = windowCell.getRow();
 
-        WindowCell windowCellUp = windowPatternCard.getCell(windowCellX, windowCellY-1);
-        WindowCell windowCellDown = windowPatternCard.getCell(windowCellX, windowCellY+1);
-        WindowCell windowCellLeft = windowPatternCard.getCell(windowCellX-1, windowCellY);
-        WindowCell windowCellRight = windowPatternCard.getCell(windowCellX+1, windowCellY);
+        WindowCell windowCellUp = this.getCell(windowCellX, windowCellY-1);
+        WindowCell windowCellDown = this.getCell(windowCellX, windowCellY+1);
+        WindowCell windowCellLeft = this.getCell(windowCellX-1, windowCellY);
+        WindowCell windowCellRight = this.getCell(windowCellX+1, windowCellY);
 
         String colorUp = windowCellUp.getAssignedDice().getColor();
         String colorDown = windowCellDown.getAssignedDice().getColor();
@@ -194,4 +194,19 @@ public class WindowPatternCard extends Card {
                 !diceColor.equals(colorLeft) &&
                 !diceColor.equals(colorRight);
     }
+
+    public void insertDice(Dice dice, WindowCell windowCell , boolean checkRestriction) throws ForbiddenDiceInsert{
+        if(checkRestriction){
+            if(!isValidRestriction(windowCell, dice)){
+                throw new ForbiddenDiceInsert("ciao");
+            }
+        }
+        if(!isValidInsert(windowCell, dice)){
+            throw new ForbiddenDiceInsert("ciao");
+        }
+        this.getCell(windowCell.getRow(), windowCell.getColumn()).setAssignedDice(dice);
+    }
+
+
+
 }
