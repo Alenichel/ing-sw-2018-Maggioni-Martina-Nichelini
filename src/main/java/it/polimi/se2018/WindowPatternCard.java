@@ -124,7 +124,9 @@ public class WindowPatternCard extends Card {
 
 
                 for (int i = 0; i < axs.size(); i++) {
-                    grid[Integer.parseInt(axs.get(i)) - 1][Integer.parseInt(ays.get(i)) - 1] = new WindowCell(counter);
+                    int x = Integer.parseInt(axs.get(i)) - 1 ;
+                    int y = Integer.parseInt(ays.get(i)) - 1;
+                    grid[x][y] = new WindowCell(grid, x,y,counter);
                 }
                 counter++;
             }
@@ -150,7 +152,9 @@ public class WindowPatternCard extends Card {
 
                 for (int i = 0; i < axs.size(); i++) {
                     if (axs != null) {
-                        grid[Integer.parseInt(axs.get(i)) - 1][Integer.parseInt(ays.get(i)) - 1] = new WindowCell(cr);
+                        int x = Integer.parseInt(axs.get(i)) - 1;
+                        int y = Integer.parseInt(ays.get(i)) - 1;
+                        grid[x][y] = new WindowCell(grid, x,y,cr);
                     } //end if
                 }//end for
             }//end if
@@ -158,7 +162,7 @@ public class WindowPatternCard extends Card {
     }
 
 
-    public boolean isValidRestriction(WindowCell windowCell, Dice dice){
+    private boolean isValidRestriction(WindowCell windowCell, Dice dice){
         //check color and number constraint
         if(dice.getColor() != null && dice.getNumber() != 0)
         if(windowCell.getNumberConstraint() != 0 && windowCell.getColorConstraint() != null)
@@ -167,68 +171,25 @@ public class WindowPatternCard extends Card {
         return false;
     }
 
-    public boolean isValidInsert( WindowCell windowCell, Dice dice){
-        int diceNumber = dice.getNumber();
-        String diceColor = dice.getColor();
-        String colorUp = "";
-        String colorDown = "";
-        String colorLeft = "";
-        String colorRight = "";
+    private boolean isValidInsert( WindowCell windowCell, Dice dice){
 
-        int numberUp = 0;
-        int numberDown = 0;
-        int numberLeft = 0;
-        int numberRight = 0;
-
-        int windowCellX = windowCell.getColumn();
-        int windowCellY = windowCell.getRow();
-
-        WindowCell windowCellUp = this.getCell(windowCellX, windowCellY-1);
-        WindowCell windowCellDown = this.getCell(windowCellX, windowCellY+1);
-        WindowCell windowCellLeft = this.getCell(windowCellX-1, windowCellY);
-        WindowCell windowCellRight = this.getCell(windowCellX+1, windowCellY);
-
-        if(windowCellUp.getAssignedDice() != null){
-            colorUp = windowCellUp.getAssignedDice().getColor();
-            numberUp = windowCellUp.getAssignedDice().getNumber();
+        for (WindowCell wc: windowCell.getNeighbourCells()){
+            if ( wc.getNumberConstraint() == windowCell.getNumberConstraint() || wc.getColorConstraint() == windowCell.getColorConstraint() ) return false;
         }
+        return true;
 
-        if(windowCellDown.getAssignedDice() != null) {
-            colorDown = windowCellDown.getAssignedDice().getColor();
-            numberDown = windowCellDown.getAssignedDice().getNumber();
-        }
-        if (windowCellLeft.getAssignedDice() != null){
-            colorLeft = windowCellLeft.getAssignedDice().getColor();
-            numberLeft = windowCellLeft.getAssignedDice().getNumber();
-        }
-
-        if(windowCellRight.getAssignedDice() != null){
-            colorRight = windowCellRight.getAssignedDice().getColor();
-            numberRight = windowCellRight.getAssignedDice().getNumber();
-        }
-
-
-
-        return diceNumber != numberUp &&
-                diceNumber != numberDown &&
-                diceNumber != numberLeft &&
-                diceNumber != numberRight &&
-                !diceColor.equals(colorUp) &&
-                !diceColor.equals(colorDown) &&
-                !diceColor.equals(colorLeft) &&
-                !diceColor.equals(colorRight);
     }
 
-    public void insertDice(Dice dice, WindowCell windowCell , boolean checkRestriction) throws ForbiddenDiceInsert{
+    public void insertDice(Dice dice, int row, int colum , boolean checkRestriction) throws ForbiddenDiceInsert{
         if(checkRestriction){
-            if(!isValidRestriction(windowCell, dice)){
-                throw new ForbiddenDiceInsert("inserDice Exception");
+            if(!isValidRestriction(this.getCell(row, colum), dice)){
+                throw new ForbiddenDiceInsert("insertDice Exception");
             }
         }
-        if(!isValidInsert(windowCell, dice)){
+        if(!isValidInsert(this.getCell(row,colum), dice)){
             throw new ForbiddenDiceInsert("invalid Exception");
         }
-        this.getCell(windowCell.getRow(), windowCell.getColumn()).setAssignedDice(dice);
+        this.getCell(row, colum).setAssignedDice(dice);
     }
 
 
