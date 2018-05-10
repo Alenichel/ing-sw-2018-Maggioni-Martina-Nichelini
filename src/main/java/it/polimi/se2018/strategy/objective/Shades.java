@@ -3,7 +3,6 @@ package it.polimi.se2018.strategy.objective;
 import it.polimi.se2018.ScorePointStrategy;
 import it.polimi.se2018.WindowCell;
 import it.polimi.se2018.WindowPatternCard;
-import org.omg.IOP.CodecPackage.InvalidTypeForEncoding;
 
 import static java.lang.Integer.min;
 
@@ -25,8 +24,7 @@ public class Shades implements ScorePointStrategy {
             this.firstNumber = 5;
             this.secondNumber = 6;
         }
-        //else {throw  new InvalidTypeForEncoding()}
-
+        else throw new IllegalArgumentException("Invalid type");
     }
 
     private boolean isFirst(WindowCell a) {
