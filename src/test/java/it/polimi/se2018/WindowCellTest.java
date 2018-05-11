@@ -1,12 +1,13 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class WindowCellTest {
 
     @Test
-    public void testGetter(){
+    public void testGetter() throws NotEmptyWindowCellException{
         int nc = 5;
         int row = 1;
         int column = 1;
