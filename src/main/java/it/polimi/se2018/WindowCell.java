@@ -2,6 +2,7 @@ package it.polimi.se2018;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class WindowCell {
     private int row;
@@ -11,32 +12,30 @@ public class WindowCell {
     private Dice assignedDice;
 
     private ArrayList<WindowCell> neighbourCells = new ArrayList<>();
+    private boolean neighbourhoodAssigned = false;
 
-    public WindowCell(){
+
+    public WindowCell(int row, int column){
+        this.row = row;
+        this.column = column;
+        this.colorConstraint = null;
+        this.numberConstraint = 0;
     }
 
-    private void setNeighbours(WindowCell[][] grid, int x, int y){
-        if (x - 1 >= 0 ) neighbourCells.add(grid[x-1][y]);
-        if (x + 1 < 4 ) neighbourCells.add(grid[x+1][y]);
-        if (y - 1 >= 0 ) neighbourCells.add(grid[x][y-1]);
-        if (y + 1 < 5 ) neighbourCells.add(grid[x][y+1]);
-    }
-
-    public WindowCell(WindowCell[][] grid, int row, int column, int numberConstraint) {
-        setNeighbours(grid, row, column);
+    public WindowCell(int row, int column, int numberConstraint) {
         this.row = row;
         this.column = column;
         this.numberConstraint = numberConstraint;
         this.colorConstraint = null;
     }
 
-    public WindowCell(WindowCell[][] grid, int row, int column, String colorConstraint){
-        setNeighbours(grid, row, column);
+    public WindowCell(int row, int column, String colorConstraint){
         this.row = row;
         this.column = column;
         this.numberConstraint = 0;
         this.colorConstraint = colorConstraint;
     }
+
 
     public String getColorConstraint() {
         return colorConstraint;
@@ -62,20 +61,43 @@ public class WindowCell {
         return neighbourCells;
     }
 
+
     public void setAssignedDice(Dice assignedDice) {
         this.assignedDice = assignedDice;
     }
 
-    public void setColorConstraint(String colorConstraint){
-         this.colorConstraint = colorConstraint;
-    }
-
-    public void setNumberConstraint (int numberConstraint){
-        this.numberConstraint = numberConstraint;
-    }
 
     public boolean isEmpty(){
         return null == assignedDice;
+    }
+
+    public void setNeighbours(WindowCell[][] grid){
+        //this method has to be executed only once
+        if (!neighbourhoodAssigned) {
+            this.neighbourhoodAssigned = true;
+            int x = this.row;
+            int y = this.column;
+
+            if (grid == null) return;
+            if (x - 1 >= 0) neighbourCells.add(grid[x - 1][y]);
+            if (x + 1 < 4) neighbourCells.add(grid[x + 1][y]);
+            if (y - 1 >= 0) neighbourCells.add(grid[x][y - 1]);
+            if (y + 1 < 5) neighbourCells.add(grid[x][y + 1]);
+        }
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WindowCell that = (WindowCell) o;
+        return row == that.row &&
+                column == that.column &&
+                numberConstraint == that.numberConstraint &&
+                Objects.equals(colorConstraint, that.colorConstraint) &&
+                Objects.equals(assignedDice, that.assignedDice) &&
+                Objects.equals(neighbourCells, that.neighbourCells);
     }
 }
 
