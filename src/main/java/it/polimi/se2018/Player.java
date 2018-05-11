@@ -2,6 +2,7 @@ package it.polimi.se2018;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Player {
 
@@ -75,5 +76,20 @@ public class Player {
         else privateObjectiveCard = card;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return playerNumber == player.playerNumber &&
+                Objects.equals(nickname, player.nickname) &&
+                Objects.equals(firstSeen, player.firstSeen) &&
+                Objects.equals(online, player.online) &&
+                Objects.equals(inGame, player.inGame) &&
+                Objects.equals(lastGameJoined, player.lastGameJoined) &&
+                Objects.equals(patternCardPool, player.patternCardPool) &&
+                Objects.equals(activePatternCard, player.activePatternCard) &&
+                Objects.equals(privateObjectiveCard, player.privateObjectiveCard);
+    }
 
 }
