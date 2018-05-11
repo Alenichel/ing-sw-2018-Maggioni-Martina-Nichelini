@@ -18,14 +18,21 @@ public class ColumnColorVariety implements ScorePointStrategy {
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
         int scoreCounter = 0;
+        boolean equals;
         WindowCell[][] grid = windowPatternCard.getGrid();
-        for (int j = 0; j < 5; j++)
-            for (int i = 0; i < 4; i++)
-                if ((i != j && compareCellsColor(grid[i][j], grid[0][j])) &&
-                   (i != j && compareCellsColor(grid[i][j], grid[1][j])) &&
-                   (i != j && compareCellsColor(grid[i][j], grid[2][j])) &&
-                   (i != j && compareCellsColor(grid[i][j], grid[3][j])))
-                {scoreCounter += 5;}
+        for (int j = 0; j < 5; j++) {
+            equals = true;
+            for (int i = 0; i < 4; i++) {
+                if ((i != j && !compareCellsColor(grid[i][j], grid[0][j])) ||
+                        (i != j && !compareCellsColor(grid[i][j], grid[1][j])) ||
+                        (i != j && !compareCellsColor(grid[i][j], grid[2][j])) ||
+                        (i != j && !compareCellsColor(grid[i][j], grid[3][j])))
+                {
+                    equals = false;
+                }
+            }
+            if (equals) scoreCounter += 5;
+        }
         return scoreCounter;
     }
 }
