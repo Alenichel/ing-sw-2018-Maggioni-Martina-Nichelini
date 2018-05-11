@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
-import java.awt.*;
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -62,8 +63,9 @@ public class WindowCell {
     }
 
 
-    public void setAssignedDice(Dice assignedDice) {
-        this.assignedDice = assignedDice;
+    public void setAssignedDice(Dice assignedDice) throws NotEmptyWindowCellException{
+        if (this.assignedDice == null) this.assignedDice = assignedDice;
+        else throw new NotEmptyWindowCellException("Not empty");
     }
 
 
