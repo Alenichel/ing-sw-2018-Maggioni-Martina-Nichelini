@@ -10,8 +10,9 @@ public class Dice {
     private String color;
     private String location;
 
-    public Dice(String Color){
+    public Dice(String color){
         this.color = color;
+        this.location = null;
         this.rollDice();
     }
 
