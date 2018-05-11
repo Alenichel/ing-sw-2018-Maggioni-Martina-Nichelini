@@ -1,5 +1,6 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -137,19 +138,19 @@ public class WindowPatternCard extends Card {
     }
 
     private boolean isValidRestriction(WindowCell windowCell, Dice dice){
-        boolean colorConstraint;
+        boolean colorConstraint ;
         boolean numberConstraint;
 
-        if(dice.getColor() != null) colorConstraint =  windowCell.getNumberConstraint() == dice.getNumber();
-        else colorConstraint = true;
-
-        if(dice.getNumber() != 0) numberConstraint = windowCell.getColorConstraint() == dice.getColor();
+        if(dice.getNumber() != 0) numberConstraint =  windowCell.getNumberConstraint() == dice.getNumber();
         else numberConstraint = true;
+
+        if(dice.getColor() != null) colorConstraint = windowCell.getColorConstraint() == dice.getColor();
+        else colorConstraint = true;
 
         return colorConstraint && numberConstraint;
     }
 
-    public void insertDice(Dice dice, int row, int column , boolean checkConstraintsRestriction, boolean checkPositionRestriction) throws NotValidInsertion {
+    public void insertDice(Dice dice, int row, int column , boolean checkConstraintsRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
         boolean constraintsRestriction = false;
         boolean positionRestriction = false;
 
