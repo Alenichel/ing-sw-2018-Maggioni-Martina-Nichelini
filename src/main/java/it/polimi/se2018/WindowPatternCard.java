@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exception.ForbiddenDiceInsert;
+import it.polimi.se2018.exception.NotValidInsertion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -28,13 +28,14 @@ public class WindowPatternCard extends Card {
             e.printStackTrace();
         }
 
-        //Initialized all cells without restriction
-        for(WindowCell[] line : grid){
-            for(WindowCell cell : line){
-                if(cell == null){
-                    cell = new WindowCell();
-                }
+        for (int x = 0; x < 4; x++){
+            for (int y = 0; y < 5; y++){
+                if (grid[x][y] == null) grid[x][y] = new WindowCell(x, y);
             }
+        }
+
+        for (WindowCell[] line:grid){
+            for(WindowCell cell:line) cell.setNeighbours(grid);
         }
 
     }
@@ -45,42 +46,6 @@ public class WindowPatternCard extends Card {
 
     public WindowCell[][] getGrid() {
         return this.grid;
-    }
-
-    @Override
-    public String toString() {
-        String string ="";
-        string+= "                          \n";
-        for (WindowCell[] line : grid) {
-            string+="----------------------------------------------------------------\n";
-            string += "|  ";
-            for (WindowCell cell : line) {
-                if(cell != null) {
-                    if(cell.getAssignedDice() == null) {
-                        //dado non insierito
-                        if (cell.getColorConstraint() != null)
-                            string += "  "+cell.getColorConstraint().substring(0, 1);
-                        else if (cell.getNumberConstraint() != 0)
-                            string += "  " + cell.getNumberConstraint();
-                        else if (cell.getAssignedDice() != null)
-                            string += cell.getAssignedDice().getNumber();
-                    }else{
-                        //dado inserito
-                        string += cell.getAssignedDice().getNumber() + cell.getAssignedDice().getColor().substring(0,1);
-                        if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
-                            //vincoli di colore con dado inserito
-                            string += "*";
-                        }
-                    }
-                }
-                else string += "   ";
-                string += "     |    ";
-            }
-            string += "\n";
-        }
-        string+="----------------------------------------------------------------\n";
-        string+= "                          \n";
-        return string;
     }
 
 
@@ -126,7 +91,7 @@ public class WindowPatternCard extends Card {
                 for (int i = 0; i < axs.size(); i++) {
                     int x = Integer.parseInt(axs.get(i)) - 1 ;
                     int y = Integer.parseInt(ays.get(i)) - 1;
-                    grid[x][y] = new WindowCell(grid, x,y,counter);
+                    grid[x][y] = new WindowCell(x,y,counter);
                 }
                 counter++;
             }
@@ -154,7 +119,7 @@ public class WindowPatternCard extends Card {
                     if (axs != null) {
                         int x = Integer.parseInt(axs.get(i)) - 1;
                         int y = Integer.parseInt(ays.get(i)) - 1;
-                        grid[x][y] = new WindowCell(grid, x,y,cr);
+                        grid[x][y] = new WindowCell(x,y,cr);
                     } //end if
                 }//end for
             }//end if
@@ -162,16 +127,7 @@ public class WindowPatternCard extends Card {
     }
 
 
-    private boolean isValidRestriction(WindowCell windowCell, Dice dice){
-        //check color and number constraint
-        if(dice.getColor() != null && dice.getNumber() != 0)
-        if(windowCell.getNumberConstraint() != 0 && windowCell.getColorConstraint() != null)
-        return windowCell.getNumberConstraint() == dice.getNumber() || windowCell.getColorConstraint() == dice.getColor();
-
-        return false;
-    }
-
-    private boolean isValidInsert( WindowCell windowCell, Dice dice){
+    private boolean isValidPosition( WindowCell windowCell, Dice dice){
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
             if ( wc.getNumberConstraint() == windowCell.getNumberConstraint() || wc.getColorConstraint() == windowCell.getColorConstraint() ) return false;
@@ -180,18 +136,66 @@ public class WindowPatternCard extends Card {
 
     }
 
-    public void insertDice(Dice dice, int row, int colum , boolean checkRestriction) throws ForbiddenDiceInsert{
-        if(checkRestriction){
-            if(!isValidRestriction(this.getCell(row, colum), dice)){
-                throw new ForbiddenDiceInsert("insertDice Exception");
-            }
-        }
-        if(!isValidInsert(this.getCell(row,colum), dice)){
-            throw new ForbiddenDiceInsert("invalid Exception");
-        }
-        this.getCell(row, colum).setAssignedDice(dice);
+    private boolean isValidRestriction(WindowCell windowCell, Dice dice){
+        boolean colorConstraint;
+        boolean numberConstraint;
+
+        if(dice.getColor() != null) colorConstraint =  windowCell.getNumberConstraint() == dice.getNumber();
+        else colorConstraint = true;
+
+        if(dice.getNumber() != 0) numberConstraint = windowCell.getColorConstraint() == dice.getColor();
+        else numberConstraint = true;
+
+        return colorConstraint && numberConstraint;
     }
 
+    public void insertDice(Dice dice, int row, int column , boolean checkConstraintsRestriction, boolean checkPositionRestriction) throws NotValidInsertion {
+        boolean constraintsRestriction = false;
+        boolean positionRestriction = false;
 
+        if (checkConstraintsRestriction) constraintsRestriction = isValidRestriction(this.getCell(row,column),dice);
+        else constraintsRestriction = true;
 
+        if (checkPositionRestriction) positionRestriction = isValidPosition(this.getCell(row,column), dice);
+        else positionRestriction = true;
+
+        if (constraintsRestriction && positionRestriction) this.getCell(row, column).setAssignedDice(dice);
+        else throw new NotValidInsertion("Not valid position");
+    }
+
+    @Override
+    public String toString() {
+        String string ="";
+        string+= "                          \n";
+        for (WindowCell[] line : grid) {
+            string+="----------------------------------------------------------------\n";
+            string += "|  ";
+            for (WindowCell cell : line) {
+                if(cell != null) {
+                    if(cell.getAssignedDice() == null) {
+                        //dado non insierito
+                        if (cell.getColorConstraint() != null)
+                            string += "  "+cell.getColorConstraint().substring(0, 1);
+                        else if (cell.getNumberConstraint() != 0)
+                            string += "  " + cell.getNumberConstraint();
+                        else if (cell.getAssignedDice() != null)
+                            string += cell.getAssignedDice().getNumber();
+                    }else{
+                        //dado inserito
+                        //string += cell.getAssignedDice().getNumber() + cell.getAssignedDice().getColor().substring(0,1);
+                        if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
+                            //vincoli di colore con dado inserito
+                            string += "*";
+                        }
+                    }
+                }
+                else string += "   ";
+                string += "     |    ";
+            }
+            string += "\n";
+        }
+        string+="----------------------------------------------------------------\n";
+        string+= "                          \n";
+        return string;
+    }
 }
