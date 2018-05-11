@@ -1,6 +1,6 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exception.ToolCardException;
+import it.polimi.se2018.exception.ToolCardException;
 
 public class ToolCard extends Card{
     private String diceColor;
