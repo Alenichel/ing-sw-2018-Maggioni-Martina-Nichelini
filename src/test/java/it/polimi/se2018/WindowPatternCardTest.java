@@ -1,41 +1,45 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.Exception.ForbiddenDiceInsert;
-import org.junit.Before;
+import it.polimi.se2018.exception.NotValidInsertion;
+import org.junit.Assert;
 import org.junit.Test;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.fail;
 
 public class WindowPatternCardTest {
 
-    private WindowPatternCard wpc = new WindowPatternCard("viaLux");
-    private WindowCell[][] exampleGrid = new WindowCell[4][5];
-
-    @Before
-    public void initialize(){
-        for (int i = 0; i < 4; i ++){
-            for (int j = 0; j < 5; j++){
-                exampleGrid[i][j] = new WindowCell();
-            }
-        }
-
-        exampleGrid[0][1].setAssignedDice(new Dice("red", null));
-    }
-
     @Test
-    public void insertDiceTest(){
-        try {
-            wpc.insertDice(new Dice("red", null), wpc.getCell(0, 1), false);
-        } catch (ForbiddenDiceInsert | NullPointerException e) {
-            System.out.println(e);
-            fail();
-        }
+    public void testValidInsertion() throws NotValidInsertion{
+        Dice d = new Dice("green");
+        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
 
-        for (int i = 0; i < 4; i++){
-            assertArrayEquals(exampleGrid[i], wpc.getGrid()[i]);
-        }
-
+        wpc.insertDice(d,0,0,true,true);
+        Assert.assertEquals(d, wpc.getCell(0,0).getAssignedDice());
     }
+
+    public void testConstraintViolation(){
+        Dice d = new Dice("green");
+        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+
+        try {
+            wpc.insertDice(d,0,0,true,true);
+        } catch (NotValidInsertion e){
+            Assert.assertTrue(true);
+        }
+        Assert.assertTrue(false);
+    }
+
+    public void testPositionViolation(){
+        Dice d = new Dice("green");
+        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+
+        try {
+            wpc.insertDice(d,0,0,true,true);
+            wpc.insertDice(d, 1,0,true,true);
+        } catch (NotValidInsertion e){
+            Assert.assertTrue(true);
+        }
+        Assert.assertTrue(false);
+    }
+
 }
