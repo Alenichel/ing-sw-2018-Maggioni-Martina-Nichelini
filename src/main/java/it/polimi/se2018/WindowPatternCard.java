@@ -19,7 +19,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class WindowPatternCard extends Card {
     private WindowCell[][] grid = new WindowCell[4][5];
 
-    public WindowPatternCard(String name) {
+    public WindowPatternCard(String name) throws FileNotFoundException{
         this.name = name;
         try {
             loadConfiguration();
