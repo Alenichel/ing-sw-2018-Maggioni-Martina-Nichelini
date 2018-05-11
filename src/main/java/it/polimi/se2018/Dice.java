@@ -2,37 +2,29 @@ package it.polimi.se2018;
 
 
 import java.awt.*;
+import java.util.Objects;
 import java.util.Random;
 
 public class Dice {
-    private int id;
     private int number;
     private String color;
     private String location;
 
-    public Dice(String Color, String location){
-        //Dice constructor
-        this.id = this.hashCode();
+    public Dice(String Color){
         this.color = color;
         this.rollDice();
-        this.location = location;
-
     }
 
     public String getColor() {
-        return color;
+        return this.color;
     }
 
     public int getNumber() {
-        return number;
+        return this.number;
     }
 
     public String getLocation() {
         return location;
-    }
-
-    public int getId() {
-        return id;
     }
 
     public void setNumber(int number) {
@@ -48,6 +40,7 @@ public class Dice {
         this.number =rand.nextInt(4)+1;
     }
 
+
     public String toString(){
         String string ="**  ";
         string += this.number;
@@ -59,5 +52,14 @@ public class Dice {
         return string;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Dice dice = (Dice) o;
+        return number == dice.number &&
+                Objects.equals(color, dice.color) &&
+                Objects.equals(location, dice.location);
+    }
 }
 
