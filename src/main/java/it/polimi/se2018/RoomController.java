@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.message.Message;
+import it.polimi.se2018.message.RoomConnectionMessage;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -71,7 +72,9 @@ public class RoomController implements Observer {
     public void update(Observable observable, Object msg){
         switch(((Message)msg).getMessageType()){
             case "ConnectionMessage":
-                this.connectPlayer(new Player("Ciao"));
+                if (((RoomConnectionMessage)msg).isConnecting())
+                    this.connectPlayer(((RoomConnectionMessage)msg).getRequester());
+                else this.disconnectPlayer(((RoomConnectionMessage)msg).getRequester());
                 break;
         }
     }
