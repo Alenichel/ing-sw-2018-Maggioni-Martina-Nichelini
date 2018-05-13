@@ -131,20 +131,21 @@ public class WindowPatternCard extends Card {
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
-            if ( wc.getNumberConstraint() == windowCell.getNumberConstraint() || wc.getColorConstraint() == windowCell.getColorConstraint() ) return false;
+            if (wc.getAssignedDice() != null)
+                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor() == dice.getColor() )
+                    return false;
         }
         return true;
-
     }
 
     private boolean isValidRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint ;
         boolean numberConstraint;
 
-        if(dice.getNumber() != 0) numberConstraint =  windowCell.getNumberConstraint() == dice.getNumber();
+        if(dice.getNumber() != 0) numberConstraint =  !(windowCell.getNumberConstraint() == dice.getNumber());
         else numberConstraint = true;
 
-        if(dice.getColor() != null) colorConstraint = windowCell.getColorConstraint() == dice.getColor();
+        if(dice.getColor() != null) colorConstraint = !(windowCell.getColorConstraint() == dice.getColor());
         else colorConstraint = true;
 
         return colorConstraint && numberConstraint;
