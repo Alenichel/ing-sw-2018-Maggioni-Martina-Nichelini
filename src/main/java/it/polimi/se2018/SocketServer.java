@@ -14,9 +14,9 @@ public class SocketServer extends Thread {
             System.out.println("Listening");
             while (true) {
                 Socket socket = this.ssocket.accept();
-                SocketThread socketThread;
-                socketThread = new SocketThread(socket);
-                socketThread.start();
+                //SocketThread socketThread;
+                //socketThread = new SocketThread(socket);
+                //socketThread.start();
             }
         } catch (IOException e){
             assert false;
