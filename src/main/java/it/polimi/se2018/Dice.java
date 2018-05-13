@@ -62,5 +62,11 @@ public class Dice {
                 Objects.equals(color, dice.color) &&
                 Objects.equals(location, dice.location);
     }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(number, color, location);
+    }
 }
 

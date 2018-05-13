@@ -88,7 +88,6 @@ public class WindowCell {
         }
     }
 
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,9 +96,16 @@ public class WindowCell {
         return row == that.row &&
                 column == that.column &&
                 numberConstraint == that.numberConstraint &&
+                neighbourhoodAssigned == that.neighbourhoodAssigned &&
                 Objects.equals(colorConstraint, that.colorConstraint) &&
                 Objects.equals(assignedDice, that.assignedDice) &&
                 Objects.equals(neighbourCells, that.neighbourCells);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(row, column, colorConstraint, numberConstraint, assignedDice, neighbourCells, neighbourhoodAssigned);
     }
 }
 
