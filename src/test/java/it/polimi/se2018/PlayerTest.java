@@ -1,18 +1,9 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.ArrayList;
 
 public class PlayerTest {
     @Test
@@ -21,8 +12,16 @@ public class PlayerTest {
         Room room = new Room("paperino", player, false);
         Room room2 = new Room("minnie", player, false);
 
-        WindowPatternCard windowPatternCard = new WindowPatternCard("viaLux.xml");
+        WindowPatternCard windowPatternCard = new WindowPatternCard("viaLux");
+        WindowPatternCard windowPatternCard2 = new WindowPatternCard("virtus");
+        WindowPatternCard windowPatternCard3 = new WindowPatternCard("sunCatcher");
+        WindowPatternCard windowPatternCard4 = new WindowPatternCard("firmitas");
 
+        ArrayList<WindowPatternCard> windowPatternCards = new ArrayList<>();
+        windowPatternCards.add(windowPatternCard);
+        windowPatternCards.add(windowPatternCard2);
+        windowPatternCards.add(windowPatternCard3);
+        windowPatternCards.add(windowPatternCard4);
 
         Assert.assertEquals("pippo", player.getNickname());
         Assert.assertNotEquals("pluto", player.getNickname());
@@ -47,10 +46,14 @@ public class PlayerTest {
         Assert.assertNotEquals(true, player.getInGame());
 
         //player.assignPatternCard(windowPatternCard);
-        player.setInGame(false);
+        //player.setInGame(false);
         //Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
 
+        player.setActivePatternCard(windowPatternCard);
+        Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
 
+        player.setPatternCardPool(windowPatternCards);
+        Assert.assertEquals(windowPatternCards, player.getPatternCardPool());
 
     }
 
