@@ -10,71 +10,73 @@ public class Player {
     private Date firstSeen;
     private Boolean online;
     private Boolean inGame;
-
     private Room lastGameJoined;
     private int playerNumber;
     private ArrayList<WindowPatternCard> patternCardPool;
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
 
-
     public Player(String nickname) {
         this.nickname = nickname;
     }
 
+
+    public void setInGame(Boolean inGame) {
+        this.inGame = inGame;
+    }
     public void setOnline(Boolean status){
         this.online = status;
     }
-
-    public Boolean getOnline(){
-        return this.online;
-    }
-
-    public ObjectiveCard getPrivateObjectiveCard() {
-        return privateObjectiveCard;
-    }
-
-    public WindowPatternCard getActivePatternCard() {
-        return activePatternCard;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public int getPlayerNumber(){
-        return this.playerNumber;
-    }
-
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
     }
-
     public void setPlayerNumber(int number){
         this.playerNumber = number;
     }
-
     public void setPatternCardPool(ArrayList<WindowPatternCard> patternCardPool) {
         this.patternCardPool = patternCardPool;
-    }
 
+    }
     public void setLastGameJoined(Room game){
         this.lastGameJoined = game;
     }
-
-    public ArrayList<WindowPatternCard> getPatternCardPool() {
-        return patternCardPool;
-    }
-
     public void assignPatternCard(WindowPatternCard card){
         if (!inGame) throw new IllegalArgumentException();
         else activePatternCard = card;
     }
-
     public void assignObjectiveCard(ObjectiveCard card){
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
     }
+
+    public Boolean getInGame() {
+        return inGame;
+    }
+    public Boolean getOnline(){
+        return this.online;
+    }
+    public ObjectiveCard getPrivateObjectiveCard() {
+        return privateObjectiveCard;
+    }
+    public WindowPatternCard getActivePatternCard() {
+        return activePatternCard;
+    }
+    public String getNickname() {
+        return nickname;
+    }
+    public int getPlayerNumber(){
+        return this.playerNumber;
+    }
+    public Room getLastGameJoined() {
+        return this.lastGameJoined;
+    }
+    public ArrayList<WindowPatternCard> getPatternCardPool() {
+        return patternCardPool;
+    }
+
+
+
+
 
     @Override
     public boolean equals(Object o) {
