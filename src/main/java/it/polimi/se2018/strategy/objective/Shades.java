@@ -6,10 +6,23 @@ import it.polimi.se2018.WindowPatternCard;
 
 import static java.lang.Integer.min;
 
+/**
+ * These cards allow you to score points every time you have a set of light (1, 2),
+ * medium (3, 4) or dark (5, 6) shades on your window pattern card
+ * @author: Valentina Maggioni
+ */
+
 public class Shades implements ScorePointStrategy {
 
     int firstNumber;
     int secondNumber;
+
+    /**
+     * Class constructor
+     * @param type It can be light, medium or dark
+     * @param firstNumber first number of the set
+     * @param secondNumber second number of the set
+     */
 
     public Shades(String type, int firstNumber, int secondNumber) {
         if (type == "light") {
@@ -27,6 +40,11 @@ public class Shades implements ScorePointStrategy {
         else throw new IllegalArgumentException("Invalid type");
     }
 
+    /**
+     * isFirst checks if the dice in the window cell has the shade we are searching for on it
+     * @param a window cell under consideration
+     * @return true if the condition in respected
+     */
     private boolean isFirst(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -36,6 +54,11 @@ public class Shades implements ScorePointStrategy {
         }
     }
 
+    /**
+     * isSecond checks if the dice in the window cell has the shade we are searching for on it
+     * @param a window cell under consideration
+     * @return true if the condition in respected
+     */
     private boolean isSecond(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -45,6 +68,11 @@ public class Shades implements ScorePointStrategy {
         }
     }
 
+    /**
+     * For every set of light, medium or dark shades found, this method adds 2 points
+     * @param windowPatternCard window pattern card under consideration
+     * @return points scored with this card
+     */
 
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
