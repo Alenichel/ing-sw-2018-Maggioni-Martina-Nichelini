@@ -16,9 +16,16 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+/**
+ * This class represents the player's window
+ */
 public class WindowPatternCard extends Card {
     private WindowCell[][] grid = new WindowCell[4][5];
 
+    /**
+     * Class constructor
+     * @param name
+     */
     public WindowPatternCard(String name) {
         this.name = name;
         try {
@@ -41,15 +48,30 @@ public class WindowPatternCard extends Card {
 
     }
 
+    /**
+     *
+     * @param row
+     * @param column
+     * @return The cell specified in the grid.
+     */
     public WindowCell getCell(int row, int column) {
         return grid[row][column];
     }
 
+    /**
+     *
+     * @return The grid
+     */
     public WindowCell[][] getGrid() {
         return this.grid;
     }
 
-
+    /**
+     * This method load the user specified pattern card from an xml file.
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
         String WINDOWSPATTERNCARD_PATH = "resources";
         File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name + ".xml");
@@ -127,7 +149,12 @@ public class WindowPatternCard extends Card {
         }//end method
     }
 
-
+    /**
+     * This method checks if it's possibile to place the given die in the selected cell looking for near dice.
+     * @param windowCell
+     * @param dice
+     * @return True if it's a valid position, false otherwise.
+     */
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
@@ -138,6 +165,12 @@ public class WindowPatternCard extends Card {
         return true;
     }
 
+    /**
+     * This method checks the window cell color and number constraints.
+     * @param windowCell
+     * @param dice
+     * @return True if it's a valid position, false otherwise.
+     */
     private boolean isValidRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint ;
         boolean numberConstraint;
@@ -151,6 +184,16 @@ public class WindowPatternCard extends Card {
         return colorConstraint && numberConstraint;
     }
 
+    /**
+     * Inserte die in cell if position restriction and constraints are met.
+     * @param dice
+     * @param row
+     * @param column
+     * @param checkConstraintsRestriction Set this to false if you want to ignore window cell constraints.
+     * @param checkPositionRestriction Set this to true if you want to ignore position requirements.
+     * @throws NotValidInsertion Thrown if requirements are not met.
+     * @throws NotEmptyWindowCellException Thrown if the given cell is not empty
+     */
     public void insertDice(Dice dice, int row, int column , boolean checkConstraintsRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
         boolean constraintsRestriction = false;
         boolean positionRestriction = false;
