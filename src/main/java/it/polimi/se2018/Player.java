@@ -74,10 +74,6 @@ public class Player {
         return patternCardPool;
     }
 
-
-
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -94,4 +90,9 @@ public class Player {
                 Objects.equals(privateObjectiveCard, player.privateObjectiveCard);
     }
 
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(nickname, firstSeen, online, inGame, lastGameJoined, playerNumber, patternCardPool, activePatternCard, privateObjectiveCard);
+    }
 }
