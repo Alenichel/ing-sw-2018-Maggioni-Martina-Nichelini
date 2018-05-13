@@ -3,8 +3,13 @@ package it.polimi.se2018;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * WindowCell class represents the cell, *one square*, of the window grid.
+ * Each cell can be assigned with a die.
+ */
 public class WindowCell {
     private int row;
     private int column;
@@ -15,7 +20,11 @@ public class WindowCell {
     private ArrayList<WindowCell> neighbourCells = new ArrayList<>();
     private boolean neighbourhoodAssigned = false;
 
-
+    /**
+     * Constructor for cell without constraints.
+     * @param row
+     * @param column
+     */
     public WindowCell(int row, int column){
         this.row = row;
         this.column = column;
@@ -23,6 +32,12 @@ public class WindowCell {
         this.numberConstraint = 0;
     }
 
+    /**
+     * Constructor for cell with number constraint.
+     * @param row
+     * @param column
+     * @param numberConstraint
+     */
     public WindowCell(int row, int column, int numberConstraint) {
         this.row = row;
         this.column = column;
@@ -30,6 +45,12 @@ public class WindowCell {
         this.colorConstraint = null;
     }
 
+    /**
+     * Constructor for cell with colo constraint.
+     * @param row
+     * @param column
+     * @param colorConstraint
+     */
     public WindowCell(int row, int column, String colorConstraint){
         this.row = row;
         this.column = column;
@@ -37,42 +58,76 @@ public class WindowCell {
         this.colorConstraint = colorConstraint;
     }
 
-
+    /**
+     * Color constraint getter.
+     * @return Color constraints
+     */
     public String getColorConstraint() {
         return colorConstraint;
     }
 
+    /**
+     * Row index getter.
+     * @return row index.
+     */
     public int getRow() {
         return row;
     }
 
+    /**
+     * Column index getter.
+     * @return column index.
+     */
     public int getColumn() {
         return column;
     }
 
+    /**
+     * Number constraint getter.
+     * @return Number constraint.
+     */
     public int getNumberConstraint() {
         return numberConstraint;
     }
 
+    /**
+     * Assigned die getter.
+     * @return Assigned die.
+     */
     public Dice getAssignedDice() {
         return assignedDice;
     }
 
-    public ArrayList<WindowCell> getNeighbourCells() {
+    /**
+     * Neihbour cells getter.
+     * @return Array List of cells.
+     */
+    public List<WindowCell> getNeighbourCells() {
         return neighbourCells;
     }
 
-
+    /**
+     * Assigned dice setter
+     * @param assignedDice
+     * @throws NotEmptyWindowCellException Thrown if the cell is already assigned with another dice.
+     */
     public void setAssignedDice(Dice assignedDice) throws NotEmptyWindowCellException{
         if (this.assignedDice == null) this.assignedDice = assignedDice;
         else throw new NotEmptyWindowCellException("Not empty");
     }
 
-
+    /**
+     *
+     * @return True if the cell is non assigned with a dice.
+     */
     public boolean isEmpty(){
         return null == assignedDice;
     }
 
+    /**
+     * Once the grid is ready, this method assign to the cell the list of neighbour cells to make controls easier.
+     * @param grid
+     */
     public void setNeighbours(WindowCell[][] grid){
         //this method has to be executed only once
         if (!neighbourhoodAssigned) {
