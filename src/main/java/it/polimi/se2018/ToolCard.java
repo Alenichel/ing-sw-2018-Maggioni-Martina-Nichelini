@@ -16,11 +16,34 @@ public class ToolCard extends Card{
     public void setUsed(boolean value){
         used = value;
     }
+    public void setDiceColor(String diceColor) {
+        this.diceColor = diceColor;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    public void setToolCardEffect(ToolCardEffectStrategy toolCardEffect) {
+        this.toolCardEffect = toolCardEffect;
+    }
+    public void setGameReference(Game gameReference) {
+        this.gameReference = gameReference;
+    }
 
+    public String getDiceColor() {
+        return diceColor;
+    }
+    public boolean isUsed() {
+        return used;
+    }
+    public ToolCardEffectStrategy getToolCardEffect() {
+        return toolCardEffect;
+    }
+    public Game getGameReference() {
+        return gameReference;
+    }
     public boolean getUsed(){
         return used;
     }
-
     public String getDescription(){
         return description;
     }
