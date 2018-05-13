@@ -67,22 +67,24 @@ public class Server {
             return this.port;
         }
 
+        public ArrayList<Player> getOnlinePlayers() {return this.onlinePlayers;}
+
+        public ArrayList<Room> getActiveGames() {return this.activeGames;}
+
         public void addRoom (String gameName, Player admin){
             Room game = new Room(gameName, admin,false);
-            activeGames.add(game);
+            getActiveGames().add(game);
         }
 
         public void removeRoom(Room room){
-            activeGames.remove(room);
+            getActiveGames().remove(room);
 
         }
 
-        public void addPlayer (Player player){
-            onlinePlayers.add(player);
-        }
+        public void addPlayer (Player player){ getOnlinePlayers().add(player);}
 
         public void removePlayer (Player player){
-            onlinePlayers.remove(player);
+            getOnlinePlayers().remove(player);
         }
 
 }
