@@ -18,32 +18,42 @@ public class Game {
         this.players = players;
     }
 
+    public void setDiceBag(ArrayList<Dice> diceBag) {
+        this.diceBag = diceBag;
+    }
+    public void setDiceOnTable(ArrayList<Dice> diceOnTable) {
+        this.diceOnTable = diceOnTable;
+    }
+    public void setPatternCards(ArrayList<WindowPatternCard> patternCards) {
+        this.patternCards = patternCards;
+    }
+    public void setObjectiveCards(ArrayList<ObjectiveCard> objectiveCards) {
+        this.objectiveCards = objectiveCards;
+    }
+    public void setToolCards(ArrayList<ToolCard> toolCards) {
+        this.toolCards = toolCards;
+    }
+
     public ArrayList<Dice> getDiceBag() {
         return diceBag;
     }
-
     public ArrayList<Dice> getDiceOnTable() {
         return diceOnTable;
     }
-
     public ArrayList<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
-
-    public void addWindowPatternCard(WindowPatternCard windowPatternCard){
-        this.patternCards.add(windowPatternCard);
-    }
-
     public ArrayList<ObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
-
     public ArrayList<ToolCard> getToolCards() {
         return toolCards;
     }
-
     public List<Player> getPlayers() {
         return players;
+    }
+    public void addWindowPatternCard(WindowPatternCard windowPatternCard){
+        this.patternCards.add(windowPatternCard);
     }
 
 }
