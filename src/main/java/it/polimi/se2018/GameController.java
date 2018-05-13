@@ -49,7 +49,7 @@ public class GameController implements Observer{
             targetPlayer.setPatternCardPool(null);
             targetPlayer.setActivePatternCard((WindowPatternCard)(message.getChosenItem()));
             gameReference.addWindowPatternCard((WindowPatternCard) message.getChosenItem());
-            this.gameReference.notifyAll();
+            //this.gameReference.notifyAll();
         } else {
             throw new InvalidClassException("Received: " + message.getChosenItem() + "but requested WindowPatternCard");
         }
