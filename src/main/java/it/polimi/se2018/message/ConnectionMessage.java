@@ -1,24 +1,32 @@
 package it.polimi.se2018.message;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import it.polimi.se2018.Player;
+import it.polimi.se2018.Room;
 
-public class ConnectionMessage extends Message {
+/**
+ * Message class for connecting/disconneting action
+ */
+public class ConnectionMessage extends Message{
 
-    private String username;
-    private byte[] encodedPassword;
+    private Player requester;
+    private boolean isConnecting;
 
-    public ConnectionMessage(String username, String password){
-        this.messageType = "ConnectionMessage";
-        this.username = username;
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            encodedPassword = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {;}
+    /**
+     * Constructor for class
+     * @param requester The player is connecting/disconnetting
+     * @param isConnecting True if the player is connecting, False if the player is disconneting.
+     */
+    public ConnectionMessage(Player requester, boolean isConnecting){
+        this.messageType = "HandshakeConnectionMessage";
+        this.requester = requester;
+        this.isConnecting = isConnecting;
     }
 
-    public String getUsername(){
-        return this.username;
+    public Player getRequester() {
+        return requester;
+    }
+
+    public boolean isConnecting() {
+        return isConnecting;
     }
 }
