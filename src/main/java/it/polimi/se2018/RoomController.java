@@ -73,7 +73,7 @@ public class RoomController implements Observer {
      */
     public void update(Observable observable, Object msg){
         switch(((Message)msg).getMessageType()){
-            case "HandshakeConnectionMessage":
+            case "ConnectionMessage":
                 if (((ConnectionMessage)msg).isConnecting())
                     this.connectPlayer(((ConnectionMessage)msg).getRequester());
                 else this.disconnectPlayer(((ConnectionMessage)msg).getRequester());
