@@ -4,6 +4,9 @@ import it.polimi.se2018.ScorePointStrategy;
 import it.polimi.se2018.WindowCell;
 import it.polimi.se2018.WindowPatternCard;
 
+/**
+ * This class implements objective card #6 ("Row Color Variety") and 5 ("Row Shade Variety")
+ */
 public class RowVariety implements ScorePointStrategy {
 
     private String type;
@@ -26,6 +29,12 @@ public class RowVariety implements ScorePointStrategy {
         }
     }
 
+    /**
+     * This methods calculates a score depending on the number of lines containing 5 dice with all different
+     * number.
+     * @param windowPatternCard
+     * @return Score
+     */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
         int scoreCounter = 0;
