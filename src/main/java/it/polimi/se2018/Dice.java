@@ -16,6 +16,12 @@ public class Dice {
         this.rollDice();
     }
 
+    public Dice(String color, int number){
+        this.color = color;
+        this.location = null;
+        this.number = number;
+    }
+
     public String getColor() {
         return this.color;
     }
