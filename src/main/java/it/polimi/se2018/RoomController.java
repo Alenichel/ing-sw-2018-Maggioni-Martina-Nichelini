@@ -1,7 +1,9 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.message.GetMessage;
+import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
-import it.polimi.se2018.message.RoomConnectionMessage;
+import it.polimi.se2018.message.ConnectionMessage;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -71,11 +73,15 @@ public class RoomController implements Observer {
      */
     public void update(Observable observable, Object msg){
         switch(((Message)msg).getMessageType()){
-            case "ConnectionMessage":
-                if (((RoomConnectionMessage)msg).isConnecting())
-                    this.connectPlayer(((RoomConnectionMessage)msg).getRequester());
-                else this.disconnectPlayer(((RoomConnectionMessage)msg).getRequester());
+            case "HandshakeConnectionMessage":
+                if (((ConnectionMessage)msg).isConnecting())
+                    this.connectPlayer(((ConnectionMessage)msg).getRequester());
+                else this.disconnectPlayer(((ConnectionMessage)msg).getRequester());
                 break;
+
+            case "GetMessage":
+                if (((GetMessage)msg).getToGet().equals("ConnectedPlayers"))
+                    ((CliView)observable).RCCallback(new GiveMessage("Players",room.getListOfConnectedPlayers()));
         }
     }
 
