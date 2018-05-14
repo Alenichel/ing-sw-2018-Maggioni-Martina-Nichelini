@@ -10,4 +10,9 @@ public abstract class Message implements Serializable {
     public String getMessageType(){
         return this.messageType;
     }
+
+    @Override
+    public String toString(){
+        return messageType + stringMessage;
+    }
 }
