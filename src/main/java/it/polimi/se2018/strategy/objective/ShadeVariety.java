@@ -6,14 +6,16 @@ import it.polimi.se2018.WindowPatternCard;
 
 import static java.lang.Integer.min;
 
+/**
+ * This class implements the public objective parte #5.
+ */
 public class ShadeVariety implements ScorePointStrategy {
 
     private boolean isOne(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 1) return true;
-            else return false;
+            return (a.getAssignedDice().getNumber() == 1);
         }
     }
 
@@ -21,8 +23,7 @@ public class ShadeVariety implements ScorePointStrategy {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 2) return true;
-            else return false;
+            return (a.getAssignedDice().getNumber() == 2);
         }
     }
 
@@ -30,8 +31,7 @@ public class ShadeVariety implements ScorePointStrategy {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 3) return true;
-            else return false;
+            return (a.getAssignedDice().getNumber() == 3);
         }
     }
 
@@ -39,8 +39,7 @@ public class ShadeVariety implements ScorePointStrategy {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 4) return true;
-            else return false;
+            return (a.getAssignedDice().getNumber() == 4);
         }
     }
 
@@ -48,8 +47,7 @@ public class ShadeVariety implements ScorePointStrategy {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 5) return true;
-            else return false;
+            return (a.getAssignedDice().getNumber() == 5);
         }
     }
 
@@ -57,8 +55,7 @@ public class ShadeVariety implements ScorePointStrategy {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== 6) return true;
-            else return false;
+            return(a.getAssignedDice().getNumber()== 6);
         }
     }
 
@@ -72,6 +69,11 @@ public class ShadeVariety implements ScorePointStrategy {
         return min;
     }
 
+    /**
+     * This methods calculates score depending on the number of set of each value anywhere.
+     * @param windowPatternCard
+     * @return A score calculated multiplying 5 * each complete set of shade.
+     */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
         int one = 0;
@@ -84,40 +86,26 @@ public class ShadeVariety implements ScorePointStrategy {
         WindowCell[][] grid = windowPatternCard.getGrid();
 
         for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
+            for (int j = 0; j < 5; j++) {
                 if (isOne(grid[i][j])) {
                     one += 1;
                 }
-
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
                 if (isTwo(grid[i][j])) {
                     two +=1;
                 }
-
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
                 if (isThree(grid[i][j])) {
                     three +=1;
                 }
-
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
                 if (isFour(grid[i][j])) {
                     four +=1;
                 }
-
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
                 if (isFive(grid[i][j])) {
                     five +=1;
                 }
-
-        for (int i = 0; i < 4; i++)
-            for (int j = 0; j < 5; j++)
                 if (isSix(grid[i][j])) {
                     six +=1;
                 }
+            }
 
         scoreCounter = 5*sixMin(one, two, three, four, five, six);
         return scoreCounter;
