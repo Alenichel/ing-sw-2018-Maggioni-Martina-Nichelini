@@ -12,6 +12,7 @@ import java.util.Observable;
  */
 public class RoomController implements Observer {
 
+    private GameController gameController = new GameController();
 
     /**
      * Launch the game depending on the current room controller state.
