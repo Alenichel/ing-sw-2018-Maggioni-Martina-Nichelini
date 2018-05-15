@@ -1,7 +1,5 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.message.GetMessage;
-import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.ConnectionMessage;
 
@@ -14,56 +12,28 @@ import java.util.Observable;
  */
 public class RoomController implements Observer {
 
-    public final Room room;
-    private RoomControllerState state;
-
-    /**
-     *
-     * @param state The initial state tou want for ypur class
-     * @param room  The Room model class you the controller to be associated
-     */
-    public RoomController(RoomControllerState state, Room room){
-        this.room = room;
-        this.state = state;
-    }
 
     /**
      * Launch the game depending on the current room controller state.
      */
-    private void launchGame(){
-        state.launchGame(this);
+    private void launchGame(Room room){
+        //room.launchGame(this);
     }
 
     /**
      * Connect a player depending on the current room controller state.
      * @param player
      */
-    private void connectPlayer( Player player){
-        state.connectPlayer(this, player);
+    private void connectPlayer(Room room, Player player){
+        room.addPlayer(player);
     }
 
     /**
      * Disconecct a player depending on the current room controller state.
      * @param player
      */
-    private void disconnectPlayer(Player player){
-        state.disconnectPlayer(this, player);
-    }
-
-    /**
-     * Change the state of the room controller.
-     * @param state The new state
-     */
-    public void setState(RoomControllerState state){
-        this.state = state;
-    }
-
-    /**
-     * State getter.
-     * @return the current room controller state.
-     */
-    public RoomControllerState getState(){
-        return this.state;
+    private void disconnectPlayer(Room room, Player player){
+        room.removePlayer(player);
     }
 
     /**
@@ -75,13 +45,9 @@ public class RoomController implements Observer {
         switch(((Message)msg).getMessageType()){
             case "ConnectionMessage":
                 if (((ConnectionMessage)msg).isConnecting())
-                    this.connectPlayer(((ConnectionMessage)msg).getRequester());
-                else this.disconnectPlayer(((ConnectionMessage)msg).getRequester());
+                    this.connectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
+                else this.disconnectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
                 break;
-
-            case "GetMessage":
-                if (((GetMessage)msg).getToGet().equals("ConnectedPlayers"))
-                    ((CliView)observable).RCCallback(new GiveMessage("Players",room.getListOfConnectedPlayers()));
         }
     }
 
