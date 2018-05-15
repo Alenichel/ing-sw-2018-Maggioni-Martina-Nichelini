@@ -6,12 +6,10 @@ import it.polimi.se2018.WindowPatternCard;
 
 public class ColumnVariety implements ScorePointStrategy {
 
-    private String type;
+    private VarietyType type;
 
-    public ColumnVariety(String type){
-        if (type.equals("Color") || type.equals("Shade")){
-            this.type = type;
-        }
+    public ColumnVariety(VarietyType type){
+        this.type = type;
     }
 
     private boolean compareCellsColor(WindowCell a, WindowCell b) {
@@ -19,7 +17,7 @@ public class ColumnVariety implements ScorePointStrategy {
         if (a.equals(b)) return false; //ignore if the method is comparison the same cell
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
         else {
-            if ( type == "Color")
+            if ( type == VarietyType.color)
                 return (a.getAssignedDice().getColor() == b.getAssignedDice().getColor());
             else
                 return (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber());
