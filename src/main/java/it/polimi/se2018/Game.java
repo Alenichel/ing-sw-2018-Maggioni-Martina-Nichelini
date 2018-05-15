@@ -22,35 +22,35 @@ public class Game {
         this.nOfPlayers = this.players.size();
     }
 
-    public void setDiceBag(ArrayList<Dice> diceBag) {
+    public void setDiceBag(List<Dice> diceBag) {
         this.diceBag = diceBag;
     }
-    public void setDiceOnTable(ArrayList<Dice> diceOnTable) {
+    public void setDiceOnTable(List<Dice> diceOnTable) {
         this.diceOnTable = diceOnTable;
     }
-    public void setPatternCards(ArrayList<WindowPatternCard> patternCards) {
+    public void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = patternCards;
     }
-    public void setObjectiveCards(ArrayList<ObjectiveCard> objectiveCards) {
+    public void setObjectiveCards(List<ObjectiveCard> objectiveCards) {
         this.objectiveCards = objectiveCards;
     }
-    public void setToolCards(ArrayList<ToolCard> toolCards) {
+    public void setToolCards(List<ToolCard> toolCards) {
         this.toolCards = toolCards;
     }
 
-    public ArrayList<Dice> getDiceBag() {
+    public List<Dice> getDiceBag() {
         return diceBag;
     }
-    public ArrayList<Dice> getDiceOnTable() {
+    public List<Dice> getDiceOnTable() {
         return diceOnTable;
     }
-    public ArrayList<WindowPatternCard> getPatternCards() {
+    public List<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
-    public ArrayList<ObjectiveCard> getObjectiveCards() {
+    public List<ObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
-    public ArrayList<ToolCard> getToolCards() {
+    public List<ToolCard> getToolCards() {
         return toolCards;
     }
     public List<Player> getPlayers() {
