@@ -1,6 +1,5 @@
 package it.polimi.se2018;
 
-import com.sun.tools.corba.se.idl.constExpr.Not;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.strategy.objective.ColorVariety;
