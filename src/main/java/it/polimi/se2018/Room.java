@@ -162,4 +162,9 @@ public class Room extends java.util.Observable{
         this.clearChanged();
     }
 
+    @Override
+    public String toString(){
+        return this.roomName;
+    }
+
 }
