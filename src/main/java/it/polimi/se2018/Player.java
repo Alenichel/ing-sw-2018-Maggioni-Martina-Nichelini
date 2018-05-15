@@ -12,7 +12,6 @@ public class Player {
     private Boolean inGame;
     private Room lastGameJoined;
     private int playerNumber;
-    private ArrayList<WindowPatternCard> patternCardPool;
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
 
@@ -32,10 +31,6 @@ public class Player {
     }
     public void setPlayerNumber(int number){
         this.playerNumber = number;
-    }
-    public void setPatternCardPool(ArrayList<WindowPatternCard> patternCardPool) {
-        this.patternCardPool = patternCardPool;
-
     }
     public void setLastGameJoined(Room game){
         this.lastGameJoined = game;
@@ -70,9 +65,7 @@ public class Player {
     public Room getLastGameJoined() {
         return this.lastGameJoined;
     }
-    public ArrayList<WindowPatternCard> getPatternCardPool() {
-        return patternCardPool;
-    }
+
 
     @Override
     public String toString(){
@@ -90,7 +83,6 @@ public class Player {
                 Objects.equals(online, player.online) &&
                 Objects.equals(inGame, player.inGame) &&
                 Objects.equals(lastGameJoined, player.lastGameJoined) &&
-                Objects.equals(patternCardPool, player.patternCardPool) &&
                 Objects.equals(activePatternCard, player.activePatternCard) &&
                 Objects.equals(privateObjectiveCard, player.privateObjectiveCard);
     }
@@ -98,6 +90,6 @@ public class Player {
     @Override
     public int hashCode() {
 
-        return Objects.hash(nickname, firstSeen, online, inGame, lastGameJoined, playerNumber, patternCardPool, activePatternCard, privateObjectiveCard);
+        return Objects.hash(nickname, firstSeen, online, inGame, lastGameJoined, playerNumber,  activePatternCard, privateObjectiveCard);
     }
 }
