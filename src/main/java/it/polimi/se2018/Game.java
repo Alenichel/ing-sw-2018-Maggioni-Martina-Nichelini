@@ -11,11 +11,15 @@ public class Game {
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private final List<Player> players;
 
+    private int nOfPlayers;
+
+    private int currentRound = 0;
 
     //private Player activePlayer;
 
     public Game(List<Player> players){
         this.players = players;
+        this.nOfPlayers = this.players.size();
     }
 
     public void setDiceBag(ArrayList<Dice> diceBag) {
