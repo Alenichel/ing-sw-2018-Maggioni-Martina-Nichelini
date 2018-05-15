@@ -1,26 +1,31 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.message.Message;
-import it.polimi.se2018.message.SelectionMessage;
+import it.polimi.se2018.message.*;
 
 import java.io.InvalidClassException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Observer;
-import java.util.Observable;
+import java.util.*;
 
 public class GameController implements Observer{
-    private Game gameReference;
+    private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
-    //manca il metodo che serve le pattern card.
+   private List<WindowPatternCard> getRandomPatternCards (){
+       int selectedIndex = 0;
+       ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
+       Random rand = new Random();
+       for (int i = 0; i < 4; i++){
+           selectedIndex = rand.nextInt(this.initializedPatternCards.size());
+           toReturn.add(this.initializedPatternCards.get(selectedIndex));
+           this.initializedPatternCards.remove(selectedIndex);
+       }
+       return toReturn;
 
-    public GameController(Game gameReference){
-        ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
-        this.gameReference = gameReference;
-        initializedPatternCards = initializedPatternCard();
+   }
+
+    public GameController(){
+        initializedPatternCards = this.initializePatternCard();
     }
 
-    private ArrayList<WindowPatternCard> initializedPatternCard(){
+    private ArrayList<WindowPatternCard> initializePatternCard(){
         ArrayList<String> windowsPatternCardsName = new ArrayList<>();
         ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
@@ -43,12 +48,11 @@ public class GameController implements Observer{
         return initializedPatternCards;
     }
 
-    private void onPatternCardSelection(SelectionMessage message) throws InvalidClassException {
+    private void onPatternCardSelection(Game game, SelectionMessage message) throws InvalidClassException {
         if (message.getChosenItem() instanceof WindowPatternCard ){
-            Player targetPlayer = gameReference.getPlayers().get(message.getPlayerNumber());
-            targetPlayer.setPatternCardPool(null);
+            Player targetPlayer = game.getPlayers().get(message.getPlayerNumber());
             targetPlayer.setActivePatternCard((WindowPatternCard)(message.getChosenItem()));
-            gameReference.addWindowPatternCard((WindowPatternCard) message.getChosenItem());
+            game.addWindowPatternCard((WindowPatternCard) message.getChosenItem());
             //this.gameReference.notifyAll();
         } else {
             throw new InvalidClassException("Received: " + message.getChosenItem() + "but requested WindowPatternCard");
@@ -60,14 +64,14 @@ public class GameController implements Observer{
 
         switch(((Message)msg).getMessageType()){
 
-            case "SelectionMessage":
-                try {
-                    this.onPatternCardSelection((SelectionMessage) msg);
-                } catch (InvalidClassException e){}
+            case "RequestMessage":
+                if (((RequestMessage)msg).getRequest().equalsIgnoreCase("PatternCardPool")){
+                    ((View)observable).requestCallback(new GiveMessage("PatternCardPool", this.getRandomPatternCards()));
+                }
                 break;
 
-            default:
-                throw new RuntimeException();
+
+            default: break;
         }
     }
 }
