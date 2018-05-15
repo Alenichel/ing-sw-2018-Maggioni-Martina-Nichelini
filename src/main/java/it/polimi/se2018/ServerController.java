@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.message.ConnectionMessage;
+import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
 
 import java.util.Observable;
@@ -9,6 +10,8 @@ import java.util.Observer;
 public class ServerController implements Observer{
     private final static ServerController instance = new ServerController(Server.getInstance());
     private Server server;
+
+    private RoomController roomController = new RoomController();
 
     public static ServerController getInstance() {
         return instance;
@@ -28,7 +31,6 @@ public class ServerController implements Observer{
         player.setOnline(false);
     }
 
-
     private void createRoom(String gameName, Player admin) {
         server.addRoom(gameName, admin);
     }
@@ -38,10 +40,25 @@ public class ServerController implements Observer{
     }
 
 
-    public void update (Observable o, Object msg){
+    public void update (Observable observable, Object msg){
         switch(((Message)msg).getMessageType()){
+
             case "ConnectionMessage":
-                this.disconnectPlayer( ((ConnectionMessage)msg).getRequester() );
+                if (((ConnectionMessage)msg).isConnecting()){
+                    if ( ((ConnectionMessage)msg).getTarget() == null  )
+                        this.connectPlayer(((ConnectionMessage)msg).getRequester());
+                }
+                else {
+                    if ( ((ConnectionMessage)msg).getTarget() == null  )
+                        this.disconnectPlayer(((ConnectionMessage)msg).getRequester());
+                }
+                break;
+
+
+
+            case "RequestMessage":
+
+                ((View)observable).requestCallback(new GiveMessage("ActiveRooms", server.getActiveGames()));
                 break;
 
             default:
