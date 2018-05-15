@@ -17,20 +17,20 @@ import java.util.List;
 public class Server {
 
 
-        private int port;
-        private int defaultMatchmakingTimer;
-        private int defaultMoveTimer;
+    private int port;
+    private int defaultMatchmakingTimer;
+    private int defaultMoveTimer;
 
-        private static final String HOME_PATH = System.getProperty("user.home");
-        private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
+    private static final String HOME_PATH = System.getProperty("user.home");
+    private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
-        private ArrayList<Player> onlinePlayers = new ArrayList<>();
-        private ArrayList<Room> activeGames = new ArrayList<>();
+    private ArrayList<Player> onlinePlayers = new ArrayList<>();
+    private ArrayList<Room> activeGames = new ArrayList<>();
 
-        private static Server instance = null;
+    private static Server instance = null;
 
 
-        protected Server(){
+    protected Server(){
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
@@ -110,7 +110,7 @@ public class Server {
      * @param gameName The name to assigne to the room.
      * @param admin The admin player (creator of the room)
      */
-        public void addRoom (String gameName, Player admin){
+    public void addRoom (String gameName, Player admin){
             Room game = new Room(gameName, admin,false);
             getActiveGames().add(game);
         }
@@ -128,7 +128,7 @@ public class Server {
      * Add player to the list of server active players.
      * @param player
      */
-        public void addPlayer (Player player){ getOnlinePlayers().add(player);}
+    public void addPlayer (Player player){ getOnlinePlayers().add(player);}
 
     /**
      * Remove player from the list of server active players.
