@@ -20,6 +20,9 @@ public class WindowCell {
     private ArrayList<WindowCell> neighbourCells = new ArrayList<>();
     private boolean neighbourhoodAssigned = false;
 
+    private ArrayList<WindowCell> diagonalCells = new ArrayList<>();
+    private boolean isDiagonal = false;
+
     /**
      * Constructor for cell without constraints.
      * @param row
@@ -106,6 +109,8 @@ public class WindowCell {
         return neighbourCells;
     }
 
+    public ArrayList<WindowCell> getDiagonalCells() { return diagonalCells; }
+
     /**
      * Assigned dice setter
      * @param assignedDice
@@ -140,6 +145,20 @@ public class WindowCell {
             if (x + 1 < 4) neighbourCells.add(grid[x + 1][y]);
             if (y - 1 >= 0) neighbourCells.add(grid[x][y - 1]);
             if (y + 1 < 5) neighbourCells.add(grid[x][y + 1]);
+        }
+    }
+
+    public void setDiagonals(WindowCell[][] grid) {
+        if (!isDiagonal) {
+            this.isDiagonal = true;
+            int x = this.row;
+            int y = this.column;
+
+            if (grid == null) return;
+            if((x-1 >= 0) && (y-1 >= 0)) diagonalCells.add(grid[x-1][y-1]);
+            if((x+1 < 4) && (y+1 < 0)) diagonalCells.add(grid[x+1][y+1]);
+            if((x-1 >= 0) && (y+1 < 0)) diagonalCells.add(grid[x-1][y+1]);
+            if((x+1 < 4) && (y-1 >= 0)) diagonalCells.add(grid[x+1][y-1]);
         }
     }
 
