@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Server class represents the server with all default params and list of active games and active players.
  */
-public class Server {
+public class Server extends Observable{
 
+    private List<Observer> observers = new ArrayList<>();
 
     private int port;
     private int defaultMatchmakingTimer;
@@ -138,4 +141,21 @@ public class Server {
             getOnlinePlayers().remove(player);
         }
 
+    @Override
+    public void addObserver(Observer o){
+        this.observers.add(o);
+    }
+
+    @Override
+    public void deleteObserver(Observer o){
+        this.observers.remove(o);
+    }
+
+    @Override
+    public void notifyObservers(){
+        if (this.hasChanged()){
+            for (Observer observer :observers) {observer.update(this, null);}
+        }
+        this.clearChanged();
+    }
 }
