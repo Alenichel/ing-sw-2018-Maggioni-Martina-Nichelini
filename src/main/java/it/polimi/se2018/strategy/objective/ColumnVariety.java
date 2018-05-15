@@ -17,7 +17,7 @@ public class ColumnVariety implements ScorePointStrategy {
         if (a.equals(b)) return false; //ignore if the method is comparison the same cell
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
         else {
-            if ( type == VarietyType.color)
+            if ( type == VarietyType.COLOR)
                 return (a.getAssignedDice().getColor() == b.getAssignedDice().getColor());
             else
                 return (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber());
