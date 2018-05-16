@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.message.ConnectionMessage;
+import it.polimi.se2018.message.CreationalMessage;
 import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
 
@@ -11,7 +12,7 @@ public class ServerController implements Observer{
     private final static ServerController instance = new ServerController(Server.getInstance());
     private Server server;
 
-    private RoomController roomController = new RoomController();
+    private RoomController roomController = RoomController.getIstance();
 
     public static ServerController getInstance() {
         return instance;
@@ -31,8 +32,10 @@ public class ServerController implements Observer{
         player.setOnline(false);
     }
 
-    private void createRoom(String gameName, Player admin) {
-        server.addRoom(gameName, admin);
+    private void createRoom(String roomName, Player admin) {
+        Room r = new Room(roomName, admin, false);
+        server.addRoom(r);
+        admin.setRoom(r, true);
     }
 
     private void deleteRoom(Room room) {
@@ -40,24 +43,28 @@ public class ServerController implements Observer{
     }
 
 
-    public void update (Observable observable, Object msg){
-        switch(((Message)msg).getMessageType()){
+    public void update (Observable observable, Object message){
+        switch(((Message)message).getMessageType()){
 
             case "ConnectionMessage":
-                if (((ConnectionMessage)msg).isConnecting()){
-                    if ( ((ConnectionMessage)msg).getTarget() == null  )
-                        this.connectPlayer(((ConnectionMessage)msg).getRequester());
+                if (((ConnectionMessage)message).isConnecting()){
+                    if ( ((ConnectionMessage)message).getTarget() == null  )
+                        this.connectPlayer(((ConnectionMessage)message).getRequester());
                 }
                 else {
-                    if ( ((ConnectionMessage)msg).getTarget() == null  )
-                        this.disconnectPlayer(((ConnectionMessage)msg).getRequester());
+                    if ( ((ConnectionMessage)message).getTarget() == null  )
+                        this.disconnectPlayer(((ConnectionMessage)message).getRequester());
                 }
                 break;
 
-
+            case "CreationalMessage":
+                CreationalMessage msg = ((CreationalMessage)message);
+                if (msg.getWhatToCreate() == "Room") {
+                    this.createRoom( msg.getName(), ((View)observable).getClient()  );
+                }
+                break;
 
             case "RequestMessage":
-
                 ((View)observable).requestCallback(new GiveMessage("ActiveRooms", server.getActiveGames()));
                 break;
 
