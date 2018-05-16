@@ -1,4 +1,5 @@
 package it.polimi.se2018.model;
+import it.polimi.se2018.message.UpdateMessage;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -113,11 +114,11 @@ public class Server extends Observable{
      * @param gameName The name to assigne to the room.
      * @param admin The admin player (creator of the room)
      */
-    public void addRoom (String gameName, Player admin){
-        Room room = new Room(gameName, admin, false );
+    public void addRoom (Room room){
         this.activeGames.add(room);
-        this.notifyObservers();
-        }
+        this.setChanged();
+        this.notifyObservers(new UpdateMessage("Rooms"));
+    }
 
     /**
      * Remove room method.
