@@ -1,9 +1,10 @@
 package it.polimi.se2018.model;
 
-import java.util.Date;
-import java.util.Objects;
+import java.util.*;
 
-public class Player {
+public class Player extends Observable {
+
+    private List<Observer> observers = new ArrayList<>();
 
     private String nickname;
     private Date firstSeen;
@@ -73,10 +74,13 @@ public class Player {
     public Room getRoom() {
         return room;
     }
+
     public void setRoom(Room room, Boolean isConnecting) {
         this.inRoom = isConnecting;
         if (isConnecting) this.room = room;
         else this.room = null;
+        this.setChanged();
+        this.notifyObservers(null);
     }
 
     @Override
