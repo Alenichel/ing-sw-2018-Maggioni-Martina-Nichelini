@@ -10,6 +10,7 @@ public class Player {
     private Date firstSeen;
     private Boolean online;
     private Boolean inRoom;
+    private Room room;
     private Boolean inGame;
     private Room lastGameJoined;
     private int playerNumber;
@@ -29,11 +30,6 @@ public class Player {
     public void setOnline(Boolean status){
         this.online = status;
     }
-
-    public void setInRoom(Boolean inRoom) {
-        this.inRoom = inRoom;
-    }
-
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
     }
@@ -75,7 +71,13 @@ public class Player {
     public Room getLastGameJoined() {
         return this.lastGameJoined;
     }
-
+    public Room getRoom() {
+        return room;
+    }
+    public void setRoom(Room room, Boolean isConnecting) {
+        this.room = room;
+        this.inRoom = isConnecting;
+    }
 
     @Override
     public String toString(){
