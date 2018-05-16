@@ -1,0 +1,41 @@
+<luxMundi>
+    <number>
+      <one>
+         <x>3 1</x> 
+         <y>1 2</y>
+      </one>
+      <two>
+         <x>5</x> 
+         <y>2</y>
+      </two>
+      <three>
+         <x>3</x>
+         <y>2</y>
+      </three>
+      <four>
+         <x>3</x>
+         <y>3</y>
+      </four>
+      <five>
+         <x>2 3</x> 
+         <y>3 4</y>
+      </five>
+      <six>
+         <x>4</x> 
+         <y>3</y>
+      </six>
+    </number>
+    <color>
+      <red></red>
+      <yellow></yellow>
+      <green>
+         <x>2 5 4</x> 
+         <y>2 3 4</y>
+      </green>
+      <blue>
+         <x>4 1 2</x> 
+         <y>2 3 4</y>
+      </blue>
+      <purple></purple>
+    </color>
+</luxMundi>
