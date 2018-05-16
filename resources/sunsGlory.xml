@@ -1,0 +1,41 @@
+<sunsGlory>
+    <number>
+      <one>
+         <x>1 5</x> 
+         <y>1 4</y>
+      </one>
+      <two>
+         <x>4</x> 
+         <y>4</y>
+      </two>
+      <three>
+         <x>5</x>
+         <y>3</y>
+      </three>
+      <four>
+         <x>5 3</x>
+         <y>1 4</y>
+      </four>
+      <five>
+         <x>4 2</x> 
+         <y>3 4</y>
+      </five>
+      <six>
+         <x>5</x> 
+         <y>2</y>
+      </six>
+    </number>
+    <color>
+      <red></red>
+      <yellow>
+         <x>3 2 1</x> 
+         <y>1 2 3</y>
+      </yellow>
+      <green></green>
+      <blue></blue>
+      <purple>
+         <x>2 1</x> 
+         <y>1 2</y>
+      </purple>
+    </color>
+</sunsGlory>
