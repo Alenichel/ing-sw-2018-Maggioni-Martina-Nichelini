@@ -1,0 +1,50 @@
+<Gravitas>
+	<number> 
+		<one>
+			<x>1</x>
+	  		<y>1</y>
+			<x>5</x>
+	  		<y>4</y>
+		</one>
+		<two>
+			<x>2</x>
+	  		<y>2</y>
+			<x>3</x>
+	  		<y>4</y>
+		</two>
+		<three>
+			<x>3</x>
+	  		<y>1</y>
+		</three>
+		<four>
+			<x>4</x>
+	  		<y>3</y>
+		</four>
+		<five>
+			<x>2</x>
+	  		<y>4</y>
+		</five>
+		<six>
+			<x>1</x>
+	  		<y>3</y>
+		</six>
+	</number>
+	<color>
+		<red/>
+		<yellow/>
+		<green/>
+		<blue>
+			<x>4</x>
+	  		<y>1</y>
+			<x>3</x>
+	  		<y>2</y>
+			<x>2</x>
+	  		<y>3</y>
+			<x>1</x>
+	  		<y>4</y>
+		</blue>
+		<purple/>
+	</color>
+</Gravitas>
+
+
