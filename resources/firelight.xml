@@ -1,0 +1,42 @@
+<Firelight>
+    <number>
+      <one>
+        <x>3</x>
+        <y>1</y>
+      </one>
+      <two>
+         <x>3</x> 
+         <y>2</y>
+      </two>
+      <three>
+         <x>1</x>
+         <y>1</y>
+      </three>
+      <four>
+         <x>2</x>
+         <y>1</y>
+      </four>
+      <five>
+         <x>4 1</x> 
+         <y>1 4</y>
+      </five>
+      <six>
+         <x>2 5</x> 
+         <y>2 4</y>
+      </six>
+    </number>
+    <color>
+        <red>
+            <x>5 4</x> 
+            <y>3 4</y>
+	</red>
+        <yellow>
+            <x>5 4 3</x> 
+            <y>2 3 4</y>
+        </yellow>
+        <green></green>
+        <blue></blue>
+        <purple></purple>
+    </color>
+</Firelight>
+
