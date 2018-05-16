@@ -1,4 +1,7 @@
 package it.polimi.se2018;
+import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Game;
+import it.polimi.se2018.model.Player;
 import org.junit.Assert;
 import org.junit.Test;
 

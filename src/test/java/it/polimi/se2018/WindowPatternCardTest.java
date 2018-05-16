@@ -2,6 +2,8 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
+import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.WindowPatternCard;
 import org.junit.Assert;
 import org.junit.Test;
 

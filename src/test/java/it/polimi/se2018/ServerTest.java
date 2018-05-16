@@ -1,17 +1,16 @@
 package it.polimi.se2018;
 
-import static org.junit.Assert.*;
-
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Room;
+import it.polimi.se2018.model.Server;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.ArrayList;
 
 public class ServerTest {
 
     @Test
     public void testGetter() {
-        Server s = new Server();
+        Server s = Server.getInstance();
         String gameName = "game";
         Player p = new Player("admin");
         Room r = new Room("room", p, false);

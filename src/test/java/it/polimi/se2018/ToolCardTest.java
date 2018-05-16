@@ -1,6 +1,9 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.exception.ToolCardException;
+import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Game;
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.strategy.toolcard.GrozingPliers;
 import org.junit.Assert;
 import org.junit.Test;

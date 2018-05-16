@@ -1,5 +1,7 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Room;
 import org.junit.Assert;
 import org.junit.Test;
 
