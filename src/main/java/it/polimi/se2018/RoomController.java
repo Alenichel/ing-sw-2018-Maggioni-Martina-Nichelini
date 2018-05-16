@@ -1,7 +1,9 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.ConnectionMessage;
+import it.polimi.se2018.message.RequestMessage;
 
 import java.util.Observer;
 import java.util.Observable;
@@ -13,7 +15,10 @@ import java.util.Observable;
 public class RoomController implements Observer {
 
     private static RoomController instance = null;
-    private RoomController roomController = new RoomController();
+
+    private RoomController(){
+        ;
+    }
 
     public static RoomController getIstance(){
         if(instance == null){
@@ -21,7 +26,6 @@ public class RoomController implements Observer {
         }
         return instance;
     }
-
 
     /**
      * Launch the game depending on the current room controller state.
@@ -58,6 +62,15 @@ public class RoomController implements Observer {
                     this.connectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
                 else this.disconnectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
                 break;
+
+            case "RequestMessage":
+                RequestMessage rm = (RequestMessage)msg;
+                if (rm.getRequest().equals("ConnectedPlayers")){
+                    ((View)observable).requestCallback(new GiveMessage("Players", ((View)observable).getClient().getRoom().getListOfConnectedPlayers()));
+                }
+                break;
+
+            default: break;
         }
     }
 
