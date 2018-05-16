@@ -6,5 +6,11 @@ import java.util.Observable;
 
 abstract class View extends Observable {
 
+    protected Player client;
+
     abstract void requestCallback(GiveMessage giveMessage);
+
+    public Player getClient() {
+        return client;
+    }
 }
