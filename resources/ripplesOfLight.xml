@@ -1,0 +1,50 @@
+<ripplesOfLight>
+    <number>
+      <one>
+         <x>4</x> 
+         <y>4</y>
+      </one>
+      <two>
+         <x>2</x> 
+         <y>4</y>
+      </two>
+      <three>
+         <x>3</x>
+         <y>3</y>
+      </three>
+      <four>
+         <x>4</x>
+         <y>2</y>
+      </four>
+      <five>
+         <x>5</x> 
+         <y>1</y>
+      </five>
+      <six>
+         <x>5</x> 
+         <y>3</y>
+      </six>
+    </number>
+    <color>
+      <red>
+         <x>4 5</x> 
+         <y>1 4</y>
+      </red>
+      <yellow>
+         <x>4 1</x> 
+         <y>3 4</y>
+      </yellow>
+      <green>
+         <x>3</x> 
+         <y>4</y>
+      </green>
+      <blue>
+         <x>5 2</x> 
+         <y>2 3</y>
+      </blue>
+      <purple>
+         <x>3</x> 
+         <y>2</y>
+      </purple>
+    </color>
+</ripplesOfLight>
