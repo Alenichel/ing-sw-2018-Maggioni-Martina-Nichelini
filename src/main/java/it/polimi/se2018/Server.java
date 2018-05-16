@@ -1,4 +1,5 @@
 package it.polimi.se2018;
+import it.polimi.se2018.message.UpdateMessage;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -113,9 +114,8 @@ public class Server extends Observable{
      * @param gameName The name to assigne to the room.
      * @param admin The admin player (creator of the room)
      */
-    public void addRoom (String gameName, Player admin){
-            Room game = new Room(gameName, admin,false);
-            getActiveGames().add(game);
+    public void addRoom (Room room){
+            this.activeGames.add(room);
         }
 
     /**
@@ -141,21 +141,4 @@ public class Server extends Observable{
             getOnlinePlayers().remove(player);
         }
 
-    @Override
-    public void addObserver(Observer o){
-        this.observers.add(o);
-    }
-
-    @Override
-    public void deleteObserver(Observer o){
-        this.observers.remove(o);
-    }
-
-    @Override
-    public void notifyObservers(){
-        if (this.hasChanged()){
-            for (Observer observer :observers) {observer.update(this, null);}
-        }
-        this.clearChanged();
-    }
 }
