@@ -1,7 +1,6 @@
 package it.polimi.se2018.message;
 
-import it.polimi.se2018.Player;
-import it.polimi.se2018.Room;
+import it.polimi.se2018.model.Player;
 
 /**
  * Message class for connecting/disconneting action

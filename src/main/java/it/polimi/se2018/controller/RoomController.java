@@ -1,9 +1,13 @@
-package it.polimi.se2018;
+package it.polimi.se2018.controller;
 
+import it.polimi.se2018.view.*;
 import it.polimi.se2018.message.GiveMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.message.RequestMessage;
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Room;
+
 
 import java.util.Observer;
 import java.util.Observable;

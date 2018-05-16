@@ -1,5 +1,10 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.controller.GameController;
+import it.polimi.se2018.controller.RoomController;
+import it.polimi.se2018.model.Game;
+import it.polimi.se2018.model.Player;
+
 /**
  * Concrete State for RooController's State Pattern.
  */
@@ -12,8 +17,9 @@ public class RoomWaitingState implements RoomControllerState{
     @Override
     public void launchGame(RoomController context) {
         Game newGame = new Game(context.room.getListOfConnectedPlayers());
+        GameController gc = new GameController(newGame);
         context.room.setGameAssociated(newGame);
-        context.room.setGameControllerAssociated(new GameController(newGame));
+        context.room.setGameControllerAssociated(gc);
         context.setState(new RoomWaitingState());
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.se2018.strategy.toolcard;
 
-import it.polimi.se2018.ToolCardEffectStrategy;
+import it.polimi.se2018.model.ToolCardEffectStrategy;
 
 public class EnglomiseBrush implements ToolCardEffectStrategy {
 

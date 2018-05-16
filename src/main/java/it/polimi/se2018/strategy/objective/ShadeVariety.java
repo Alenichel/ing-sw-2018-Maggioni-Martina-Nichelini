@@ -1,8 +1,8 @@
 package it.polimi.se2018.strategy.objective;
 
-import it.polimi.se2018.ScorePointStrategy;
-import it.polimi.se2018.WindowCell;
-import it.polimi.se2018.WindowPatternCard;
+import it.polimi.se2018.model.ScorePointStrategy;
+import it.polimi.se2018.model.WindowCell;
+import it.polimi.se2018.model.WindowPatternCard;
 
 import static java.lang.Integer.min;
 

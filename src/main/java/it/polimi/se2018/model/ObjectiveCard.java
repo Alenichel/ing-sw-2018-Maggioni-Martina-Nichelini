@@ -1,4 +1,4 @@
-package it.polimi.se2018;
+package it.polimi.se2018.model;
 
 public class ObjectiveCard extends Card{
     private String description;

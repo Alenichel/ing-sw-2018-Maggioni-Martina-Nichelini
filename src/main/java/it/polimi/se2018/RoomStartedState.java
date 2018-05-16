@@ -1,5 +1,8 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.controller.RoomController;
+import it.polimi.se2018.model.Player;
+
 /**
  * Concrete State for RooController's State Pattern.
  */

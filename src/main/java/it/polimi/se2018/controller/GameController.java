@@ -1,6 +1,10 @@
-package it.polimi.se2018;
+package it.polimi.se2018.controller;
 
+import it.polimi.se2018.view.*;
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.model.Game;
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.WindowPatternCard;
 
 import java.io.InvalidClassException;
 import java.util.*;

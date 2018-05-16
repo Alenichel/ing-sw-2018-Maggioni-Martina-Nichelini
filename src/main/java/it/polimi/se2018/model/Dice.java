@@ -1,7 +1,6 @@
-package it.polimi.se2018;
+package it.polimi.se2018.model;
 
 
-import java.awt.*;
 import java.util.Objects;
 import java.util.Random;
 

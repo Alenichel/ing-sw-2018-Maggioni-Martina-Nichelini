@@ -1,5 +1,4 @@
-package it.polimi.se2018;
-import it.polimi.se2018.message.UpdateMessage;
+package it.polimi.se2018.model;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -34,7 +33,7 @@ public class Server extends Observable{
     private static Server instance = null;
 
 
-    protected Server(){
+    private Server(){
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
