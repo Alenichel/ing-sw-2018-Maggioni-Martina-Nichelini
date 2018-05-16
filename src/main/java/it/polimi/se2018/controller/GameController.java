@@ -45,6 +45,18 @@ public class GameController implements Observer{
         windowsPatternCardsName.add("batllo");
         windowsPatternCardsName.add("industria");
         windowsPatternCardsName.add("symhonyOfLight");
+        windowsPatternCardsName.add("chromaticSplendor");
+        windowsPatternCardsName.add("comitas");
+        windowsPatternCardsName.add("firelight");
+        windowsPatternCardsName.add("fractalDrops");
+        windowsPatternCardsName.add("fulgorDelCielo");
+        windowsPatternCardsName.add("gravitas");
+        windowsPatternCardsName.add("luxAstram");
+        windowsPatternCardsName.add("luxMundi");
+        windowsPatternCardsName.add("luzCelestial");
+        windowsPatternCardsName.add("ripplesOfLight");
+        windowsPatternCardsName.add("sunsGlory");
+        windowsPatternCardsName.add("waterOfLife");
 
         for (String str : windowsPatternCardsName){
             initializedPatternCards.add(new WindowPatternCard(str));
