@@ -22,6 +22,10 @@ public class CliView extends View implements Observer {
         this.client = client;
         this.sCObserver = ServerController.getInstance();
         this.rCobserver = RoomController.getInstance();
+
+        sCObserver.update(this, new RequestMessage("SubscribeServer"));
+        sCObserver.update(this, new RequestMessage("SubscribePlayer"));
+
     }
 
     private void handleGetCommands(String command){
@@ -49,7 +53,7 @@ public class CliView extends View implements Observer {
             //toRoom
             case "connection":
                 if (rCobserver != null && !this.client.getInRoom())
-                    rCobserver.update(this, new ConnectionMessage(this.client, true));
+                    sCObserver.update(this, new ConnectionMessage(this.client, true));
                 break;
 
             //fromRoom
@@ -151,7 +155,6 @@ public class CliView extends View implements Observer {
     }
 
     public void update(Observable o, Object msg){
-
         if (o instanceof Server ){
 
             switch(((Message)msg).getMessageType()){
@@ -160,12 +163,18 @@ public class CliView extends View implements Observer {
                         case "Players":
                             this.handlePlayerUpdate(((Server) o).getOnlinePlayers());
                             break;
+                        case "Rooms":
+                            System.out.println("A room has benn changed");
+                            break;
                         default: break;
                     }
 
                     break;
                 default: break;
             }
+        }
+        else if (o instanceof Player ){
+            this.client = (Player)o;
         }
     }
 }
