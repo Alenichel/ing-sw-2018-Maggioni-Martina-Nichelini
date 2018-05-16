@@ -18,13 +18,14 @@ public class ConnectionMessage extends Message{
      * @param isConnecting True if the player is connecting, False if the player is disconneting.
      */
     public ConnectionMessage(Player requester, boolean isConnecting){
-        this.messageType = "HandshakeConnectionMessage";
+        this.messageType = "ConnectionMessage";
         this.requester = requester;
         this.isConnecting = isConnecting;
+        this.target = this.requester.getRoom();
     }
 
     public ConnectionMessage(Player requester, Room target, boolean isConnecting){
-        this.messageType = "HandshakeConnectionMessage";
+        this.messageType = "ConnectionMessage";
         this.requester = requester;
         this.isConnecting = isConnecting;
         this.target = target;
