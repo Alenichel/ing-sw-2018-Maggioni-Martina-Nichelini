@@ -23,19 +23,19 @@ public class Game {
     }
 
     public void setDiceBag(List<Dice> diceBag) {
-        this.diceBag = diceBag;
+        this.diceBag = (ArrayList<Dice>) diceBag;
     }
     public void setDiceOnTable(List<Dice> diceOnTable) {
-        this.diceOnTable = diceOnTable;
+        this.diceOnTable = (ArrayList<Dice>)diceOnTable;
     }
     public void setPatternCards(List<WindowPatternCard> patternCards) {
-        this.patternCards = patternCards;
+        this.patternCards = (ArrayList<WindowPatternCard>) patternCards;
     }
     public void setObjectiveCards(List<ObjectiveCard> objectiveCards) {
-        this.objectiveCards = objectiveCards;
+        this.objectiveCards = (ArrayList<ObjectiveCard>) objectiveCards;
     }
     public void setToolCards(List<ToolCard> toolCards) {
-        this.toolCards = toolCards;
+        this.toolCards = (ArrayList<ToolCard>) toolCards;
     }
 
     public List<Dice> getDiceBag() {
