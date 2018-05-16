@@ -1,0 +1,41 @@
+<fractalDrops>
+    <number>
+      <one>
+         <x>5</x> 
+         <y>3</y>
+      </one>
+      <two>
+         <x>3</x> 
+         <y>2</y>
+      </two>
+      <three></three>
+      <four>
+         <x>2</x>
+         <y>1</y>
+      </four>
+      <five></five>
+      <six>
+         <x>5</x> 
+         <y>1</y>
+      </six>
+    </number>
+    <color>
+      <red>
+         <x>1 3</x> 
+         <y>2 3</y>
+      </red>
+      <yellow>
+         <x>4 2</x> 
+         <y>1 4</y>
+      </yellow>
+      <green></green>
+      <blue>
+         <x>1</x> 
+         <y>4</y>
+      </blue>
+      <purple>
+         <x>4</x> 
+         <y>3</y>
+      </purple>
+    </color>
+</fractalDrops>
