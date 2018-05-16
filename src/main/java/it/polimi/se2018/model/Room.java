@@ -48,7 +48,6 @@ public class Room extends java.util.Observable{
 
         listOfConnectedPlayer.add(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer + 1;
-        this.notifyObservers();
     }
 
     /**
@@ -59,7 +58,6 @@ public class Room extends java.util.Observable{
     public void removePlayer(Player player){
         listOfConnectedPlayer.remove(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer - 1;
-        this.notifyObservers(new UpdateMessage("Players"));
     }
 
     /**
