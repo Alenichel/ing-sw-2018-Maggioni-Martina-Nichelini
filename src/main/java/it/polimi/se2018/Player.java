@@ -9,6 +9,7 @@ public class Player {
     private String nickname;
     private Date firstSeen;
     private Boolean online;
+    private Boolean inRoom;
     private Boolean inGame;
     private Room lastGameJoined;
     private int playerNumber;
@@ -17,6 +18,8 @@ public class Player {
 
     public Player(String nickname) {
         this.nickname = nickname;
+        this.inRoom = false;
+        this.inGame = false;
     }
 
 
@@ -26,6 +29,11 @@ public class Player {
     public void setOnline(Boolean status){
         this.online = status;
     }
+
+    public void setInRoom(Boolean inRoom) {
+        this.inRoom = inRoom;
+    }
+
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
     }
@@ -43,7 +51,9 @@ public class Player {
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
     }
-
+    public Boolean getInRoom() {
+        return this.inRoom;
+    }
     public Boolean getInGame() {
         return inGame;
     }
