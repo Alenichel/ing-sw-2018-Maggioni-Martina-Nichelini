@@ -1,10 +1,7 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.message.*;
 import it.polimi.se2018.view.*;
-import it.polimi.se2018.message.ConnectionMessage;
-import it.polimi.se2018.message.CreationalMessage;
-import it.polimi.se2018.message.GiveMessage;
-import it.polimi.se2018.message.Message;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
@@ -15,6 +12,14 @@ import java.util.Observer;
 public class ServerController implements Observer{
     private final static ServerController instance = new ServerController(Server.getInstance());
     private Server server;
+
+    private Player getPlayerFromNick(String nickname){
+        for (Player p : server.getOnlinePlayers()){
+            if (p.getNickname().equals(nickname))
+                return p;
+        }
+        return null;
+    }
 
     private RoomController roomController = RoomController.getInstance();
 
@@ -37,9 +42,10 @@ public class ServerController implements Observer{
     }
 
     private void createRoom(String roomName, String adminName) {
-        Room r = new Room(roomName, admin, false);
-        server.addRoom(r);
-        admin.setRoom(r, true);
+        Player admin = this.getPlayerFromNick(adminName);
+        Room room = new Room(roomName,admin, false);
+        server.addRoom(room);
+        admin.setRoom(room, true);
     }
 
     private void deleteRoom(Room room) {
@@ -48,6 +54,8 @@ public class ServerController implements Observer{
 
 
     public void update (Observable observable, Object message){
+
+        System.out.println(((Message)message).getMessageType());
         switch(((Message)message).getMessageType()){
 
             case "ConnectionMessage":
@@ -62,14 +70,27 @@ public class ServerController implements Observer{
                 break;
 
             case "CreationalMessage":
-                CreationalMessage msg = ((CreationalMessage)message);
-                if (msg.getWhatToCreate() == "Room") {
-                    this.createRoom( msg.getName(), ((View)observable).getClient()  );
+                CreationalMessage cMsg = ((CreationalMessage)message);
+                if (cMsg.getWhatToCreate() == "Room") {
+                    this.createRoom( cMsg.getName(), ((View)observable).getClient().getNickname()  );
                 }
                 break;
 
             case "RequestMessage":
-                ((View)observable).requestCallback(new GiveMessage("ActiveRooms", server.getActiveGames()));
+                RequestMessage rMsg = ((RequestMessage)message);
+
+                if (rMsg.getRequest().equals("SubscribePlayer")) {
+                    this.getPlayerFromNick(((View) observable).getClient().getNickname()).addObserver((Observer) observable);
+                    System.out.println("iscrittoAlPlayer");
+                }
+
+                if (rMsg.getRequest().equals("SubscribeServer")) {
+                    server.addObserver((Observer)observable);
+                    System.out.println("iscrittoAlServer");
+                }
+
+                else if (rMsg.getRequest().equals("ActiveRooms"))
+                    ((View)observable).requestCallback(new GiveMessage("ActiveRooms", server.getActiveGames()));
                 break;
 
             default:
