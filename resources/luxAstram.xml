@@ -1,0 +1,41 @@
+<LuxAstram>
+    <number>
+      <one>
+        <x>2 1</x>
+        <y>1 3</y>
+      </one>
+      <two>
+         <x>3</x> 
+         <y>2</y>
+      </two>
+      <three>
+         <x>4</x>
+         <y>3</y>
+      </three>
+      <four>
+         <x>5</x>
+         <y>1</y>
+      </four>
+      <five>
+         <x>4 3</x> 
+         <y>2 3</y>
+      </five>
+      <six>
+         <x>1</x> 
+         <y>2</y>
+      </six>
+    </number>
+    <color>
+      <red></red>
+      <yellow></yellow>
+      <green>
+         <x>3 5 2</x> 
+         <y>1 2 3</y>
+      </green>
+      <blue></blue>
+      <purple>
+         <x>4 2 5</x> 
+         <y>1 2 3</y>
+      </purple>
+    </color>
+</LuxAstram>
