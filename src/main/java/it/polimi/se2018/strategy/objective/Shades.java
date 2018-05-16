@@ -41,7 +41,7 @@ public class Shades implements ScorePointStrategy {
     }
 
     /**
-     * isFirst checks if the dice in the window cell has the shade we are searching for on it
+     * isFirst checks if the dice in the window cell has the SHADE we are searching for on it
      * @param a window cell under consideration
      * @return true if the condition in respected
      */
@@ -55,7 +55,7 @@ public class Shades implements ScorePointStrategy {
     }
 
     /**
-     * isSecond checks if the dice in the window cell has the shade we are searching for on it
+     * isSecond checks if the dice in the window cell has the SHADE we are searching for on it
      * @param a window cell under consideration
      * @return true if the condition in respected
      */

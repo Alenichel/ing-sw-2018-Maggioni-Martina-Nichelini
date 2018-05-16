@@ -32,7 +32,7 @@ public class ObjectivesTest {
         wpc.insertDice(d3, 2,4,false,false);
         wpc.insertDice(d4, 3,4,false,false);
 
-        ScorePointStrategy sps = new ColumnVariety("Color");
+        ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);
         Assert.assertEquals(10, sps.scorePoint(wpc));
     }
 
@@ -64,7 +64,7 @@ public class ObjectivesTest {
         wpc.insertDice(d4, 2,3,false,false);
         wpc.insertDice(d5, 2,4,false,false);
 
-        ScorePointStrategy sps = new RowVariety("Color");
+        ScorePointStrategy sps = new RowVariety(VarietyType.COLOR);
         Assert.assertEquals(12, sps.scorePoint(wpc));
 
     }
@@ -160,7 +160,7 @@ public class ObjectivesTest {
     @Test
     public void testEmptyGrid(){
         WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
-        ScorePointStrategy sps = new ColumnVariety("Color");
+        ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);
         ScorePointStrategy sps2 = new ColorVariety();
         Assert.assertEquals(0, sps.scorePoint(wpc));
         Assert.assertEquals(0, sps2.scorePoint(wpc));

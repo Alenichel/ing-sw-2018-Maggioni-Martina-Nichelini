@@ -15,7 +15,7 @@ public class DiceTest {
         d.setLocation(location);
         d.setNumber(n);
 
-        //Assert.assertEquals(color, d.getColor());
+        //Assert.assertEquals(COLOR, d.getColor());
         Assert.assertEquals(location, d.getLocation());
         Assert.assertEquals(n, d.getNumber());
     }

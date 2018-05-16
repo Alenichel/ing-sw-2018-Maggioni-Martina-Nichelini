@@ -52,8 +52,6 @@ public class PlayerTest {
         player.setActivePatternCard(windowPatternCard);
         Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
 
-        player.setPatternCardPool(windowPatternCards);
-        Assert.assertEquals(windowPatternCards, player.getPatternCardPool());
 
     }
 

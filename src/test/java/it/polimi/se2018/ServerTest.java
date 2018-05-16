@@ -31,7 +31,8 @@ public class ServerTest {
         s.removePlayer(p);
         Assert.assertTrue(!s.getOnlinePlayers().contains(p));
 
-        s.addRoom(gameName, p);
+        Room room = new Room(gameName, p, false);
+        s.addRoom(room);
         Assert.assertEquals(true, s.getActiveGames().contains(r));
 
         /*removeRoom(gameName, p);

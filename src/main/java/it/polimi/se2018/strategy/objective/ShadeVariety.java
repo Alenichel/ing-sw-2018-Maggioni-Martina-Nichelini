@@ -72,7 +72,7 @@ public class ShadeVariety implements ScorePointStrategy {
     /**
      * This methods calculates score depending on the number of set of each value anywhere.
      * @param windowPatternCard
-     * @return A score calculated multiplying 5 * each complete set of shade.
+     * @return A score calculated multiplying 5 * each complete set of SHADE.
      */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {

@@ -18,4 +18,5 @@ public class GiveMessage extends Message {
     public String getGiving() {
         return giving;
     }
+
 }
