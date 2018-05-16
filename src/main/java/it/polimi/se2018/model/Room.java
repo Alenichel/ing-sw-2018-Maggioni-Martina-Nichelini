@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 import it.polimi.se2018.controller.GameController;
+import it.polimi.se2018.message.UpdateMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class Room extends java.util.Observable{
     public void removePlayer(Player player){
         listOfConnectedPlayer.remove(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer - 1;
-        this.notifyObservers();
+        this.notifyObservers(new UpdateMessage("Players"));
     }
 
     /**
@@ -144,24 +145,6 @@ public class Room extends java.util.Observable{
      */
     public String getRoomName(){
         return this.roomName;
-    }
-
-    @Override
-    public void addObserver(Observer o){
-        this.observers.add(o);
-    }
-
-    @Override
-    public void deleteObserver(Observer o){
-        this.observers.remove(o);
-    }
-
-    @Override
-    public void notifyObservers(){
-        if (this.hasChanged()){
-            for (Observer observer :observers) {observer.update(this, null);}
-        }
-        this.clearChanged();
     }
 
     @Override

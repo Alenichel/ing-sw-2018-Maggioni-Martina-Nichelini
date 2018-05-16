@@ -24,7 +24,7 @@ public class RoomController implements Observer {
         ;
     }
 
-    public static RoomController getIstance(){
+    public static RoomController getInstance(){
         if(instance == null){
             instance = new RoomController();
         }
@@ -44,6 +44,7 @@ public class RoomController implements Observer {
      */
     private void connectPlayer(Room room, Player player){
         room.addPlayer(player);
+        player.setRoom(room,true);
     }
 
     /**
@@ -52,6 +53,7 @@ public class RoomController implements Observer {
      */
     private void disconnectPlayer(Room room, Player player){
         room.removePlayer(player);
+        player.setRoom(room,false);
     }
 
     /**

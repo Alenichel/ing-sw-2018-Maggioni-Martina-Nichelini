@@ -74,8 +74,9 @@ public class Player {
         return room;
     }
     public void setRoom(Room room, Boolean isConnecting) {
-        this.room = room;
         this.inRoom = isConnecting;
+        if (isConnecting) this.room = room;
+        else this.room = null;
     }
 
     @Override

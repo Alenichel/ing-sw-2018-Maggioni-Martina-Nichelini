@@ -21,21 +21,62 @@ public class CliView extends View implements Observer {
     public CliView(Player client){
         this.client = client;
         this.sCObserver = ServerController.getInstance();
-        this.rCobserver = RoomController.getIstance();
+        this.rCobserver = RoomController.getInstance();
+    }
+
+    private void handleGetCommands(String command){
+
+        switch(command){
+
+            case "connectedplayers":
+                if (this.client.getInRoom())
+                    rCobserver.update(this, new RequestMessage("ConnectedPlayers"));
+                else System.out.println("[*] ERROR: you are not connected to a room");
+                break;
+
+            case "activerooms":
+                sCObserver.update(this, new RequestMessage("ActiveRooms"));
+                break;
+
+            default: break;
+        }
+    }
+
+    private void handleRequestCommands(String command){
+
+        switch(command){
+
+            //toRoom
+            case "connection":
+                if (rCobserver != null && !this.client.getInRoom())
+                    rCobserver.update(this, new ConnectionMessage(this.client, true));
+                break;
+
+            //fromRoom
+            case "disconnection":
+                if (rCobserver != null && this.client.getInRoom())
+                    rCobserver.update(this, new ConnectionMessage(this.client, false));
+                break;
+
+            default: break;
+        }
     }
 
     public void run() {
+        System.out.println("[*] NOTIFICATION: Cli started..");
         Scanner sinput = new Scanner(System.in);
 
         loop: while (true) {
             String input = sinput.nextLine();
+            String[] tokens = input.toLowerCase().split(" ");
 
+            switch (tokens[0]) {
 
-            switch (input.toLowerCase()) {
-                //d inglobare in quello sotto
-                case "requestconnection":
-                    if (rCobserver != null)
-                        rCobserver.update(this, new ConnectionMessage(this.client, true));
+                case "request":
+                    try {
+                        this.handleRequestCommands(tokens[1]);
+                    } catch (IndexOutOfBoundsException e){
+                    }
                     break;
 
                 case "connecttoroom":
@@ -60,14 +101,12 @@ public class CliView extends View implements Observer {
                     }
                     break;
 
-                case "getconnectedplayers":
-                    if (this.client.getInRoom())
-                        rCobserver.update(this, new RequestMessage("ConnectedPlayers"));
-                    else System.out.println("[*] ERROR: you are not connected to a room");
-                    break;
-
-                case "getactiverooms":
-                    sCObserver.update(this, new RequestMessage("ActiveRooms"));
+                case "get":
+                    try {
+                        this.handleGetCommands(tokens[1]);
+                    } catch (IndexOutOfBoundsException e){
+                        System.out.println("[*] ERROR: not valid command found");
+                    }
                     break;
 
                 case "createroom":

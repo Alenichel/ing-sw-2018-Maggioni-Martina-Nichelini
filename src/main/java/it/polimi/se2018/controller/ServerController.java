@@ -16,7 +16,7 @@ public class ServerController implements Observer{
     private final static ServerController instance = new ServerController(Server.getInstance());
     private Server server;
 
-    private RoomController roomController = RoomController.getIstance();
+    private RoomController roomController = RoomController.getInstance();
 
     public static ServerController getInstance() {
         return instance;
@@ -36,7 +36,7 @@ public class ServerController implements Observer{
         player.setOnline(false);
     }
 
-    private void createRoom(String roomName, Player admin) {
+    private void createRoom(String roomName, String adminName) {
         Room r = new Room(roomName, admin, false);
         server.addRoom(r);
         admin.setRoom(r, true);

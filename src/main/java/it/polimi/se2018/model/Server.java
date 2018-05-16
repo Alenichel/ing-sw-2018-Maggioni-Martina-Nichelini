@@ -113,8 +113,10 @@ public class Server extends Observable{
      * @param gameName The name to assigne to the room.
      * @param admin The admin player (creator of the room)
      */
-    public void addRoom (Room room){
-            this.activeGames.add(room);
+    public void addRoom (String gameName, Player admin){
+        Room room = new Room(gameName, admin, false );
+        this.activeGames.add(room);
+        this.notifyObservers();
         }
 
     /**
