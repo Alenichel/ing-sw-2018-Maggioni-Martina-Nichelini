@@ -1,8 +1,9 @@
 package it.polimi.se2018.model;
 
+import java.io.Serializable;
 import java.util.*;
 
-public class Player extends Observable {
+public class Player extends Observable implements Serializable{
 
     private List<Observer> observers = new ArrayList<>();
 
