@@ -72,7 +72,7 @@ public class RoomController implements Observer {
             case "RequestMessage":
                 RequestMessage rMsg = (RequestMessage)msg;
                 if (rMsg.getRequest().equals("ConnectedPlayers")){
-                    ((View)observable).requestCallback(new GiveMessage("Players", ((View)observable).getClient().getRoom().getListOfConnectedPlayers()));
+                    ((View)observable).controllerCallback(new GiveMessage("Players", ((View)observable).getClient().getRoom().getListOfConnectedPlayers()));
                 }
 
 

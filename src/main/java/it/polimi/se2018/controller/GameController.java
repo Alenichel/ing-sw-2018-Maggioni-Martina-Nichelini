@@ -82,7 +82,7 @@ public class GameController implements Observer{
 
             case "RequestMessage":
                 if (((RequestMessage)msg).getRequest().equalsIgnoreCase("PatternCardPool")){
-                    ((View)observable).requestCallback(new GiveMessage("PatternCardPool", this.getRandomPatternCards()));
+                    ((View)observable).controllerCallback(new GiveMessage("PatternCardPool", this.getRandomPatternCards()));
                 }
                 break;
 
