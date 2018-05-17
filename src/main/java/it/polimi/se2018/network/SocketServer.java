@@ -1,5 +1,4 @@
 package it.polimi.se2018.network;
-import it.polimi.se2018.network.VirtualClient;
 
 import java.io.IOException;
 import java.net.ServerSocket;
