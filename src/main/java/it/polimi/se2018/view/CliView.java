@@ -11,20 +11,10 @@ import java.util.*;
 
 public class CliView extends View implements Observer {
 
-    private Observer sCObserver;
-    private Observer rCObserver;
-    private Observer gCObserver;
-
-    Object lastObjectReceveid;
+    private Object lastObjectReceveid;
 
     public CliView(Player client){
         this.client = client;
-        this.sCObserver = ServerController.getInstance();
-        this.rCObserver = RoomController.getInstance();
-
-        sCObserver.update(this, new RequestMessage("SubscribeServer"));
-        sCObserver.update(this, new RequestMessage("SubscribePlayer"));
-
     }
 
     private void handleGetCommands(String command){
@@ -32,13 +22,17 @@ public class CliView extends View implements Observer {
         switch(command){
 
             case "connectedplayers":
-                if (this.client.getInRoom())
-                    rCObserver.update(this, new RequestMessage("ConnectedPlayers"));
+                if (this.client.getInRoom()){
+                    this.setChanged();
+                    this.notifyObservers(new RequestMessage("ConnectedPlayers"));
+                }
                 else System.out.println("[*] ERROR: you are not connected to a room");
                 break;
 
             case "activerooms":
-                sCObserver.update(this, new RequestMessage("ActiveRooms"));
+                System.out.println("sto per notificare a questi observers: " + this.countObservers());
+                this.setChanged();
+                this.notifyObservers(new RequestMessage("ActiveRooms"));
                 break;
 
             default: break;
@@ -51,19 +45,36 @@ public class CliView extends View implements Observer {
 
             //toRoom
             case "connection":
-                if (rCObserver != null && !this.client.getInRoom())
-                    sCObserver.update(this, new ConnectionMessage(this.client, true));
+                if (!this.client.getInRoom()) {
+                    this.setChanged();
+                    this.notifyObservers(new ConnectionMessage(this.client, true));
+                }
                 break;
 
             //fromRoom
             case "disconnection":
-                if (rCObserver != null && this.client.getInRoom())
-                    rCObserver.update(this, new ConnectionMessage(this.client, false));
+                if (this.client.getInRoom()) {
+                    this.setChanged();
+                    this.notifyObservers(new ConnectionMessage(this.client, false));
+                }
                 break;
 
             default: break;
         }
     }
+
+
+
+    private void requestCallback(GiveMessage callbackMessage){
+        this.lastObjectReceveid = callbackMessage.getGivenObject();
+        System.out.println(this.lastObjectReceveid);
+    }
+
+    public void controllerCallback(Message callbackMessage){
+        this.requestCallback((GiveMessage)callbackMessage);
+    }
+
+
 
     public void run() {
         System.out.println("[*] NOTIFICATION: Cli started..");
@@ -92,7 +103,8 @@ public class CliView extends View implements Observer {
                             try {
                                 index = Integer.parseInt(input);
                                 ConnectionMessage msg = new ConnectionMessage(client, ((ArrayList<Room>) this.lastObjectReceveid).get(index - 1), true);
-                                sCObserver.update(this, msg);
+                                this.hasChanged();
+                                this.notifyObservers(msg);
                             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                                 System.out.println("[*] ERROR: Not Valid Index");
                                 continue;
@@ -118,9 +130,10 @@ public class CliView extends View implements Observer {
                         while (true) {
                             input = sinput.nextLine();
                             if (input.equalsIgnoreCase("abort")) break;
-                            sCObserver.update(this, new CreationalMessage("Room", input));
-                            sCObserver.update(this, new RequestMessage("UnsubscribeServer"));
-                            rCObserver.update(this, new RequestMessage("SubscribeServer"));
+                            this.hasChanged();
+                            this.notifyObservers(new CreationalMessage("Room", input));
+                            //sCObserver.update(this, new RequestMessage("UnsubscribeServer"));
+                            //rCObserver.update(this, new RequestMessage("SubscribeServer"));
                             break;
                         }
                     } else {
@@ -129,8 +142,8 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "quit":
-                    if (rCObserver == null && gCObserver == null)
-                        sCObserver.update(this, new ConnectionMessage(client, false));
+                    this.hasChanged();
+                    this.notifyObservers(new ConnectionMessage(client, false));
                     System.out.println("[*] Goodbye");
                     break loop;
 
@@ -139,11 +152,6 @@ public class CliView extends View implements Observer {
                     break;
             } //end while
         }
-    }
-
-    public void requestCallback(GiveMessage callbackMessage){
-        this.lastObjectReceveid = callbackMessage.getGivenObject();
-        System.out.println(this.lastObjectReceveid);
     }
 
     public void update(Observable o, Object msg){
