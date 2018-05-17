@@ -38,11 +38,13 @@ public class SocketClient extends Thread implements Observer {
         } catch (IOException e) {
             System.out.println(e + "/n" + "[*] Error, exiting..");
         }
+        Listener listener = new Listener();
+        listener.start();
 
     }
 
 
-    private class Listener{
+    private class Listener extends Thread{
 
         public void run(){
             Object in = null;
@@ -66,6 +68,7 @@ public class SocketClient extends Thread implements Observer {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
             this.oos.writeObject(suc);
+            this.oos.flush();
         } catch (IOException e) {
             System.out.println(e);
         }
