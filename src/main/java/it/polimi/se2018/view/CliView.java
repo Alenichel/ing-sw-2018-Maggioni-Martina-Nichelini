@@ -6,14 +6,13 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
-import it.polimi.se2018.view.View;
 
 import java.util.*;
 
 public class CliView extends View implements Observer {
 
     private Observer sCObserver;
-    private Observer rCobserver;
+    private Observer rCObserver;
     private Observer gCObserver;
 
     Object lastObjectReceveid;
@@ -21,7 +20,7 @@ public class CliView extends View implements Observer {
     public CliView(Player client){
         this.client = client;
         this.sCObserver = ServerController.getInstance();
-        this.rCobserver = RoomController.getInstance();
+        this.rCObserver = RoomController.getInstance();
 
         sCObserver.update(this, new RequestMessage("SubscribeServer"));
         sCObserver.update(this, new RequestMessage("SubscribePlayer"));
@@ -34,7 +33,7 @@ public class CliView extends View implements Observer {
 
             case "connectedplayers":
                 if (this.client.getInRoom())
-                    rCobserver.update(this, new RequestMessage("ConnectedPlayers"));
+                    rCObserver.update(this, new RequestMessage("ConnectedPlayers"));
                 else System.out.println("[*] ERROR: you are not connected to a room");
                 break;
 
@@ -52,14 +51,14 @@ public class CliView extends View implements Observer {
 
             //toRoom
             case "connection":
-                if (rCobserver != null && !this.client.getInRoom())
+                if (rCObserver != null && !this.client.getInRoom())
                     sCObserver.update(this, new ConnectionMessage(this.client, true));
                 break;
 
             //fromRoom
             case "disconnection":
-                if (rCobserver != null && this.client.getInRoom())
-                    rCobserver.update(this, new ConnectionMessage(this.client, false));
+                if (rCObserver != null && this.client.getInRoom())
+                    rCObserver.update(this, new ConnectionMessage(this.client, false));
                 break;
 
             default: break;
@@ -120,6 +119,8 @@ public class CliView extends View implements Observer {
                             input = sinput.nextLine();
                             if (input.equalsIgnoreCase("abort")) break;
                             sCObserver.update(this, new CreationalMessage("Room", input));
+                            sCObserver.update(this, new RequestMessage("UnsubscribeServer"));
+                            rCObserver.update(this, new RequestMessage("SubscribeServer"));
                             break;
                         }
                     } else {
@@ -128,7 +129,7 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "quit":
-                    if (rCobserver == null && gCObserver == null)
+                    if (rCObserver == null && gCObserver == null)
                         sCObserver.update(this, new ConnectionMessage(client, false));
                     System.out.println("[*] Goodbye");
                     break loop;
@@ -145,30 +146,12 @@ public class CliView extends View implements Observer {
         System.out.println(this.lastObjectReceveid);
     }
 
-    private void handlePlayerUpdate(List<Player> players){
-        for (Player p : players){
-            if (p.getNickname().equals(client.getNickname())){
-                this.client = p;
-                break;
-            }
-        }
-    }
-
     public void update(Observable o, Object msg){
         if (o instanceof Server ){
 
             switch(((Message)msg).getMessageType()){
                 case "UpdateMessage":
-                    switch(((UpdateMessage)msg).getWhatToUpdate()){
-                        case "Players":
-                            this.handlePlayerUpdate(((Server) o).getOnlinePlayers());
-                            break;
-                        case "Rooms":
-                            System.out.println("A room has benn changed");
-                            break;
-                        default: break;
-                    }
-
+                    System.out.println(((Message)msg).getStringMessage() );
                     break;
                 default: break;
             }

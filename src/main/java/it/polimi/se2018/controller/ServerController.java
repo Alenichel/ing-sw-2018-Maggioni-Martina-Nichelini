@@ -84,9 +84,14 @@ public class ServerController implements Observer{
                     System.out.println("iscrittoAlPlayer");
                 }
 
-                if (rMsg.getRequest().equals("SubscribeServer")) {
+                else if (rMsg.getRequest().equals("SubscribeServer")) {
                     server.addObserver((Observer)observable);
                     System.out.println("iscrittoAlServer");
+                }
+
+                else if (rMsg.getRequest().equals("UnsubscribeServer")) {
+                    server.deleteObserver((Observer)observable);
+                    System.out.println("disiscrittoAlServer");
                 }
 
                 else if (rMsg.getRequest().equals("ActiveRooms"))

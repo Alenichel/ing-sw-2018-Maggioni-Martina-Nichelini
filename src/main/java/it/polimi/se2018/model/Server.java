@@ -117,7 +117,9 @@ public class Server extends Observable{
     public void addRoom (Room room){
         this.activeGames.add(room);
         this.setChanged();
-        this.notifyObservers(new UpdateMessage("Rooms"));
+        UpdateMessage um = new UpdateMessage("Rooms");
+        um.setStringMessage("[*] NOTIFICATION: A room has been changed");
+        this.notifyObservers(um);
     }
 
     /**

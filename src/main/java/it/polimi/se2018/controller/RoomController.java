@@ -70,15 +70,16 @@ public class RoomController implements Observer {
                 break;
 
             case "RequestMessage":
-                RequestMessage rm = (RequestMessage)msg;
-                if (rm.getRequest().equals("ConnectedPlayers")){
+                RequestMessage rMsg = (RequestMessage)msg;
+                if (rMsg.getRequest().equals("ConnectedPlayers")){
                     ((View)observable).requestCallback(new GiveMessage("Players", ((View)observable).getClient().getRoom().getListOfConnectedPlayers()));
                 }
-                break;
+
 
             default: break;
         }
     }
+
 
 
 }
