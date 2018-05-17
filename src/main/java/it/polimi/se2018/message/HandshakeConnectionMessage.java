@@ -21,4 +21,8 @@ public class HandshakeConnectionMessage extends Message {
     public String getUsername(){
         return this.username;
     }
+
+    public byte[] getEncodedPassword() {
+        return encodedPassword;
+    }
 }
