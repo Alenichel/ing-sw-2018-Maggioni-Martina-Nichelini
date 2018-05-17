@@ -1,4 +1,6 @@
-package it.polimi.se2018;
+package it.polimi.se2018.network;
+import it.polimi.se2018.network.VirtualClient;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,9 +16,10 @@ public class SocketServer extends Thread {
             System.out.println("Listening");
             while (true) {
                 Socket socket = this.ssocket.accept();
-                //SocketThread socketThread;
-                //socketThread = new SocketThread(socket);
-                //socketThread.start();
+                System.out.println("[*] NOTIFICATION: new client connected");
+                VirtualClient virtualClientThread;
+                virtualClientThread = new VirtualClient(socket);
+                virtualClientThread.start();
             }
         } catch (IOException e){
             assert false;
