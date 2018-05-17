@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.message.UpdateMessage;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
@@ -9,7 +10,7 @@ import java.util.Observer;
 /**
  * Room class is the class that represents the canonical room where online game are setupped up.
  */
-public class Room extends java.util.Observable{
+public class Room extends java.util.Observable implements Serializable{
 
     private List<Observer> observers = new ArrayList<>();
 

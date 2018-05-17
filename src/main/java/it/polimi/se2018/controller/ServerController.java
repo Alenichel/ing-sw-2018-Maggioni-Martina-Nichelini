@@ -71,7 +71,7 @@ public class ServerController implements Observer{
 
             case "CreationalMessage":
                 CreationalMessage cMsg = ((CreationalMessage)message);
-                if (cMsg.getWhatToCreate() == "Room") {
+                if (cMsg.getWhatToCreate().equals("Room")) {
                     this.createRoom( cMsg.getName(), ((View)observable).getClient().getNickname()  );
                 }
                 break;

@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.Message;
+import it.polimi.se2018.model.Player;
 import it.polimi.se2018.network.VirtualClient;
 
 import java.util.Observable;
@@ -11,8 +12,9 @@ public class VirtualView extends View implements Observer {
 
     private VirtualClient virtualClient;
 
-    public VirtualView (VirtualClient virtualClient){
+    public VirtualView (VirtualClient virtualClient, Player player){
         this.virtualClient = virtualClient;
+        this.client = player;
         this.addObserver(ServerController.getInstance());
     }
 

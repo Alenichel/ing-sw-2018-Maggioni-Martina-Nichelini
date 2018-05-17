@@ -66,6 +66,7 @@ public class SocketClient extends Thread implements Observer {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
             this.oos.writeObject(suc);
+            this.oos.flush();
         } catch (IOException e) {
             System.out.println(e);
         }

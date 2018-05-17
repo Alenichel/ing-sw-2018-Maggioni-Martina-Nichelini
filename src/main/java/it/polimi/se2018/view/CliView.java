@@ -15,6 +15,8 @@ public class CliView extends View implements Observer {
 
     public CliView(Player client){
         this.client = client;
+        this.setChanged();
+        this.notifyObservers(new UpdateMessage("ca"));
     }
 
     private void handleGetCommands(String command){
@@ -103,7 +105,7 @@ public class CliView extends View implements Observer {
                             try {
                                 index = Integer.parseInt(input);
                                 ConnectionMessage msg = new ConnectionMessage(client, ((ArrayList<Room>) this.lastObjectReceveid).get(index - 1), true);
-                                this.hasChanged();
+                                this.setChanged();
                                 this.notifyObservers(msg);
                             } catch (NumberFormatException | IndexOutOfBoundsException e) {
                                 System.out.println("[*] ERROR: Not Valid Index");
@@ -130,10 +132,8 @@ public class CliView extends View implements Observer {
                         while (true) {
                             input = sinput.nextLine();
                             if (input.equalsIgnoreCase("abort")) break;
-                            this.hasChanged();
+                            this.setChanged();
                             this.notifyObservers(new CreationalMessage("Room", input));
-                            //sCObserver.update(this, new RequestMessage("UnsubscribeServer"));
-                            //rCObserver.update(this, new RequestMessage("SubscribeServer"));
                             break;
                         }
                     } else {
@@ -142,7 +142,7 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "quit":
-                    this.hasChanged();
+                    this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
                     System.out.println("[*] Goodbye");
                     break loop;
