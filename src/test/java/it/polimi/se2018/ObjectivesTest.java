@@ -3,6 +3,7 @@ package it.polimi.se2018;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;
@@ -158,6 +159,26 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new ColorDiagonals();
         Assert.assertEquals(5,sps.scorePoint(wpc));
+    }
+
+    @Test
+    public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
+        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+
+        Dice d1 = new Dice("yellow");
+        Dice d2 = new Dice("red");
+        Dice d3 = new Dice("blue");
+        Dice d4 = new Dice("blue");
+        Dice d5 = new Dice("blue");
+
+        wpc.insertDice(d1, 0, 0, false,false);
+        wpc.insertDice(d2, 1,2,false,false);
+        wpc.insertDice(d3, 3,2,false,false);
+        wpc.insertDice(d4, 2,3,false,false);
+        wpc.insertDice(d5, 3,4,false,false);
+
+        PrivateShadesOfColor sp = new PrivateShadesOfColor("blue");
+        Assert.assertEquals(3, sp.scorePoint(wpc));
     }
 
     @Test
