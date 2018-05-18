@@ -32,7 +32,7 @@ public class ServerTest {
 
         Room room = new Room(gameName, p, false);
         s.addRoom(room);
-        Assert.assertEquals(true, s.getActiveGames().contains(r));
+        Assert.assertEquals(true, s.getActiveRooms().contains(r));
 
         /*removeRoom(gameName, p);
         Assert.assertEquals(true, !s.getActiveGames().contains(r));*/
