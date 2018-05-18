@@ -213,37 +213,59 @@ public class WindowPatternCard extends Card {
 
     @Override
     public String toString() {
-        String string ="";
-        string+= "                          \n";
+        String string ="\n";
+        final String BACK_TO_BLACK = (char) 27 + "[30m";
         for (WindowCell[] line : grid) {
-            string+="----------------------------------------------------------------\n";
-            string += "|  ";
+            string = string.concat("-------------------------------\n");
+            string = string.concat("|  ");
             for (WindowCell cell : line) {
-                if(cell != null) {
                     if(cell.getAssignedDice() == null) {
-                        //dado non insierito
-                        if (cell.getColorConstraint() != null)
-                            string += "  "+cell.getColorConstraint().substring(0, 1);
-                        else if (cell.getNumberConstraint() != 0)
-                            string += "  " + cell.getNumberConstraint();
-                        else if (cell.getAssignedDice() != null)
-                            string += cell.getAssignedDice().getNumber();
+                        //constraint or empty cell
+                        if (cell.getColorConstraint() != null){
+                            //color constraint
+                            string = string.concat(toUnicodeColor(cell.getColorConstraint()));
+                            string = string.concat("\u25FE");
+                            string = string.concat(BACK_TO_BLACK);
+                            string = string.concat("  |  ");
+                        }
+                        else if (cell.getNumberConstraint() != 0){
+                            //number constraint
+                            string = string.concat(((Integer)cell.getNumberConstraint()).toString());
+                            string = string.concat("  |  ");
+                        }
+                        else {
+                            //empty cell
+                            string = string.concat(" ");
+                            string = string.concat("  |  ");
+                        }
                     }else{
-                        //dado inserito
-                        //string += cell.getAssignedDice().getNumber() + cell.getAssignedDice().getColor().substring(0,1);
+                        // not empty cell
+                        string = string.concat(cell.getAssignedDice().toString());
+
                         if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
-                            //vincoli di colore con dado inserito
-                            string += "*";
+                            //color or number constraint with a die
+                            string = string.concat("*");
+                            string = string.concat(" |  ");
+                        }else{
+                            string = string.concat("  |  ");
                         }
                     }
-                }
-                else string += "   ";
-                string += "     |    ";
+                    //string = string.concat("  |  ");
             }
-            string += "\n";
+            string = string.concat("\n");
         }
-        string+="----------------------------------------------------------------\n";
-        string+= "                          \n";
+        string = string.concat("-------------------------------\n");
         return string;
+    }
+
+    private String toUnicodeColor(String color){
+        switch (color.toLowerCase()){
+            case "red":         return (char) 27 + "[31m";
+            case "yellow":      return (char) 27 + "[33m";
+            case "green":       return (char) 27 + "[32m";
+            case "blue":        return (char) 27 + "[34m";
+            case "purple":      return (char) 27 + "[35m";
+            default: return "";
+        }
     }
 }
