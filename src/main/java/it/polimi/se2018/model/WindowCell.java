@@ -109,7 +109,7 @@ public class WindowCell {
         return neighbourCells;
     }
 
-    public ArrayList<WindowCell> getDiagonalCells() { return diagonalCells; }
+    public List<WindowCell> getDiagonalCells() { return diagonalCells; }
 
     /**
      * Assigned dice setter
@@ -154,11 +154,11 @@ public class WindowCell {
             int x = this.row;
             int y = this.column;
 
-            if (grid == null) return;
-            if((x-1 >= 0) && (y-1 >= 0)) diagonalCells.add(grid[x-1][y-1]);
-            if((x+1 < 4) && (y+1 < 0)) diagonalCells.add(grid[x+1][y+1]);
-            if((x-1 >= 0) && (y+1 < 0)) diagonalCells.add(grid[x-1][y+1]);
-            if((x+1 < 4) && (y-1 >= 0)) diagonalCells.add(grid[x+1][y-1]);
+            if(grid == null) return;
+            if((x - 1 >= 0) && (y - 1 >= 0)) diagonalCells.add(grid[x-1][y-1]);
+            if((x + 1 < 4) && (y + 1 < 5)) diagonalCells.add(grid[x+1][y+1]);
+            if((x - 1 >= 0) && (y + 1 < 5)) diagonalCells.add(grid[x-1][y+1]);
+            if((x + 1 < 4) && (y - 1 >= 0)) diagonalCells.add(grid[x+1][y-1]);
         }
     }
 
