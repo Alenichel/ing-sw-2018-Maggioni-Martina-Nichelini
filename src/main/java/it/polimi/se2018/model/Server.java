@@ -119,6 +119,7 @@ public class Server extends Observable{
         this.setChanged();
         UpdateMessage um = new UpdateMessage("Rooms");
         um.setStringMessage("[*] NOTIFICATION: A room has been changed");
+        this.setChanged();
         this.notifyObservers(um);
     }
 
