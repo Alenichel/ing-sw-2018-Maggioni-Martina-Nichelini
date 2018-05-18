@@ -43,7 +43,10 @@ public class WindowPatternCard extends Card {
         }
 
         for (WindowCell[] line:grid){
-            for(WindowCell cell:line) cell.setNeighbours(grid);
+            for(WindowCell cell:line) {
+                cell.setNeighbours(grid);
+                cell.setDiagonals(grid);
+            }
         }
 
     }
