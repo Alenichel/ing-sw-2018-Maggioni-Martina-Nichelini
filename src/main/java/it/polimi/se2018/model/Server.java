@@ -32,11 +32,12 @@ public class Server extends Observable{
     private ArrayList<Room> activeRooms = new ArrayList<>();
 
     private static Server instance = null;
-
+    private Room room;
 
     private Server(){
             try {
                 loadConfiguration();
+                room = new Room("Default Room");
             } catch (FileNotFoundException e){
                 System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
                 System.exit(1);
