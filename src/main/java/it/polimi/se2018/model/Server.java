@@ -29,6 +29,7 @@ public class Server extends Observable implements Serializable {
 
     private ArrayList<Player> onlinePlayers = new ArrayList<>();
     private ArrayList<Room> activeRooms = new ArrayList<>();
+    private ArrayList<Game> activeGames = new ArrayList<>();
 
     private static Server instance = null;
     private Room room;
@@ -37,6 +38,11 @@ public class Server extends Observable implements Serializable {
             try {
                 loadConfiguration();
                 room = new Room("Default Room");
+                //creo una nuova partita solo nel momento in cui la precedente è piena
+                if(onlinePlayers.size() > 4 * activeGames.size()){
+                    activeGames.add(new Game());
+                }
+
             } catch (FileNotFoundException e){
                 System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
                 System.exit(1);
