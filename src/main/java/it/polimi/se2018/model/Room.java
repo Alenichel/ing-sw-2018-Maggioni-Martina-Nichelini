@@ -20,6 +20,8 @@ public class Room extends java.util.Observable implements Serializable{
     private Game gameAssociated;
     private GameController gameControllerAssociated;
     private ArrayList <Player> disconnectedClients = new ArrayList<>();
+    private static Room instance = null;
+
 
     /**
      * Class constructor
@@ -27,7 +29,7 @@ public class Room extends java.util.Observable implements Serializable{
      * @param admin Player to be recognized as admin in room handling operation
      * @param singlePlayer True if the game is a single player game, False if is a standard multiplayer game
      */
-    public Room(String name, Player admin, Boolean singlePlayer){
+    private Room(String name, Player admin, Boolean singlePlayer){
         this.roomName = name;
         this.singlePlayerMode = singlePlayer;
         this.maxNOfPlayers = singlePlayerMode ? 1 : 4;
@@ -37,10 +39,17 @@ public class Room extends java.util.Observable implements Serializable{
         listOfConnectedPlayer.add(admin);
     }
 
-    public Room(String name){
+
+    private Room(String name){
         this.roomName = name;
     }
 
+    public static Room getInstance(){
+        if(instance == null){
+            instance = new Room("Default room");
+        }
+        return instance;
+    }
     /**
      * Adds player to the list of player
      * @author: Alessandro Nichelini

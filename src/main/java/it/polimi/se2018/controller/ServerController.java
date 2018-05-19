@@ -39,12 +39,12 @@ public class ServerController implements Observer{
         player.setOnline(false);
     }
 
-    private void createRoom(String roomName, String adminName) {
+    /*private void createRoom(String roomName, String adminName) {
         Player admin = this.getPlayerFromNick(adminName);
         Room room = new Room(roomName,admin, false);
         server.addRoom(room);
         admin.setRoom(room, true);
-    }
+    }*/
 
     private void deleteRoom(Room room) {
         server.removeRoom(room);
@@ -66,12 +66,12 @@ public class ServerController implements Observer{
                 }
                 break;
 
-            case "CreationalMessage":
+            /*case "CreationalMessage":
                 CreationalMessage cMsg = ((CreationalMessage)message);
                 if (cMsg.getWhatToCreate().equals("Room")) {
                     this.createRoom( cMsg.getName(), ((View)observable).getClient().getNickname()  );
                 }
-                break;
+                break;*/
 
             case "RequestMessage":
                 RequestMessage rMsg = ((RequestMessage)message);

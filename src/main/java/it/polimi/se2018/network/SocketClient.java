@@ -37,6 +37,7 @@ public class SocketClient extends Thread implements Observer {
             this.ois = new ObjectInputStream(socket.getInputStream());
 
             oos.writeObject(new HandshakeConnectionMessage(((CliView)associatedView).getPlayername(), "password"));
+
             try {
                 //dopo aver ricevuto il giocatore autenticato dal server lo associo alla ClieView
                 ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)ois.readObject()).getPlayer());
