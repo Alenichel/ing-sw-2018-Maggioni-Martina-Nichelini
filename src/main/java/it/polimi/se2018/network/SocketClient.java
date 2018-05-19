@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.View;
 
 import java.io.IOException;
@@ -23,18 +24,25 @@ public class SocketClient extends Thread implements Observer {
 
     private View associatedView;
 
-    public SocketClient(String serverIP, int port, View associateView) {
+    public SocketClient(String serverIP, int port, View associatedView) {
         try {
             this.serverIP = serverIP;
             this.port = port;
-            this.associatedView = associateView;
+            this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
             System.out.println("[*] Socket ready..");
             System.out.println("[*] Connection established");
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
-            oos.writeObject(new HandshakeConnectionMessage("Alenichellll", "password"));
+
+            oos.writeObject(new HandshakeConnectionMessage(((CliView)associatedView).getPlayername(), "password"));
+            try {
+                //dopo aver ricevuto il giocatore autenticato dal server lo associo alla ClieView
+                ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)ois.readObject()).getPlayer());
+            }catch (ClassNotFoundException e){
+                System.out.print(e);
+            }
         } catch (IOException e) {
             System.out.println(e + "/n" + "[*] Error, exiting..");
         }
