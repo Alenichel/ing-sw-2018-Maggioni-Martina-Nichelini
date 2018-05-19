@@ -12,11 +12,19 @@ import java.util.*;
 public class CliView extends View implements Observer {
 
     private Object lastObjectReceveid;
+    private String playername;
+    private Player player;
 
-    public CliView(Player client){
-        this.client = client;
-        this.setChanged();
-        this.notifyObservers(new UpdateMessage("ca"));
+    public CliView(String client){
+        this.playername = client;
+    }
+
+    public String getPlayername() {
+        return playername;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     private void handleGetCommands(String command){
@@ -81,6 +89,8 @@ public class CliView extends View implements Observer {
     public void run() {
         System.out.println("[*] NOTIFICATION: Cli started..");
         Scanner sinput = new Scanner(System.in);
+
+       System.out.println(this.player.getNickname());
 
         loop: while (true) {
             String input = sinput.nextLine();
