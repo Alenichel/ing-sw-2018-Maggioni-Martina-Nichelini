@@ -10,8 +10,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ServerController implements Observer{
-    private final static ServerController instance = new ServerController(Server.getInstance());
-    private Server server;
+    private static ServerController instance = null;
+    private Server server = Server.getInstance();
+    private RoomController roomController = RoomController.getInstance();
 
     private Player getPlayerFromNick(String nickname){
         for (Player p : server.getOnlinePlayers()){
@@ -21,14 +22,11 @@ public class ServerController implements Observer{
         return null;
     }
 
-    private RoomController roomController = RoomController.getInstance();
-
-    public static ServerController getInstance() {
+    public static ServerController getInstance(){
+        if(instance == null){
+            instance = new ServerController();
+        }
         return instance;
-    }
-
-    private ServerController(Server server) {
-        this.server = server;
     }
 
     private void connectPlayer (Player player) {
@@ -51,7 +49,6 @@ public class ServerController implements Observer{
     private void deleteRoom(Room room) {
         server.removeRoom(room);
     }
-
 
     public void update (Observable observable, Object message){
 

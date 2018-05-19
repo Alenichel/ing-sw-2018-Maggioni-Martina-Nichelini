@@ -12,8 +12,6 @@ import java.util.Observer;
  */
 public class Room extends java.util.Observable implements Serializable{
 
-    private List<Observer> observers = new ArrayList<>();
-
     private String roomName;
     private boolean singlePlayerMode;
     private int maxNOfPlayers;

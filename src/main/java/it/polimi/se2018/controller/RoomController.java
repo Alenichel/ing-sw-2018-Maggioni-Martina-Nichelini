@@ -20,10 +20,6 @@ public class RoomController implements Observer {
 
     private static RoomController instance = null;
 
-    private RoomController(){
-        ;
-    }
-
     public static RoomController getInstance(){
         if(instance == null){
             instance = new RoomController();

@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,9 +18,7 @@ import java.util.Observer;
 /**
  * Server class represents the server with all default params and list of active games and active players.
  */
-public class Server extends Observable{
-
-    private List<Observer> observers = new ArrayList<>();
+public class Server extends Observable implements Serializable {
 
     private int port;
     private int defaultMatchmakingTimer;
