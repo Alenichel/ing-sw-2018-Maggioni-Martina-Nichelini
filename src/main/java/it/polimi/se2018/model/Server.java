@@ -28,7 +28,7 @@ public class Server extends Observable implements Serializable {
     private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
     private ArrayList<Player> onlinePlayers = new ArrayList<>();
-    private ArrayList<Room> activeGames = new ArrayList<>();
+    private ArrayList<Room> activeRooms = new ArrayList<>();
 
     private static Server instance = null;
 
@@ -106,7 +106,7 @@ public class Server extends Observable implements Serializable {
      * Active games getter.
      * @return List of actve games.
      */
-    public List<Room> getActiveGames() {return this.activeGames;}
+    public List<Room> getActiveRooms() {return this.activeRooms;}
 
     /**
      * Add room method.
@@ -114,7 +114,7 @@ public class Server extends Observable implements Serializable {
      * @param admin The admin player (creator of the room)
      */
     public void addRoom (Room room){
-        this.activeGames.add(room);
+        this.activeRooms.add(room);
         this.setChanged();
         UpdateMessage um = new UpdateMessage("Rooms");
         um.setStringMessage("[*] NOTIFICATION: A room has been changed");
@@ -127,7 +127,7 @@ public class Server extends Observable implements Serializable {
      * @param room The room to remove
      */
     public void removeRoom(Room room){
-            getActiveGames().remove(room);
+            getActiveRooms().remove(room);
 
     }
 

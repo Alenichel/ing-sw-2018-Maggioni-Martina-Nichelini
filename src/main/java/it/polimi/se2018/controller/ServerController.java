@@ -92,7 +92,7 @@ public class ServerController implements Observer{
                 }
 
                 else if (rMsg.getRequest().equals("ActiveRooms"))
-                    ((View)observable).controllerCallback(new GiveMessage("ActiveRooms", server.getActiveGames()));
+                    ((View)observable).controllerCallback(new GiveMessage("ActiveRooms", server.getActiveRooms()));
                 break;
 
             default:
