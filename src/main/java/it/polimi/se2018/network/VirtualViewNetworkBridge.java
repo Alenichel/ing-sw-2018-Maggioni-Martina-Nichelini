@@ -1,7 +1,9 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.view.VirtualView;
 
@@ -21,19 +23,6 @@ public class VirtualViewNetworkBridge extends Thread {
     private VirtualView associatedVirtualView;
     private Player player;
 
-    private void authenticateUser(String name, byte[] password){
-        //controllare che il player esista. aggiungere funzione adibitia
-        this.clientAuthenticated = true;
-        this.player= new Player(name);
-        Server.getInstance().addPlayer(this.player);
-        try {
-            oos.writeObject(new HandshakeConnectionMessage(player));
-        }catch (IOException e){
-            System.out.println(e);
-        }
-
-    }
-
     public VirtualViewNetworkBridge(Socket socket){
         this.socket = socket;
         try {
@@ -48,6 +37,17 @@ public class VirtualViewNetworkBridge extends Thread {
 
         if (this.clientAuthenticated){
             System.out.println("[*] NOTIFICATION: User in now authenticated");
+
+            //una volta che il giocatore è autenticato lo metto nella stanza
+            player.setRoom(Room.getInstance(), true);
+
+            //mando il giocatore indietro
+            Server.getInstance().addPlayer(this.player);
+            try {
+                oos.writeObject(new HandshakeConnectionMessage(player));
+            }catch (IOException e){
+                System.out.println(e);
+            }
             this.associatedVirtualView = new VirtualView(this, this.player);
             VirtualListener vl = new VirtualListener();
             vl.start();
@@ -58,6 +58,14 @@ public class VirtualViewNetworkBridge extends Thread {
                 socket.close();
             } catch (IOException e){System.out.println(e);}
         }
+    }
+
+    private void authenticateUser(String name, byte[] password){
+        //controllare che il player esista. aggiungere funzione adibitia
+        this.clientAuthenticated = true;
+        this.player= new Player(name);
+
+
     }
 
     //Prende un messaggio inviato dal controller al model

@@ -91,6 +91,7 @@ public class CliView extends View implements Observer {
         Scanner sinput = new Scanner(System.in);
 
        System.out.println(this.player.getNickname());
+       System.out.println(this.player.getRoom().toString());
 
         loop: while (true) {
             String input = sinput.nextLine();

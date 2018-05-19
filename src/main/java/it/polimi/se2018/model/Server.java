@@ -37,7 +37,7 @@ public class Server extends Observable implements Serializable {
     private Server(){
             try {
                 loadConfiguration();
-                room = new Room("Default Room");
+                room = Room.getInstance();
                 //creo una nuova partita solo nel momento in cui la precedente è piena
                 if(onlinePlayers.size() > 4 * activeGames.size()){
                     activeGames.add(new Game());
