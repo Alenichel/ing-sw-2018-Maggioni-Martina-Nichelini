@@ -26,6 +26,12 @@ public class VirtualViewNetworkBridge extends Thread {
         this.clientAuthenticated = true;
         this.player= new Player(name);
         Server.getInstance().addPlayer(this.player);
+        try {
+            oos.writeObject(new HandshakeConnectionMessage(player));
+        }catch (IOException e){
+            System.out.println(e);
+        }
+
     }
 
     public VirtualViewNetworkBridge(Socket socket){
