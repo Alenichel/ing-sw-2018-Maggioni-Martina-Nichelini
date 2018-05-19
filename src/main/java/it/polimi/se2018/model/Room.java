@@ -39,6 +39,10 @@ public class Room extends java.util.Observable implements Serializable{
         listOfConnectedPlayer.add(admin);
     }
 
+    public Room(String name){
+        this.roomName = name;
+    }
+
     /**
      * Adds player to the list of player
      * @author: Alessandro Nichelini
