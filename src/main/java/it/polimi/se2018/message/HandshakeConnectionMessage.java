@@ -22,6 +22,7 @@ public class HandshakeConnectionMessage extends Message {
     }
 
     public HandshakeConnectionMessage(Player player){
+        this.messageType = "HandshakeConnectionMessage";
         this.player = player;
     }
 
