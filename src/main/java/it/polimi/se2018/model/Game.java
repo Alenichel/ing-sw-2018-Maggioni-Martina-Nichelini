@@ -9,7 +9,7 @@ public class Game {
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
     private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
-    private final List<Player> players;
+    private List<Player> players = new ArrayList<>();
 
     private int nOfPlayers;
 
@@ -20,6 +20,10 @@ public class Game {
     public Game(List<Player> players){
         this.players = players;
         this.nOfPlayers = this.players.size();
+    }
+
+    public Game(){
+        this.nOfPlayers = 0;
     }
 
     public void setDiceBag(List<Dice> diceBag) {
