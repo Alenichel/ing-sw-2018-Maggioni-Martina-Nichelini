@@ -10,21 +10,8 @@ public class Game {
     private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
-
-    private int nOfPlayers;
-
     private int currentRound = 0;
 
-    //private Player activePlayer;
-
-    public Game(List<Player> players){
-        this.players = players;
-        this.nOfPlayers = this.players.size();
-    }
-
-    public Game(){
-        this.nOfPlayers = 0;
-    }
 
     public void setDiceBag(List<Dice> diceBag) {
         this.diceBag = (ArrayList<Dice>) diceBag;
@@ -64,4 +51,10 @@ public class Game {
         this.patternCards.add(windowPatternCard);
     }
 
+    public void addPlayer(Player player) throws IndexOutOfBoundsException{
+        if(this.players.size() > 3)
+            throw new IndexOutOfBoundsException();
+        else
+            this.players.add(player);
+    }
 }

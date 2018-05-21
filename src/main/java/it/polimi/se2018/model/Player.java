@@ -10,20 +10,16 @@ public class Player extends Observable implements Serializable{
     private String nickname;
     private Date firstSeen;
     private Boolean online;
-    private Boolean inRoom;
-    private Room room;
     private Boolean inGame;
-    private Room lastGameJoined;
+    private Game lastGameJoined;
     private int playerNumber;
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
 
     public Player(String nickname) {
         this.nickname = nickname;
-        this.inRoom = false;
         this.inGame = false;
     }
-
 
     public void setInGame(Boolean inGame) {
         this.inGame = inGame;
@@ -37,7 +33,7 @@ public class Player extends Observable implements Serializable{
     public void setPlayerNumber(int number){
         this.playerNumber = number;
     }
-    public void setLastGameJoined(Room game){
+    public void setLastGameJoined(Game game){
         this.lastGameJoined = game;
     }
     public void assignPatternCard(WindowPatternCard card){
@@ -47,9 +43,6 @@ public class Player extends Observable implements Serializable{
     public void assignObjectiveCard(ObjectiveCard card){
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
-    }
-    public Boolean getInRoom() {
-        return this.inRoom;
     }
     public Boolean getInGame() {
         return inGame;
@@ -69,20 +62,7 @@ public class Player extends Observable implements Serializable{
     public int getPlayerNumber(){
         return this.playerNumber;
     }
-    public Room getLastGameJoined() {
-        return this.lastGameJoined;
-    }
-    public Room getRoom() {
-        return room;
-    }
 
-    public void setRoom(Room room, Boolean isConnecting) {
-        this.inRoom = isConnecting;
-        if (isConnecting) this.room = room;
-        else this.room = null;
-        this.setChanged();
-        this.notifyObservers(null);
-    }
 
     @Override
     public String toString(){

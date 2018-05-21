@@ -40,7 +40,7 @@ public class Room extends java.util.Observable implements Serializable{
 
     public static Room getInstance(){
         if(instance == null){
-            instance = new Room("Default room", false);
+            instance = nxxxxew Room("Default room", false);
         }
         return instance;
     }
@@ -54,6 +54,8 @@ public class Room extends java.util.Observable implements Serializable{
 
         listOfConnectedPlayer.add(player);
         numberOfConnectedPlayer = numberOfConnectedPlayer + 1;
+        this.setChanged();
+        this.notifyObservers(new UpdateMessage("Room"));
     }
 
     /**

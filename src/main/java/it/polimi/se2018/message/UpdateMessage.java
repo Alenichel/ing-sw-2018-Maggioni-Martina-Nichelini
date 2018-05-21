@@ -4,6 +4,7 @@ public class UpdateMessage extends Message {
 
     private String whatToUpdate;
 
+
     public UpdateMessage(String whatToUpdate){
         this.whatToUpdate = whatToUpdate;
         this.messageType = "UpdateMessage";

@@ -77,11 +77,12 @@ public class SocketClient extends Thread implements Observer {
                     System.out.println(e);
                     System.exit(1);
                 }
-
+                //update from model (network)
                 if (in instanceof SocketUpdateContainer){
                     SocketUpdateContainer suc = (SocketUpdateContainer)in;
                     associatedView.update(suc.getObservable(), suc.getObject());
                 }
+                //update from controller
                 else if (in instanceof Message){
                     associatedView.controllerCallback((Message)in);
                 }

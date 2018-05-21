@@ -1,12 +1,9 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.message.*;
 import it.polimi.se2018.view.*;
-import it.polimi.se2018.message.GiveMessage;
-import it.polimi.se2018.message.Message;
-import it.polimi.se2018.message.ConnectionMessage;
-import it.polimi.se2018.message.RequestMessage;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Room;
+
 
 
 import java.util.Observer;
@@ -41,6 +38,7 @@ public class RoomController implements Observer {
     private void connectPlayer(Room room, Player player){
         room.addPlayer(player);
         player.setRoom(room,true);
+
     }
 
     /**
@@ -59,19 +57,27 @@ public class RoomController implements Observer {
      */
     public void update(Observable observable, Object msg){
         switch(((Message)msg).getMessageType()){
-            case "ConnectionMessage":
+            //old stuff to select room
+            /*case "ConnectionMessage":
                 if (((ConnectionMessage)msg).isConnecting())
                     this.connectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
                 else this.disconnectPlayer(((ConnectionMessage)msg).getTarget() ,((ConnectionMessage)msg).getRequester());
                 break;
-
+                */
             case "RequestMessage":
                 RequestMessage rMsg = (RequestMessage)msg;
                 if (rMsg.getRequest().equals("ConnectedPlayers")){
                     ((View)observable).controllerCallback(new GiveMessage("Players", ((View)observable).getClient().getRoom().getListOfConnectedPlayers()));
                 }
-
-
+                break;
+            //new connection with default room connection
+            case "RoomConnectionMessage":
+                RoomConnectionMessage rCMsg = (RoomConnectionMessage) msg;
+                    if(rCMsg.isConnecting())
+                        this.connectPlayer( Room.getInstance(), rCMsg.getRequester());
+                    else
+                        this.disconnectPlayer(Room.getInstance(), rCMsg.getRequester());
+                break;
             default: break;
         }
     }

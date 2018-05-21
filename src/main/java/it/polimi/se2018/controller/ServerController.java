@@ -1,18 +1,18 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.model.Game;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
 public class ServerController implements Observer{
     private static ServerController instance = null;
     private Server server = Server.getInstance();
-    private RoomController roomController = RoomController.getInstance();
 
     private Player getPlayerFromNick(String nickname){
         for (Player p : server.getOnlinePlayers()){
@@ -29,26 +29,31 @@ public class ServerController implements Observer{
         return instance;
     }
 
+    /**
+     * Connect player to server and to first avaiable game
+     * @param player
+     */
     private void connectPlayer (Player player) {
-        server.addPlayer(player);
+        server.addPlayer(server.getOnlinePlayers(), player);
         player.setOnline(true);
+        try {
+            this.server.getCurrentGame().addPlayer(player);
+            this.server.addPlayer(server.getInGamePlayers(), player);
+        }catch (IndexOutOfBoundsException e){
+            this.server.addPlayer(server.getWaitingPlayers(), player);
+        }
     }
 
+
+    /**
+     * Disconnect player to server
+     * @param player
+     */
     private void disconnectPlayer (Player player) {
-        server.removePlayer(player);
+        server.removePlayer(server.getOnlinePlayers(), player);
         player.setOnline(false);
     }
 
-    /*private void createRoom(String roomName, String adminName) {
-        Player admin = this.getPlayerFromNick(adminName);
-        Room room = new Room(roomName,admin, false);
-        server.addRoom(room);
-        admin.setRoom(room, true);
-    }*/
-
-    private void deleteRoom(Room room) {
-        server.removeRoom(room);
-    }
 
     public void update (Observable observable, Object message){
 
@@ -64,14 +69,8 @@ public class ServerController implements Observer{
                     if ( ((ConnectionMessage)message).getTarget() == null  )
                         this.disconnectPlayer(((ConnectionMessage)message).getRequester());
                 }
-                break;
+            break;
 
-            /*case "CreationalMessage":
-                CreationalMessage cMsg = ((CreationalMessage)message);
-                if (cMsg.getWhatToCreate().equals("Room")) {
-                    this.createRoom( cMsg.getName(), ((View)observable).getClient().getNickname()  );
-                }
-                break;*/
 
             case "RequestMessage":
                 RequestMessage rMsg = ((RequestMessage)message);
@@ -81,19 +80,10 @@ public class ServerController implements Observer{
                     System.out.println("iscrittoAlPlayer");
                 }
 
-                else if (rMsg.getRequest().equals("SubscribeServer")) {
-                    server.addObserver((Observer)observable);
-                    System.out.println("iscrittoAlServer");
+                else if (rMsg.getRequest().equals("ConnectedPlayers")){
+                    ((VirtualView) observable).controllerCallback(new GiveMessage("ConnectedPlayers", server.getOnlinePlayers()));
                 }
-
-                else if (rMsg.getRequest().equals("UnsubscribeServer")) {
-                    server.deleteObserver((Observer)observable);
-                    System.out.println("disiscrittoAlServer");
-                }
-
-                else if (rMsg.getRequest().equals("ActiveRooms"))
-                    ((View)observable).controllerCallback(new GiveMessage("ActiveRooms", server.getActiveRooms()));
-                break;
+            break;
 
             default:
                 break;

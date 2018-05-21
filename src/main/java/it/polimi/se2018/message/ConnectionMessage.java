@@ -1,7 +1,7 @@
 package it.polimi.se2018.message;
 
+import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Room;
 
 /**
  * Message class for connecting/disconneting action
@@ -10,7 +10,7 @@ public class ConnectionMessage extends Message{
 
     private Player requester;
     private boolean isConnecting;
-    private Room target;
+    private Game target;
 
     /**
      * Constructor for class
@@ -21,21 +21,13 @@ public class ConnectionMessage extends Message{
         this.messageType = "ConnectionMessage";
         this.requester = requester;
         this.isConnecting = isConnecting;
-        this.target = this.requester.getRoom();
-    }
-
-    public ConnectionMessage(Player requester, Room target, boolean isConnecting){
-        this.messageType = "ConnectionMessage";
-        this.requester = requester;
-        this.isConnecting = isConnecting;
-        this.target = target;
     }
 
     public Player getRequester() {
         return requester;
     }
 
-    public Room getTarget() {
+    public Game getTarget() {
         return target;
     }
 

@@ -14,7 +14,7 @@ public class AppTest
         Player a = new Player("adminName");
         Player p = new Player("Alenichel");
 
-        CliView cw = new CliView(p);
-        cw.run();
+        //CliView cw = new CliView(p);
+        //cw.run();
     }
 }

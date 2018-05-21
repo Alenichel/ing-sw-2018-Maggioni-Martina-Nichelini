@@ -4,7 +4,6 @@ import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.view.VirtualView;
 
@@ -48,18 +47,20 @@ public class VirtualViewNetworkBridge extends Thread {
 
         if (this.clientAuthenticated){
             //una volta che il giocatore è autenticato lo metto nella stanza
-            player.setRoom(Room.getInstance(), true);
+            this.associatedVirtualView = new VirtualView(this, this.player);
+
+            associatedVirtualView.mySetChanged();
+            associatedVirtualView.notifyObservers(new ConnectionMessage(this.player, true));
 
             //mando il giocatore indietro
-            Server.getInstance().addPlayer(this.player);
             try {
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException e){
                 System.out.println(e);
             }
-            this.associatedVirtualView = new VirtualView(this, this.player);
             VirtualListener vl = new VirtualListener();
             vl.start();
+
         }
         else {
             try{

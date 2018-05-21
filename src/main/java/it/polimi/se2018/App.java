@@ -1,6 +1,5 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.SocketServer;
 
 /**

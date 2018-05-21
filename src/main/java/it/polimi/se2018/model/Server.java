@@ -28,21 +28,18 @@ public class Server extends Observable implements Serializable {
     private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
     private ArrayList<Player> onlinePlayers = new ArrayList<>();
-    private ArrayList<Room> activeRooms = new ArrayList<>();
+    private ArrayList<Player> inGamePlayers = new ArrayList<>();
+    private ArrayList<Player> waitingPlayers = new ArrayList<>();
+    private Game currentGame;
+
     private ArrayList<Game> activeGames = new ArrayList<>();
 
     private static Server instance = null;
-    private Room room;
 
     private Server(){
+        this.currentGame = new Game();
             try {
                 loadConfiguration();
-                room = Room.getInstance();
-                //creo una nuova partita solo nel momento in cui la precedente è piena
-                if(onlinePlayers.size() > 4 * activeGames.size()){
-                    activeGames.add(new Game());
-                }
-
             } catch (FileNotFoundException e){
                 System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
                 System.exit(1);
@@ -61,6 +58,7 @@ public class Server extends Observable implements Serializable {
             }
             return instance;
         }
+
 
     /**
      * Configuration loader from xml conf file.
@@ -103,53 +101,38 @@ public class Server extends Observable implements Serializable {
             return this.port;
     }
 
+    public Game getCurrentGame() {
+        return currentGame;
+    }
+
     /**
      * Online players getter.
      * @return List of online player.
      */
     public List<Player> getOnlinePlayers() {return this.onlinePlayers;}
 
-    /**
-     * Active games getter.
-     * @return List of actve games.
-     */
-    public List<Room> getActiveRooms() {return this.activeRooms;}
-
-    /**
-     * Add room method.
-     * @param gameName The name to assigne to the room.
-     * @param admin The admin player (creator of the room)
-     */
-    public void addRoom (Room room){
-        this.activeRooms.add(room);
-        this.setChanged();
-        UpdateMessage um = new UpdateMessage("Rooms");
-        um.setStringMessage("[*] NOTIFICATION: A room has been changed");
-        this.setChanged();
-        this.notifyObservers(um);
+    public ArrayList<Player> getInGamePlayers() {
+        return inGamePlayers;
     }
 
-    /**
-     * Remove room method.
-     * @param room The room to remove
-     */
-    public void removeRoom(Room room){
-            getActiveRooms().remove(room);
-
+    public ArrayList<Player> getWaitingPlayers() {
+        return waitingPlayers;
     }
 
-    /**
-     * Add player to the list of server active players.
-     * @param player
-     */
-    public void addPlayer (Player player){ getOnlinePlayers().add(player);}
+    public ArrayList<Game> getActiveGames() {
+        return activeGames;
+    }
+
+    public void addPlayer(List<Player> arrayList, Player player){
+        arrayList.add(player);
+    }
 
     /**
      * Remove player from the list of server active players.
      * @param player
      */
-    public void removePlayer (Player player){
-            getOnlinePlayers().remove(player);
-        }
+    public void removePlayer (List<Player> arrayList, Player player){
+        arrayList.remove(player);
+    }
 
 }
