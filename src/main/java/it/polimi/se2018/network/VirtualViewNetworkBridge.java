@@ -43,7 +43,6 @@ public class VirtualViewNetworkBridge extends Thread {
             authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
 
         } catch (IOException | ClassNotFoundException | AuthenticationErrorException e){
-            try {socket.close();} catch (IOException e2){System.out.println(e2);}
             System.out.println(e);
         }
 
@@ -65,7 +64,7 @@ public class VirtualViewNetworkBridge extends Thread {
         else {
             try{
                 oos.writeObject(new ErrorMessage("Authentification Error"));
-                //socket.close();
+                socket.close();
             } catch (IOException e){System.out.println(e);}
         }
     }
