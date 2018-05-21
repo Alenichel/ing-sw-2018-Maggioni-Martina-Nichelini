@@ -49,12 +49,15 @@ public class SocketClient extends Thread implements Observer {
                 ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
             else {
                 System.out.println(rcv);
+                System.exit(1);
             }
 
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("[*] Error: " + e +  " exiting..");
             System.exit(1);
         }
+
+
         Listener listener = new Listener();
         listener.start();
 
@@ -70,7 +73,10 @@ public class SocketClient extends Thread implements Observer {
             while (!socket.isClosed()){
                 try {
                     in = ois.readObject();
-                } catch (ClassNotFoundException | IOException e){System.out.println(e);}
+                } catch (ClassNotFoundException | IOException e){
+                    System.out.println(e);
+                    System.exit(1);
+                }
 
                 if (in instanceof SocketUpdateContainer){
                     SocketUpdateContainer suc = (SocketUpdateContainer)in;
