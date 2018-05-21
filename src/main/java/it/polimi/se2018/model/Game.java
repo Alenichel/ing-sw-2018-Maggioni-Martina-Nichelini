@@ -1,9 +1,13 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.message.UpdateMessage;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 
-public class Game {
+public class Game extends Observable implements Serializable {
     private ArrayList<Dice> diceBag = new ArrayList<>();
     private ArrayList<Dice> diceOnTable = new ArrayList<>();
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
@@ -54,7 +58,12 @@ public class Game {
     public void addPlayer(Player player) throws IndexOutOfBoundsException{
         if(this.players.size() > 3)
             throw new IndexOutOfBoundsException();
-        else
+        else {
             this.players.add(player);
+            UpdateMessage um = new UpdateMessage("NewPlayer");
+            um.setStringMessage(player.getNickname() + " has just joined the game");
+            this.setChanged();
+            this.notifyObservers(um);
+        }
     }
 }

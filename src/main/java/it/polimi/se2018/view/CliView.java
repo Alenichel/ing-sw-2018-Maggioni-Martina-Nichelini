@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 
@@ -98,17 +99,11 @@ public class CliView extends View implements Observer {
     }
 
     public void update(Observable o, Object msg){
-        if (o instanceof Server ){
-
-            switch(((Message)msg).getMessageType()){
-                case "UpdateMessage":
-                    System.out.println(((Message)msg).getStringMessage() );
-                    break;
-                default: break;
-            }
-        }
-        else if (o instanceof Player ){
-            this.client = (Player)o;
+        switch(((Message)msg).getMessageType()){
+            case "UpdateMessage":
+                System.out.println(((UpdateMessage)msg));
+                break;
+            default: break;
         }
     }
 }

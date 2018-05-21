@@ -57,10 +57,8 @@ public class SocketClient extends Thread implements Observer {
             System.exit(1);
         }
 
-
         Listener listener = new Listener();
         listener.start();
-
     }
 
     /**

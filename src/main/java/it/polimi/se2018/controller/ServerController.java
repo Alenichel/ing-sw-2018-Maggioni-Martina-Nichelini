@@ -33,14 +33,17 @@ public class ServerController implements Observer{
      * Connect player to server and to first avaiable game
      * @param player
      */
-    private void connectPlayer (Player player) {
-        server.addPlayer(server.getOnlinePlayers(), player);
-        player.setOnline(true);
+    private void connectPlayer (Player player, Observer o) {
+        server.addPlayer(server.getOnlinePlayers(), player); //add player to the list of online players
+        player.setOnline(true); //set player status to online
         try {
-            this.server.getCurrentGame().addPlayer(player);
-            this.server.addPlayer(server.getInGamePlayers(), player);
+            this.server.getCurrentGame().addPlayer(player); // try to add player to the settupping game
+            this.server.getCurrentGame().addObserver(o);
+            player.setInGame(true); // set player status to true
+            player.setLastGameJoined(server.getCurrentGame()); //change last game joined param
+            this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of ingame players
         }catch (IndexOutOfBoundsException e){
-            this.server.addPlayer(server.getWaitingPlayers(), player);
+            this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
         }
     }
 
@@ -63,7 +66,7 @@ public class ServerController implements Observer{
             case "ConnectionMessage":
                 if (((ConnectionMessage)message).isConnecting()){
                     if ( ((ConnectionMessage)message).getTarget() == null  )
-                        this.connectPlayer(((ConnectionMessage)message).getRequester());
+                        this.connectPlayer(((ConnectionMessage)message).getRequester(), (Observer)observable);
                 }
                 else {
                     if ( ((ConnectionMessage)message).getTarget() == null  )

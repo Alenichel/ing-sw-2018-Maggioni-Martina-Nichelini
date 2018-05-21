@@ -64,7 +64,7 @@ public class VirtualViewNetworkBridge extends Thread {
         }
         else {
             try{
-                oos.writeObject(new ErrorMessage("Authentification Error"));
+                oos.writeObject(new ErrorMessage("Authentication Error"));
                 socket.close();
             } catch (IOException e){System.out.println(e);}
         }

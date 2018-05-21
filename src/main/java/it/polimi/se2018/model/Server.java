@@ -38,6 +38,7 @@ public class Server extends Observable implements Serializable {
 
     private Server(){
         this.currentGame = new Game();
+        this.activeGames.add(this.currentGame);
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
