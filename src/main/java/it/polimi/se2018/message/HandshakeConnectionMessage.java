@@ -9,16 +9,13 @@ import java.security.NoSuchAlgorithmException;
 public class HandshakeConnectionMessage extends Message {
 
     private String username;
-    private byte[] encodedPassword;
+    private String encodedPassword;
     private Player player;
 
     public HandshakeConnectionMessage(String username, String password){
         this.messageType = "HandshakeConnectionMessage";
         this.username = username;
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            encodedPassword = digest.digest(password.getBytes(StandardCharsets.UTF_8));
-        } catch (NoSuchAlgorithmException e) {;}
+        this.encodedPassword=password;
     }
 
     public HandshakeConnectionMessage(Player player){
@@ -34,7 +31,7 @@ public class HandshakeConnectionMessage extends Message {
         return this.username;
     }
 
-    public byte[] getEncodedPassword() {
+    public String getEncodedPassword() {
         return encodedPassword;
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.controller.ServerController;
+import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Room;
@@ -9,7 +10,15 @@ import it.polimi.se2018.view.VirtualView;
 
 import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.Observable;
+import java.util.stream.Stream;
 
 /**
  * This class is the bridge between the virtual view and the rest of the network.
@@ -33,13 +42,12 @@ public class VirtualViewNetworkBridge extends Thread {
             HandshakeConnectionMessage hcm = (HandshakeConnectionMessage) this.ois.readObject();
             authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
 
-        } catch (IOException | ClassNotFoundException e){
+        } catch (IOException | ClassNotFoundException | AuthenticationErrorException e){
+            try {socket.close();} catch (IOException e2){System.out.println(e2);}
             System.out.println(e);
         }
 
         if (this.clientAuthenticated){
-            System.out.println("[*] NOTIFICATION: User in now authenticated");
-
             //una volta che il giocatore è autenticato lo metto nella stanza
             player.setRoom(Room.getInstance(), true);
 
@@ -55,18 +63,34 @@ public class VirtualViewNetworkBridge extends Thread {
             vl.start();
         }
         else {
-            System.out.println("[*] ERROR: Authentication error");
             try{
-                socket.close();
+                oos.writeObject(new ErrorMessage("Authentification Error"));
+                //socket.close();
             } catch (IOException e){System.out.println(e);}
         }
     }
 
-    private void authenticateUser(String name, byte[] password){
-        //controllare che il player esista. aggiungere funzione adibitia
-        this.clientAuthenticated = true;
-        this.player= new Player(name);
 
+    private void authenticateUser(String name, String password) throws AuthenticationErrorException {
+        String HOME_PATH = System.getProperty("user.home");
+        String DB_PATH = "/users_db.txt";
+        Path path = Paths.get(HOME_PATH+DB_PATH);
+        try (BufferedReader reader = Files.newBufferedReader(path);) {
+            String nextLine = reader.readLine();
+            while (!nextLine.equals("end")) {
+                nextLine = reader.readLine();
+                String[] userInfo = nextLine.split(":");
+                if (userInfo[0].equals(name)) {
+                    if (userInfo[1].equals(password)){
+                        this.clientAuthenticated = true;
+                        System.out.println("[*] NOTIFICATION: user " + name +  " has been authenticated");
+                        this.player = new Player(name);
+                        return;
+                    }
+                }
+            }
+            throw new AuthenticationErrorException("UserNotFound");
+        } catch (IOException e){System.out.println(e);}
 
     }
 

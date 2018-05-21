@@ -23,6 +23,7 @@ public class VirtualView extends View implements Observer {
     public void mySetChanged(){
         this.setChanged();
     }
+
     //Da CONTROLLER a VIEW -> deve passare per la rete
     public void controllerCallback(Message callbackMessage){
         virtualClient.controllerCallback(callbackMessage);

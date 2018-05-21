@@ -12,16 +12,7 @@ import java.util.*;
 public class CliView extends View implements Observer {
 
     private Object lastObjectReceveid;
-    private String playername;
     private Player player;
-
-    public CliView(String client){
-        this.playername = client;
-    }
-
-    public String getPlayername() {
-        return playername;
-    }
 
     public void setPlayer(Player player) {
         this.player = player;

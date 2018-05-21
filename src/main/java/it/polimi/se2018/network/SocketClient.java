@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -28,7 +30,7 @@ public class SocketClient extends Thread implements Observer {
 
     private View associatedView;
 
-    public SocketClient(String serverIP, int port, View associatedView) {
+    public SocketClient(String serverIP, int port, String nickname, String password ,View associatedView) {
         try {
             this.serverIP = serverIP;
             this.port = port;
@@ -40,16 +42,18 @@ public class SocketClient extends Thread implements Observer {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
 
-            oos.writeObject(new HandshakeConnectionMessage(((CliView)associatedView).getPlayername(), "password"));
+            oos.writeObject(new HandshakeConnectionMessage(nickname, password));
 
-            try {
-                //dopo aver ricevuto il giocatore autenticato dal server lo associo alla ClieView
-                ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)ois.readObject()).getPlayer());
-            }catch (ClassNotFoundException e){
-                System.out.print(e);
+            Object rcv = ois.readObject();
+            if (rcv instanceof HandshakeConnectionMessage)
+                ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
+            else {
+                System.out.println(rcv);
             }
-        } catch (IOException e) {
-            System.out.println(e + "/n" + "[*] Error, exiting..");
+
+        } catch (IOException | ClassNotFoundException e) {
+            System.out.println("[*] Error: " + e +  " exiting..");
+            System.exit(1);
         }
         Listener listener = new Listener();
         listener.start();
