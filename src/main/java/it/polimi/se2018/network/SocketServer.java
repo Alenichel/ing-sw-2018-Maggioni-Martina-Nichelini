@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * This class handles new incoming socket connection. For each new client, a new thread is created.
+ */
 public class SocketServer extends Thread {
 
     private ServerSocket ssocket;

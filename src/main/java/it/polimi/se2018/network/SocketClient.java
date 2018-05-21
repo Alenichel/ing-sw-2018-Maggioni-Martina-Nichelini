@@ -12,6 +12,10 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 
+/**
+ * This class works as SocketClient of client game side. It listens for messages coming from the server and
+ * it observes RealView for changes to notify them trough the network.
+ */
 public class SocketClient extends Thread implements Observer {
 
     private String serverIP;
@@ -52,7 +56,9 @@ public class SocketClient extends Thread implements Observer {
 
     }
 
-
+    /**
+     * Inner class that keeps listening for notification from the server
+     */
     private class Listener extends Thread{
 
         public void run(){
@@ -73,6 +79,11 @@ public class SocketClient extends Thread implements Observer {
         }
     }
 
+    /**
+     * This method implements Observer interface and simply take updating params and sends it trough the network.
+     * @param o
+     * @param msg
+     */
     public void update(Observable o, Object msg) {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {

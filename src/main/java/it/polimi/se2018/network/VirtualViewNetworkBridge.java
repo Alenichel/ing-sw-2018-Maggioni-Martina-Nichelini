@@ -11,7 +11,9 @@ import java.io.*;
 import java.net.Socket;
 import java.util.Observable;
 
-//virtual client or socket thread
+/**
+ * This class is the bridge between the virtual view and the rest of the network.
+ */
 public class VirtualViewNetworkBridge extends Thread {
 
     private Socket socket;
@@ -68,7 +70,11 @@ public class VirtualViewNetworkBridge extends Thread {
 
     }
 
-    //Prende un messaggio inviato dal controller al model
+    /**
+     * This method handles the callbacks of controllers on the virtualView. Each callback is passed from VirtualView
+     * to this method and through this, to the network.
+     * @param callbackMessage This is the message passed from the controller.
+     */
     public void controllerCallback(Message callbackMessage){
         try {
             this.oos.writeObject(callbackMessage);
@@ -78,7 +84,12 @@ public class VirtualViewNetworkBridge extends Thread {
         }
     }
 
-    // Prende i parametri dalla rete e li scrive sul canale delle socket.
+    /**
+     * This method handles update messages coming from model classes directed to the registered virtual views.
+     * Each VirtualView's update method call triggered this method that pass messages to the network.
+     * @param o Canonical param of Observer.Update method.
+     * @param msg Canonical param of Observer.Update method.
+     */
     public void update(Observable o, Object msg){
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
@@ -89,6 +100,9 @@ public class VirtualViewNetworkBridge extends Thread {
         }
     }
 
+    /**
+     * This inner class listen for messages coming from associated client and calls for notify method of the VirtualView.
+     */
     public class VirtualListener extends Thread {
         @Override
         public void run(){
