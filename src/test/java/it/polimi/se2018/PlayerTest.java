@@ -13,8 +13,7 @@ public class PlayerTest {
     @Test
     public void testGetter() {
         Player player = new Player("pippo");
-        Room room = new Room("paperino", player, false);
-        Room room2 = new Room("minnie", player, false);
+        Room room = Room.getInstance();
 
         WindowPatternCard windowPatternCard = new WindowPatternCard("viaLux");
         WindowPatternCard windowPatternCard2 = new WindowPatternCard("virtus");
@@ -28,9 +27,8 @@ public class PlayerTest {
         windowPatternCards.add(windowPatternCard4);
 
         Assert.assertEquals("pippo", player.getNickname());
-        Assert.assertNotEquals("pluto", player.getNickname());
 
-        //non ancora fatto
+
         PrivateObjectiveCard p = new PrivateObjectiveCard();
 
         player.setOnline(true);
@@ -40,22 +38,10 @@ public class PlayerTest {
         player.setPlayerNumber(2);
         Assert.assertEquals(2, player.getPlayerNumber());
         Assert.assertNotEquals(3, player.getPlayerNumber());
-
-        player.setLastGameJoined(room);
-        Assert.assertEquals(room, player.getLastGameJoined());
-        Assert.assertNotEquals(room2, player.getLastGameJoined());
-
+        
         player.setInGame(false);
         Assert.assertEquals(false, player.getInGame());
         Assert.assertNotEquals(true, player.getInGame());
-
-        //player.assignPatternCard(windowPatternCard);
-        //player.setInGame(false);
-        //Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
-
-        player.setActivePatternCard(windowPatternCard);
-        Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
-
 
     }
 

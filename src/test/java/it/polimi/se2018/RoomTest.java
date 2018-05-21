@@ -13,9 +13,10 @@ public class RoomTest {
         Player p = new Player("admin");
         Player p2 = new Player("notAdmin");
 
-        Room r = new Room(name, p, false);
+        Room r = Room.getInstance();
+        r.addPlayer(p);
 
-        Assert.assertEquals(name, r.getRoomName());
+        Assert.assertEquals("Default room", r.getRoomName());
         Assert.assertTrue(r.getListOfConnectedPlayers().contains(p));
         Assert.assertFalse(r.isADisconnectedClient(p));
 

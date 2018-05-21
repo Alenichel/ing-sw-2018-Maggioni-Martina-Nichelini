@@ -13,7 +13,7 @@ public class ServerTest {
         Server s = Server.getInstance();
         String gameName = "game";
         Player p = new Player("admin");
-        Room r = new Room("room", p, false);
+        Room r = Room.getInstance();
 
         Assert.assertEquals( 5050, s.getServerPort());
         Assert.assertNotEquals(2018, s.getServerPort());
@@ -30,7 +30,7 @@ public class ServerTest {
         s.removePlayer(p);
         Assert.assertTrue(!s.getOnlinePlayers().contains(p));
 
-        Room room = new Room(gameName, p, false);
+        Room room = Room.getInstance();
         s.addRoom(room);
         Assert.assertEquals(true, s.getActiveRooms().contains(r));
 
