@@ -5,22 +5,35 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.view.CliView;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
 
 public class AppClient {
 
     public static void main(String[] args) {
-        System.out.println("[*] Please insert your unsername");
         Scanner sinput = new Scanner(System.in);
+
+        System.out.println("[*] Please insert your username: ");
         String input = sinput.nextLine();
 
-        Player p = new Player(input.toString());
+        String nickname = input.toString();
+        //byte[] encodedHash = null;
 
-        System.out.println("[*] " + p.getNickname() + " welcome to Sagrada");
+        System.out.println("[*] Please insert your password: ");
+        input = sinput.nextLine();
+        /*try { //read password from STDIN and apply hash function
 
-        CliView cw = new CliView(input.toString());
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            encodedHash= digest.digest(
+                    input.getBytes(StandardCharsets.UTF_8));
+        } catch (NoSuchAlgorithmException e) {System.out.println(e);}*/
 
-        SocketClient sc = new SocketClient("localhost", 9091, cw);
+        System.out.println("[*] " + nickname + " welcome to Sagrada");
+
+        CliView cw = new CliView();
+        SocketClient sc = new SocketClient("localhost", 9091, nickname, input, cw);
         cw.addObserver(sc);
         cw.run();
     }
