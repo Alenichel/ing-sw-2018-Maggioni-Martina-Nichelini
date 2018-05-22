@@ -10,6 +10,7 @@ import org.xml.sax.SAXException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -19,7 +20,7 @@ import javax.xml.parsers.ParserConfigurationException;
 /**
  * This class represents the player's window
  */
-public class WindowPatternCard extends Card {
+public class WindowPatternCard extends Card implements Serializable {
     private WindowCell[][] grid = new WindowCell[4][5];
 
     /**

@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +11,7 @@ import java.util.Objects;
  * WindowCell class represents the cell, *one square*, of the window grid.
  * Each cell can be assigned with a die.
  */
-public class WindowCell {
+public class WindowCell implements Serializable{
     private int row;
     private int column;
     private String colorConstraint;

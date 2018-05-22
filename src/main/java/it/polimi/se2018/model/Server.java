@@ -36,9 +36,9 @@ public class Server extends Observable implements Serializable {
 
     private static Server instance = null;
 
+
     private Server(){
-        this.currentGame = new Game();
-        this.activeGames.add(this.currentGame);
+
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
@@ -136,4 +136,9 @@ public class Server extends Observable implements Serializable {
         arrayList.remove(player);
     }
 
+
+    public void setCurrentGame(Game currentGame) {
+        this.currentGame = currentGame;
+        this.activeGames.add(currentGame);
+    }
 }

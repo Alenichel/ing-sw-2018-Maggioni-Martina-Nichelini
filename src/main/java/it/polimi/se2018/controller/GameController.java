@@ -1,5 +1,7 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.exception.GameException;
+import it.polimi.se2018.model.Server;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
@@ -7,12 +9,14 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.WindowPatternCard;
 
 import java.io.InvalidClassException;
+import java.io.Serializable;
 import java.util.*;
 
-public class GameController implements Observer{
+public class GameController implements Observer, Serializable{
     private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
+    private Game gameAssociated;
 
-   private List<WindowPatternCard> getRandomPatternCards (){
+    private List<WindowPatternCard> getRandomPatternCards (){
        int selectedIndex = 0;
        ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
        Random rand = new Random();
@@ -24,10 +28,6 @@ public class GameController implements Observer{
        return toReturn;
 
    }
-
-    public GameController(){
-        initializedPatternCards = this.initializePatternCard();
-    }
 
     private ArrayList<WindowPatternCard> initializePatternCard(){
         ArrayList<String> windowsPatternCardsName = new ArrayList<>();
@@ -64,6 +64,11 @@ public class GameController implements Observer{
         return initializedPatternCards;
     }
 
+    public GameController(Game game){
+        initializedPatternCards = this.initializePatternCard();
+        this.gameAssociated = game;
+    }
+
     private void onPatternCardSelection(Game game, SelectionMessage message) throws InvalidClassException {
         if (message.getChosenItem() instanceof WindowPatternCard ){
             Player targetPlayer = game.getPlayers().get(message.getPlayerNumber());
@@ -74,6 +79,7 @@ public class GameController implements Observer{
             throw new InvalidClassException("Received: " + message.getChosenItem() + "but requested WindowPatternCard");
         }
     }
+
 
    @Override
     public void update(Observable observable, Object msg){

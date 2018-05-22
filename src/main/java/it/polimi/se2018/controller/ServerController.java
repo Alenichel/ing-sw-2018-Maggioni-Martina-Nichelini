@@ -1,5 +1,6 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.view.*;
@@ -29,6 +30,22 @@ public class ServerController implements Observer{
         return instance;
     }
 
+    private void resetGame(){
+        if (this.server.getWaitingPlayers().isEmpty()) this.server.setCurrentGame(null);
+        else {
+            this.server.setCurrentGame(new Game());
+
+            for (Player p: this.server.getWaitingPlayers()){
+                try {
+                    this.server.getCurrentGame().addPlayer(p);
+                    this.server.removePlayer(this.server.getWaitingPlayers(), p);
+                } catch (GameException e){
+                    if (e.getMessage().equals("GameIsFull")) break;
+                }
+            }
+        }
+    }
+
     /**
      * Connect player to server and to first avaiable game
      * @param player
@@ -37,6 +54,9 @@ public class ServerController implements Observer{
         server.addPlayer(server.getOnlinePlayers(), player); //add player to the list of online players
         player.setOnline(true); //set player status to online
         try {
+            if (this.server.getCurrentGame() == null) {
+                this.server.setCurrentGame(new Game());
+            }
             this.server.getCurrentGame().addPlayer(player); // try to add player to the settupping game
             this.server.getCurrentGame().addObserver(o);
             player.setInGame(true); // set player status to true
@@ -44,9 +64,8 @@ public class ServerController implements Observer{
             this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of ingame players
         }catch (IndexOutOfBoundsException e){
             this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
-        }
+        } catch (GameException e){ System.out.println(e);}
     }
-
 
     /**
      * Disconnect player to server
@@ -56,7 +75,6 @@ public class ServerController implements Observer{
         server.removePlayer(server.getOnlinePlayers(), player);
         player.setOnline(false);
     }
-
 
     public void update (Observable observable, Object message){
 
