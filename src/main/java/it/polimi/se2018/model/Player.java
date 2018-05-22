@@ -15,6 +15,7 @@ public class Player extends Observable implements Serializable{
     private int playerNumber;
     private WindowPatternCard activePatternCard;
     private ObjectiveCard privateObjectiveCard;
+    private int numberOfFavorTokens;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -44,6 +45,10 @@ public class Player extends Observable implements Serializable{
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
     }
+    public void setNumberOfFavorTokens(int numberOfFavorTokens) {
+        this.numberOfFavorTokens = numberOfFavorTokens;
+    }
+
     public Boolean getInGame() {
         return inGame;
     }

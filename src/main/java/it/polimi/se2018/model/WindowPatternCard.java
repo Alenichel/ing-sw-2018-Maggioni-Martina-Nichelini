@@ -22,7 +22,7 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class WindowPatternCard extends Card implements Serializable {
     private WindowCell[][] grid = new WindowCell[4][5];
-
+    private int numberOfFavorTokens;
     /**
      * Class constructor
      * @param name
@@ -68,6 +68,10 @@ public class WindowPatternCard extends Card implements Serializable {
      */
     public WindowCell[][] getGrid() {
         return this.grid;
+    }
+
+    public int getNumberOfFavorTokens() {
+        return numberOfFavorTokens;
     }
 
     /**

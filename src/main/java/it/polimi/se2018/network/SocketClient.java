@@ -54,6 +54,7 @@ public class SocketClient extends Thread implements Observer {
 
         } catch (IOException | ClassNotFoundException e) {
             System.out.println("[*] Error: " + e +  " exiting..");
+            e.printStackTrace();
             System.exit(1);
         }
 

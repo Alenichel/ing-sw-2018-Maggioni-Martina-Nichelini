@@ -16,6 +16,8 @@ import java.util.*;
 public class GameController implements Observer, Serializable{
     private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
     private Game gameAssociated;
+    private GameSetupController gameSetupController = new GameSetupController();
+
 
     private List<WindowPatternCard> getRandomPatternCards (){
        int selectedIndex = 0;
@@ -96,7 +98,9 @@ public class GameController implements Observer, Serializable{
                     ((VirtualView) observable).controllerCallback(new GiveMessage("PlayerInGame", gameAssociated.getPlayers()));
                 }
                 break;
-
+            case "SetupMessage":
+                gameSetupController.initialize(this.gameAssociated);
+                break;
 
             default: break;
         }
