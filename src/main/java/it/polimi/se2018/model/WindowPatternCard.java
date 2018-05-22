@@ -23,6 +23,7 @@ import javax.xml.parsers.ParserConfigurationException;
 public class WindowPatternCard extends Card implements Serializable {
     private WindowCell[][] grid = new WindowCell[4][5];
     private int numberOfFavorTokens;
+
     /**
      * Class constructor
      * @param name
@@ -88,6 +89,11 @@ public class WindowPatternCard extends Card implements Serializable {
         Document doc = documentBuilder.parse(configurationFile);
 
         Element virtus = doc.getDocumentElement();
+
+        NodeList appoNodeList = virtus.getElementsByTagName("nOfFavorTokens");
+        Element appoElement = (Element) appoNodeList.item(0);
+        this.numberOfFavorTokens = Integer.parseInt(appoElement.getFirstChild().getNodeValue());
+
 
         List<String> numberRestrictions = Arrays.asList("one", "two", "three", "four", "five", "six");
         List<String> colorRestrictions = Arrays.asList("red", "yellow", "green", "blue", "purple");
