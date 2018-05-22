@@ -58,16 +58,19 @@ public class GameSetupController {
         return diceBag;
     }
 
-    private ArrayList<ToolCard> initializeToolCard(){
+    private  ArrayList<ToolCard> initializeToolCard(){
         ArrayList<ToolCard> toolCards = new ArrayList<>();
         /*toolCards.add(new ToolCard(new GlazingHammer()));
         toolCards.add(new ToolCard(new GrindingStone()));
         toolCards.add(new ToolCard(new GlazingHammer()));*/
+        return toolCards;
     }
 
     public void initializePlayers(Game game){
         for(Player player : game.getPlayers()){
-            player.setNumberOfFavorTokens(player.getActivePatternCard().get;);
+            player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens());
+
+            //da finire il setup
         }
     }
 
