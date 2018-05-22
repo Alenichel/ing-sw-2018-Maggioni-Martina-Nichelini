@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public class Game extends Observable implements Serializable {
     private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
+    private boolean isStarted;
     private int currentRound = 0;
 
 
@@ -51,19 +53,36 @@ public class Game extends Observable implements Serializable {
     public List<Player> getPlayers() {
         return players;
     }
+
     public void addWindowPatternCard(WindowPatternCard windowPatternCard){
         this.patternCards.add(windowPatternCard);
     }
 
-    public void addPlayer(Player player) throws IndexOutOfBoundsException{
-        if(this.players.size() > 3)
-            throw new IndexOutOfBoundsException();
-        else {
-            this.players.add(player);
-            UpdateMessage um = new UpdateMessage("NewPlayer");
-            um.setStringMessage(player.getNickname() + " has just joined the game");
-            this.setChanged();
-            this.notifyObservers(um);
+    public void addPlayer(Player player) throws IndexOutOfBoundsException, GameException{
+        if(!isStarted){
+            if(this.players.size() > 3)
+                throw new IndexOutOfBoundsException();
+            else {
+                this.players.add(player);
+                UpdateMessage um = new UpdateMessage("NewPlayer");
+                um.setStringMessage(player.getNickname() + " has just joined the game");
+                this.setChanged();
+                this.notifyObservers(um);
+            }
+        }else{
+            throw new GameException("Alredy started game");
         }
     }
+
+    public void lauchGame() throws GameException{
+        if(this.isStarted){
+            throw new GameException("Alredy started game");
+        }else {
+            //avvio il gioco
+            this.isStarted = true;
+
+        }
+    }
+
+
 }
