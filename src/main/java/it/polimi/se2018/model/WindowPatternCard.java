@@ -70,6 +70,10 @@ public class WindowPatternCard extends Card implements Serializable {
         return this.grid;
     }
 
+    public int getNumberOfFavorTokens() {
+        return numberOfFavorTokens;
+    }
+
     /**
      * This method load the user specified pattern card from an xml file.
      * @throws ParserConfigurationException
