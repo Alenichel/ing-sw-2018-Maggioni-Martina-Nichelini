@@ -33,7 +33,7 @@ public class AppClient {
         System.out.println("[*] " + nickname + " welcome to Sagrada");
 
         CliView cw = new CliView();
-        SocketClient sc = new SocketClient("localhost", 9091, nickname, input, cw);
+        SocketClient sc = new SocketClient("alenichel.eu", 9091, nickname, input, cw);
         cw.addObserver(sc);
         cw.run();
     }
