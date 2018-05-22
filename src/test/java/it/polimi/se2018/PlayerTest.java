@@ -1,8 +1,8 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.PrivateObjectiveCard;
-import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.WindowPatternCard;
 import org.junit.Assert;
 import org.junit.Test;
@@ -13,7 +13,6 @@ public class PlayerTest {
     @Test
     public void testGetter() {
         Player player = new Player("pippo");
-        Room room = Room.getInstance();
 
         WindowPatternCard windowPatternCard = new WindowPatternCard("viaLux");
         WindowPatternCard windowPatternCard2 = new WindowPatternCard("virtus");
@@ -25,6 +24,8 @@ public class PlayerTest {
         windowPatternCards.add(windowPatternCard2);
         windowPatternCards.add(windowPatternCard3);
         windowPatternCards.add(windowPatternCard4);
+
+        Game game = new Game();
 
         Assert.assertEquals("pippo", player.getNickname());
 
@@ -38,10 +39,14 @@ public class PlayerTest {
         player.setPlayerNumber(2);
         Assert.assertEquals(2, player.getPlayerNumber());
         Assert.assertNotEquals(3, player.getPlayerNumber());
-        
+
         player.setInGame(false);
         Assert.assertEquals(false, player.getInGame());
         Assert.assertNotEquals(true, player.getInGame());
+
+        player.setActivePatternCard(windowPatternCard);
+        Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
+        Assert.assertNotEquals(windowPatternCard2, player.getActivePatternCard());
 
     }
 

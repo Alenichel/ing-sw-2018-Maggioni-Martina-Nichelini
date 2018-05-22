@@ -1,19 +1,21 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Room;
 import it.polimi.se2018.model.Server;
 import org.junit.Assert;
 import org.junit.Test;
+import java.util.ArrayList;
+
 
 public class ServerTest {
 
     @Test
     public void testGetter() {
         Server s = Server.getInstance();
-        String gameName = "game";
         Player p = new Player("admin");
-        Room r = Room.getInstance();
+        ArrayList<Player> onlinePlayers = new ArrayList<>();
+        ArrayList<Player> inGamePlayers = new ArrayList<>();
+        ArrayList<Player> waitingPlayers = new ArrayList<>();
 
         Assert.assertEquals( 5050, s.getServerPort());
         Assert.assertNotEquals(2018, s.getServerPort());
@@ -24,18 +26,32 @@ public class ServerTest {
         Assert.assertEquals(60, s.getDefaultMoveTimer());
         Assert.assertNotEquals(90, s.getDefaultMoveTimer());
 
-        s.addPlayer(p);
+        Assert.assertEquals(null, s.getCurrentGame());
+        Assert.assertNotEquals("g", s.getCurrentGame());
+
+        s.getOnlinePlayers().add(p);
+        s.addPlayer(onlinePlayers, p);
         Assert.assertTrue(s.getOnlinePlayers().contains(p));
 
-        s.removePlayer(p);
+        s.getOnlinePlayers().remove(p);
+        s.removePlayer(onlinePlayers, p);
         Assert.assertTrue(!s.getOnlinePlayers().contains(p));
 
-        Room room = Room.getInstance();
-        s.addRoom(room);
-        Assert.assertEquals(true, s.getActiveRooms().contains(r));
+        s.getWaitingPlayers().add(p);
+        s.addPlayer(waitingPlayers, p);
+        Assert.assertTrue(s.getWaitingPlayers().contains(p));
 
-        /*removeRoom(gameName, p);
-        Assert.assertEquals(true, !s.getActiveGames().contains(r));*/
+        s.getWaitingPlayers().remove(p);
+        s.removePlayer(waitingPlayers, p);
+        Assert.assertTrue(!s.getWaitingPlayers().contains(p));
+
+        s.getInGamePlayers().add(p);
+        s.addPlayer(inGamePlayers, p);
+        Assert.assertTrue(s.getInGamePlayers().contains(p));
+
+        s.getInGamePlayers().remove(p);
+        s.removePlayer(inGamePlayers, p);
+        Assert.assertTrue(!s.getInGamePlayers().contains(p));
 
     }
 
