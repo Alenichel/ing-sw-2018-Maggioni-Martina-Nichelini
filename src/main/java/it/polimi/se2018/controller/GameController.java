@@ -88,8 +88,12 @@ public class GameController implements Observer, Serializable{
         switch(((Message)msg).getMessageType()){
 
             case "RequestMessage":
-                if (((RequestMessage)msg).getRequest().equalsIgnoreCase("PatternCardPool")){
-                    ((View)observable).controllerCallback(new GiveMessage("PatternCardPool", this.getRandomPatternCards()));
+                RequestMessage rMsg = ((RequestMessage)msg);
+                if (rMsg.getRequest().equalsIgnoreCase("PatternCardPool")){
+                    ((VirtualView)observable).controllerCallback(new GiveMessage("PatternCardPool", this.getRandomPatternCards()));
+                }
+                else if (rMsg.getRequest().equals("PlayerInGame")){
+                    ((VirtualView) observable).controllerCallback(new GiveMessage("PlayerInGame", gameAssociated.getPlayers()));
                 }
                 break;
 
