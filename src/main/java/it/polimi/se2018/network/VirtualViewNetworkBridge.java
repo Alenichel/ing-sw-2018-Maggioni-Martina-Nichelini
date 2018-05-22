@@ -17,6 +17,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Observable;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 import java.util.stream.Stream;
 
 /**
@@ -33,6 +35,8 @@ public class VirtualViewNetworkBridge extends Thread {
     private VirtualView associatedVirtualView;
     private Player player;
 
+    BlockingQueue callbackQueue = new SynchronousQueue();
+
     public VirtualViewNetworkBridge(Socket socket){
         this.socket = socket;
         try {
@@ -42,7 +46,7 @@ public class VirtualViewNetworkBridge extends Thread {
             authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
 
         } catch (IOException | ClassNotFoundException | AuthenticationErrorException e){
-            System.out.println(e);
+            System.out.println("COSTRUTTORE: " + e);
         }
 
         if (this.clientAuthenticated){
@@ -56,10 +60,12 @@ public class VirtualViewNetworkBridge extends Thread {
             try {
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException e){
-                System.out.println(e);
+                System.out.println("Autenticazione " + e);
             }
             VirtualListener vl = new VirtualListener();
+            Sender s = new Sender();
             vl.start();
+            s.start();
 
         }
         else {
@@ -101,12 +107,10 @@ public class VirtualViewNetworkBridge extends Thread {
      */
     public void controllerCallback(Message callbackMessage){
         try {
-            this.oos.writeObject(callbackMessage);
-            this.oos.flush();
-        } catch (IOException e){
-            System.out.println(e);
-        }
+            callbackQueue.put(callbackMessage);
+        } catch (InterruptedException e) {e.printStackTrace();}
     }
+
 
     /**
      * This method handles update messages coming from model classes directed to the registered virtual views.
@@ -117,20 +121,31 @@ public class VirtualViewNetworkBridge extends Thread {
     public void update(Observable o, Object msg){
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
-            this.oos.writeObject(suc);
-            this.oos.flush();
-        } catch (IOException e){
-            System.out.println(e);
-        }
+            callbackQueue.put(suc);
+        } catch (InterruptedException e){e.printStackTrace();}
     }
+
+    private class Sender extends Thread{
+        @Override
+        public void run() {
+            try {
+                Message msg = new UpdateMessage("ciao");
+                while (msg.getMessageType() != "quit") {
+                    msg = (Message)callbackQueue.take();
+                    oos.writeObject(msg);
+                    oos.flush();
+                }
+            } catch (InterruptedException | IOException e) {e.printStackTrace();}
+        }
+        }
 
     /**
      * This inner class listen for messages coming from associated client and calls for notify method of the VirtualView.
      */
-    public class VirtualListener extends Thread {
+    private class VirtualListener extends Thread {
         @Override
         public void run(){
-            // qui deve ricevere dalla view e inoltrare al controller.
+            // qui deve ricevere dalla view e inoltrare al controller
             try {
                 while (clientConnected && !socket.isClosed()) {
                     try {
@@ -148,7 +163,8 @@ public class VirtualViewNetworkBridge extends Thread {
                 socket.close();
                 System.out.println("Exited");
             }
-            catch (IOException e) {System.out.println(e); }
+            catch (IOException e) {System.out.println("LISTENER" + e);
+            e.printStackTrace();}
         }
     }
 }

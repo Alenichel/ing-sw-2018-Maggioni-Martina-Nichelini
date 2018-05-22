@@ -24,9 +24,12 @@ public class CliView extends View implements Observer {
             case "connectedplayers":
                     this.setChanged();
                     this.notifyObservers(new RequestMessage("ConnectedPlayers"));
+                    break;
+
+            case "PlayerInGame":
+                this.setChanged();
+                this.notifyObservers(new RequestMessage("PlayerInGame"));
                 break;
-
-
             default: break;
         }
     }

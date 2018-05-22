@@ -15,13 +15,13 @@ public class AppClient {
     public static void main(String[] args) {
         Scanner sinput = new Scanner(System.in);
 
-        System.out.println("[*] Please insert your username: ");
+        System.out.print("[*] Please insert your username: ");
         String input = sinput.nextLine();
 
         String nickname = input.toString();
         //byte[] encodedHash = null;
 
-        System.out.println("[*] Please insert your password: ");
+        System.out.print("\n[*] Please insert your password: ");
         input = sinput.nextLine();
         /*try { //read password from STDIN and apply hash function
 

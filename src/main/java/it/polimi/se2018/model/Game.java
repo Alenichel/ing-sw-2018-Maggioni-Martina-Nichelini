@@ -1,9 +1,10 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.controller.GameController;
+import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
-import it.polimi.se2018.utils.Timer;
+import it.polimi.se2018.utils.TimerHandler;
 import it.polimi.se2018.utils.TimerInterface;
 
 import java.io.Serializable;
@@ -19,15 +20,15 @@ public class Game extends Observable implements Serializable, TimerInterface {
 
     private boolean isStarted;
     private int currentRound = 0;
-
+    private long timerID;
 
     private GameController associatedGameController;
-    private Timer timer;
 
 
     public Game(){
         associatedGameController = new GameController(this);
-        timer = new Timer(this, (long)Server.getInstance().getDefaultMatchmakingTimer());
+        long matchMakingTimer = (long)Server.getInstance().getDefaultMatchmakingTimer();
+        this.timerID = TimerHandler.getInstance().registerTimer(this, matchMakingTimer );
     }
 
     public boolean isStarted() {
@@ -58,6 +59,7 @@ public class Game extends Observable implements Serializable, TimerInterface {
         if (this.isStarted) throw new GameException("Game already started");
         else {
             this.isStarted = started;
+            System.out.println("Partitititititi !");
             UpdateMessage um = new UpdateMessage("GameStarted");
             um.setStringMessage("Game started");
             this.setChanged();
@@ -100,11 +102,8 @@ public class Game extends Observable implements Serializable, TimerInterface {
             }
 
             if (this.players.size() > 1){
-                if (!timer.isAlive()) timer.start();
-                else {
-                    timer.interrupt();
-                    timer.start();
-                }
+                //this.timerDoneAction();
+                TimerHandler.getInstance().startTimer(this.timerID);
                 UpdateMessage um = new UpdateMessage("NewTimer");
                 um.setStringMessage("A new timer has been initialized");
                 this.setChanged();
