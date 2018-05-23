@@ -8,10 +8,7 @@ public class GrozingPliers implements ToolCardEffectStrategy {
     private Dice draftedDice;
     private boolean increase;
 
-    public GrozingPliers(Dice draftedDice, boolean increase) {
-        this.draftedDice = draftedDice;
-        this.increase = increase;
-    }
+    public GrozingPliers() { }
 
     public GrozingPliers refactorGrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
         grozingPliers.draftedDice = draftedDice;

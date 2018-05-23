@@ -7,8 +7,7 @@ import java.util.ArrayList;
 
 public class GlazingHammer implements ToolCardEffectStrategy {
     private ArrayList<Dice> draftedDice;
-    public GlazingHammer(ArrayList<Dice> draftedDice){
-        draftedDice = draftedDice;
+    public GlazingHammer(){
     }
     public GlazingHammer GlazingHammer( GlazingHammer glazingHammer, ArrayList<Dice> draftedDice){
         glazingHammer.draftedDice = draftedDice;

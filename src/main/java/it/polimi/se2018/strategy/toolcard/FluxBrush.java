@@ -7,8 +7,8 @@ public class FluxBrush implements ToolCardEffectStrategy{
 
     private Dice die;
 
-    public FluxBrush(Dice die){
-        this.die = die;
+    public FluxBrush(){
+
     }
 
     public FluxBrush FluxBrush(FluxBrush fluxBrush, Dice die){
