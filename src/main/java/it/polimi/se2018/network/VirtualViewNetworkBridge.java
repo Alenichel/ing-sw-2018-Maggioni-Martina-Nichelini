@@ -5,7 +5,9 @@ import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
+import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.view.VirtualView;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
@@ -45,8 +47,13 @@ public class VirtualViewNetworkBridge extends Thread {
             HandshakeConnectionMessage hcm = (HandshakeConnectionMessage) this.ois.readObject();
             authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
 
-        } catch (IOException | ClassNotFoundException | AuthenticationErrorException e){
-            System.out.println("COSTRUTTORE: " + e);
+        }
+        catch (AuthenticationErrorException e ) {
+            Logger.WARNING("WWNB_CONSTRUCTOR: Unidentified user tried to log in");
+            }
+        catch (IOException | ClassNotFoundException e){
+            Logger.ERROR("WWNB_CONSTRUCTOR: " + e);
+            e.printStackTrace();
         }
 
         if (this.clientAuthenticated){
@@ -155,7 +162,8 @@ public class VirtualViewNetworkBridge extends Thread {
                         associatedVirtualView.mySetChanged();
                         associatedVirtualView.notifyObservers(/*packet.getObservable(), */packet.getObject());
                     } catch (ClassNotFoundException e){
-                        System.out.println(e);
+                        Logger.ERROR(e.toString());
+                        e.printStackTrace();
                     }
                 }
                 ois.close();
@@ -163,8 +171,16 @@ public class VirtualViewNetworkBridge extends Thread {
                 socket.close();
                 System.out.println("Exited");
             }
-            catch (IOException e) {System.out.println("LISTENER" + e);
-            e.printStackTrace();}
+            catch (EOFException e){
+                Logger.NOTIFICATION("VVNB_LISTENER: Socket has been close client side");
+                associatedVirtualView.mySetChanged();
+                associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
+                return;
+            }
+            catch (IOException e) {
+                Logger.ERROR("VVNB_LISTENER: " + e);
+                e.printStackTrace();
+            }
         }
     }
 }
