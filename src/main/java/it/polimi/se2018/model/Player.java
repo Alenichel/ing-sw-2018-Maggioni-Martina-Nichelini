@@ -30,6 +30,7 @@ public class Player extends Observable implements Serializable{
     }
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
+        this.numberOfFavorTokens = windowPatternCard.getNumberOfFavorTokens();
     }
     public void setPlayerNumber(int number){
         this.playerNumber = number;
@@ -54,6 +55,9 @@ public class Player extends Observable implements Serializable{
     }
     public Boolean getOnline(){
         return this.online;
+    }
+    public Game getLastGameJoined() {
+        return lastGameJoined;
     }
     public ObjectiveCard getPrivateObjectiveCard() {
         return privateObjectiveCard;
