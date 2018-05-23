@@ -32,18 +32,19 @@ public class GameSetupController implements Serializable {
         int n;
         ArrayList<String> toolName = new ArrayList<>();
         ArrayList<ToolCard> selectedToolCards = new ArrayList<ToolCard>();
+
         for(ToolCardsName t : ToolCardsName.values()){
             toolName.add(t.toString());
         }
 
         Random rand = new Random();
-        n = rand.nextInt(4)+1;
 
         for(int i = 0; i<3; i++){
             n = rand.nextInt(toolName.size());
             selectedToolCards.add(new ToolCard(nameToObject(toolName.get(n))));
             toolName.remove(n);
         }
+        this.associatedGame.setToolCards(selectedToolCards);
     }
 
     private ToolCardEffectStrategy nameToObject(String name){
@@ -79,24 +80,17 @@ public class GameSetupController implements Serializable {
         }
     }
 
-    private  ArrayList<ToolCard> initializeToolCard(){
-        ArrayList<ToolCard> toolCards = new ArrayList<>();
-        /*toolCards.add(new ToolCard(new GlazingHammer()));
-        toolCards.add(new ToolCard(new GrindingStone()));
-        toolCards.add(new ToolCard(new GlazingHammer()));*/
-        return toolCards;
-    }
 
     private void initializePlayers(Game game){
         for(Player player : game.getPlayers()){
             player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens()); //messo dirattemente in player
-
         }
     }
 
     public void initialize(){
         this.diceInitializer();
         this.initializePatternCard();
+        this.initializeToolCards();
     }
 
 }
