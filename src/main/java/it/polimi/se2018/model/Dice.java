@@ -1,13 +1,15 @@
 package it.polimi.se2018.model;
 
 
+import it.polimi.se2018.utils.DiceLocation;
+
 import java.util.Objects;
 import java.util.Random;
 
 public class Dice {
     private int number;
     private String color;
-    private String location;
+    private DiceLocation location;
     private String unicode = "";
 
     public Dice(String color){
@@ -31,7 +33,7 @@ public class Dice {
         return this.number;
     }
 
-    public String getLocation() {
+    public DiceLocation getLocation() {
         return location;
     }
 
@@ -39,7 +41,7 @@ public class Dice {
         this.number = number;
     }
 
-    public void setLocation(String location) {
+    public void setLocation(DiceLocation location) {
         this.location = location;
     }
 
