@@ -4,19 +4,24 @@ import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.strategy.toolcard.GlazingHammer;
-import it.polimi.se2018.strategy.toolcard.GrindingStone;
+import it.polimi.se2018.utils.DiceColor;
+import it.polimi.se2018.utils.DiceLocation;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GameSetupController {
+public class GameSetupController implements Serializable {
 
-    private ArrayList<WindowPatternCard> initializePatternCard(){
+    private Game associatedGame;
+
+    GameSetupController(Game game){
+        this.associatedGame = game;
+    }
+
+
+    private void initializePatternCard(){
         ArrayList<String> windowsPatternCardsName = new ArrayList<>();
-        ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
         windowsPatternCardsName.add("virtus");
         windowsPatternCardsName.add("viaLux");
@@ -44,18 +49,22 @@ public class GameSetupController {
         windowsPatternCardsName.add("waterOfLife");
 
         for (String str : windowsPatternCardsName){
-            initializedPatternCards.add(new WindowPatternCard(str));
+            this.associatedGame.getPatternCards().add(new WindowPatternCard(str));
         }
-        return initializedPatternCards;
     }
 
-    private ArrayList<Dice> initializeDiceBag(){
-        ArrayList<Dice> diceBag = new ArrayList<>();
-        for(Dice dice : diceBag){
-            dice.setLocation("bag");
-            dice.rollDice();
+    /**
+     * This method initialize all dice that will be used during the game.
+     * According to Sagrada's rules, 15 dice for each color are initialized and they are put on the diceBag.
+     */
+    private void diceInitializer(){
+        for (DiceColor dc : DiceColor.values()){
+            for (int i = 0; i < 15; i++){
+                Dice newDice = new Dice(dc.name());
+                newDice.setLocation(DiceLocation.BAG);
+                this.associatedGame.getDiceBag().add(newDice);
+            }
         }
-        return diceBag;
     }
 
     private  ArrayList<ToolCard> initializeToolCard(){
@@ -66,22 +75,16 @@ public class GameSetupController {
         return toolCards;
     }
 
-    public void initializePlayers(Game game){
+    private void initializePlayers(Game game){
         for(Player player : game.getPlayers()){
-            player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens());
+            player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens()); //messo dirattemente in player
 
-            //da finire il setup
         }
     }
 
-
-
-    public void initialize(Game game){
-        game.setPatternCards(initializePatternCard());
-        game.setDiceBag(initializeDiceBag());
-
+    public void initialize(){
+        this.diceInitializer();
+        this.initializePatternCard();
     }
-
-
 
 }
