@@ -5,6 +5,7 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
+import it.polimi.se2018.utils.Logger;
 
 import java.util.*;
 
@@ -61,10 +62,10 @@ public class CliView extends View implements Observer {
 
 
     public void run() {
-        System.out.println("[*] NOTIFICATION: Cli started..");
+        Logger.NOTIFICATION("Cli started..");
         Scanner sinput = new Scanner(System.in);
 
-       System.out.println(this.player.getNickname());
+       System.out.println("*** " + this.player.getNickname() + " ***");
 
         loop: while (true) {
             String input = sinput.nextLine();
@@ -83,7 +84,7 @@ public class CliView extends View implements Observer {
                     try {
                         this.handleGetCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
-                        System.out.println("[*] ERROR: not valid command found");
+                        Logger.ERROR("not valid command found");
                     }
                     break;
 
@@ -95,7 +96,7 @@ public class CliView extends View implements Observer {
                     break loop;
 
                 default:
-                    System.out.println("[*] ERROR: Unrecognized command");
+                    Logger.ERROR("Unrecognized command");
                     break;
             } //end while
         }
