@@ -15,8 +15,9 @@ import java.util.*;
 
 public class GameController implements Observer, Serializable{
     private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
+
     private Game gameAssociated;
-    private GameSetupController gameSetupController = new GameSetupController();
+    private GameSetupController gameSetupController;
 
 
     private List<WindowPatternCard> getRandomPatternCards (){
@@ -32,46 +33,6 @@ public class GameController implements Observer, Serializable{
 
    }
 
-    private ArrayList<WindowPatternCard> initializePatternCard(){
-        ArrayList<String> windowsPatternCardsName = new ArrayList<>();
-        ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
-
-        windowsPatternCardsName.add("virtus");
-        windowsPatternCardsName.add("viaLux");
-        windowsPatternCardsName.add("bellesguard");
-        windowsPatternCardsName.add("keleidoscopicDream");
-        windowsPatternCardsName.add("auroraeMagnificus");
-        windowsPatternCardsName.add("sunCatcher");
-        windowsPatternCardsName.add("shadowThief");
-        windowsPatternCardsName.add("auroraSagradis");
-        windowsPatternCardsName.add("firmitas");
-        windowsPatternCardsName.add("batllo");
-        windowsPatternCardsName.add("industria");
-        windowsPatternCardsName.add("symhonyOfLight");
-        windowsPatternCardsName.add("chromaticSplendor");
-        windowsPatternCardsName.add("comitas");
-        windowsPatternCardsName.add("firelight");
-        windowsPatternCardsName.add("fractalDrops");
-        windowsPatternCardsName.add("fulgorDelCielo");
-        windowsPatternCardsName.add("gravitas");
-        windowsPatternCardsName.add("luxAstram");
-        windowsPatternCardsName.add("luxMundi");
-        windowsPatternCardsName.add("luzCelestial");
-        windowsPatternCardsName.add("ripplesOfLight");
-        windowsPatternCardsName.add("sunsGlory");
-        windowsPatternCardsName.add("waterOfLife");
-
-        for (String str : windowsPatternCardsName){
-            initializedPatternCards.add(new WindowPatternCard(str));
-        }
-        return initializedPatternCards;
-    }
-
-    public GameController(Game game){
-        initializedPatternCards = this.initializePatternCard();
-        this.gameAssociated = game;
-    }
-
     private void onPatternCardSelection(Game game, SelectionMessage message) throws InvalidClassException {
         if (message.getChosenItem() instanceof WindowPatternCard ){
             Player targetPlayer = game.getPlayers().get(message.getPlayerNumber());
@@ -83,6 +44,10 @@ public class GameController implements Observer, Serializable{
         }
     }
 
+    public GameController(Game game){
+        this.gameAssociated = game;
+        this.gameSetupController = new GameSetupController(this.gameAssociated);
+    }
 
    @Override
     public void update(Observable observable, Object msg){
@@ -98,8 +63,9 @@ public class GameController implements Observer, Serializable{
                     ((VirtualView) observable).controllerCallback(new GiveMessage("PlayerInGame", gameAssociated.getPlayers()));
                 }
                 break;
+
             case "SetupMessage":
-                gameSetupController.initialize(this.gameAssociated);
+                gameSetupController.initialize();
                 break;
 
             default: break;
