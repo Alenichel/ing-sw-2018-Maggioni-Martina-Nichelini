@@ -124,9 +124,22 @@ public class Server extends Observable implements Serializable {
         return activeGames;
     }
 
+    public void addPlayerToOnlinePlayers(Player player){
+        this.onlinePlayers.add(player);
+    }
+
+    public void removePlayerFromOnlinePlayers(Player player){
+        this.onlinePlayers.add(player);
+        UpdateMessage um = new UpdateMessage("PlayerStatus");
+        um.setStringMessage(player.toString() + " went offline");
+        this.setChanged();
+        this.notifyObservers(um);
+    }
+
     public void addPlayer(List<Player> arrayList, Player player){
         arrayList.add(player);
     }
+
 
     /**
      * Remove player from the list of server active players.
