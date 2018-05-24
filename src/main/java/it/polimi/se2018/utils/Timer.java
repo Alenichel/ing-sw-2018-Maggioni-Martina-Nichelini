@@ -16,7 +16,7 @@ public class Timer extends Thread{
     @Override
     public void run() {
         try {
-            Logger.NOTIFICATION("Timer started");
+            Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer started");
             sleep(this.duration*1000);
         }catch (InterruptedException e){
             e.printStackTrace();

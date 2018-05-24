@@ -4,6 +4,7 @@ import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
@@ -66,7 +67,7 @@ public class ServerController implements Observer{
             this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of ingame players
         }catch (IndexOutOfBoundsException e){
             this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
-        } catch (GameException e){ Logger.ERROR(e.toString());}
+        } catch (GameException e){ Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
     }
 
     /**
@@ -105,7 +106,7 @@ public class ServerController implements Observer{
 
     public void update (Observable observable, Object message){
 
-        Logger.NOTIFICATION(":SERVER_CONTROLLER: Receveid -> " + ((Message) message).getMessageType());
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":SERVER_CONTROLLER: Receveid -> " + ((Message) message).getMessageType());
         switch(((Message)message).getMessageType()){
 
             case "ConnectionMessage":

@@ -6,6 +6,7 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerType;
 
 import java.util.*;
 
@@ -53,7 +54,7 @@ public class CliView extends View implements Observer {
 
     private void requestCallback(GiveMessage callbackMessage){
         this.lastObjectReceveid = callbackMessage.getGivenObject();
-        System.out.println(this.lastObjectReceveid);
+        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, lastObjectReceveid.toString());
     }
 
     public void controllerCallback(Message callbackMessage){
@@ -62,10 +63,10 @@ public class CliView extends View implements Observer {
 
 
     public void run() {
-        Logger.NOTIFICATION("Cli started..");
+        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
         Scanner sinput = new Scanner(System.in);
 
-       System.out.println("*** " + this.player.getNickname() + " ***");
+        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
 
         loop: while (true) {
             String input = sinput.nextLine();
@@ -84,7 +85,7 @@ public class CliView extends View implements Observer {
                     try {
                         this.handleGetCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
-                        Logger.ERROR("not valid command found");
+                        Logger.ERROR(LoggerType.CLIENT_SIDE, "not valid command found");
                     }
                     break;
 
@@ -96,7 +97,7 @@ public class CliView extends View implements Observer {
                     break loop;
 
                 default:
-                    Logger.ERROR("Unrecognized command");
+                    Logger.ERROR(LoggerType.CLIENT_SIDE, "Unrecognized command");
                     break;
             } //end while
         }
@@ -105,7 +106,7 @@ public class CliView extends View implements Observer {
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
-                System.out.println(((UpdateMessage)msg));
+                Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,((UpdateMessage)msg).toString());
                 break;
             default: break;
         }

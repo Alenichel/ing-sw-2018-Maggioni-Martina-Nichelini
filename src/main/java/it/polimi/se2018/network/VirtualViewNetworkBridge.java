@@ -1,27 +1,20 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.VirtualView;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.SynchronousQueue;
-import java.util.stream.Stream;
 
 /**
  * This class is the bridge between the virtual view and the rest of the network.
@@ -37,7 +30,7 @@ public class VirtualViewNetworkBridge extends Thread {
     private VirtualView associatedVirtualView;
     private Player player;
 
-    BlockingQueue callbackQueue = new SynchronousQueue();
+    BlockingQueue queue = new SynchronousQueue();
 
     public VirtualViewNetworkBridge(Socket socket){
         this.socket = socket;
@@ -49,10 +42,10 @@ public class VirtualViewNetworkBridge extends Thread {
 
         }
         catch (AuthenticationErrorException e ) {
-            Logger.WARNING("WWNB_CONSTRUCTOR: Unidentified user tried to log in");
+            Logger.WARNING(LoggerType.SERVER_SIDE, ":WWNB_CONSTRUCTOR: Unidentified user tried to log in");
             }
         catch (IOException | ClassNotFoundException e){
-            Logger.ERROR("WWNB_CONSTRUCTOR: " + e);
+            Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB_CONSTRUCTOR: " + e);
             e.printStackTrace();
         }
 
@@ -67,7 +60,7 @@ public class VirtualViewNetworkBridge extends Thread {
             try {
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException e){
-                System.out.println("Autenticazione " + e);
+                Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
             }
             VirtualListener vl = new VirtualListener();
             Sender s = new Sender();
@@ -79,7 +72,7 @@ public class VirtualViewNetworkBridge extends Thread {
             try{
                 oos.writeObject(new ErrorMessage("Authentication Error"));
                 socket.close();
-            } catch (IOException e){System.out.println(e);}
+            } catch (IOException e){Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
         }
     }
 
@@ -96,14 +89,14 @@ public class VirtualViewNetworkBridge extends Thread {
                 if (userInfo[0].equals(name)) {
                     if (userInfo[1].equals(password)){
                         this.clientAuthenticated = true;
-                        System.out.println("[*] NOTIFICATION: user " + name +  " has been authenticated");
+                        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "user " + name +  " has been authenticated");
                         this.player = new Player(name);
                         return;
                     }
                 }
             }
             throw new AuthenticationErrorException("UserNotFound");
-        } catch (IOException e){System.out.println(e);}
+        } catch (IOException e){Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
 
     }
 
@@ -114,7 +107,7 @@ public class VirtualViewNetworkBridge extends Thread {
      */
     public void controllerCallback(Message callbackMessage){
         try {
-            callbackQueue.put(callbackMessage);
+            queue.put(callbackMessage);
         } catch (InterruptedException e) {e.printStackTrace();}
     }
 
@@ -128,7 +121,7 @@ public class VirtualViewNetworkBridge extends Thread {
     public void update(Observable o, Object msg){
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
-            callbackQueue.put(suc);
+            queue.put(suc);
         } catch (InterruptedException e){e.printStackTrace();}
     }
 
@@ -138,13 +131,13 @@ public class VirtualViewNetworkBridge extends Thread {
             try {
                 Message msg = new UpdateMessage("ciao");
                 while (msg.getMessageType() != "quit") {
-                    msg = (Message)callbackQueue.take();
+                    msg = (Message) queue.take();
                     oos.writeObject(msg);
                     oos.flush();
                 }
             } catch (InterruptedException | IOException e) {e.printStackTrace();}
         }
-        }
+    }
 
     /**
      * This inner class listen for messages coming from associated client and calls for notify method of the VirtualView.
@@ -162,7 +155,7 @@ public class VirtualViewNetworkBridge extends Thread {
                         associatedVirtualView.mySetChanged();
                         associatedVirtualView.notifyObservers(/*packet.getObservable(), */packet.getObject());
                     } catch (ClassNotFoundException e){
-                        Logger.ERROR(e.toString());
+                        Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
                         e.printStackTrace();
                     }
                 }
@@ -172,13 +165,13 @@ public class VirtualViewNetworkBridge extends Thread {
                 System.out.println("Exited");
             }
             catch (EOFException e){
-                Logger.NOTIFICATION("VVNB_LISTENER: Socket has been close client side");
+                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "VVNB_LISTENER: Socket has been close client side");
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
                 return;
             }
             catch (IOException e) {
-                Logger.ERROR("VVNB_LISTENER: " + e);
+                Logger.ERROR(LoggerType.SERVER_SIDE, "VVNB_LISTENER: " + e);
                 e.printStackTrace();
             }
         }

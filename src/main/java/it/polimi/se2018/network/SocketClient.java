@@ -1,6 +1,8 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.View;
 
@@ -8,17 +10,16 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 /**
  * This class works as SocketClient of client game side. It listens for messages coming from the server and
  * it observes RealView for changes to notify them trough the network.
  */
-public class SocketClient extends Thread implements Observer {
+public class SocketClient implements Observer {
 
     private String serverIP;
     private int port;
@@ -26,7 +27,8 @@ public class SocketClient extends Thread implements Observer {
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
     private boolean clientConnected;
-    Scanner stdin = new Scanner(System.in);
+    BlockingQueue queue = new SynchronousQueue();
+
 
     private View associatedView;
 
@@ -37,8 +39,8 @@ public class SocketClient extends Thread implements Observer {
             this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
-            System.out.println("[*] Socket ready..");
-            System.out.println("[*] Connection established");
+            Logger.log(LoggerType.CLIENT_SIDE, "[*] Socket ready..");
+            Logger.log(LoggerType.CLIENT_SIDE, "[*] Connection established");
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
 
@@ -48,17 +50,19 @@ public class SocketClient extends Thread implements Observer {
             if (rcv instanceof HandshakeConnectionMessage)
                 ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
             else {
-                System.out.println(rcv);
+                Logger.log(LoggerType.CLIENT_SIDE, rcv.toString());
                 System.exit(1);
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            System.out.println("[*] Error: " + e +  " exiting..");
+            Logger.ERROR(LoggerType.CLIENT_SIDE,e.toString());
             e.printStackTrace();
             System.exit(1);
         }
 
         Listener listener = new Listener();
+        Sender sender = new Sender();
+        sender.start();
         listener.start();
     }
 
@@ -67,13 +71,14 @@ public class SocketClient extends Thread implements Observer {
      */
     private class Listener extends Thread{
 
+        @Override
         public void run(){
             Object in = null;
             while (!socket.isClosed()){
                 try {
                     in = ois.readObject();
                 } catch (ClassNotFoundException | IOException e){
-                    System.out.println(e);
+                    Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
                     System.exit(1);
                 }
                 //update from model (network)
@@ -89,6 +94,24 @@ public class SocketClient extends Thread implements Observer {
         }
     }
 
+    private class Sender extends Thread{
+        @Override
+        public void run() {
+            try {
+                Message msg = new UpdateMessage("ciao");
+                while (msg.getMessageType() != "quit") {
+                    msg = (Message) queue.take();
+                    oos.writeObject(msg);
+                    oos.flush();
+                }
+            } catch (InterruptedException | IOException e) {
+                Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
+                e.printStackTrace();
+            }
+        }
+    }
+
+
     /**
      * This method implements Observer interface and simply take updating params and sends it trough the network.
      * @param o
@@ -97,11 +120,9 @@ public class SocketClient extends Thread implements Observer {
     public void update(Observable o, Object msg) {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
-            this.oos.writeObject(suc);
-            this.oos.flush();
-        } catch (IOException e) {
-            System.out.println(e);
-        }
+            queue.put(suc);
+        } catch (InterruptedException e) {
+            Logger.ERROR(LoggerType.CLIENT_SIDE, "::SC_UPDATE: InterruptedException");}
     }
 }
 

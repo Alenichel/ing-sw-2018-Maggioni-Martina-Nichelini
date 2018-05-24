@@ -17,6 +17,6 @@ public class UpdateMessage extends Message {
 
     @Override
     public String toString(){
-        return "[*] NOTIFICATION: " + this.stringMessage;
+        return this.stringMessage;
     }
 }
