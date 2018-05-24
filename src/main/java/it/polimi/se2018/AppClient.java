@@ -2,6 +2,7 @@ package it.polimi.se2018;
 
 
 
+import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
@@ -19,8 +20,10 @@ public class AppClient {
 
         String nickname = input.toString();
 
-        System.out.print("\n[*] Please insert your password: ");
-        input = sinput.nextLine();
+        if (Server.getInstance().isConfigurationRequired()) {
+            System.out.print("\n[*] Please insert your password: ");
+            input = sinput.nextLine();
+        } else { input = "null"; }
 
         System.out.println("[*] " + nickname + " welcome to Sagrada");
 

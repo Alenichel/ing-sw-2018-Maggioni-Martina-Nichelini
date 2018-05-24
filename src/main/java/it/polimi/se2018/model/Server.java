@@ -3,6 +3,7 @@ import it.polimi.se2018.message.UpdateMessage;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.swing.text.StyledEditorKit;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,7 +14,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Observable;
-import java.util.Observer;
 
 /**
  * Server class represents the server with all default params and list of active games and active players.
@@ -23,11 +23,13 @@ public class Server extends Observable implements Serializable {
     private int port;
     private int defaultMatchmakingTimer;
     private int defaultMoveTimer;
+    private boolean configurationRequired;
 
     private static final String HOME_PATH = System.getProperty("user.home");
     private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
     private ArrayList<Player> onlinePlayers = new ArrayList<>();
+    private ArrayList<Player> offlinePlayers = new ArrayList<>();
     private ArrayList<Player> inGamePlayers = new ArrayList<>();
     private ArrayList<Player> waitingPlayers = new ArrayList<>();
     private Game currentGame;
@@ -68,7 +70,7 @@ public class Server extends Observable implements Serializable {
      * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-                File configurationFile = new File(HOME_PATH + CONFIGURATION_FILENAME);
+                File configurationFile = new File("resources" + CONFIGURATION_FILENAME);
                 DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
                 Document doc = documentBuilder.parse(configurationFile);
@@ -76,6 +78,7 @@ public class Server extends Observable implements Serializable {
                 this.port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
                 this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakingTimer").item(0).getTextContent());
                 this.defaultMoveTimer = Integer.parseInt(doc.getElementsByTagName("defaultMoveTimer").item(0).getTextContent());
+                this.configurationRequired = Boolean.parseBoolean(doc.getElementsByTagName("requirePassword").item(0).getTextContent());
         }
 
     /**
@@ -93,6 +96,10 @@ public class Server extends Observable implements Serializable {
     public int getDefaultMoveTimer(){
                 return this.defaultMoveTimer;
         }
+
+    public boolean isConfigurationRequired() {
+        return configurationRequired;
+    }
 
     /**
      * Server port getter.
@@ -124,12 +131,19 @@ public class Server extends Observable implements Serializable {
         return activeGames;
     }
 
+    public ArrayList<Player> getOfflinePlayers() {
+        return offlinePlayers;
+    }
+
     public void addPlayerToOnlinePlayers(Player player){
+        if (offlinePlayers.contains(player)) offlinePlayers.remove(player);
         this.onlinePlayers.add(player);
     }
 
     public void removePlayerFromOnlinePlayers(Player player){
-        this.onlinePlayers.add(player);
+        this.onlinePlayers.remove(player);
+        this.offlinePlayers.add(player);
+
         UpdateMessage um = new UpdateMessage("PlayerStatus");
         um.setStringMessage(player.toString() + " went offline");
         this.setChanged();

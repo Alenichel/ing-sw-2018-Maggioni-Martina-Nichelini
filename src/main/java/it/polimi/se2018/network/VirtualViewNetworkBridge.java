@@ -3,6 +3,7 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.VirtualView;
@@ -50,18 +51,20 @@ public class VirtualViewNetworkBridge extends Thread {
         }
 
         if (this.clientAuthenticated){
-            //una volta che il giocatore è autenticato lo metto nella stanza
+            //once the player is authenticated, I put him in the setupping game.
             this.associatedVirtualView = new VirtualView(this, this.player);
 
             associatedVirtualView.mySetChanged();
             associatedVirtualView.notifyObservers(new ConnectionMessage(this.player, true));
 
-            //mando il giocatore indietro
+            //sending back the instance of the player
             try {
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException e){
                 Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
             }
+
+            //starting connection handler thread.
             VirtualListener vl = new VirtualListener();
             Sender s = new Sender();
             vl.start();
@@ -76,6 +79,24 @@ public class VirtualViewNetworkBridge extends Thread {
         }
     }
 
+    /**
+     * This method check if the server contains an instance of a player with the same name of the one
+     * provided. If true, it returns that instance, otherwise it create a new player whit that name and
+     * returns it.
+     * @param name of the player to generate
+     * @return
+     */
+    private Player generateUser(String name) throws  AuthenticationErrorException{
+        for ( Player p: Server.getInstance().getOnlinePlayers() )
+            if (p.getNickname().equals(name)) {
+            throw new AuthenticationErrorException("UserAlreadyConnected");
+            }
+
+        for ( Player p : Server.getInstance().getOfflinePlayers() ){
+            if ( p.getNickname().equals(name)) return p;
+        }
+        return new Player(name);
+    }
 
     private void authenticateUser(String name, String password) throws AuthenticationErrorException {
         String HOME_PATH = System.getProperty("user.home");
@@ -87,10 +108,20 @@ public class VirtualViewNetworkBridge extends Thread {
                 nextLine = reader.readLine();
                 String[] userInfo = nextLine.split(":");
                 if (userInfo[0].equals(name)) {
-                    if (userInfo[1].equals(password)){
-                        this.clientAuthenticated = true;
-                        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "user " + name +  " has been authenticated");
-                        this.player = new Player(name);
+                    try {
+                        if (Server.getInstance().isConfigurationRequired()) {
+                            if (userInfo[1].equals(password)) {
+                                this.clientAuthenticated = true;
+                                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "user " + name + " has been authenticated");
+                                this.player = generateUser(name);
+                                return;
+                            }
+                        } else {
+                            this.clientAuthenticated = true;
+                            this.player = generateUser(name);
+                        }
+                    } catch (AuthenticationErrorException e) {
+                        this.clientAuthenticated = false;
                         return;
                     }
                 }
