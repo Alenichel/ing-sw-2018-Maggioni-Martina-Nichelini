@@ -1,5 +1,5 @@
 package it.polimi.se2018.utils;
 
 public enum DiceLocation {
-    BAG, TABLE;
+    BAG, TABLE, ROUNDTRACK, WINDOWPATTERNCARD;
 }

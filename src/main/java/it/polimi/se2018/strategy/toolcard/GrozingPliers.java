@@ -10,22 +10,20 @@ public class GrozingPliers implements ToolCardEffectStrategy {
 
     public GrozingPliers() { }
 
-    public GrozingPliers refactorGrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
+    public GrozingPliers GrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
         grozingPliers.draftedDice = draftedDice;
         grozingPliers.increase = increase;
         return grozingPliers;
     }
 
 
-
+    @Override
     public int executeEffect() {
-        if (draftedDice.getNumber() != 6 || draftedDice.getNumber() != 1) {
-            if (increase) {
-                draftedDice.setNumber(draftedDice.getNumber() + 1);
-            } else {
-                draftedDice.setNumber(draftedDice.getNumber() - 1);
+        if (increase && draftedDice.getNumber() != 6) {
+            draftedDice.setNumber(draftedDice.getNumber() + 1);
+        } else if (draftedDice.getNumber() != 1) {
+            draftedDice.setNumber(draftedDice.getNumber() - 1);
             }
-        }
         return 1;
-    }
+        }
 }
