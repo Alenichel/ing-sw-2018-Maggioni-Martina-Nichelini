@@ -1,4 +1,5 @@
 <shadowThief>
+    <nOfFavorTokens>5</nOfFavorTokens>
     <number>
       <one></one>
       <two></two>
