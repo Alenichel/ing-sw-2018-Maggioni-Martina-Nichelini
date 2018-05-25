@@ -13,6 +13,7 @@ public class CliView extends View implements Observer {
 
     private Object lastObjectReceveid;
     private Player player;
+    private Scanner sinput = new Scanner(System.in);
 
 
     public void setPlayer(Player player) {
@@ -64,8 +65,6 @@ public class CliView extends View implements Observer {
 
     public void run() {
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
-        Scanner sinput = new Scanner(System.in);
-
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
 
         loop: while (true) {
@@ -104,7 +103,8 @@ public class CliView extends View implements Observer {
     }
 
     public void cliGame(Observable o){
-        Scanner sinput = new Scanner(System.in);
+
+
         Game game = ((Game)o);
         ArrayList<Player> players = new ArrayList<>(game.getPlayers());
         int i = 1;
@@ -113,11 +113,11 @@ public class CliView extends View implements Observer {
             Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, ( (Integer) p.getNumberOfFavorTokens() ).toString());
         }*/
 
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Select one these cards : ");
+        Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : ");
 
         for(WindowPatternCard w : player.getWindowPatternCardsPool()){
-            Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, ((Integer) i).toString());
-            Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, w.toString());
+            Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString());
+            Logger.log(LoggerType.CLIENT_SIDE, w.toString());
         }
         String input = sinput.nextLine();
         this.setChanged();
@@ -136,8 +136,9 @@ public class CliView extends View implements Observer {
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
+                String wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
-                if(StringUtils.isEquals("Game started", (((Message) msg).getStringMessage()))) {
+                if(wtu.equals("GameStarted")) {
                     cliGame(o);
                 }
                 break;
