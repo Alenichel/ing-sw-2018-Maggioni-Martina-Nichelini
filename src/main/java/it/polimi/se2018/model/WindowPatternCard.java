@@ -185,17 +185,22 @@ public class WindowPatternCard extends Card implements Serializable {
      * @param dice
      * @return True if it's a valid position, false otherwise.
      */
-    private boolean isValidRestriction(WindowCell windowCell, Dice dice){
+    private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint ;
+
+        if(dice.getColor() != null) colorConstraint = !(windowCell.getColorConstraint() == dice.getColor());
+        else colorConstraint = true;
+
+        return colorConstraint;
+    }
+
+    private boolean isValidNumberRestriction(WindowCell windowCell, Dice dice){
         boolean numberConstraint;
 
         if(dice.getNumber() != 0) numberConstraint =  !(windowCell.getNumberConstraint() == dice.getNumber());
         else numberConstraint = true;
 
-        if(dice.getColor() != null) colorConstraint = !(windowCell.getColorConstraint() == dice.getColor());
-        else colorConstraint = true;
-
-        return colorConstraint && numberConstraint;
+        return numberConstraint;
     }
 
     /**
@@ -203,22 +208,27 @@ public class WindowPatternCard extends Card implements Serializable {
      * @param dice
      * @param row
      * @param column
-     * @param checkConstraintsRestriction Set this to false if you want to ignore window cell constraints.
+     * @param checkColorRestriction Set this to false if you want to ignore window cell color constraints.
+     * @param checkNumberRestriction Set this to false if you want to ignore window cell number constraints.
      * @param checkPositionRestriction Set this to true if you want to ignore position requirements.
      * @throws NotValidInsertion Thrown if requirements are not met.
      * @throws NotEmptyWindowCellException Thrown if the given cell is not empty
      */
-    public void insertDice(Dice dice, int row, int column , boolean checkConstraintsRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
-        boolean constraintsRestriction = false;
+    public void insertDice(Dice dice, int row, int column , boolean checkColorRestriction, boolean checkNumberRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
+        boolean colorRestriction = false;
+        boolean numberRestriction = false;
         boolean positionRestriction = false;
 
-        if (checkConstraintsRestriction) constraintsRestriction = isValidRestriction(this.getCell(row,column),dice);
-        else constraintsRestriction = true;
+        if (checkColorRestriction) colorRestriction = isValidColorRestriction(this.getCell(row,column),dice);
+        else colorRestriction = true;
+
+        if (checkNumberRestriction) numberRestriction = isValidNumberRestriction(this.getCell(row,column),dice);
+        else numberRestriction = true;
 
         if (checkPositionRestriction) positionRestriction = isValidPosition(this.getCell(row,column), dice);
         else positionRestriction = true;
 
-        if (constraintsRestriction && positionRestriction) this.getCell(row, column).setAssignedDice(dice);
+        if (colorRestriction && numberRestriction && positionRestriction) this.getCell(row, column).setAssignedDice(dice);
         else throw new NotValidInsertion("Not valid position");
     }
 
