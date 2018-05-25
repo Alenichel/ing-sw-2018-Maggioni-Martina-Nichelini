@@ -47,6 +47,9 @@ public class Lathekin implements ToolCardEffectStrategy {
             throw e;
         }
 
+        start1.setAssignedDice(null);
+        start2.setAssignedDice(null);
+
         return 0;
     }
 
