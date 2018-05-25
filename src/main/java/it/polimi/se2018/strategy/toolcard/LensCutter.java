@@ -20,7 +20,7 @@ public class LensCutter implements ToolCardEffectStrategy {
 
     @Override
     public int executeEffect(){
-        rtDice.setLocation(DiceLocation.WINDOWPATTERNCARD); //scelta dal giocatore
+        rtDice.setLocation(DiceLocation.WINDOWCELL); //scelta dal giocatore
         draftedDice.setLocation(DiceLocation.ROUNDTRACK); //scelta dal giocatore
         return 0;
     }
