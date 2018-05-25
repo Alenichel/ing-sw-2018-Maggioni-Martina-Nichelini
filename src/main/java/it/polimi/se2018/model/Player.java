@@ -14,7 +14,7 @@ public class Player extends Observable implements Serializable{
     private Game lastGameJoined;
     private int playerNumber;
     private WindowPatternCard activePatternCard;
-    private ObjectiveCard privateObjectiveCard;
+    private String privateObjectiveCard;
     private int numberOfFavorTokens;
 
     public Player(String nickname) {
@@ -42,7 +42,7 @@ public class Player extends Observable implements Serializable{
         if (!inGame) throw new IllegalArgumentException();
         else activePatternCard = card;
     }
-    public void assignObjectiveCard(ObjectiveCard card){
+    public void assignObjectiveCard(String card){
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
     }
@@ -59,7 +59,7 @@ public class Player extends Observable implements Serializable{
     public Game getLastGameJoined() {
         return lastGameJoined;
     }
-    public ObjectiveCard getPrivateObjectiveCard() {
+    public String getPrivateObjectiveCard() {
         return privateObjectiveCard;
     }
     public WindowPatternCard getActivePatternCard() {
