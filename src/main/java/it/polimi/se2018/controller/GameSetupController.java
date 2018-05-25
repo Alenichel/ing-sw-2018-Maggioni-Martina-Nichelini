@@ -29,6 +29,22 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    private void assignWindowsPatternCardsPool(){
+        ArrayList<Player> players = new ArrayList<Player>(associatedGame.getPlayers());
+        Random random = new Random();
+        ArrayList<WindowPatternCard> genericWindowPatternCards= new ArrayList<WindowPatternCard>(associatedGame.getPatternCards());
+        ArrayList<WindowPatternCard> patternCardsPool = new ArrayList<>();
+
+        for(Player p : players){
+            for(int i = 0; i < 3; i++){
+                int n = random.nextInt(genericWindowPatternCards.size());
+                patternCardsPool.add(genericWindowPatternCards.get(n));
+                genericWindowPatternCards.remove(n);
+            }
+            p.setWindowPatternCardsPool(patternCardsPool);
+        }
+    }
+
     /**
      * This method initialize three random toolcards
      */
@@ -109,7 +125,7 @@ public class GameSetupController implements Serializable {
             case "FluxBrush" : return new FluxBrush();
             case "GlazingHammer" : return new GlazingHammer();
             case "RunningPliers" : return new RunningPliers();
-            case "CorkBackedStraightedge" : return new CorkBackedStraightedge();
+            //case "CorkBackedStraightedge" : return new CorkBackedStraightedge();
             case "GrindingStone" : return new GrindingStone();
             case "FluxRemover" : return new FluxRemover();
             case "TapWheel" : return new TapWheel();
@@ -144,6 +160,7 @@ public class GameSetupController implements Serializable {
         this.initializeToolCards();
         this.initializePublicObject();
         this.initializePrivateObjectiveCards();
+        this.assignWindowsPatternCardsPool();
     }
 
 }
