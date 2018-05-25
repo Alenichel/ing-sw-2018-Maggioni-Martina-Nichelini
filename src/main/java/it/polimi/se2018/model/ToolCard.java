@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 
 public class ToolCard extends Card{
@@ -51,7 +52,7 @@ public class ToolCard extends Card{
     public int executeEffect(){
         try{
             return toolCardEffect.executeEffect();
-        }catch (ToolCardException e){
+        }catch (ToolCardException | NotEmptyWindowCellException e){
             e.printStackTrace();
             return 0;
         }
