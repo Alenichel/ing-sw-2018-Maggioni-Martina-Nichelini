@@ -1,16 +1,14 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.controller.GameController;
-import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
-import it.polimi.se2018.utils.TimerHandler;
-import it.polimi.se2018.utils.TimerInterface;
+
 
 import java.io.Serializable;
 import java.util.*;
 
-public class Game extends Observable implements Serializable, TimerInterface {
+public class Game extends Observable implements Serializable {
     private ArrayList<Dice> diceBag = new ArrayList<>();
     private ArrayList<Dice> diceOnTable = new ArrayList<>();
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
@@ -19,17 +17,12 @@ public class Game extends Observable implements Serializable, TimerInterface {
     private List<Player> players = new ArrayList<>();
 
     private boolean isStarted;
-    private int currentRound = 0;
-    private long timerID;
-    private int timerSecondLeft = 0;
-
-    private long matchMakingTimer;
 
     private GameController associatedGameController;
 
     public Game(){
         associatedGameController = new GameController(this);
-        this.matchMakingTimer = (long)Server.getInstance().getDefaultMatchmakingTimer();
+
     }
 
     public boolean isStarted() {
@@ -56,20 +49,29 @@ public class Game extends Observable implements Serializable, TimerInterface {
         this.toolCards = (ArrayList<ToolCard>) toolCards;
     }
     public void setTimerSecondLeft(int second){
-        this.timerSecondLeft = second;
+        int timerSecondLeft = 0;
+        timerSecondLeft = second;
         this.setChanged();
         UpdateMessage um = new UpdateMessage("TimeLeft");
-        um.setStringMessage(String.valueOf(this.timerSecondLeft));
+        um.setStringMessage(String.valueOf(timerSecondLeft));
         this.notifyObservers(um);
     }
     public void setStarted(boolean started) throws GameException {
         if (this.isStarted) throw new GameException("Game already started");
         else {
-            this.isStarted = started;
-            UpdateMessage um = new UpdateMessage("GameStarted");
-            um.setStringMessage("Game started");
-            this.setChanged();
-            this.notifyObservers(um);
+            if (this.players.size() > 1) {
+                this.isStarted = started;
+                UpdateMessage um = new UpdateMessage("GameStarted");
+                um.setStringMessage("Game started");
+                this.setChanged();
+                this.notifyObservers(um);
+            }
+            else{
+                UpdateMessage um = new UpdateMessage("Timer");
+                um.setStringMessage("Timer done but not enough players connected");
+                this.setChanged();
+                this.notifyObservers(um);
+            }
         }
     }
 
@@ -107,16 +109,6 @@ public class Game extends Observable implements Serializable, TimerInterface {
                 this.notifyObservers(um);
             }
 
-            if (this.players.size() == 2){
-                if (!TimerHandler.checkTimer(this.timerID)) {
-                    this.timerID = TimerHandler.registerTimer(this, this.matchMakingTimer);
-                    TimerHandler.startTimer(this.timerID);
-                    UpdateMessage um = new UpdateMessage("NewTimer");
-                    um.setStringMessage("A new timer has been initialized");
-                    this.setChanged();
-                    this.notifyObservers(um);
-                }
-            }
         }else{
             throw new GameException("AlreadyStartedGame");
         }
@@ -125,21 +117,7 @@ public class Game extends Observable implements Serializable, TimerInterface {
         this.players.remove(player);
     }
 
-    @Override
-    public void timerDoneAction(){
-        try {
-            if (this.players.size() >= 2) this.setStarted(true);
-            else {
-                this.setChanged();
-                UpdateMessage um = new UpdateMessage("Timer");
-                um.setStringMessage("Timer done but not enough players connected");
-                this.notifyObservers(um);
-            }
 
-        }catch (GameException e){
-            e.printStackTrace();
-        }
-    }
 }
 
 

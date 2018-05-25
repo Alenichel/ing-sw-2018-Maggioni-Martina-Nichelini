@@ -5,6 +5,7 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.utils.TimerInterface;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
@@ -50,24 +51,21 @@ public class ServerController implements Observer{
     }
 
     /**
-     * Connect player to server and to first avaiable game
+     * This method handles the connection routine for class server. It's always called together with the same method of
+     * game controller.
      * @param player
      */
-    private synchronized void connectPlayer (Player player, Observer o) {
+    private synchronized void connectPlayer (Player player) {
         server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
         try {
             if (this.server.getCurrentGame() == null) {
                 this.server.setCurrentGame(new Game());
             }
-            this.server.getCurrentGame().addPlayer(player); // try to add player to the settupping game
-            this.server.getCurrentGame().addObserver(o); //add View as observer of the game.
-            player.setInGame(true); // set player status to true
-            player.setLastGameJoined(server.getCurrentGame()); //change last game joined param
-            this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of ingame players
+
         }catch (IndexOutOfBoundsException e){
             this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
-        } catch (GameException e){ Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
+        }
     }
 
     /**
@@ -82,10 +80,12 @@ public class ServerController implements Observer{
 
     }
 
-    private void handleConnectionMessage(Observable observable, ConnectionMessage message){
+    private synchronized void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
-            if ( message.getTarget() == null  )
-                this.connectPlayer(message.getRequester(), (Observer)observable);
+            if ( message.getTarget() == null  ) {
+                this.connectPlayer(message.getRequester());
+                this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
+            }
         }
         else {
             if ( message.getTarget() == null  ) {
@@ -97,7 +97,7 @@ public class ServerController implements Observer{
         }
     }
 
-    private void handleRequestMessage(Observable observable, RequestMessage rMsg){
+    private synchronized void handleRequestMessage(Observable observable, RequestMessage rMsg){
         if (rMsg.getRequest().equals("SubscribePlayer")) {
             this.getPlayerFromNick(((View) observable).getClient().getNickname()).addObserver((Observer) observable);
         }
@@ -126,5 +126,6 @@ public class ServerController implements Observer{
                 break;
         }
     }
+
 
 }
