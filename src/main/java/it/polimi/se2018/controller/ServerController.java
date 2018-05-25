@@ -61,7 +61,7 @@ public class ServerController implements Observer{
                 this.server.setCurrentGame(new Game());
             }
             this.server.getCurrentGame().addPlayer(player); // try to add player to the settupping game
-            this.server.getCurrentGame().addObserver(o);
+            this.server.getCurrentGame().addObserver(o); //add View as observer of the game.
             player.setInGame(true); // set player status to true
             player.setLastGameJoined(server.getCurrentGame()); //change last game joined param
             this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of ingame players
@@ -76,7 +76,10 @@ public class ServerController implements Observer{
      */
     private synchronized void disconnectPlayer (Player player) {
         server.removePlayerFromOnlinePlayers(player);
+
         player.setOnline(false);
+        player.getLastGameJoined().removePlayer(player);
+
     }
 
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
