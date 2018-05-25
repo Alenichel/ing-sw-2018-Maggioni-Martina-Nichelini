@@ -1,11 +1,11 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.strategy.objective.ColorDiagonals;
+import it.polimi.se2018.strategy.objective.ColorVariety;
+import it.polimi.se2018.strategy.objective.ShadeVariety;
 import it.polimi.se2018.strategy.toolcard.*;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.DiceLocation;
-import it.polimi.se2018.utils.ToolCardsName;
-import it.polimi.se2018.utils.WindowPatternCardsName;
+import it.polimi.se2018.utils.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -28,7 +28,11 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    /**
+     * This method initialize three random toolcards
+     */
     private void initializeToolCards(){
+        Random rand = new Random();
         int n;
         ArrayList<String> toolName = new ArrayList<>();
         ArrayList<ToolCard> selectedToolCards = new ArrayList<ToolCard>();
@@ -36,35 +40,13 @@ public class GameSetupController implements Serializable {
         for(ToolCardsName t : ToolCardsName.values()){
             toolName.add(t.toString());
         }
-
-        Random rand = new Random();
-
         for(int i = 0; i<3; i++){
             n = rand.nextInt(toolName.size());
-            selectedToolCards.add(new ToolCard(nameToObject(toolName.get(n))));
+            selectedToolCards.add(new ToolCard(nameToObjectTool(toolName.get(n))));
             toolName.remove(n);
         }
         this.associatedGame.setToolCards(selectedToolCards);
     }
-
-    private ToolCardEffectStrategy nameToObject(String name){
-        switch (name){
-            case "GrozingPliers" : return new GrozingPliers();
-            case "EnglomiseBrush" : return new EnglomiseBrush();
-            case "CopperFoilBurnisher" : return new CopperFoilBurnisher();
-            case "Lathekin" : return new Lathekin();
-            case "LensCutter" : return new LensCutter();
-            case "FluxBrush" : return new FluxBrush();
-            case "GlazingHammer" : return new GlazingHammer();
-            case "RunningPliers" : return new RunningPliers();
-            case "CorkBackedStraightedge" : return new CorkBackedStraightedge();
-            case "GrindingStone" : return new GrindingStone();
-            case "FluxRemover" : return new FluxRemover();
-            case "TapWheel" : return new TapWheel();
-            default : throw new IllegalArgumentException();
-        }
-    }
-
 
     /**
      * This method initialize all dice that will be used during the game.
@@ -80,17 +62,88 @@ public class GameSetupController implements Serializable {
         }
     }
 
-
     private void initializePlayers(Game game){
         for(Player player : game.getPlayers()){
             player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens()); //messo dirattemente in player
         }
     }
 
+    private void initializePublicObject(){
+        Random rand = new Random();
+        int n;
+        ArrayList<String> objectiveName = new ArrayList<>();
+        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<PublicObjectiveCard>();
+
+        for(ObjectiveCardsName po : ObjectiveCardsName.values()){
+            objectiveName.add(po.toString());
+        }
+        for(int i = 0; i<3; i++){
+            n = rand.nextInt(objectiveName.size());
+            selectedObject.add(new PublicObjectiveCard(nameToObjectObjective(objectiveName.get(n))));
+            objectiveName.remove(n);
+        }
+        this.associatedGame.setObjectiveCards(selectedObject);
+    }
+
+    private void initializePrivateObjectiveCards(){
+        Random rand = new Random();
+        int n;
+        ArrayList<String> colorName = new ArrayList<>();
+        for(DiceColor d : DiceColor.values()){
+            colorName.add(d.toString());
+        }
+        for(Player p : this.associatedGame.getPlayers()){
+            n = rand.nextInt(this.associatedGame.getPlayers().size());
+            p.assignObjectiveCard(colorName.get(n));
+            colorName.remove(n);
+        }
+    }
+    private ToolCardEffectStrategy nameToObjectTool(String name){
+        switch (name){
+            case "GrozingPliers" : return new GrozingPliers();
+            case "EnglomiseBrush" : return new EnglomiseBrush();
+            case "CopperFoilBurnisher" : return new CopperFoilBurnisher();
+            case "Lathekin" : return new Lathekin();
+            case "LensCutter" : return new LensCutter();
+            case "FluxBrush" : return new FluxBrush();
+            case "GlazingHammer" : return new GlazingHammer();
+            case "RunningPliers" : return new RunningPliers();
+            case "CorkBackedStraightedge" : return new CorkBackedStraightedge();
+            case "GrindingStone" : return new GrindingStone();
+            case "FluxRemover" : return new FluxRemover();
+            case "TapWheel" : return new TapWheel();
+            default :
+                System.out.println(name);
+                throw new IllegalArgumentException();
+
+        }
+    }
+
+    private ScorePointStrategy nameToObjectObjective(String name){
+        switch (name){
+            case "RowColorVariety" : return new RowColorVariety();
+            case "ColumnColorVariety" : return new ColumnColorVariety();
+            case "RowShadeVariety" : return new RowShadeVariety();
+            case "ColumnShadeVariety" : return new ColumnShadeVariety();
+            case "LightShades" : return new LightShades();
+            case "MediumShades" : return new MediumShades();
+            case "DarkShades" : return new DarkShades();
+            case "ShadeVariety" : return new ShadeVariety();
+            case "ColorDiagonals" : return new ColorDiagonals();
+            case "ColorVariety" : return new ColorVariety();
+            default :
+                System.out.println(name);
+                throw new IllegalArgumentException();
+        }
+    }
+
+
     public void initialize(){
         this.diceInitializer();
         this.initializePatternCard();
         this.initializeToolCards();
+        this.initializePublicObject();
+        this.initializePrivateObjectiveCards();
     }
 
 }
