@@ -16,7 +16,7 @@ public class Player extends Observable implements Serializable{
     private WindowPatternCard activePatternCard;
     private String privateObjectiveCard;
     private int numberOfFavorTokens;
-    private ArrayList<WindowPatternCard> setWindowPatternCardsPool;
+    private ArrayList<WindowPatternCard> windowPatternCardsPool;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -50,8 +50,8 @@ public class Player extends Observable implements Serializable{
     public void setNumberOfFavorTokens(int numberOfFavorTokens) {
         this.numberOfFavorTokens = numberOfFavorTokens;
     }
-    public void setWindowPatternCardsPool(ArrayList<WindowPatternCard> setWindowPatternCardsPool) {
-        this.setWindowPatternCardsPool = setWindowPatternCardsPool;
+    public void setWindowPatternCardsPool(ArrayList<WindowPatternCard> windowPatternCardsPool) {
+        this.windowPatternCardsPool = windowPatternCardsPool;
     }
 
     public Boolean getInGame() {
@@ -79,7 +79,7 @@ public class Player extends Observable implements Serializable{
         return numberOfFavorTokens;
     }
     public ArrayList<WindowPatternCard> getWindowPatternCardsPool() {
-        return setWindowPatternCardsPool;
+        return windowPatternCardsPool;
     }
 
     @Override
