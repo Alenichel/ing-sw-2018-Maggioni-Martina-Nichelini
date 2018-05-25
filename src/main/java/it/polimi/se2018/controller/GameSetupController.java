@@ -1,15 +1,16 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.strategy.objective.ColorDiagonals;
-import it.polimi.se2018.strategy.objective.ColorVariety;
-import it.polimi.se2018.strategy.objective.ShadeVariety;
+import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.strategy.toolcard.*;
 import it.polimi.se2018.utils.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
+
+import static it.polimi.se2018.utils.ObjectiveCardsName.LightShades;
+import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
 
 public class GameSetupController implements Serializable {
 
@@ -121,18 +122,17 @@ public class GameSetupController implements Serializable {
 
     private ScorePointStrategy nameToObjectObjective(String name){
         switch (name){
-            case "RowColorVariety" : return new RowColorVariety();
-            case "ColumnColorVariety" : return new ColumnColorVariety();
-            case "RowShadeVariety" : return new RowShadeVariety();
-            case "ColumnShadeVariety" : return new ColumnShadeVariety();
-            case "LightShades" : return new LightShades();
-            case "MediumShades" : return new MediumShades();
-            case "DarkShades" : return new DarkShades();
+            case "RowColorVariety" : return new RowVariety(VarietyType.COLOR);
+            case "ColumnColorVariety" : return new ColumnVariety(VarietyType.COLOR);
+            case "RowShadeVariety" : return new RowVariety(VarietyType.SHADE);
+            case "ColumnShadeVariety" : return new ColumnVariety(VarietyType.COLOR);
+            case "LightShades" : return new Shades("light");
+            case "MediumShades" : return new Shades("medium");
+            case "DarkShades" : return new Shades("dark");
             case "ShadeVariety" : return new ShadeVariety();
             case "ColorDiagonals" : return new ColorDiagonals();
             case "ColorVariety" : return new ColorVariety();
             default :
-                System.out.println(name);
                 throw new IllegalArgumentException();
         }
     }
