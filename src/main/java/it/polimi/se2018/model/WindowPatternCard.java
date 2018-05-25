@@ -82,7 +82,7 @@ public class WindowPatternCard extends Card implements Serializable {
      * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-        String WINDOWSPATTERNCARD_PATH = "resources";
+        String WINDOWSPATTERNCARD_PATH = "resources/patternCards";
         File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name + ".xml");
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
