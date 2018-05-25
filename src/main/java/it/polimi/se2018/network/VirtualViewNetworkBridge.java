@@ -59,8 +59,9 @@ public class VirtualViewNetworkBridge extends Thread {
 
             //sending back the instance of the player
             try {
+                //queue.put(new HandshakeConnectionMessage(player));
                 oos.writeObject(new HandshakeConnectionMessage(player));
-            }catch (IOException e){
+            }catch (IOException /*| InterruptedException*/ e){
                 Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
             }
 
@@ -142,7 +143,6 @@ public class VirtualViewNetworkBridge extends Thread {
         } catch (InterruptedException e) {e.printStackTrace();}
     }
 
-
     /**
      * This method handles update messages coming from model classes directed to the registered virtual views.
      * Each VirtualView's update method call triggered this method that pass messages to the network.
@@ -160,12 +160,12 @@ public class VirtualViewNetworkBridge extends Thread {
         @Override
         public void run() {
             try {
-                Message msg = new UpdateMessage("ciao");
-                while (msg.getMessageType() != "quit") {
+                Message msg;
+                do {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
                     oos.flush();
-                }
+                } while (msg.getMessageType() != "quit");
             } catch (InterruptedException | IOException e) {e.printStackTrace();}
         }
     }
@@ -176,7 +176,6 @@ public class VirtualViewNetworkBridge extends Thread {
     private class VirtualListener extends Thread {
         @Override
         public void run(){
-            // qui deve ricevere dalla view e inoltrare al controller
             try {
                 while (clientConnected && !socket.isClosed()) {
                     try {
@@ -196,7 +195,7 @@ public class VirtualViewNetworkBridge extends Thread {
                 System.out.println("Exited");
             }
             catch (EOFException e){
-                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "VVNB_LISTENER: Socket has been close client side");
+                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "VVNB_LISTENER: Socket has been closed client side");
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
                 return;
