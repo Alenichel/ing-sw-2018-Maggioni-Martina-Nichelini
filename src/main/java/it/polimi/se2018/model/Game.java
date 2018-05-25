@@ -21,14 +21,15 @@ public class Game extends Observable implements Serializable, TimerInterface {
     private boolean isStarted;
     private int currentRound = 0;
     private long timerID;
+    private int timerSecondLeft = 0;
+
+    private long matchMakingTimer;
 
     private GameController associatedGameController;
 
-
     public Game(){
         associatedGameController = new GameController(this);
-        long matchMakingTimer = (long)Server.getInstance().getDefaultMatchmakingTimer();
-        this.timerID = TimerHandler.getInstance().registerTimer(this, matchMakingTimer );
+        this.matchMakingTimer = (long)Server.getInstance().getDefaultMatchmakingTimer();
     }
 
     public boolean isStarted() {
@@ -54,12 +55,17 @@ public class Game extends Observable implements Serializable, TimerInterface {
     public void setToolCards(List<ToolCard> toolCards) {
         this.toolCards = (ArrayList<ToolCard>) toolCards;
     }
-
+    public void setTimerSecondLeft(int second){
+        this.timerSecondLeft = second;
+        this.setChanged();
+        UpdateMessage um = new UpdateMessage("TimeLeft");
+        um.setStringMessage(String.valueOf(this.timerSecondLeft));
+        this.notifyObservers(um);
+    }
     public void setStarted(boolean started) throws GameException {
         if (this.isStarted) throw new GameException("Game already started");
         else {
             this.isStarted = started;
-            System.out.println("Partitititititi !");
             UpdateMessage um = new UpdateMessage("GameStarted");
             um.setStringMessage("Game started");
             this.setChanged();
@@ -101,23 +107,34 @@ public class Game extends Observable implements Serializable, TimerInterface {
                 this.notifyObservers(um);
             }
 
-            if (this.players.size() > 1){
-                //this.timerDoneAction();
-                TimerHandler.getInstance().startTimer(this.timerID);
-                UpdateMessage um = new UpdateMessage("NewTimer");
-                um.setStringMessage("A new timer has been initialized");
-                this.setChanged();
-                this.notifyObservers(um);
+            if (this.players.size() == 2){
+                if (!TimerHandler.checkTimer(this.timerID)) {
+                    this.timerID = TimerHandler.registerTimer(this, this.matchMakingTimer);
+                    TimerHandler.startTimer(this.timerID);
+                    UpdateMessage um = new UpdateMessage("NewTimer");
+                    um.setStringMessage("A new timer has been initialized");
+                    this.setChanged();
+                    this.notifyObservers(um);
+                }
             }
         }else{
             throw new GameException("AlreadyStartedGame");
         }
     }
+    public void removePlayer(Player player){
+        this.players.remove(player);
+    }
 
     @Override
     public void timerDoneAction(){
         try {
-            this.setStarted(true);
+            if (this.players.size() >= 2) this.setStarted(true);
+            else {
+                this.setChanged();
+                UpdateMessage um = new UpdateMessage("Timer");
+                um.setStringMessage("Timer done but not enough players connected");
+                this.notifyObservers(um);
+            }
 
         }catch (GameException e){
             e.printStackTrace();
