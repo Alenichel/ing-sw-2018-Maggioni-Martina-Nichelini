@@ -13,7 +13,6 @@ public class Lathekin implements ToolCardEffectStrategy {
     private WindowPatternCard windowPatternCard;
     private WindowCell start1;
     private WindowCell start2;
-
     private WindowCell end1;
     private WindowCell end2;
 
@@ -31,37 +30,22 @@ public class Lathekin implements ToolCardEffectStrategy {
 
     @Override
     public int executeEffect() throws ToolCardException, NotEmptyWindowCellException{
-        //Dice d1 = windowPatternCard.getCell().getAssignedDice(); //primo dado scelto dal giocatore
-        //Dice d2 = windowPatternCard.getCell().getAssignedDice(); //secondo dado scelto dal giocatore
 
         if(start1.isEmpty() || start2.isEmpty())
-            throw new ToolCardException("empty windows cell");
+            throw new ToolCardException("empty window cell");
 
         if(!end1.isEmpty() || !end2.isEmpty())
-            throw new ToolCardException("not empty windows cell");
+            throw new ToolCardException("not empty window cell");
 
 
         Dice d1 = this.start1.getAssignedDice();
         Dice d2 = this.start2.getAssignedDice();
         try {
-            this.windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), false, true);
-            this.windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), false, true);
+            this.windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, true);
+            this.windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, true);
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             throw e;
         }
-
-
-
-        /*//controllo che cella di partenza e di arrivo non coincidano e sposto i dadi
-        //la cella di arrivo sarà indicata dal giocatore
-        if(windowPatternCard.getCell() != DiceLocation.WINDOWCELL){
-            d1.setLocation(DiceLocation.WINDOWCELL);
-        }
-
-        //la cella di arrivo sarà indicata dal giocatore
-        if(windowPatternCard.getCell() != DiceLocation.WINDOWCELL){
-            d2.setLocation(DiceLocation.WINDOWCELL);
-        }*/
 
         return 0;
     }

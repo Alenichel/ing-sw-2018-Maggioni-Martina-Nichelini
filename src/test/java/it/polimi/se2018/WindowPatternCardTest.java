@@ -16,7 +16,7 @@ public class WindowPatternCardTest {
         Dice d = new Dice("green");
         WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
 
-        wpc.insertDice(d,0,0,true,true);
+        wpc.insertDice(d,0,0,true, true,true);
         Assert.assertEquals(d, wpc.getCell(0,0).getAssignedDice());
     }
 
@@ -26,7 +26,7 @@ public class WindowPatternCardTest {
         WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
 
         try {
-            wpc.insertDice(d,0,1,true,true);
+            wpc.insertDice(d,0,1,true, true,true);
         } catch (NotValidInsertion e){
             Assert.assertTrue(true);
             return;
@@ -40,8 +40,8 @@ public class WindowPatternCardTest {
         WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
 
         try {
-            wpc.insertDice(d,0,0,true,true);
-            wpc.insertDice(d, 1,0,true,true);
+            wpc.insertDice(d,0,0,true, true,true);
+            wpc.insertDice(d, 1,0,true, true,true);
         } catch (NotValidInsertion e){
             Assert.assertTrue(true);
             return;
