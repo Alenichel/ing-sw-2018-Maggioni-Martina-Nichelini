@@ -20,11 +20,9 @@ public class Shades implements ScorePointStrategy {
     /**
      * Class constructor
      * @param type It can be light, medium or dark
-     * @param firstNumber first number of the set
-     * @param secondNumber second number of the set
      */
 
-    public Shades(String type, int firstNumber, int secondNumber) {
+    public Shades(String type) {
         if (type == "light") {
             this.firstNumber = 1;
             this.secondNumber = 2;
