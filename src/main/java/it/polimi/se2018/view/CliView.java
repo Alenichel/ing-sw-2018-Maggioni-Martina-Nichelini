@@ -93,7 +93,7 @@ public class CliView extends View implements Observer {
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
-                    System.out.println("[*] Goodbye");
+                    Logger.log(LoggerType.CLIENT_SIDE,"[*] Goodbye");
                     break loop;
 
                 default:
@@ -106,7 +106,7 @@ public class CliView extends View implements Observer {
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
-                Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,((UpdateMessage)msg).toString());
+                Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
                 break;
             default: break;
         }
