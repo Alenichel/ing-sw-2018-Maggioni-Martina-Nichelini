@@ -71,7 +71,9 @@ public class Player extends Observable implements Serializable{
     public int getPlayerNumber(){
         return this.playerNumber;
     }
-
+    public int getNumberOfFavorTokens() {
+        return numberOfFavorTokens;
+    }
 
     @Override
     public String toString(){
