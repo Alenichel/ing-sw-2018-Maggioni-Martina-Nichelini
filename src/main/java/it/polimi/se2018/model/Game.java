@@ -14,7 +14,7 @@ public class Game extends Observable implements Serializable, TimerInterface {
     private ArrayList<Dice> diceBag = new ArrayList<>();
     private ArrayList<Dice> diceOnTable = new ArrayList<>();
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
-    private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
+    private ArrayList<PublicObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
 
@@ -49,8 +49,8 @@ public class Game extends Observable implements Serializable, TimerInterface {
     public void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = (ArrayList<WindowPatternCard>) patternCards;
     }
-    public void setObjectiveCards(List<ObjectiveCard> objectiveCards) {
-        this.objectiveCards = (ArrayList<ObjectiveCard>) objectiveCards;
+    public void setObjectiveCards(List<PublicObjectiveCard> objectiveCards) {
+        this.objectiveCards = (ArrayList<PublicObjectiveCard>) objectiveCards;
     }
     public void setToolCards(List<ToolCard> toolCards) {
         this.toolCards = (ArrayList<ToolCard>) toolCards;
@@ -82,7 +82,7 @@ public class Game extends Observable implements Serializable, TimerInterface {
     public List<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
-    public List<ObjectiveCard> getObjectiveCards() {
+    public List<PublicObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
     public List<ToolCard> getToolCards() {
