@@ -6,25 +6,23 @@ import java.util.ArrayList;
 
 
 public class TimerHandler implements Serializable {
-    public static TimerHandler instance;
-    ArrayList<Timer> timerList = new ArrayList<>();
+    private static ArrayList<Timer> timerList = new ArrayList<>();
 
-    public static TimerHandler getInstance() {
-        if(instance == null){
-            instance = new TimerHandler();
-        }
-        return instance;
-    }
-
-    public long registerTimer(TimerInterface timerInterface, long duration) {
+    public static long registerTimer(TimerInterface timerInterface, long duration) {
         Timer timer = new Timer(timerInterface, duration);
         timerList.add(timer);
         return timer.getId();
     }
 
-    public void startTimer(long id){
-        for (Timer timer: this.timerList){
+    public static void startTimer(long id){
+        for (Timer timer: timerList){
             if (timer.getId() == id) timer.start();
         }
+    }
+
+    public static boolean checkTimer(long id){
+        for (Timer timer: timerList){
+            if (timer.getId() == id) return timer.isAlive();
+        } return false;
     }
 }

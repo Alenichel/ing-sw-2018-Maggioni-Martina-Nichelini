@@ -1,6 +1,6 @@
 package it.polimi.se2018.utils;
 
-import static java.lang.Thread.sleep;
+import it.polimi.se2018.model.Game;
 
 public class Timer extends Thread{
 
@@ -17,7 +17,14 @@ public class Timer extends Thread{
     public void run() {
         try {
             Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer started");
-            sleep(this.duration*1000);
+            long slept = 0;
+            while (slept < duration*1000){
+                sleep(1000);
+                slept += 1000;
+                if (timerInterface instanceof Game)
+                    ((Game)timerInterface).setTimerSecondLeft((int)(duration-slept/1000));
+            }
+
         }catch (InterruptedException e){
             e.printStackTrace();
             return;
