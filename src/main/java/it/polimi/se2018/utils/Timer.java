@@ -1,5 +1,6 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.model.Game;
 
 public class Timer extends Thread{
@@ -21,8 +22,8 @@ public class Timer extends Thread{
             while (slept < duration*1000){
                 sleep(1000);
                 slept += 1000;
-                if (timerInterface instanceof Game)
-                    ((Game)timerInterface).setTimerSecondLeft((int)(duration-slept/1000));
+                if (timerInterface instanceof GameController)
+                    ((GameController)timerInterface).gameAssociated.setTimerSecondLeft((int)(duration-slept/1000));
             }
 
         }catch (InterruptedException e){
