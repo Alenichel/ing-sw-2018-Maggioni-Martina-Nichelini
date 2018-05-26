@@ -35,7 +35,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.matchMakingTimer = server.getDefaultMatchmakingTimer();
 
         this.gameSetupController = new GameSetupController(this.gameAssociated);
-        this.roundHandler = new RoundHandler(gameAssociated);
+        //this.roundHandler = new RoundHandler(gameAssociated);
     }
 
     /**
@@ -60,11 +60,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 TimerHandler.startTimer(this.timerID);
             }
         } else if (this.gameAssociated.getPlayers().size() == 4) {
-            try {
-                this.gameAssociated.setStarted(true);
-            } catch (GameException e) {
-                Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
-            }
+            if (TimerHandler.checkTimer(timerID)) TimerHandler.stopTimer(this.timerID);
+            this.launchGame();
         }
     }
 
@@ -81,14 +78,13 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     }
 
-    private void onPatternCardSelection(Game game, SelectionMessage message) throws InvalidClassException {
-        if (message.getChosenItem() instanceof WindowPatternCard ){
-            Player targetPlayer = game.getPlayers().get(message.getPlayerNumber());
-            targetPlayer.setActivePatternCard((WindowPatternCard)(message.getChosenItem()));
-            game.addWindowPatternCard((WindowPatternCard) message.getChosenItem());
-            //this.gameReference.notifyAll();
-        } else {
-            throw new InvalidClassException("Received: " + message.getChosenItem() + "but requested WindowPatternCard");
+    private void launchGame(){
+        try {
+            this.gameSetupController.initialize();
+            this.gameAssociated.setStarted(true);
+
+        }catch (GameException e){
+            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
         }
     }
 
@@ -134,13 +130,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
      */
     @Override
     public void timerDoneAction(){
-        try {
-            this.gameSetupController.initialize();
-            this.gameAssociated.setStarted(true);
-
-        }catch (GameException e){
-            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
-        }
+        this.launchGame();
     }
-
 }

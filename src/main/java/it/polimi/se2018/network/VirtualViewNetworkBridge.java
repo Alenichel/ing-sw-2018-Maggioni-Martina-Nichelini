@@ -100,9 +100,8 @@ public class VirtualViewNetworkBridge extends Thread {
     }
 
     private void authenticateUser(String name, String password) throws AuthenticationErrorException {
-        String HOME_PATH = System.getProperty("user.home");
-        String DB_PATH = "/users_db.txt";
-        Path path = Paths.get(HOME_PATH+DB_PATH);
+        String DB_PATH = "/sagrada_users_db.txt";
+        Path path = Paths.get("resources" + DB_PATH);
         try (BufferedReader reader = Files.newBufferedReader(path);) {
             String nextLine = reader.readLine();
             while (!nextLine.equals("end")) {
