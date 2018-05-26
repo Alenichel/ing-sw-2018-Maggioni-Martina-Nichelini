@@ -115,10 +115,14 @@ public class CliView extends View implements Observer {
 
         Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : ");
 
-        for(WindowPatternCard w : player.getWindowPatternCardsPool()){
-            Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString());
-            Logger.log(LoggerType.CLIENT_SIDE, w.toString());
+        for(Player p : game.getPlayers()){
+            if(p.getNickname().equals(player.getNickname()))
+            for(WindowPatternCard w : p.getWindowPatternCardsPool()){
+                Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString());
+                Logger.log(LoggerType.CLIENT_SIDE, w.toString());
+            }
         }
+
         String input = sinput.nextLine();
         this.setChanged();
 
