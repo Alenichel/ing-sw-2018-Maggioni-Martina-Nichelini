@@ -22,7 +22,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private Server server;
     public final Game gameAssociated;
     private GameSetupController gameSetupController;
-    private transient RoundHandler roundHandler;
+    //private transient RoundHandler roundHandler;
 
     private long timerID;
     private long matchMakingTimer;
@@ -35,7 +35,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.matchMakingTimer = server.getDefaultMatchmakingTimer();
 
         this.gameSetupController = new GameSetupController(this.gameAssociated);
-        //this.roundHandler = new RoundHandler(gameAssociated);
+        this.roundHandler = new RoundHandler(gameAssociated);
     }
 
     /**
@@ -119,7 +119,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 break;
 
             case "SetupMessage":
-                gameSetupController.initialize();
                 break;
 
             case "ConnectionMessage":
