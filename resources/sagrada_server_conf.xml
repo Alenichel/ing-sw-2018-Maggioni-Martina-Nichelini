@@ -1,6 +1,6 @@
 <configuration>
     <port>5050</port>
     <defaultMatchmakingTimer>5</defaultMatchmakingTimer>
-    <defaultMoveTimer>60</defaultMoveTimer>
+    <defaultMoveTimer>5</defaultMoveTimer>
     <requirePassword>false</requirePassword>
 </configuration>  

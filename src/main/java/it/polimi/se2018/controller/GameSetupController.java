@@ -1,5 +1,7 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.message.Message;
+import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.strategy.toolcard.*;
@@ -7,11 +9,16 @@ import it.polimi.se2018.utils.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Random;
 
 import static it.polimi.se2018.utils.ObjectiveCardsName.LightShades;
 import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
 
+/**
+ * This class handles the first phases of the game in which each players is assigned with all cards and all game elements
+ * are initialized.
+ */
 public class GameSetupController implements Serializable {
 
     private Game associatedGame;
@@ -21,11 +28,11 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method initialize all windows pattern cards, before asking player wich card he wants to use during this game
+     * This method initialize all windows pattern cards, before asking player which card he wants to use during this game
      */
     private void initializePatternCard(){
         for(WindowPatternCardsName w : WindowPatternCardsName.values()){
-            this.associatedGame.getPatternCards().add(new WindowPatternCard(w.toString()));
+            this.associatedGame.getPatternCards().add(new WindowPatternCard(w));
         }
     }
 
@@ -79,12 +86,6 @@ public class GameSetupController implements Serializable {
         }
     }
 
-    private void initializePlayers(Game game){
-        for(Player player : game.getPlayers()){
-            player.setNumberOfFavorTokens(player.getActivePatternCard().getNumberOfFavorTokens()); //messo dirattemente in player
-        }
-    }
-
     private void initializePublicObject(){
         Random rand = new Random();
         int n;
@@ -115,6 +116,7 @@ public class GameSetupController implements Serializable {
             colorName.remove(n);
         }
     }
+
     private ToolCardEffectStrategy nameToObjectTool(String name){
         switch (name){
             case "GrozingPliers" : return new GrozingPliers();
@@ -154,6 +156,26 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    private void onPatternCardSelection(int cardIndex, String playerNickName){
+        for (Player p: associatedGame.getPlayers()){
+            if (p.getNickname().equals(playerNickName)){
+                p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
+                p.setWindowPatternCardsPool(null);
+            }
+        }
+    }
+
+    private void handleSelectionMessage(Observable observable, SelectionMessage message){
+        switch (message.getSelected()){
+
+            case "PatternCard":
+                onPatternCardSelection((int)message.getChosenItem(), message.getPlayer().getNickname() );
+                break;
+
+            default: break;
+        }
+    }
+
 
     public void initialize(){
         this.diceInitializer();
@@ -164,4 +186,17 @@ public class GameSetupController implements Serializable {
         this.assignWindowsPatternCardsPool();
     }
 
+    public void update(Observable observable, Object message){
+        Message msg = (Message)message;
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_SETUP_CONTROLLER: Handling -> " + msg.getMessageType());
+
+        switch (msg.getMessageType()){
+
+            case "SelectionMessage":
+                handleSelectionMessage(observable, (SelectionMessage) message);
+                break;
+            default: break;
+        }
+    }
 }
+

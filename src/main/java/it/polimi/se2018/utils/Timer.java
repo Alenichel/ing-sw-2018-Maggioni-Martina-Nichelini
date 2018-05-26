@@ -30,6 +30,7 @@ public class Timer extends Thread{
             e.printStackTrace();
             return;
         }
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer done");
         timerInterface.timerDoneAction();
     }
 }

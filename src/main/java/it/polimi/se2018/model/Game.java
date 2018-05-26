@@ -17,6 +17,9 @@ public class Game extends Observable implements Serializable {
     private List<Player> players = new ArrayList<>();
 
     private boolean isStarted;
+    private boolean initiliazationComplete;
+
+    private Player activePlayer = null;
 
     private GameController associatedGameController;
 
@@ -74,6 +77,20 @@ public class Game extends Observable implements Serializable {
             }
         }
     }
+    public void setInitializationComplete(boolean initializationComplete) {
+        this.initiliazationComplete = initializationComplete;
+        UpdateMessage um = new UpdateMessage("InitializationStatus");
+        um.setStringMessage("Initialization complete");
+        this.setChanged();
+        this.notifyObservers(um);
+    }
+    public void setActivePlayer(Player activePlayer) {
+        this.activePlayer = activePlayer;
+        UpdateMessage um = new UpdateMessage("ActivePlayer");
+        um.setStringMessage("This is the turn of player: " + activePlayer.getNickname());
+        this.setChanged();
+        this.notifyObservers(um);
+    }
 
     public List<Dice> getDiceBag() {
         return diceBag;
@@ -94,9 +111,6 @@ public class Game extends Observable implements Serializable {
         return players;
     }
 
-    public void addWindowPatternCard(WindowPatternCard windowPatternCard){
-        this.patternCards.add(windowPatternCard);
-    }
     public void addPlayer(Player player) throws GameException{
         if(!isStarted){
             if(this.players.size() > 3)

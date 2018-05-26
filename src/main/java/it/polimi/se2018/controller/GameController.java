@@ -12,7 +12,6 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.WindowPatternCard;
 
-import java.io.InvalidClassException;
 import java.io.Serializable;
 import java.util.*;
 
@@ -27,6 +26,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private long timerID;
     private long matchMakingTimer;
 
+    private int selectedPatterCards = 0;
 
     public GameController(Game game){
         this.server = Server.getInstance();
@@ -35,7 +35,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.matchMakingTimer = server.getDefaultMatchmakingTimer();
 
         this.gameSetupController = new GameSetupController(this.gameAssociated);
-        //this.roundHandler = new RoundHandler(gameAssociated);
     }
 
     /**
@@ -88,15 +87,31 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    private void onInitializationComplete(){
+        gameSetupController = null;
+        this.gameAssociated.setInitializationComplete(true);
+        this.roundHandler = new RoundHandler(gameAssociated);
+    }
+
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
                 this.connectPlayer(message.getRequester());
                 this.gameAssociated.addObserver((Observer)observable);
+                observable.addObserver(this); //subscribe gameController to the view
+                observable.deleteObserver(ServerController.getInstance()); //unsubscribe ServerController from the view
             }
         }
     }
 
+    private void handleSelectionMessage(Observable observable, SelectionMessage message){
+
+        if (message.getSelected().equals("PatternCard") & gameSetupController != null){
+            this.gameSetupController.update(observable, message);
+            selectedPatterCards++;
+            if (selectedPatterCards == gameAssociated.getPlayers().size()) this.onInitializationComplete();
+        }
+    }
     @Override
     public void update(Observable observable, Object msg){
 
@@ -120,6 +135,11 @@ public class GameController implements Observer, Serializable, TimerInterface {
             case "ConnectionMessage":
                 this.handleConnectionMessage(observable, (ConnectionMessage)msg);
                 break;
+
+            case "SelectionMessage":
+                this.handleSelectionMessage(observable, (SelectionMessage)msg);
+                break;
+
             default: break;
         }
     }

@@ -119,7 +119,6 @@ public class ServerController implements Observer{
 
             case "RequestMessage":
                 handleRequestMessage(observable, (RequestMessage)message);
-
             break;
 
             default:
