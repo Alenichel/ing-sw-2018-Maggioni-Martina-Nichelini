@@ -8,7 +8,9 @@ import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.DiceLocation;
 
-public class CopperFoilBurnisher implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;

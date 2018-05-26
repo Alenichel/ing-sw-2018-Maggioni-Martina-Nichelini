@@ -4,7 +4,9 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-public class ColumnVariety implements ScorePointStrategy {
+import java.io.Serializable;
+
+public class ColumnVariety implements ScorePointStrategy, Serializable {
 
     private VarietyType type;
 

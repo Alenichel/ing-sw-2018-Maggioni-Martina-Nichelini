@@ -4,6 +4,8 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
+import java.io.Serializable;
+
 import static java.lang.Integer.min;
 
 /**
@@ -12,7 +14,7 @@ import static java.lang.Integer.min;
  * @author: Valentina Maggioni
  */
 
-public class Shades implements ScorePointStrategy {
+public class Shades implements ScorePointStrategy, Serializable {
 
     int firstNumber;
     int secondNumber;

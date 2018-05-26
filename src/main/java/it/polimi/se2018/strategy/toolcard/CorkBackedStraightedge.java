@@ -6,7 +6,9 @@ import it.polimi.se2018.model.ToolCardEffectStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-public class CorkBackedStraightedge implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class CorkBackedStraightedge implements ToolCardEffectStrategy, Serializable {
 
     private Dice die;
     private WindowPatternCard windowPatternCard;

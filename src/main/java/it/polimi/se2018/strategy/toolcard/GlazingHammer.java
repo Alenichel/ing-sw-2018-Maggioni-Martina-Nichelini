@@ -3,9 +3,10 @@ package it.polimi.se2018.strategy.toolcard;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class GlazingHammer implements ToolCardEffectStrategy {
+public class GlazingHammer implements ToolCardEffectStrategy, Serializable {
 
     private ArrayList<Dice> draftedDice;
 

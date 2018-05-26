@@ -1,6 +1,6 @@
 package it.polimi.se2018.model;
 
-public class ObjectiveCard extends Card{
+public class ObjectiveCard extends Card {
     private String description;
     private Game gameReference;
 

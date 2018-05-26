@@ -2,7 +2,9 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.model.ToolCardEffectStrategy;
 
-public class FluxRemover implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class FluxRemover implements ToolCardEffectStrategy, Serializable {
     public FluxRemover(){
 
     }

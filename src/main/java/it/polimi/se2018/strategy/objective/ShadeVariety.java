@@ -4,12 +4,14 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
+import java.io.Serializable;
+
 import static java.lang.Integer.min;
 
 /**
  * This class implements the public objective parte #5.
  */
-public class ShadeVariety implements ScorePointStrategy {
+public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     private boolean isOne(WindowCell a) {
         if(a==null) return false;

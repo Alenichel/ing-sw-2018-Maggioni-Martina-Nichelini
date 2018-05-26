@@ -4,9 +4,10 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ColorDiagonals implements ScorePointStrategy {
+public class ColorDiagonals implements ScorePointStrategy, Serializable{
 
     private boolean compareCellsColor (WindowCell a, WindowCell b) {
         if (a == null || b == null) return false;

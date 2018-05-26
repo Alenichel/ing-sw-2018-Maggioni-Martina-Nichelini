@@ -5,7 +5,9 @@ import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
 import it.polimi.se2018.utils.DiceLocation;
 
-public class LensCutter implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class LensCutter implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
     private Dice rtDice;

@@ -3,7 +3,9 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 
-public class ToolCard extends Card{
+import java.io.Serializable;
+
+public class ToolCard extends Card implements Serializable {
     private String diceColor;
     private String description;
     private boolean used;

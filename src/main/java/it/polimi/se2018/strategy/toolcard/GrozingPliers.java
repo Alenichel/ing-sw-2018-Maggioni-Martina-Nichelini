@@ -3,7 +3,9 @@ package it.polimi.se2018.strategy.toolcard;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
 
-public class GrozingPliers implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class GrozingPliers implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
     private boolean increase;

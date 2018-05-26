@@ -4,9 +4,11 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
+import java.io.Serializable;
+
 import static java.lang.Integer.min;
 
-public class ColorVariety implements ScorePointStrategy {
+public class ColorVariety implements ScorePointStrategy, Serializable {
 
     private boolean isRed(WindowCell a) {
         if(a==null) return false;

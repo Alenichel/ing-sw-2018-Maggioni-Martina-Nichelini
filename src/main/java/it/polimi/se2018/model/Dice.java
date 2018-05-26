@@ -3,10 +3,11 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.utils.DiceLocation;
 
+import java.io.Serializable;
 import java.util.Objects;
 import java.util.Random;
 
-public class Dice {
+public class Dice implements Serializable {
     private int number;
     private String color;
     private DiceLocation location;

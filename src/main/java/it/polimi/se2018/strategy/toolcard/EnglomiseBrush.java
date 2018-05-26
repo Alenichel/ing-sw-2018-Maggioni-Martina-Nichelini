@@ -8,7 +8,9 @@ import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.DiceLocation;
 
-public class EnglomiseBrush implements ToolCardEffectStrategy {
+import java.io.Serializable;
+
+public class EnglomiseBrush implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;
