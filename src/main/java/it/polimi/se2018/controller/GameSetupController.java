@@ -33,11 +33,10 @@ public class GameSetupController implements Serializable {
         ArrayList<Player> players = new ArrayList<Player>(associatedGame.getPlayers());
         Random random = new Random();
         ArrayList<WindowPatternCard> genericWindowPatternCards= new ArrayList<WindowPatternCard>(associatedGame.getPatternCards());
-        ArrayList<WindowPatternCard> patternCardsPool = new ArrayList<>();
 
         for(Player p : players){
-            patternCardsPool.clear();
-            for(int i = 0; i < 3; i++){
+            ArrayList<WindowPatternCard> patternCardsPool = new ArrayList<>();
+            for(int i = 0; i < 4; i++){
                 int n = random.nextInt(genericWindowPatternCards.size());
                 patternCardsPool.add(genericWindowPatternCards.get(n));
                 genericWindowPatternCards.remove(n);
