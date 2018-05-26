@@ -2,6 +2,7 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
+import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,14 +23,16 @@ import javax.xml.parsers.ParserConfigurationException;
  */
 public class WindowPatternCard extends Card implements Serializable {
     private WindowCell[][] grid = new WindowCell[4][5];
+    private WindowPatternCardsName wpname;
     private int numberOfFavorTokens;
 
     /**
      * Class constructor
      * @param name
      */
-    public WindowPatternCard(String name) {
-        this.name = name;
+    public WindowPatternCard(WindowPatternCardsName name) {
+        this.wpname = name;
+        this.name = name.toString();
         try {
             loadConfiguration();
         } catch (FileNotFoundException e) {
@@ -77,6 +80,10 @@ public class WindowPatternCard extends Card implements Serializable {
     public String getName(){
         return this.name;
     }
+    public WindowPatternCardsName getWPName() {
+        return wpname;
+    }
+
     /**
      * This method load the user specified pattern card from an xml file.
      * @throws ParserConfigurationException

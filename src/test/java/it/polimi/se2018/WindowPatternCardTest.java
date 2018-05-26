@@ -4,6 +4,7 @@ import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class WindowPatternCardTest {
     @Test
     public void testValidInsertion() throws NotValidInsertion, NotEmptyWindowCellException{
         Dice d = new Dice("green");
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         wpc.insertDice(d,0,0,true, true,true);
         Assert.assertEquals(d, wpc.getCell(0,0).getAssignedDice());
@@ -23,7 +24,7 @@ public class WindowPatternCardTest {
     @Test
     public void testConstraintViolation() throws NotEmptyWindowCellException{
         Dice d = new Dice("green");
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         try {
             wpc.insertDice(d,0,1,true, true,true);
@@ -37,7 +38,7 @@ public class WindowPatternCardTest {
     @Test
     public void testPositionViolation() throws NotEmptyWindowCellException{
         Dice d = new Dice("green");
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         try {
             wpc.insertDice(d,0,0,true, true,true);

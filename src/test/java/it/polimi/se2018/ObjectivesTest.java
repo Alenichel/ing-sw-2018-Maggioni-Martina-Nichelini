@@ -7,6 +7,7 @@ import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;
+import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,7 +15,7 @@ public class ObjectivesTest {
 
     @Test
     public void testColumnVariety() throws NotValidInsertion, NotEmptyWindowCellException{
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("purple");
         Dice d2 = new Dice("yellow");
@@ -42,7 +43,7 @@ public class ObjectivesTest {
 
     @Test
     public void testRowVariety() throws NotValidInsertion, NotEmptyWindowCellException{
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("purple");
         Dice d2 = new Dice("yellow");
@@ -75,7 +76,7 @@ public class ObjectivesTest {
 
     @Test
     public void testColorVariety() throws  NotValidInsertion, NotEmptyWindowCellException{
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("purple");
         Dice d2 = new Dice("yellow");
@@ -99,7 +100,7 @@ public class ObjectivesTest {
 
     @Test
     public void testShadeVariety() throws NotValidInsertion, NotEmptyWindowCellException{
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("purple", 1);
         Dice d2 = new Dice("yellow",2);
@@ -123,7 +124,7 @@ public class ObjectivesTest {
 
     @Test
     public void testShades() throws NotValidInsertion, NotEmptyWindowCellException {
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("red",3);
         Dice d2 = new Dice("blue",4);
@@ -143,7 +144,7 @@ public class ObjectivesTest {
 
     @Test
     public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("yellow");
         Dice d2 = new Dice("blue");
@@ -166,7 +167,7 @@ public class ObjectivesTest {
 
     @Test
     public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("yellow");
         Dice d2 = new Dice("red");
@@ -186,7 +187,7 @@ public class ObjectivesTest {
 
     @Test
     public void testEmptyGrid(){
-        WindowPatternCard wpc = new WindowPatternCard("auroraeMagnificus");
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);
         ScorePointStrategy sps2 = new ColorVariety();
         Assert.assertEquals(0, sps.scorePoint(wpc));
