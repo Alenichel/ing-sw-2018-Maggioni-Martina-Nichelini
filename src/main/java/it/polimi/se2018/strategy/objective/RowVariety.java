@@ -4,12 +4,10 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-import java.io.Serializable;
-
 /**
- * This class implements objective card #6 ("Row Color Variety") and 5 ("Row Shade Variety")
+ * This class implements Row Color Variety and Row Shade Variety objective cards
  */
-public class RowVariety implements ScorePointStrategy, Serializable {
+public class RowVariety implements ScorePointStrategy {
 
     private VarietyType type;
 
@@ -17,7 +15,13 @@ public class RowVariety implements ScorePointStrategy, Serializable {
         this.type = type;
     }
 
-    private boolean compareCellsColor(WindowCell a, WindowCell b) {
+    /**
+     * This method checks if two cells, a and b, contain a die of the same value or color
+     * @param a first cell
+     * @param b second cell
+     * @return true if the condition in respected
+     */
+    private boolean compareCells(WindowCell a, WindowCell b) {
         if (a == null || b == null) return true;
         if (a.equals(b)) return false; //ignore if the method is comparison the same cell
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
@@ -30,10 +34,10 @@ public class RowVariety implements ScorePointStrategy, Serializable {
     }
 
     /**
-     * This methods calculates a score depending on the number of lines containing 5 dice with all different
-     * number.
-     * @param windowPatternCard
-     * @return Score
+     * This methods calculates the score depending on the number of rows containing 5 dice with all different
+     * values or colors.
+     * @param windowPatternCard window pattern card under consideration
+     * @return points scored with this card
      */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
@@ -43,11 +47,11 @@ public class RowVariety implements ScorePointStrategy, Serializable {
         for (int i = 0; i < 4; i++) {
             allDifferent = true;
             for (int j = 0; j < 5; j++) {
-                if ((compareCellsColor(grid[i][j], grid[i][0])) ||
-                        (compareCellsColor(grid[i][j], grid[i][1])) ||
-                        (compareCellsColor(grid[i][j], grid[i][2])) ||
-                        (compareCellsColor(grid[i][j], grid[i][3])) ||
-                        (compareCellsColor(grid[i][j], grid[i][4])))
+                if ((compareCells(grid[i][j], grid[i][0])) ||
+                        (compareCells(grid[i][j], grid[i][1])) ||
+                        (compareCells(grid[i][j], grid[i][2])) ||
+                        (compareCells(grid[i][j], grid[i][3])) ||
+                        (compareCells(grid[i][j], grid[i][4])))
                 {
                     allDifferent = false;
                 }

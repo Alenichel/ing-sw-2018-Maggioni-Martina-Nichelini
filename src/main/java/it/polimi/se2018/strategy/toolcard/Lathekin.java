@@ -10,6 +10,10 @@ import it.polimi.se2018.utils.DiceLocation;
 
 import java.io.Serializable;
 
+/**
+ * This class implements Tool Card #4 "Lathekin" which lets the player move exactly two dice
+ * on his window pattern card obeying all restrictions
+ */
 public class Lathekin implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;

@@ -5,6 +5,11 @@ import it.polimi.se2018.model.ToolCardEffectStrategy;
 
 import java.io.Serializable;
 
+/**
+ * This class implements Tool Card #9 "Running Pliers" which lets the player choose a second die
+ * right after his first turn.
+ * The player will skip his second turn.
+ */
 public class RunningPliers implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
@@ -18,9 +23,6 @@ public class RunningPliers implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect(){
-        //subito dopo il primo turno del giocatore
-        //giocatore sceglie un draftedDice
-        //giocatore salta il suo secondo turno
         return 0;
     }
 

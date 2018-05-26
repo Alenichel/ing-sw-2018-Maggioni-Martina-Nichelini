@@ -1,32 +1,45 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
+import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-import java.io.Serializable;
+/**
+ * This class implements Tool Card #9 "Cork Backed Straightedge" which lets the player place a
+ * drafted die in a spot that is not adjacent to another die
+ */
+public class CorkBackedStraightedge implements ToolCardEffectStrategy {
 
-public class CorkBackedStraightedge implements ToolCardEffectStrategy, Serializable {
-
-    private Dice die;
+    private WindowCell wc;
+    private Dice draftedDie;
     private WindowPatternCard windowPatternCard;
 
     public CorkBackedStraightedge(){ }
 
-    public CorkBackedStraightedge CorkBackedStraightedge (CorkBackedStraightedge corkBackedStraightedge, Dice draftedDice) {
-        corkBackedStraightedge.die = draftedDice;
+    public CorkBackedStraightedge CorkBackedStraightedge (CorkBackedStraightedge corkBackedStraightedge, WindowCell wc, Dice die, WindowPatternCard windowPatternCard) {
+        corkBackedStraightedge.windowPatternCard = windowPatternCard;
+        corkBackedStraightedge.wc = wc;
+        corkBackedStraightedge.draftedDie = die;
         return corkBackedStraightedge;
     }
 
     @Override
-    public int executeEffect() throws NotEmptyWindowCellException {
-        WindowCell wc = windowPatternCard.getCell(); //una qualsiasi cella scelta dal giocatore che rispetti le condizioni degli if
-                if (wc.getNeighbourCells()==null && wc.getDiagonalCells()==null) {
-                    if (wc.isEmpty()) {wc.setAssignedDice(die);}
-                    }
+    public int executeEffect() throws ToolCardException, NotEmptyWindowCellException {
+
+        if (!wc.isEmpty())
+            throw new ToolCardException("not empty window cell");
+
+        if (wc.getNeighbourCells()!=null && wc.getDiagonalCells()!=null)
+            throw new ToolCardException("adjacent window cells not empty");
+
+        try {
+            this.windowPatternCard.insertDice(draftedDie, wc.getRow(), wc.getColumn(), true, true, false);
+        }catch (ToolCardException | NotEmptyWindowCellException e) {
+            throw e;
+        }
         return 1;
     }
-
 }

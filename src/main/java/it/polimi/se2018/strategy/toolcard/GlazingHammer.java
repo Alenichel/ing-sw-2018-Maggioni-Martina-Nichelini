@@ -6,6 +6,11 @@ import it.polimi.se2018.model.ToolCardEffectStrategy;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class implements Tool Card #7 "Glazing Hammer" which lets the player re-roll all the dice
+ * in the draft pool.
+ * This may only be used on the second turn before drafting
+ */
 public class GlazingHammer implements ToolCardEffectStrategy, Serializable {
 
     private ArrayList<Dice> draftedDice;

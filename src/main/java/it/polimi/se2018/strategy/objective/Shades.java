@@ -11,7 +11,6 @@ import static java.lang.Integer.min;
 /**
  * These cards allow you to score points every time you have a set of light (1, 2),
  * medium (3, 4) or dark (5, 6) shades on your window pattern card
- * @author: Valentina Maggioni
  */
 
 public class Shades implements ScorePointStrategy, Serializable {

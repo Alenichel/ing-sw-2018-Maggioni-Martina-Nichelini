@@ -4,9 +4,10 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-import java.io.Serializable;
-
-public class ColumnVariety implements ScorePointStrategy, Serializable {
+/**
+ * This class implements Column Shade Variety and Column Color Variety objective cards
+ */
+public class ColumnVariety implements ScorePointStrategy {
 
     private VarietyType type;
 
@@ -14,7 +15,13 @@ public class ColumnVariety implements ScorePointStrategy, Serializable {
         this.type = type;
     }
 
-    private boolean compareCellsColor(WindowCell a, WindowCell b) {
+    /**
+     * This method checks if two cells, a and b, contain a die of the same value or color
+     * @param a first cell
+     * @param b second cell
+     * @return true if the condition in respected
+     */
+    private boolean compareCells(WindowCell a, WindowCell b) {
         if (a == null || b == null) return true;
         if (a.equals(b)) return false; //ignore if the method is comparison the same cell
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
@@ -26,6 +33,12 @@ public class ColumnVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This methods calculates the score depending on the number of rows containing 4 dice with all different
+     * values or colors.
+     * @param windowPatternCard window pattern card under consideration
+     * @return points scored with this card
+     */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
         int scoreCounter = 0;
@@ -34,10 +47,10 @@ public class ColumnVariety implements ScorePointStrategy, Serializable {
         for (int j = 0; j < 5; j++) {
             allDifferent = true;
             for (int i = 0; i < 4; i++) {
-                if ((compareCellsColor(grid[i][j], grid[0][j])) ||
-                        (compareCellsColor(grid[i][j], grid[1][j])) ||
-                        (compareCellsColor(grid[i][j], grid[2][j])) ||
-                        (compareCellsColor(grid[i][j], grid[3][j])))
+                if ((compareCells(grid[i][j], grid[0][j])) ||
+                        (compareCells(grid[i][j], grid[1][j])) ||
+                        (compareCells(grid[i][j], grid[2][j])) ||
+                        (compareCells(grid[i][j], grid[3][j])))
                 {
                     allDifferent = false;
                 }

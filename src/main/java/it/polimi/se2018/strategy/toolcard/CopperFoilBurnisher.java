@@ -10,6 +10,11 @@ import it.polimi.se2018.utils.DiceLocation;
 
 import java.io.Serializable;
 
+/**
+ * This class implements Tool Card #3 "Copper Foil Burnisher" which lets the player move a die
+ * ignoring number constraints
+ */
+
 public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
@@ -40,6 +45,8 @@ public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             throw e;
         }
+
+        start.setAssignedDice(null);
 
         return 0;
     }

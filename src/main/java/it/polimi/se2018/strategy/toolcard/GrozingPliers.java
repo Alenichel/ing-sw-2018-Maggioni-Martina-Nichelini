@@ -5,6 +5,10 @@ import it.polimi.se2018.model.ToolCardEffectStrategy;
 
 import java.io.Serializable;
 
+/**
+ * This class implements Tool Card #1 "Grozing Pliers" which lets the player  increase or decrease
+ * the value of a drafted die by 1
+ */
 public class GrozingPliers implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;

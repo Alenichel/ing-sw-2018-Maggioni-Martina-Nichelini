@@ -4,12 +4,19 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
-import java.io.Serializable;
-
 import static java.lang.Integer.min;
 
-public class ColorVariety implements ScorePointStrategy, Serializable {
+/**
+ * This class implements Color Variety objective card which gives you points every time you have
+ * a complete set of 5 dice of different colors anywhere on your window pattern card
+ */
+public class ColorVariety implements ScorePointStrategy {
 
+    /**
+     * This method verifies if the die on the window cell a is red
+     * @param a
+     * @return true if the condition in respected
+     */
     private boolean isRed(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -18,6 +25,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This method verifies if the die on the window cell a is yellow
+     * @param a
+     * @return true if the condition in respected
+     */
     private boolean isYellow(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -26,6 +38,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This method verifies if the die on the window cell a is blue
+     * @param a
+     * @return true if the condition in respected
+     */
     private boolean isBlue(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -34,6 +51,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This method verifies if the die on the window cell a is green
+     * @param a
+     * @return true if the condition in respected
+     */
     private boolean isGreen(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -42,6 +64,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This method verifies if the die on the window cell a is purple
+     * @param a
+     * @return true if the condition in respected
+     */
     private boolean isPurple(WindowCell a) {
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
@@ -50,6 +77,15 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         }
     }
 
+    /**
+     * This method finds out which of the five integers given is the minimum
+     * @param a
+     * @param b
+     * @param c
+     * @param d
+     * @param e
+     * @return minimum
+     */
     private int fiveMin(int a, int b, int c, int d, int e) {
         int min = min(a,b);
         if (c<min) {min = c;}
@@ -59,6 +95,12 @@ public class ColorVariety implements ScorePointStrategy, Serializable {
         return min;
     }
 
+    /**
+     * This methods calculates the score depending on the number of sets containing 5 dice with all different
+     * colors.
+     * @param windowPatternCard window pattern card under consideration
+     * @return points scored with this card (4 per set)
+     */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
         int red = 0;

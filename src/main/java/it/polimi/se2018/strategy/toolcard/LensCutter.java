@@ -7,6 +7,10 @@ import it.polimi.se2018.utils.DiceLocation;
 
 import java.io.Serializable;
 
+/**
+ * This class implements Tool Card #5 "Lens Cutter" which lets the player swap a drafted die with
+ * one on the round track
+ */
 public class LensCutter implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
@@ -22,8 +26,8 @@ public class LensCutter implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect(){
-        rtDice.setLocation(DiceLocation.WINDOWCELL); //scelta dal giocatore
-        draftedDice.setLocation(DiceLocation.ROUNDTRACK); //scelta dal giocatore
+        /*rtDice.setLocation(DiceLocation.WINDOWCELL);
+        draftedDice.setLocation(DiceLocation.ROUNDTRACK); */
         return 0;
     }
 }
