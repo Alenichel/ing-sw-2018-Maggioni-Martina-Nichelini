@@ -20,6 +20,12 @@ public class TimerHandler implements Serializable {
         }
     }
 
+    public static void stopTimer(long id){
+        for (Timer timer: timerList) {
+            if (timer.getId() == id) timer.interrupt();
+        }
+    }
+
     public static boolean checkTimer(long id){
         for (Timer timer: timerList){
             if (timer.getId() == id) return timer.isAlive();
