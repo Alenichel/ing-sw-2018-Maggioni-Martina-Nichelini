@@ -1,8 +1,11 @@
 package it.polimi.se2018.strategy.objective;
 
+import com.sun.tools.doclets.internal.toolkit.SerializedFormWriter;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
+
+import java.io.Serializable;
 
 import static java.lang.Integer.min;
 
@@ -10,7 +13,7 @@ import static java.lang.Integer.min;
  * This class implements Color Variety objective card which gives you points every time you have
  * a complete set of 5 dice of different colors anywhere on your window pattern card
  */
-public class ColorVariety implements ScorePointStrategy {
+public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is red

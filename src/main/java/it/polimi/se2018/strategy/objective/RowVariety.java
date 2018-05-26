@@ -4,10 +4,12 @@ import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
 
+import java.io.Serializable;
+
 /**
  * This class implements Row Color Variety and Row Shade Variety objective cards
  */
-public class RowVariety implements ScorePointStrategy {
+public class RowVariety implements ScorePointStrategy, Serializable {
 
     private VarietyType type;
 
