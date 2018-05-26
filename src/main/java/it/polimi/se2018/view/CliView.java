@@ -118,19 +118,21 @@ public class CliView extends View implements Observer {
         for(Player p : game.getPlayers()){
             if(p.getNickname().equals(player.getNickname()))
             for(WindowPatternCard w : p.getWindowPatternCardsPool()){
-                Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString());
+                Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
+                Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()));
                 Logger.log(LoggerType.CLIENT_SIDE, w.toString());
+                i++;
             }
         }
 
-        String input = sinput.nextLine();
-        this.setChanged();
+        Scanner sc = new Scanner(System.in);
+        int input = sc.nextInt();
 
         //dovrei dirgli che sto notificando questo????
         //che messaggio usiamo??
         //aggiungo parametro??
         //------->ho aggiunto un costruttore in SelectionMessage
-        this.notifyObservers(new SelectionMessage(((Integer)(Integer.parseInt(input) -1 )).toString(), player.getPlayerNumber(), "PatternCard"));
+        this.notifyObservers(new SelectionMessage(((Integer)(input -1 )).toString(), player.getPlayerNumber(), "PatternCard"));
 
     }
 
