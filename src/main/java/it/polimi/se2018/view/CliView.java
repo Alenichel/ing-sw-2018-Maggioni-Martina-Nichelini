@@ -13,11 +13,16 @@ public class CliView extends View implements Observer {
 
     private Object lastObjectReceveid;
     private Player player;
-    private Scanner sinput = new Scanner(System.in);
 
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    private void handleSelectCommands(String command){
+        SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.player,"PatternCard");
+        this.setChanged();
+        this.notifyObservers(sm);
     }
 
     private void handleGetCommands(String command){
@@ -52,7 +57,6 @@ public class CliView extends View implements Observer {
         }
     }
 
-
     private void requestCallback(GiveMessage callbackMessage){
         this.lastObjectReceveid = callbackMessage.getGivenObject();
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, lastObjectReceveid.toString());
@@ -62,8 +66,8 @@ public class CliView extends View implements Observer {
         this.requestCallback((GiveMessage)callbackMessage);
     }
 
-
     public void run() {
+        Scanner sinput = new Scanner(System.in);
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
 
@@ -88,6 +92,9 @@ public class CliView extends View implements Observer {
                     }
                     break;
 
+                case "select":
+                    handleSelectCommands(tokens[1]);
+                    break;
 
                 case "quit":
                     this.setChanged();
@@ -102,42 +109,25 @@ public class CliView extends View implements Observer {
         }
     }
 
-    public void cliGame(Observable o){
-
-
+    private void onGameStarted(Observable o){
         Game game = ((Game)o);
         ArrayList<Player> players = new ArrayList<>(game.getPlayers());
         int i = 1;
-        /*for(Player p : players ){
-            Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, p.getNickname());
-            Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, ( (Integer) p.getNumberOfFavorTokens() ).toString());
-        }*/
-
         Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : ");
 
+        ArrayList<WindowPatternCard> pool = null;
         for(Player p : game.getPlayers()){
-            if(p.getNickname().equals(player.getNickname()))
-            for(WindowPatternCard w : p.getWindowPatternCardsPool()){
-                Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
-                Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()));
-                Logger.log(LoggerType.CLIENT_SIDE, w.toString());
-                i++;
+            if(p.getNickname().equals(player.getNickname())) {
+                pool = p.getWindowPatternCardsPool();
+                for (WindowPatternCard w : pool) {
+                    Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
+                    Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()));
+                    Logger.log(LoggerType.CLIENT_SIDE, w.toString());
+                    i++;
+                }
             }
         }
-
-        Scanner sc = new Scanner(System.in);
-        int input = sc.nextInt();
-
-        //dovrei dirgli che sto notificando questo????
-        //che messaggio usiamo??
-        //aggiungo parametro??
-        //------->ho aggiunto un costruttore in SelectionMessage
-        this.notifyObservers(new SelectionMessage(((Integer)(input -1 )).toString(), player.getPlayerNumber(), "PatternCard"));
-
     }
-
-
-
 
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
@@ -145,12 +135,11 @@ public class CliView extends View implements Observer {
                 String wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
                 if(wtu.equals("GameStarted")) {
-                    cliGame(o);
+                    onGameStarted(o);
                 }
                 break;
             default: break;
         }
     }
-
 
 }
