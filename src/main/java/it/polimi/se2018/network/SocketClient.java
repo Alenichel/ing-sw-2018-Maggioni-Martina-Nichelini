@@ -103,6 +103,7 @@ public class SocketClient implements Observer {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
                     oos.flush();
+                    oos.reset();
                 }
             } catch (InterruptedException | IOException e) {
                 Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());

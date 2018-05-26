@@ -165,6 +165,7 @@ public class VirtualViewNetworkBridge extends Thread {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
                     oos.flush();
+                    oos.reset();
                 } while (msg.getMessageType() != "quit");
             } catch (InterruptedException | IOException e) {e.printStackTrace();}
         }
