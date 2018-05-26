@@ -74,7 +74,9 @@ public class WindowPatternCard extends Card implements Serializable {
     public int getNumberOfFavorTokens() {
         return numberOfFavorTokens;
     }
-
+    public String getName(){
+        return this.name;
+    }
     /**
      * This method load the user specified pattern card from an xml file.
      * @throws ParserConfigurationException
@@ -234,14 +236,14 @@ public class WindowPatternCard extends Card implements Serializable {
 
     @Override
     public String toString() {
-        String string ="\n";
+        String string ="";
         int row = 1;
         final String BACK_TO_BLACK = (char) 27 + "[30m";
         string = string.concat((char) 27 + "[31m");
         string = string.concat("_________________________________\n");
         string = string.concat("     1     2     3     4     5 \n" + BACK_TO_BLACK);
         for (WindowCell[] line : grid) {
-            string = string.concat("---------------------------------\n");
+            string = string.concat("   ------------------------------\n");
             string = string.concat((char) 27 + "[31m");
             string = string.concat(((Integer)row).toString());
             string = string.concat(" |  " + BACK_TO_BLACK);
@@ -282,7 +284,7 @@ public class WindowPatternCard extends Card implements Serializable {
             string = string.concat("\n");
             row++;
         }
-        string = string.concat("---------------------------------\n");
+        string = string.concat("   ------------------------------\n");
         return string;
     }
 
