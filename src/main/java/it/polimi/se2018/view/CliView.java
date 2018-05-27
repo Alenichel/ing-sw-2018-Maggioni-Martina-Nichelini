@@ -1,17 +1,14 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
-import it.polimi.se2018.utils.StringUtils;
 
 import java.util.*;
 
 public class CliView extends View implements Observer {
 
-    private Object lastObjectReceveid;
     private Player player;
 
 
@@ -67,6 +64,7 @@ public class CliView extends View implements Observer {
     }
 
     public void run() {
+        Object lastObjectReceveid;
         Scanner sinput = new Scanner(System.in);
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
@@ -81,6 +79,7 @@ public class CliView extends View implements Observer {
                     try {
                         this.handleRequestCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
+                        Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
                     }
                     break;
 
@@ -111,14 +110,13 @@ public class CliView extends View implements Observer {
 
     private void onGameStarted(Observable o){
         Game game = ((Game)o);
-        ArrayList<Player> players = new ArrayList<>(game.getPlayers());
         int i = 1;
         Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : ");
 
         ArrayList<WindowPatternCard> pool = null;
         for(Player p : game.getPlayers()){
             if(p.getNickname().equals(player.getNickname())) {
-                pool = p.getWindowPatternCardsPool();
+                pool = (ArrayList<WindowPatternCard>)p.getWindowPatternCardsPool();
                 for (WindowPatternCard w : pool) {
                     Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
                     Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()));
