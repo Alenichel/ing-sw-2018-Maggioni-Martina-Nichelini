@@ -29,7 +29,7 @@ public class ColumnVariety implements ScorePointStrategy, Serializable {
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
         else {
             if ( type == VarietyType.COLOR)
-                return (a.getAssignedDice().getColor() == b.getAssignedDice().getColor());
+                return (a.getAssignedDice().getColor().equals(b.getAssignedDice().getColor()));
             else
                 return (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber());
         }

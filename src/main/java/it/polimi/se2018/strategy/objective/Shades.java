@@ -24,15 +24,15 @@ public class Shades implements ScorePointStrategy, Serializable {
      */
 
     public Shades(String type) {
-        if (type == "light") {
+        if (type.equals("light")) {
             this.firstNumber = 1;
             this.secondNumber = 2;
         }
-        else if (type == "medium") {
+        else if (type.equals("medium")) {
             this.firstNumber = 3;
             this.secondNumber = 4;
         }
-        else if (type == "dark") {
+        else if (type.equals("dark")) {
             this.firstNumber = 5;
             this.secondNumber = 6;
         }

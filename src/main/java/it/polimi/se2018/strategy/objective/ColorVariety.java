@@ -23,7 +23,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            return (a.getAssignedDice().getColor()== "red");
+            return (a.getAssignedDice().getColor().equals("red"));
         }
     }
 
@@ -36,7 +36,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            return (a.getAssignedDice().getColor()== "yellow");
+            return (a.getAssignedDice().getColor().equals("yellow"));
         }
     }
 
@@ -49,7 +49,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            return (a.getAssignedDice().getColor()== "blue");
+            return (a.getAssignedDice().getColor().equals("blue"));
         }
     }
 
@@ -62,7 +62,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            return (a.getAssignedDice().getColor()== "green");
+            return (a.getAssignedDice().getColor().equals("green"));
         }
     }
 
@@ -75,7 +75,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
         if(a==null) return false;
         if(a.getAssignedDice()==null) return false;
         else {
-            return (a.getAssignedDice().getColor()== "purple");
+            return (a.getAssignedDice().getColor().equals("purple"));
         }
     }
 
