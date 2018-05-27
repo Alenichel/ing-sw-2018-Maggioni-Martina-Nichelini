@@ -40,6 +40,10 @@ public class Game extends Observable implements Serializable {
     }
     public void setDiceOnTable(List<Dice> diceOnTable) {
         this.diceOnTable = (ArrayList<Dice>)diceOnTable;
+        UpdateMessage um = new UpdateMessage("DiceOnTable");
+        um.setStringMessage("Some dice have been draft and added to the table");
+        this.setChanged();
+        this.notifyObservers(um);
     }
     public void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = (ArrayList<WindowPatternCard>) patternCards;
@@ -108,6 +112,9 @@ public class Game extends Observable implements Serializable {
     }
     public List<Player> getPlayers() {
         return players;
+    }
+    public Player getActivePlayer() {
+        return activePlayer;
     }
 
     public void addPlayer(Player player) throws GameException{

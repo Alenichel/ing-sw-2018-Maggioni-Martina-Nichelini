@@ -93,6 +93,18 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.roundHandler = new RoundHandler(gameAssociated);
     }
 
+
+    private void handleUpdateMessage(Observable observable, UpdateMessage message){
+
+        switch (message.getWhatToUpdate()){
+
+            case "Pass":
+                this.roundHandler.update(observable, message);
+
+            default: break;
+        }
+    }
+
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
@@ -106,7 +118,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
 
-        if (message.getSelected().equals("PatternCard") & gameSetupController != null){
+        if (message.getSelected().equals("PatternCard") && gameSetupController != null){
+            ControllerCallbackMessage ccm = new ControllerCallbackMessage("Selection acquired");
+            ((View)observable).controllerCallback(ccm);
             this.gameSetupController.update(observable, message);
             selectedPatterCards++;
             if (selectedPatterCards == gameAssociated.getPlayers().size()) this.onInitializationComplete();
@@ -115,7 +129,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     @Override
     public void update(Observable observable, Object msg){
 
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAMECONTROLLER: Receveid -> " + ((Message)msg).getMessageType());
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_CONTROLLER: Receveid -> " + ((Message)msg).getMessageType() );
 
         switch(((Message)msg).getMessageType()){
 
@@ -129,7 +143,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 }
                 break;
 
-            case "SetupMessage":
+            case "UpdateMessage":
+                this.handleUpdateMessage(observable, (UpdateMessage)msg);
                 break;
 
             case "ConnectionMessage":
