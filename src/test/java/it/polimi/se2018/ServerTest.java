@@ -15,7 +15,15 @@ public class ServerTest {
 
         Player p = new Player("Player");
 
+
+        server.getCurrentGame();
+        server.getActiveGames();
+        server.getDefaultMatchmakingTimer();
+        server.getWaitingPlayers();
         server.addPlayerToOnlinePlayers(p);
+        server.isConfigurationRequired();
+        server.getOfflinePlayers();
+
         Assert.assertEquals(1, server.getOnlinePlayers().size());
 
         server.removePlayerFromOnlinePlayers(p);
