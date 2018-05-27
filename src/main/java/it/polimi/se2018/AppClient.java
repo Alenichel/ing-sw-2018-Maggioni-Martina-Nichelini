@@ -1,12 +1,12 @@
 package it.polimi.se2018;
 
 
-
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.CliView;
+
 import java.util.Scanner;
 
 public class AppClient {
