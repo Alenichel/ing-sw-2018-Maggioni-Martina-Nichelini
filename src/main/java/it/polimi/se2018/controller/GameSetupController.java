@@ -78,7 +78,7 @@ public class GameSetupController implements Serializable {
      */
     private void diceInitializer(){
         for (DiceColor dc : DiceColor.values()){
-            for (int i = 0; i < 15; i++){
+            for (int i = 0; i < 18; i++){
                 Dice newDice = new Dice(dc.name());
                 newDice.setLocation(DiceLocation.BAG);
                 this.associatedGame.getDiceBag().add(newDice);
@@ -90,7 +90,7 @@ public class GameSetupController implements Serializable {
         Random rand = new Random();
         int n;
         ArrayList<String> objectiveName = new ArrayList<>();
-        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<PublicObjectiveCard>();
+        ArrayList<ObjectiveCard> selectedObject = new ArrayList<ObjectiveCard>();
 
         for(ObjectiveCardsName po : ObjectiveCardsName.values()){
             objectiveName.add(po.toString());
