@@ -182,7 +182,7 @@ public class WindowPatternCard extends Card implements Serializable {
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
             if (wc.getAssignedDice() != null)
-                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor() == dice.getColor() )
+                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()) );
                     return false;
         }
         return true;
@@ -247,10 +247,10 @@ public class WindowPatternCard extends Card implements Serializable {
         int row = 1;
         final String BACK_TO_BLACK = (char) 27 + "[30m";
         string = string.concat((char) 27 + "[31m");
-        string = string.concat("_________________________________\n");
-        string = string.concat("     1     2     3     4     5 \n" + BACK_TO_BLACK);
+        string = string.concat("   ------------------------------  \n");
+        string = string.concat("     1     2     3     4     5     \n" + BACK_TO_BLACK);
         for (WindowCell[] line : grid) {
-            string = string.concat("   ------------------------------\n");
+            string = string.concat("   ------------------------------  \n");
             string = string.concat((char) 27 + "[31m");
             string = string.concat(((Integer)row).toString());
             string = string.concat(" |  " + BACK_TO_BLACK);
@@ -291,7 +291,7 @@ public class WindowPatternCard extends Card implements Serializable {
             string = string.concat("\n");
             row++;
         }
-        string = string.concat("   ------------------------------\n");
+        string = string.concat("   ------------------------------  \n");
         return string;
     }
 
