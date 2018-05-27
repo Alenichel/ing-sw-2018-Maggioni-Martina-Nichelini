@@ -109,7 +109,7 @@ public class ServerController implements Observer{
 
     public void update (Observable observable, Object message){
 
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":SERVER_CONTROLLER: Receveid -> " + ((Message) message).getMessageType());
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":SERVER_CONTROLLER: Received -> " + ((Message) message).getMessageType());
         switch(((Message)message).getMessageType()){
 
             case "ConnectionMessage":

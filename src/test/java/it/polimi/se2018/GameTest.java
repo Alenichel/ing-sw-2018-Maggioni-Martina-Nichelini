@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -31,9 +32,9 @@ public class GameTest {
         ToolCard tc2 = new ToolCard(null);
         ToolCard tc3 = new ToolCard(null);
 
-        WindowPatternCard wpc1 = new WindowPatternCard("virtus");
-        WindowPatternCard wpc2 = new WindowPatternCard("gravitas");
-        WindowPatternCard wpc3 = new WindowPatternCard("industria");
+        WindowPatternCard wpc1 = new WindowPatternCard(WindowPatternCardsName.virtus);
+        WindowPatternCard wpc2 = new WindowPatternCard(WindowPatternCardsName.gravitas);
+        WindowPatternCard wpc3 = new WindowPatternCard(WindowPatternCardsName.industria);
 
         ArrayList<Player> wrongPlayers = new ArrayList<>();
         ArrayList<Player> players = new ArrayList<>();

@@ -20,14 +20,14 @@ public class ToolCardTest {
 
         ArrayList<Player> wrongPlayers = (ArrayList<Player>) players.clone();
         wrongPlayers.add(new Player("wrong player"));
-        Game game = new Game(players);
-        Game wrongGame = new Game(wrongPlayers);
+        Game game = new Game();
+        Game wrongGame = new Game();
 
         Dice dice = new Dice("green");
         Dice dice2 = new Dice("pink");
 
-        GrozingPliers grozingPliers = new GrozingPliers(dice, true);
-        GrozingPliers grozingPliers2 = new GrozingPliers(dice2, true);
+        GrozingPliers grozingPliers = new GrozingPliers();
+        GrozingPliers grozingPliers2 = new GrozingPliers();
 
         ToolCard toolCard = new ToolCard(grozingPliers);
 
