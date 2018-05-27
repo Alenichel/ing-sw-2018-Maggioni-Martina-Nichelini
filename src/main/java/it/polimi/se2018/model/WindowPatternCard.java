@@ -197,7 +197,7 @@ public class WindowPatternCard extends Card implements Serializable {
     private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint ;
 
-        if(dice.getColor() != null) colorConstraint = !(windowCell.getColorConstraint() == dice.getColor());
+        if(dice.getColor() != null) colorConstraint = !(windowCell.getColorConstraint().equals(dice.getColor()));
         else colorConstraint = true;
 
         return colorConstraint;
