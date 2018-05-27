@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
+import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.strategy.toolcard.EnglomiseBrush;
@@ -42,6 +43,7 @@ public class ToolCardTest {
         Assert.assertTrue(t.isUsed());
     }
 
+    @Test
     public void testLathekin(){
         WindowPatternCard windowPatternCard = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         WindowCell wstart1 = windowPatternCard.getGrid()[1][1];
@@ -49,10 +51,8 @@ public class ToolCardTest {
         WindowCell wend1 = windowPatternCard.getGrid()[1][3];
         WindowCell wend2 = windowPatternCard.getGrid()[2][3];
 
-        Dice diceStart1 = new Dice(DiceColor.Yellow.toString());
-        Dice diceStart2 = new Dice(DiceColor.Purple.toString());
-        diceStart1.rollDice();
-        diceStart2.rollDice();
+        Dice diceStart1 = new Dice(DiceColor.Green.toString());
+        Dice diceStart2 = new Dice(DiceColor.Red.toString());
 
         try {
             wstart1.setAssignedDice(diceStart1);
@@ -71,12 +71,37 @@ public class ToolCardTest {
             fail();
         }
 
-        Assert.assertEquals(windowPatternCard.getGrid()[1][3], wstart1);
-        // Assert.assertEquals(windowPatternCard.getGrid()[2][3], wstart2);
-        // Assert.assertEquals(windowPatternCard.getGrid()[1][1], null);
-        // Assert.assertEquals(windowPatternCard.getGrid()[2][1], null);
-
-
+        Assert.assertEquals(windowPatternCard.getGrid()[1][3].getAssignedDice(), diceStart1);
+        Assert.assertEquals(windowPatternCard.getGrid()[2][3].getAssignedDice(), diceStart2);
+        Assert.assertEquals(windowPatternCard.getGrid()[1][1].getAssignedDice(), null);
+        Assert.assertEquals(windowPatternCard.getGrid()[2][1].getAssignedDice(), null);
     }
 
+    @Test
+    public void testCorkEnglomiseBrush() {
+        Dice d = new Dice(DiceColor.Purple.toString().toLowerCase());
+        EnglomiseBrush englomiseBrush = new EnglomiseBrush();
+        WindowPatternCard w = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
+        englomiseBrush = englomiseBrush.EnglomiseBrush(englomiseBrush, w, w.getCell(1, 1), w.getCell(0, 1));
+
+        try {
+            w.insertDice(d, 1, 1, true, true, true);
+        } catch (NotValidInsertion | NotEmptyWindowCellException e) {
+            fail();
+        }
+
+        System.out.println(w.toString());
+
+        try {
+            englomiseBrush.executeEffect();
+        } catch (ToolCardException e) {
+            System.out.println(e);
+            fail();
+        } catch (NotEmptyWindowCellException e) {
+            System.out.println(e);
+            fail();
+        }
+        Assert.assertEquals(w.getGrid()[0][1].getAssignedDice(), d);
+        Assert.assertEquals(w.getGrid()[1][1].getAssignedDice(), null);
+    }
 }

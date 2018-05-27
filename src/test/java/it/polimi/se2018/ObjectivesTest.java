@@ -142,18 +142,18 @@ public class ObjectivesTest {
         Assert.assertEquals(4,sps.scorePoint(wpc));
     }
 
-    @Test
+   /* @Test
     public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
         Dice d1 = new Dice("yellow");
         Dice d2 = new Dice("blue");
 
-        /*wpc.insertDice(d2, 0, 0, false,false);
+        wpc.insertDice(d2, 0, 0, false,false);
         wpc.insertDice(d2, 0, 2, false,false);
         wpc.insertDice(d2, 1,1,false,false);
         wpc.insertDice(d2, 2,2,false,false);
-        wpc.insertDice(d2, 3,3,false,false);*/
+        wpc.insertDice(d2, 3,3,false,false);
         wpc.insertDice(d1, 0,3,false,false,false);
         wpc.insertDice(d1, 2,3,false,false,false);
         wpc.insertDice(d1, 1,4,false,false,false);
@@ -163,7 +163,7 @@ public class ObjectivesTest {
         System.out.println(wpc);
         ScorePointStrategy sps = new ColorDiagonals();
         Assert.assertEquals(7,sps.scorePoint(wpc));
-    }
+    }*/
 
     @Test
     public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
