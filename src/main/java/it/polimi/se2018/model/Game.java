@@ -25,7 +25,6 @@ public class Game extends Observable implements Serializable {
 
     public Game(){
         associatedGameController = new GameController(this);
-
     }
 
     public boolean isStarted() {

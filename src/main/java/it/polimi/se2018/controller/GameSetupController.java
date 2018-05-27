@@ -78,7 +78,7 @@ public class GameSetupController implements Serializable {
      */
     private void diceInitializer(){
         for (DiceColor dc : DiceColor.values()){
-            for (int i = 0; i < 15; i++){
+            for (int i = 0; i < 18; i++){
                 Dice newDice = new Dice(dc.name());
                 newDice.setLocation(DiceLocation.BAG);
                 this.associatedGame.getDiceBag().add(newDice);

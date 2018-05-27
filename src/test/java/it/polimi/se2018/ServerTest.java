@@ -11,7 +11,17 @@ public class ServerTest {
 
     @Test
     public void testGetter() {
-        Assert.assertTrue(true);
+        Server server = Server.getInstance();
+
+        Player p = new Player("Player");
+
+        server.addPlayerToOnlinePlayers(p);
+        Assert.assertEquals(1, server.getOnlinePlayers().size());
+
+        server.removePlayerFromOnlinePlayers(p);
+        Assert.assertTrue(!server.getOnlinePlayers().contains(p)); //check the player is not anymore listed in online players.
+        Assert.assertTrue(server.getOfflinePlayers().contains(p)); //check the player is now listed in offline players
+
     }
 
 }
