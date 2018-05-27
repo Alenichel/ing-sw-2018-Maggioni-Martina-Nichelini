@@ -13,6 +13,7 @@ public class CliView extends View implements Observer {
 
     private Player player;
     private transient Object lastObjectReceveid;
+    private Player activePlayer;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -62,7 +63,8 @@ public class CliView extends View implements Observer {
     }
 
     public void controllerCallback(Message callbackMessage){
-        this.requestCallback((GiveMessage)callbackMessage);
+        if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
+        else Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, callbackMessage.getStringMessage());
     }
 
     public void run() {
@@ -96,6 +98,11 @@ public class CliView extends View implements Observer {
                     handleSelectCommands(tokens[1]);
                     break;
 
+                case "pass":
+                    this.setChanged();
+                    this.notifyObservers(new UpdateMessage("Pass"));
+                    break;
+
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
@@ -109,10 +116,17 @@ public class CliView extends View implements Observer {
         }
     }
 
+    private void onDiceDraft(Game game){
+        Logger.log(LoggerType.CLIENT_SIDE, "These are the dice on table\n");
+        for (Dice d : game.getDiceOnTable())
+            Logger.log(LoggerType.CLIENT_SIDE, d.toString() + " ");
+        Logger.log(LoggerType.CLIENT_SIDE, "\n");
+    }
+
     private void onGameStarted(Observable o){
         Game game = ((Game)o);
         int i = 1;
-        Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : ");
+        Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : \n");
 
         ArrayList<WindowPatternCard> pool = null;
         for(Player p : game.getPlayers()){
@@ -120,7 +134,7 @@ public class CliView extends View implements Observer {
                 pool = (ArrayList<WindowPatternCard>)p.getWindowPatternCardsPool();
                 for (WindowPatternCard w : pool) {
                     Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
-                    Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()));
+                    Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()) + "\n");
                     Logger.log(LoggerType.CLIENT_SIDE, w.toString());
                     i++;
                 }
@@ -133,9 +147,13 @@ public class CliView extends View implements Observer {
             case "UpdateMessage":
                 String wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
-                if(wtu.equals("GameStarted")) {
-                    onGameStarted(o);
-                }
+
+                if(wtu.equals("GameStarted")) onGameStarted(o);
+
+                else if(wtu.equals("DiceOnTable")) onDiceDraft((Game)o);
+
+                else if(wtu.equals("ActivePlayer")) this.activePlayer = ((Game)o).getActivePlayer();
+
                 break;
             default: break;
         }

@@ -31,7 +31,7 @@ public final class Logger {
     }
 
     public static void log (LoggerType side, String toLog){
-        System.out.println(toLog);
+        System.out.print(toLog);
         if (Side == side) printWriter.println(toLog);
     }
 

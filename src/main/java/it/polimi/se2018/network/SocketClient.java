@@ -39,8 +39,8 @@ public class SocketClient implements Observer {
             this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
-            Logger.log(LoggerType.CLIENT_SIDE, "[*] Socket ready..");
-            Logger.log(LoggerType.CLIENT_SIDE, "[*] Connection established");
+            Logger.log(LoggerType.CLIENT_SIDE, "[*] Socket ready..\n");
+            Logger.log(LoggerType.CLIENT_SIDE, "[*] Connection established\n");
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
 
