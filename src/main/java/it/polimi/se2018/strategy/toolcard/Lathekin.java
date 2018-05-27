@@ -25,13 +25,13 @@ public class Lathekin implements ToolCardEffectStrategy, Serializable {
 
     public Lathekin(){ }
 
-    public Lathekin refactorLathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell s1, WindowCell s2, WindowCell e1, WindowCell e2) {
+    public Lathekin Lathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell s1, WindowCell s2, WindowCell e1, WindowCell e2) {
         lathekin.windowPatternCard = windowPatternCard;
         lathekin.start1 = s1;
         lathekin.start2 = s2;
         lathekin.end1 = e1;
         lathekin.end2 = e2;
-        return  lathekin;
+        return lathekin;
     }
 
     @Override
@@ -53,8 +53,8 @@ public class Lathekin implements ToolCardEffectStrategy, Serializable {
             throw e;
         }
 
-        start1.setAssignedDice(null);
-        start2.setAssignedDice(null);
+        start1.removeDice();
+        start2.removeDice();
 
         return 0;
     }
