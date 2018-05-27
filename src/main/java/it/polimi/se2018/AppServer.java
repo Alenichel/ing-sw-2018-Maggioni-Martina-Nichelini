@@ -7,10 +7,10 @@ import it.polimi.se2018.utils.LoggerType;
 /**
  * Hello world!
  */
-public class App {
+public class AppServer {
     public static void main(String[] args) {
         Logger.setSide(LoggerType.SERVER_SIDE);
         SocketServer ss = new SocketServer();
-        ss.run();
+        ss.start();
     }
 }
