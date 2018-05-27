@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Player extends Observable implements Serializable{
-
-    private List<Observer> observers = new ArrayList<>();
-
     private String nickname;
     private Date firstSeen;
     private Boolean online;
@@ -50,7 +47,7 @@ public class Player extends Observable implements Serializable{
     public void setNumberOfFavorTokens(int numberOfFavorTokens) {
         this.numberOfFavorTokens = numberOfFavorTokens;
     }
-    public void setWindowPatternCardsPool(ArrayList<WindowPatternCard> windowPatternCardsPool) {
+    public void setWindowPatternCardsPool(List<WindowPatternCard> windowPatternCardsPool) {
         this.windowPatternCardsPool = windowPatternCardsPool;
     }
 
@@ -78,7 +75,7 @@ public class Player extends Observable implements Serializable{
     public int getNumberOfFavorTokens() {
         return numberOfFavorTokens;
     }
-    public ArrayList<WindowPatternCard> getWindowPatternCardsPool() {
+    public List<WindowPatternCard> getWindowPatternCardsPool() {
         return windowPatternCardsPool;
     }
 
