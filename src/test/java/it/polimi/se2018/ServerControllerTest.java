@@ -2,6 +2,7 @@ package it.polimi.se2018;
 
 import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.ConnectionMessage;
+import it.polimi.se2018.message.RequestMessage;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.view.CliView;
@@ -25,6 +26,8 @@ public class ServerControllerTest {
         Assert.assertTrue(server.getOnlinePlayers().contains(p));
 
         cm = new ConnectionMessage(p, false);
-        //Assert.assertFalse(server.getOnlinePlayers().contains(p));
+        RequestMessage rm = new RequestMessage("request");
+        serverController.update(cw, rm);
+
     }
 }
