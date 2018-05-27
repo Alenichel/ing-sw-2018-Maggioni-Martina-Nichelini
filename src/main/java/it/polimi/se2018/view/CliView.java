@@ -7,10 +7,12 @@ import it.polimi.se2018.utils.LoggerType;
 
 import java.util.*;
 
+
+
 public class CliView extends View implements Observer {
 
     private Player player;
-
+    private transient Object lastObjectReceveid;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -64,7 +66,6 @@ public class CliView extends View implements Observer {
     }
 
     public void run() {
-        Object lastObjectReceveid;
         Scanner sinput = new Scanner(System.in);
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
