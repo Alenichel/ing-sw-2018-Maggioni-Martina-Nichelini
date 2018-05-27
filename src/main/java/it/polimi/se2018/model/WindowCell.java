@@ -122,6 +122,9 @@ public class WindowCell implements Serializable{
         else throw new NotEmptyWindowCellException("Not empty");
     }
 
+    public void removeDice(){
+        this.assignedDice = null;
+    }
     /**
      *
      * @return True if the cell is non assigned with a dice.
@@ -175,12 +178,6 @@ public class WindowCell implements Serializable{
                 Objects.equals(colorConstraint, that.colorConstraint) &&
                 Objects.equals(assignedDice, that.assignedDice) &&
                 Objects.equals(neighbourCells, that.neighbourCells);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(row, column, colorConstraint, numberConstraint, assignedDice, neighbourCells, neighbourhoodAssigned);
     }
 }
 
