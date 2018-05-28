@@ -1,7 +1,9 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -10,11 +12,14 @@ import java.io.Serializable;
  * right after his first turn.
  * The player will skip his second turn.
  */
-public class RunningPliers implements ToolCardEffectStrategy, Serializable {
+public class RunningPliers extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
 
-    public RunningPliers(){ }
+    public RunningPliers(){
+        this.setName(ToolCardsName.RunningPliers.toString());
+        this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round");
+    }
 
     public RunningPliers RunningPliers (RunningPliers runningPliers, Dice draftedDice) {
         runningPliers.draftedDice = draftedDice;
