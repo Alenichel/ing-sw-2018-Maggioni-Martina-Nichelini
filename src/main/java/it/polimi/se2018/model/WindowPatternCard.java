@@ -182,7 +182,7 @@ public class WindowPatternCard extends Card implements Serializable {
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
             if (wc.getAssignedDice() != null)
-                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()) );
+                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()) )
                     return false;
         }
         return true;
@@ -195,7 +195,7 @@ public class WindowPatternCard extends Card implements Serializable {
      * @return True if it's a valid position, false otherwise.
      */
     private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
-        boolean colorConstraint ;
+        boolean colorConstraint;
 
         if(dice.getColor() != null && windowCell.getColorConstraint() != null) colorConstraint = !(windowCell.getColorConstraint().equals(dice.getColor()));
         else colorConstraint = true;
