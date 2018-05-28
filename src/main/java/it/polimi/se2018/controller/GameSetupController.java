@@ -106,13 +106,13 @@ public class GameSetupController implements Serializable {
     private void initializePrivateObjectiveCards(){
         Random rand = new Random();
         int n;
-        ArrayList<String> colorName = new ArrayList<>();
+        ArrayList<DiceColor> colorName = new ArrayList<>();
         for(DiceColor d : DiceColor.values()){
-            colorName.add(d.toString());
+            colorName.add(d);
         }
         for(Player p : this.associatedGame.getPlayers()){
             n = rand.nextInt(this.associatedGame.getPlayers().size());
-            p.assignObjectiveCard(colorName.get(n));
+            p.assignObjectiveCard(new PrivateObjectiveCard(colorName.get(n)));
             colorName.remove(n);
         }
     }
