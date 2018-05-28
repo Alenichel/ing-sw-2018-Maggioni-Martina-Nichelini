@@ -5,7 +5,7 @@ package it.polimi.se2018.utils;
         import java.util.ArrayList;
 
 public class ConsoleUtils {
-    public void multiplePrint(ArrayList<WindowPatternCard> ws) {
+    public static void multiplePrint(ArrayList<WindowPatternCard> ws) {
         ArrayList<String[]> tokensTOT = new ArrayList<>();
 
         int i = 0, j = 0;
@@ -17,10 +17,8 @@ public class ConsoleUtils {
         for(int a = 0; a < tokensTOT.get(0).length; a++){
             for(int b = 0; b < tokensTOT.size(); b++){
                 System.out.print(tokensTOT.get(b)[a] + "   ");
-                //Logger.log(LoggerType.CLIENT_SIDE, tokensTOT.get(b)[a]);
             }
             System.out.println();
-            //Logger.log(LoggerType.CLIENT_SIDE,"\n");
         }
     }
 }
