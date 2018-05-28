@@ -128,18 +128,26 @@ public class CliView extends View implements Observer {
     }
 
     private void printTable(Game game){
+
+        RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
         for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
-        ConsoleUtils.multiplePrint((ArrayList)wpcs);
-    }
 
-    private void onDiceDraft(Game game){
-        Logger.log(LoggerType.CLIENT_SIDE, "These are the dice on table\n**** --->  ");
+        System.out.println(rT.toString());
+
         for (Dice d : game.getDiceOnTable())
-            Logger.log(LoggerType.CLIENT_SIDE, d.toString() + " ");
-        Logger.log(LoggerType.CLIENT_SIDE, "\n");
+            System.out.print(d.toString() + " ");
+        System.out.println("\n");
+        ConsoleUtils.multiplePrint((ArrayList)wpcs);
+        System.out.print("\n");
+        System.out.println("***********************************************************************************\n---------> OBJECTIVE <---------");
+        for (ObjectiveCard oc : game.getObjectiveCards())
+            System.out.println(oc);
 
-        this.printTable(game);
+        System.out.println("\n***********************************************************************************\n---------> TOOLCARDS <---------");
+        for (ToolCard tc : game.getToolCards())
+            System.out.println(tc);
+        System.out.println("***********************************************************************************");
     }
 
     private void onGameStarted(Observable o){
@@ -169,7 +177,7 @@ public class CliView extends View implements Observer {
 
                 if(wtu.equals("GameStarted")) onGameStarted(o);
 
-                else if(wtu.equals("DiceOnTable")) onDiceDraft((Game)o);
+                else if(wtu.equals("ActivePlayer")) printTable((Game)o);
 
                 else if(wtu.equals("ActivePlayer")) this.activePlayer = ((Game)o).getActivePlayer();
 
