@@ -1,7 +1,10 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
+import it.polimi.se2018.utils.DiceColor;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -9,11 +12,14 @@ import java.io.Serializable;
  * This class implements Tool Card #6 "Flux Brush" which lets the player re-roll a drafted die.
  * If it can not be placed, return it to the drafted pool.
  */
-public class FluxBrush implements ToolCardEffectStrategy, Serializable {
+public class FluxBrush extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private Dice die;
 
-    public FluxBrush(){ }
+    public FluxBrush(){
+        this.setName(ToolCardsName.FluxBrush.toString());
+        this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
+    }
 
     public FluxBrush FluxBrush(FluxBrush fluxBrush, Dice die){
         fluxBrush.die = die;
