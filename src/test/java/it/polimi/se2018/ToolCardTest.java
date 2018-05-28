@@ -29,7 +29,7 @@ public class ToolCardTest {
         Assert.assertEquals("bella", t.getDescription());
         Assert.assertNotEquals("brutta", t.getDescription());
 
-        t.setDiceColor("yellow");
+        t.setDiceColor(DiceColor.yellow);
         Assert.assertEquals("yellow", t.getDiceColor());
         Assert.assertNotEquals("blue", t.getDiceColor());
 
@@ -51,8 +51,8 @@ public class ToolCardTest {
         WindowCell wend1 = windowPatternCard.getGrid()[1][3];
         WindowCell wend2 = windowPatternCard.getGrid()[2][3];
 
-        Dice diceStart1 = new Dice(DiceColor.Green.toString());
-        Dice diceStart2 = new Dice(DiceColor.Red.toString());
+        Dice diceStart1 = new Dice(DiceColor.green);
+        Dice diceStart2 = new Dice(DiceColor.red);
 
         try {
             wstart1.setAssignedDice(diceStart1);
@@ -79,7 +79,7 @@ public class ToolCardTest {
 
     @Test
     public void testCorkEnglomiseBrush() {
-        Dice d = new Dice(DiceColor.Purple.toString().toLowerCase());
+        Dice d = new Dice(DiceColor.purple);
         EnglomiseBrush englomiseBrush = new EnglomiseBrush();
         WindowPatternCard w = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         englomiseBrush = englomiseBrush.EnglomiseBrush(englomiseBrush, w, w.getCell(1, 1), w.getCell(0, 1));
