@@ -2,11 +2,9 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.ToolCardEffectStrategy;
-import it.polimi.se2018.model.WindowCell;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.DiceLocation;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -15,13 +13,16 @@ import java.io.Serializable;
  * ignoring number constraints
  */
 
-public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable {
+public class CopperFoilBurnisher extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;
     private WindowCell end;
 
-    public CopperFoilBurnisher() { }
+    public CopperFoilBurnisher() {
+        this.setName(ToolCardsName.CopperFoilBurnisher.toString());
+        this.setDescription("Move any one die in your windows ingnoring shade restriction. You must obey all other placement restriction");
+    }
 
     public CopperFoilBurnisher CopperFoilBurnisher (CopperFoilBurnisher copperFoilBurnisher, WindowPatternCard windowPatternCard, WindowCell s, WindowCell e) {
         copperFoilBurnisher.windowPatternCard = windowPatternCard;
