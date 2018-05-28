@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 
+import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.DiceLocation;
 
 import java.io.Serializable;
@@ -12,6 +13,13 @@ public class Dice implements Serializable {
     private String color;
     private DiceLocation location;
     private String unicode = "";
+
+    public Dice (DiceColor color){
+        this.color = color.name();
+        this.location = null;
+        this.rollDice();
+        this.toUnicode(this.color, this.getNumber());
+    }
 
     public Dice(String color){
         this.color = color;
