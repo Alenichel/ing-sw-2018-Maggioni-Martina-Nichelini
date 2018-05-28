@@ -2,11 +2,10 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.ToolCardEffectStrategy;
-import it.polimi.se2018.model.WindowCell;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.DiceLocation;
+import it.polimi.se2018.utils.ObjectiveCardsName;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 /**
@@ -14,13 +13,16 @@ import java.io.Serializable;
  * ignoring color constraints
  */
 
-public class EnglomiseBrush implements ToolCardEffectStrategy, Serializable {
+public class EnglomiseBrush extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;
     private WindowCell end;
 
-    public EnglomiseBrush(){ }
+    public EnglomiseBrush(){
+        this.setName(ToolCardsName.EnglomiseBrush.toString());
+        this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
+    }
 
     public EnglomiseBrush EnglomiseBrush(EnglomiseBrush englomiseBrush, WindowPatternCard windowPatternCard, WindowCell s, WindowCell e) {
         englomiseBrush.windowPatternCard = windowPatternCard;
