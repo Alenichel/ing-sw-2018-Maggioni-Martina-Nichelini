@@ -1,7 +1,6 @@
 package it.polimi.se2018.utils;
 
 import it.polimi.se2018.controller.GameController;
-import it.polimi.se2018.model.Game;
 
 public class Timer extends Thread{
 
@@ -27,7 +26,8 @@ public class Timer extends Thread{
             }
 
         }catch (InterruptedException e){
-            e.printStackTrace();
+            Logger.WARNING(LoggerType.SERVER_SIDE, "Timer interrupted");
+            Thread.currentThread().interrupt();
             return;
         }
         Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer done");

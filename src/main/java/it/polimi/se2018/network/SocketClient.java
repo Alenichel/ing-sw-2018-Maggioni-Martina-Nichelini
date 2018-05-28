@@ -21,8 +21,6 @@ import java.util.concurrent.SynchronousQueue;
  */
 public class SocketClient implements Observer {
 
-    private String serverIP;
-    private int port;
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
@@ -34,8 +32,6 @@ public class SocketClient implements Observer {
 
     public SocketClient(String serverIP, int port, String nickname, String password ,View associatedView) {
         try {
-            this.serverIP = serverIP;
-            this.port = port;
             this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
@@ -123,7 +119,9 @@ public class SocketClient implements Observer {
         try {
             queue.put(suc);
         } catch (InterruptedException e) {
-            Logger.ERROR(LoggerType.CLIENT_SIDE, "::SC_UPDATE: InterruptedException");}
+            Logger.ERROR(LoggerType.CLIENT_SIDE, "::SC_UPDATE: InterruptedException");
+            Thread.currentThread().interrupt();
+        }
     }
 }
 

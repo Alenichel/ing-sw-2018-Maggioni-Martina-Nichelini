@@ -47,7 +47,7 @@ public class VirtualViewNetworkBridge extends Thread {
             }
         catch (IOException | ClassNotFoundException e){
             Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB_CONSTRUCTOR: " + e);
-            e.printStackTrace();
+            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
         }
 
         if (this.clientAuthenticated){
@@ -59,18 +59,11 @@ public class VirtualViewNetworkBridge extends Thread {
 
             //sending back the instance of the player
             try {
-                //queue.put(new HandshakeConnectionMessage(player));
+
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException /*| InterruptedException*/ e){
                 Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
             }
-
-            //starting connection handler thread.
-            VirtualListener vl = new VirtualListener();
-            Sender s = new Sender();
-            vl.start();
-            s.start();
-
         }
         else {
             try{
@@ -139,7 +132,10 @@ public class VirtualViewNetworkBridge extends Thread {
     public void controllerCallback(Message callbackMessage){
         try {
             queue.put(callbackMessage);
-        } catch (InterruptedException e) {e.printStackTrace();}
+        } catch (InterruptedException e) {
+            Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+            Thread.currentThread().interrupt();
+        }
     }
 
     /**
@@ -152,7 +148,10 @@ public class VirtualViewNetworkBridge extends Thread {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);
         try {
             queue.put(suc);
-        } catch (InterruptedException e){e.printStackTrace();}
+        } catch (InterruptedException e){
+            Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+            Thread.currentThread().interrupt();
+        }
     }
 
     private class Sender extends Thread{
@@ -166,7 +165,7 @@ public class VirtualViewNetworkBridge extends Thread {
                     oos.flush();
                     oos.reset();
                 } while (msg.getMessageType() != "quit");
-            } catch (InterruptedException | IOException e) {e.printStackTrace();}
+            } catch (InterruptedException | IOException e) { Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());}
         }
     }
 
@@ -186,13 +185,12 @@ public class VirtualViewNetworkBridge extends Thread {
                         associatedVirtualView.notifyObservers(/*packet.getObservable(), */packet.getObject());
                     } catch (ClassNotFoundException e){
                         Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
-                        e.printStackTrace();
+                        Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
                     }
                 }
                 ois.close();
                 oos.close();
                 socket.close();
-                System.out.println("Exited");
             }
             catch (EOFException e){
                 Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "VVNB_LISTENER: Socket has been closed client side");
@@ -202,9 +200,17 @@ public class VirtualViewNetworkBridge extends Thread {
             }
             catch (IOException e) {
                 Logger.ERROR(LoggerType.SERVER_SIDE, "VVNB_LISTENER: " + e);
-                e.printStackTrace();
+                Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
             }
         }
+    }
+
+    @Override
+    public void run(){
+        VirtualListener vl = new VirtualListener();
+        Sender s = new Sender();
+        vl.start();
+        s.start();
     }
 }
 
