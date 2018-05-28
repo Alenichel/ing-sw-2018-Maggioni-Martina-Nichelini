@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 
+import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.DiceLocation;
 
@@ -61,34 +62,14 @@ public class Dice implements Serializable {
     }
 
     private void toUnicode(String color, int n){
+        ConsoleUtils consoleUtils = new ConsoleUtils();
         this.unicode = "";
-        this.unicode = this.unicode.concat(toUnicodeColor(color));
-        this.unicode = this.unicode.concat(toUnicodeNumber(n));
+        this.unicode = this.unicode.concat(consoleUtils.toUnicodeColor(color));
+        this.unicode = this.unicode.concat(consoleUtils.toUnicodeNumber(n));
         this.unicode = this.unicode.concat((char) 27 + "[30m");
     }
 
-    private String toUnicodeColor(String color){
-        switch (color.toLowerCase()){
-            case "red":         return (char) 27 + "[31m";
-            case "yellow":      return (char) 27 + "[33m";
-            case "green":       return (char) 27 + "[32m";
-            case "blue":        return (char) 27 + "[34m";
-            case "purple":      return (char) 27 + "[35m";
-            default: return "";
-        }
-    }
 
-    private String toUnicodeNumber(int number){
-        switch (number){
-            case 1:    return "\u2680";
-            case 2:    return "\u2681";
-            case 3:    return "\u2682";
-            case 4:    return "\u2683";
-            case 5:    return "\u2684";
-            case 6:    return "\u2685";
-            default: return "";
-        }
-    }
 
     public String toString(){
         return this.unicode;
