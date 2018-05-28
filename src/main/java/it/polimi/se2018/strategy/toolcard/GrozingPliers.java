@@ -1,7 +1,9 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -9,12 +11,15 @@ import java.io.Serializable;
  * This class implements Tool Card #1 "Grozing Pliers" which lets the player  increase or decrease
  * the value of a drafted die by 1
  */
-public class GrozingPliers implements ToolCardEffectStrategy, Serializable {
+public class GrozingPliers extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
     private boolean increase;
 
-    public GrozingPliers() { }
+    public GrozingPliers() {
+        this.setName(ToolCardsName.GrozingPliers.toString());
+        this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
+    }
 
     public GrozingPliers GrozingPliers(GrozingPliers grozingPliers, Dice draftedDice, boolean increase){
         grozingPliers.draftedDice = draftedDice;
