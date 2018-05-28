@@ -1,7 +1,9 @@
 package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -9,11 +11,14 @@ import java.io.Serializable;
  * This class implements Tool Card #10 "Grinding Stone" which lets the player flip a die to
  * its opposite side.
  */
-public class GrindingStone implements ToolCardEffectStrategy, Serializable {
+public class GrindingStone extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
 
-    public GrindingStone(){ }
+    public GrindingStone(){
+        this.setName(ToolCardsName.GrindingStone.toString());
+        this.setDescription("After drafting flip the die to its opposite side.");
+    }
 
     public GrindingStone GrindingStone(GrindingStone grindingStone, Dice draftedDice){
         grindingStone.draftedDice = draftedDice;
