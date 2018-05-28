@@ -1,13 +1,14 @@
 package it.polimi.se2018.controller;
 
-import it.polimi.se2018.message.Message;
-import it.polimi.se2018.message.SelectionMessage;
-import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
+import it.polimi.se2018.exception.NotValidInsertion;
+import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.*;
+import it.polimi.se2018.view.VirtualView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +82,25 @@ public class RoundHandler implements TimerInterface {
         }
     }
 
+    private void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
+
+        if (mdm.getStartingLocation() == DiceLocation.TABLE) {
+            Dice d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
+            d.setLocation(mdm.getEndingLocation());
+            try {
+                this.gameAssociated.getActivePlayer().getActivePatternCard().insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
+                List<Dice> diceOnTable = this.gameAssociated.getDiceOnTable();
+                diceOnTable.remove(d);
+                this.gameAssociated.setDiceOnTable(diceOnTable);
+            } catch (NotEmptyWindowCellException | NotValidInsertion e) {
+                Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not valid position");
+                ((VirtualView)observable).controllerCallback(ccm);
+            }
+        }
+
+    }
+
     public void update(Observable observable, Object message){
         Message msg = (Message)message;
         Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":ROUND_HANDLER: Handling -> " + msg.getMessageType());
@@ -89,6 +109,10 @@ public class RoundHandler implements TimerInterface {
 
             case "UpdateMessage":
                 this.handleUpdateMessage(observable, (UpdateMessage)message);
+                break;
+
+            case "MoveDiceMessage":
+                this.handleMoveDiceMessage(observable, (MoveDiceMessage)message);
                 break;
 
             default: break;

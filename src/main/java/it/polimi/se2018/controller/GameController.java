@@ -100,6 +100,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
             case "Pass":
                 this.roundHandler.update(observable, message);
+                break;
 
             default: break;
         }
@@ -126,6 +127,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
             if (selectedPatterCards == gameAssociated.getPlayers().size()) this.onInitializationComplete();
         }
     }
+
+
+
     @Override
     public void update(Observable observable, Object msg){
 
@@ -153,6 +157,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
             case "SelectionMessage":
                 this.handleSelectionMessage(observable, (SelectionMessage)msg);
+                break;
+
+            case "MoveDiceMessage":
+                this.roundHandler.update(observable, msg);
                 break;
 
             default: break;
