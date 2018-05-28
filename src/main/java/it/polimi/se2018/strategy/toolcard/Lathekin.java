@@ -2,11 +2,9 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.ToolCardEffectStrategy;
-import it.polimi.se2018.model.WindowCell;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.DiceLocation;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -14,7 +12,7 @@ import java.io.Serializable;
  * This class implements Tool Card #4 "Lathekin" which lets the player move exactly two dice
  * on his window pattern card obeying all restrictions
  */
-public class Lathekin implements ToolCardEffectStrategy, Serializable {
+public class Lathekin extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start1;
@@ -23,7 +21,10 @@ public class Lathekin implements ToolCardEffectStrategy, Serializable {
     private WindowCell end2;
 
 
-    public Lathekin(){ }
+    public Lathekin(){
+        this.setName(ToolCardsName.Lathekin.toString());
+        this.setDescription("Move exatcly two die, obeying all placemente restriction");
+    }
 
     public Lathekin Lathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell s1, WindowCell s2, WindowCell e1, WindowCell e2) {
         lathekin.windowPatternCard = windowPatternCard;
