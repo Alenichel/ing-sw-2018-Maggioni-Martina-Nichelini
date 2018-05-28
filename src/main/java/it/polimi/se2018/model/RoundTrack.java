@@ -1,9 +1,10 @@
 package it.polimi.se2018.model;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class RoundTrack {
+public class RoundTrack implements Serializable{
     private ArrayList<Dice> roundTrack = new ArrayList<>();
 
     public ArrayList<Dice> getRoundTrack() {
@@ -31,7 +32,6 @@ public class RoundTrack {
         String verticalSeparatorTop = "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581";
         String verticalSeparatorBottom = "\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594";
 
-        str = str.concat("Round number: " + currentRound+"\n");
         str = str.concat(verticalSeparatorTop + "\n");
         str = str.concat("|");
         for(Dice d : roundTrack){
