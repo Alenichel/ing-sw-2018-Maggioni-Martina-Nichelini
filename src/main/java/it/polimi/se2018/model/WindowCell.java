@@ -175,9 +175,17 @@ public class WindowCell implements Serializable{
                 column == that.column &&
                 numberConstraint == that.numberConstraint &&
                 neighbourhoodAssigned == that.neighbourhoodAssigned &&
+                isDiagonal == that.isDiagonal &&
                 Objects.equals(colorConstraint, that.colorConstraint) &&
                 Objects.equals(assignedDice, that.assignedDice) &&
-                Objects.equals(neighbourCells, that.neighbourCells);
+                Objects.equals(neighbourCells, that.neighbourCells) &&
+                Objects.equals(diagonalCells, that.diagonalCells);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(row, column, colorConstraint, numberConstraint, assignedDice, neighbourCells, neighbourhoodAssigned, diagonalCells, isDiagonal);
     }
 }
 
