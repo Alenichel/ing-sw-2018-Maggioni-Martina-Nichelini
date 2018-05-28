@@ -13,15 +13,14 @@ import java.io.Serializable;
  * ignoring number constraints
  */
 
-public class CopperFoilBurnisher extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;
     private WindowCell end;
 
     public CopperFoilBurnisher() {
-        this.setName(ToolCardsName.CopperFoilBurnisher.toString());
-        this.setDescription("Move any one die in your windows ingnoring shade restriction. You must obey all other placement restriction");
+
     }
 
     public CopperFoilBurnisher CopperFoilBurnisher (CopperFoilBurnisher copperFoilBurnisher, WindowPatternCard windowPatternCard, WindowCell s, WindowCell e) {

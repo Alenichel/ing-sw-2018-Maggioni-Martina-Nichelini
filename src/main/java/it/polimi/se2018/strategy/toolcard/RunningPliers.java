@@ -12,13 +12,11 @@ import java.io.Serializable;
  * right after his first turn.
  * The player will skip his second turn.
  */
-public class RunningPliers extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class RunningPliers implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
 
     public RunningPliers(){
-        this.setName(ToolCardsName.RunningPliers.toString());
-        this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round");
     }
 
     public RunningPliers RunningPliers (RunningPliers runningPliers, Dice draftedDice) {

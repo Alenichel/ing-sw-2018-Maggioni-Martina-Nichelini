@@ -11,16 +11,14 @@ import java.io.Serializable;
  * This class implements Tool Card #9 "Cork Backed Straightedge" which lets the player place a
  * drafted die in a spot that is not adjacent to another die
  */
-public class CorkBackedStraightedge extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class CorkBackedStraightedge implements ToolCardEffectStrategy, Serializable {
 
     private WindowCell wc;
     private Dice draftedDie;
     private WindowPatternCard windowPatternCard;
 
     public CorkBackedStraightedge(){
-        this.setName(ToolCardsName.CorkBackedStraightedge.toString());
-        this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
-    }
+   }
 
     public CorkBackedStraightedge CorkBackedStraightedge (CorkBackedStraightedge corkBackedStraightedge, WindowCell wc, Dice die, WindowPatternCard windowPatternCard) {
         corkBackedStraightedge.windowPatternCard = windowPatternCard;

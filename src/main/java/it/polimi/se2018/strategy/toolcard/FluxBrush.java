@@ -12,13 +12,11 @@ import java.io.Serializable;
  * This class implements Tool Card #6 "Flux Brush" which lets the player re-roll a drafted die.
  * If it can not be placed, return it to the drafted pool.
  */
-public class FluxBrush extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class FluxBrush implements ToolCardEffectStrategy, Serializable {
 
     private Dice die;
 
     public FluxBrush(){
-        this.setName(ToolCardsName.FluxBrush.toString());
-        this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
     }
 
     public FluxBrush FluxBrush(FluxBrush fluxBrush, Dice die){

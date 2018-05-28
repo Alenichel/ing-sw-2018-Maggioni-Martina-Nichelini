@@ -13,14 +13,12 @@ import java.util.ArrayList;
  * in the draft pool.
  * This may only be used on the second turn before drafting
  */
-public class GlazingHammer extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class GlazingHammer implements ToolCardEffectStrategy, Serializable {
 
     private ArrayList<Dice> draftedDice;
 
     public GlazingHammer(){
-        this.setName(ToolCardsName.GlazingHammer.toString());
-        this.setDescription("Re roll all dice in the drafted pool. This may only used on your second turn before drafting.");
-    }
+   }
 
     public GlazingHammer GlazingHammer(GlazingHammer glazingHammer, ArrayList<Dice> draftedDice){
         glazingHammer.draftedDice = draftedDice;

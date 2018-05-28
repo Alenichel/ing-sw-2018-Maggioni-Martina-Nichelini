@@ -12,7 +12,7 @@ import java.io.Serializable;
  * This class implements Tool Card #4 "Lathekin" which lets the player move exactly two dice
  * on his window pattern card obeying all restrictions
  */
-public class Lathekin extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class Lathekin implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start1;
@@ -22,9 +22,7 @@ public class Lathekin extends ToolCard implements ToolCardEffectStrategy, Serial
 
 
     public Lathekin(){
-        this.setName(ToolCardsName.Lathekin.toString());
-        this.setDescription("Move exatcly two die, obeying all placemente restriction");
-    }
+   }
 
     public Lathekin Lathekin(Lathekin lathekin, WindowPatternCard windowPatternCard, WindowCell s1, WindowCell s2, WindowCell e1, WindowCell e2) {
         lathekin.windowPatternCard = windowPatternCard;

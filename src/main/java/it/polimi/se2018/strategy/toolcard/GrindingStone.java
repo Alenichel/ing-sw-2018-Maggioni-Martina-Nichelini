@@ -11,14 +11,12 @@ import java.io.Serializable;
  * This class implements Tool Card #10 "Grinding Stone" which lets the player flip a die to
  * its opposite side.
  */
-public class GrindingStone extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class GrindingStone implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
 
     public GrindingStone(){
-        this.setName(ToolCardsName.GrindingStone.toString());
-        this.setDescription("After drafting flip the die to its opposite side.");
-    }
+   }
 
     public GrindingStone GrindingStone(GrindingStone grindingStone, Dice draftedDice){
         grindingStone.draftedDice = draftedDice;

@@ -13,15 +13,13 @@ import java.io.Serializable;
  * ignoring color constraints
  */
 
-public class EnglomiseBrush extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class EnglomiseBrush implements ToolCardEffectStrategy, Serializable {
 
     private WindowPatternCard windowPatternCard;
     private WindowCell start;
     private WindowCell end;
 
     public EnglomiseBrush(){
-        this.setName(ToolCardsName.EnglomiseBrush.toString());
-        this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
     }
 
     public EnglomiseBrush EnglomiseBrush(EnglomiseBrush englomiseBrush, WindowPatternCard windowPatternCard, WindowCell s, WindowCell e) {

@@ -13,15 +13,13 @@ import java.io.Serializable;
  * This class implements Tool Card #5 "Lens Cutter" which lets the player swap a drafted die with
  * one on the round track
  */
-public class LensCutter extends ToolCard implements ToolCardEffectStrategy, Serializable {
+public class LensCutter implements ToolCardEffectStrategy, Serializable {
 
     private Dice draftedDice;
     private Dice rtDice;
 
     public LensCutter(){
-        this.setName(ToolCardsName.LensCutter.toString());
-        this.setDescription("After drafted swap the drafted die with a die from the round track");
-    }
+   }
 
     public LensCutter LensCutter(LensCutter lensCutter, Dice draftedDice) {
         lensCutter.draftedDice = draftedDice;
