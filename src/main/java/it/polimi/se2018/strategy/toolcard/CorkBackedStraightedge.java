@@ -2,10 +2,8 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.ToolCardEffectStrategy;
-import it.polimi.se2018.model.WindowCell;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 
@@ -13,13 +11,16 @@ import java.io.Serializable;
  * This class implements Tool Card #9 "Cork Backed Straightedge" which lets the player place a
  * drafted die in a spot that is not adjacent to another die
  */
-public class CorkBackedStraightedge implements ToolCardEffectStrategy, Serializable {
+public class CorkBackedStraightedge extends ToolCard implements ToolCardEffectStrategy, Serializable {
 
     private WindowCell wc;
     private Dice draftedDie;
     private WindowPatternCard windowPatternCard;
 
-    public CorkBackedStraightedge(){ }
+    public CorkBackedStraightedge(){
+        this.setName(ToolCardsName.CorkBackedStraightedge.toString());
+        this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
+    }
 
     public CorkBackedStraightedge CorkBackedStraightedge (CorkBackedStraightedge corkBackedStraightedge, WindowCell wc, Dice die, WindowPatternCard windowPatternCard) {
         corkBackedStraightedge.windowPatternCard = windowPatternCard;
