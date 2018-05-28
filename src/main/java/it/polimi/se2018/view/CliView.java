@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
 
@@ -57,14 +58,10 @@ public class CliView extends View implements Observer {
         }
     }
 
-    private void requestCallback(GiveMessage callbackMessage){
-        this.lastObjectReceveid = callbackMessage.getGivenObject();
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, lastObjectReceveid.toString());
-    }
-
-    public void controllerCallback(Message callbackMessage){
-        if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
-        else Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, callbackMessage.getStringMessage());
+    private void handleTakeCommands(int n, String toPosition){
+        MoveDiceMessage mdm = new MoveDiceMessage(n, toPosition);
+        this.setChanged();
+        this.notifyObservers(mdm);
     }
 
     public void run() {
@@ -103,6 +100,10 @@ public class CliView extends View implements Observer {
                     this.notifyObservers(new UpdateMessage("Pass"));
                     break;
 
+                case "take":
+                    this.handleTakeCommands(Integer.parseInt(tokens[1]), tokens[2]);
+                    break;
+
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
@@ -116,11 +117,29 @@ public class CliView extends View implements Observer {
         }
     }
 
+    private void requestCallback(GiveMessage callbackMessage){
+        this.lastObjectReceveid = callbackMessage.getGivenObject();
+        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, lastObjectReceveid.toString());
+    }
+
+    public void controllerCallback(Message callbackMessage){
+        if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
+        else Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, callbackMessage.getStringMessage());
+    }
+
+    private void printTable(Game game){
+        List<WindowPatternCard> wpcs = new ArrayList<>();
+        for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
+        ConsoleUtils.multiplePrint((ArrayList)wpcs);
+    }
+
     private void onDiceDraft(Game game){
-        Logger.log(LoggerType.CLIENT_SIDE, "These are the dice on table\n");
+        Logger.log(LoggerType.CLIENT_SIDE, "These are the dice on table\n**** --->  ");
         for (Dice d : game.getDiceOnTable())
             Logger.log(LoggerType.CLIENT_SIDE, d.toString() + " ");
         Logger.log(LoggerType.CLIENT_SIDE, "\n");
+
+        this.printTable(game);
     }
 
     private void onGameStarted(Observable o){
