@@ -87,12 +87,18 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    private void onNextRound(){
+        this.gameAssociated.setActualRound(this.gameAssociated.getActualRound() + 1);
+        roundHandler = new RoundHandler(gameAssociated);
+    }
+
+
     private void onInitializationComplete(){
         gameSetupController = null;
         this.gameAssociated.setInitializationComplete(true);
+        this.gameAssociated.setActualRound(1);
         this.roundHandler = new RoundHandler(gameAssociated);
     }
-
 
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
@@ -100,6 +106,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
             case "Pass":
                 this.roundHandler.update(observable, message);
+                break;
+
+            case "NextRound":
+                this.onNextRound();
                 break;
 
             default: break;
@@ -127,7 +137,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
             if (selectedPatterCards == gameAssociated.getPlayers().size()) this.onInitializationComplete();
         }
     }
-
 
 
     @Override

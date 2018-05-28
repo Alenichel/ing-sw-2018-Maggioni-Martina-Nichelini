@@ -16,15 +16,18 @@ public class Game extends Observable implements Serializable {
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
 
+    private RoundTrack roundTrack;
     private boolean isStarted;
     private boolean initiliazationComplete;
-
+    private int actualRound = 0;
     private Player activePlayer = null;
 
     private GameController associatedGameController;
 
+
     public Game(){
         associatedGameController = new GameController(this);
+        this.roundTrack = new RoundTrack();
     }
 
     public boolean isStarted() {
@@ -94,6 +97,14 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+    public void setActualRound(int actualRound) {
+        this.actualRound = actualRound;
+        UpdateMessage um = new UpdateMessage("NewRound");
+        um.setStringMessage("This is round number: " + this.actualRound);
+        this.setChanged();
+        this.notifyObservers(um);
+    }
+
 
     public List<Dice> getDiceBag() {
         return diceBag;
@@ -115,6 +126,13 @@ public class Game extends Observable implements Serializable {
     }
     public Player getActivePlayer() {
         return activePlayer;
+    }
+    public RoundTrack getRoundTrack() {
+        return roundTrack;
+    }
+
+    public int getActualRound() {
+        return actualRound;
     }
 
     public void addPlayer(Player player) throws GameException{
