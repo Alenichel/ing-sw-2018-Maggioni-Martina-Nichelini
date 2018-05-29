@@ -112,6 +112,8 @@ public class WindowCell implements Serializable{
 
     public List<WindowCell> getDiagonalCells() { return diagonalCells; }
 
+
+
     /**
      * Assigned dice setter
      * @param assignedDice
