@@ -138,7 +138,7 @@ public class CliView extends View implements Observer {
         for (Dice d : game.getDiceOnTable())
             System.out.print(d.toString() + " ");
         System.out.println("\n");
-        ConsoleUtils.multiplePrint((ArrayList)wpcs);
+        ConsoleUtils.multiplePrint((ArrayList)wpcs, player);
         System.out.print("\n");
         System.out.println("***********************************************************************************\n---------> OBJECTIVE <---------");
         for (ObjectiveCard oc : game.getObjectiveCards())
