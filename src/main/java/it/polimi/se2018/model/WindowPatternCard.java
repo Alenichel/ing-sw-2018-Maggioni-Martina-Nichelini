@@ -185,13 +185,20 @@ public class WindowPatternCard extends Card implements Serializable {
      * @return True if it's a valid position, false otherwise.
      */
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
+        int counterNearDice = 0;
+
+        for (WindowCell wc : windowCell.getDiagonalCells())
+            if (wc.getAssignedDice() != null) counterNearDice++;
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
-            if (wc.getAssignedDice() != null)
-                if ( wc.getAssignedDice().getNumber()== dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()) )
+            if (wc.getAssignedDice() != null) {
+                counterNearDice++;
+                if (wc.getAssignedDice().getNumber() == dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()))
                     return false;
+            }
         }
-        return true;
+        if (counterNearDice != 0) return true;
+        return false;
     }
 
     /**

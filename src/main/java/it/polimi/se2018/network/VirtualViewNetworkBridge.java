@@ -15,6 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 /**
@@ -31,7 +32,7 @@ public class VirtualViewNetworkBridge extends Thread {
     private VirtualView associatedVirtualView;
     private Player player;
 
-    BlockingQueue queue = new SynchronousQueue();
+    BlockingQueue queue = new LinkedBlockingQueue();
 
     public VirtualViewNetworkBridge(Socket socket){
         this.socket = socket;
