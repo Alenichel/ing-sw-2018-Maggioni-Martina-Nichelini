@@ -26,8 +26,13 @@ public class RoundTrack implements Serializable{
     }
 
     public void addDice(Dice d, int round){
-
         roundTrack.get(round).add(d);
+    }
+
+    public void addDice(ArrayList<Dice> d, int round){
+        for(Dice p : d){
+            roundTrack.get(round).add(p);
+        }
     }
 
 
