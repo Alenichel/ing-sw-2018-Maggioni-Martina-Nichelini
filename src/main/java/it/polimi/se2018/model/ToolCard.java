@@ -32,12 +32,12 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.EnglomiseBrush.toString());
             this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
         }
-        if(toolCardEffect instanceof FluxRemover){
+        if(toolCardEffect instanceof FluxBrush){
             this.setName(ToolCardsName.FluxBrush.toString());
             this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
         }
         if(toolCardEffect instanceof FluxRemover){
-            this.setName(ToolCardsName.FluxBrush.toString());
+            this.setName(ToolCardsName.FluxRemover.toString());
             this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag ");
         }
         if(toolCardEffect instanceof GlazingHammer){
