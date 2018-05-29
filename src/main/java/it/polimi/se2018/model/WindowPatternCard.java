@@ -25,6 +25,7 @@ public class WindowPatternCard extends Card implements Serializable {
     private WindowCell[][] grid = new WindowCell[4][5];
     private WindowPatternCardsName wpname;
     private int numberOfFavorTokens;
+    private Player player;
 
     private int placedDice = 0;
 
@@ -84,6 +85,14 @@ public class WindowPatternCard extends Card implements Serializable {
     }
     public WindowPatternCardsName getWPName() {
         return wpname;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 
     /**
@@ -259,16 +268,13 @@ public class WindowPatternCard extends Card implements Serializable {
         String firstverticalSeparator = "\u250F\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2513";
         String verticalSeparator = "\u2523\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u252B";
         String lastverticalSeparator = "\u2517\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u251B";
-        //252C
-        //String horizontalSeparator = "\u2595";
+
         String horizontalSeparator = "\u2503";
         final String BACK_TO_BLACK = (char) 27 + "[30m";
         string = string.concat((char) 27 + "[31m");
-        //string = string.concat("   ------------------------------  \n");
-        //string = string.concat("  "+firstverticalSeparator + "  \n" );
+        string = string.concat("\uD83D\uDF85"+"\" "+player.getNickname()+"\" ");
         string = string.concat("     1     2     3     4     5     \n" + BACK_TO_BLACK);
         for (WindowCell[] line : grid) {
-            //string = string.concat("   ------------------------------  \n");
             if(row == 1)
                 string = string.concat("  "+firstverticalSeparator+"  \n");
             else
@@ -276,7 +282,6 @@ public class WindowPatternCard extends Card implements Serializable {
 
             string = string.concat((char) 27 + "[31m");
             string = string.concat(((Integer)row).toString()+ BACK_TO_BLACK);
-            //string = string.concat(" |  " + BACK_TO_BLACK);
             string = string.concat(" "+horizontalSeparator+ "  " );
             for (WindowCell cell : line) {
                     if(cell.getAssignedDice() == null) {
@@ -286,19 +291,16 @@ public class WindowPatternCard extends Card implements Serializable {
                             string = string.concat(toUnicodeColor(cell.getColorConstraint()));
                             string = string.concat("\u25FE");
                             string = string.concat(BACK_TO_BLACK);
-                            //string = string.concat("  |  ");
                             string = string.concat("  "+horizontalSeparator+"  ");
                         }
                         else if (cell.getNumberConstraint() != 0){
                             //number constraint
                             string = string.concat(((Integer)cell.getNumberConstraint()).toString());
-                            //string = string.concat("  |  ");
                             string = string.concat("  "+horizontalSeparator+"  ");
                         }
                         else {
                             //empty cell
                             string = string.concat(" ");
-                            //string = string.concat("  |  ");
                             string = string.concat("  " + horizontalSeparator + "  ");
 
                         }
@@ -309,21 +311,17 @@ public class WindowPatternCard extends Card implements Serializable {
                         if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
                             //color or number constraint with a die
                             string = string.concat("*");
-                            //string = string.concat(" |  ");
                             string = string.concat(" "+horizontalSeparator+"  ");
 
                         }else{
-                            //string = string.concat("  |  ");
                             string = string.concat("  "+horizontalSeparator+"  ");
 
                         }
                     }
-                    //string = string.concat("  |  ");
             }
             string = string.concat("\n");
             row++;
         }
-        //string = string.concat("   ------------------------------  \n");
         string = string.concat("  "+lastverticalSeparator + "  \n" );
         return string;
     }
