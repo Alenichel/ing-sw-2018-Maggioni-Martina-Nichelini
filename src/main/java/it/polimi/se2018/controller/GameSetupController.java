@@ -161,6 +161,7 @@ public class GameSetupController implements Serializable {
             if (p.getNickname().equals(playerNickName)){
                 p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
                 p.setWindowPatternCardsPool(null);
+                p.getActivePatternCard().setPlayer(p);
             }
         }
     }
