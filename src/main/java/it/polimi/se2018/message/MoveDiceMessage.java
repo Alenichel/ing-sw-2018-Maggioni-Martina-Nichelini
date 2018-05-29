@@ -12,13 +12,13 @@ public class MoveDiceMessage extends Message {
     private int endingX;
     private int endingY;
 
-    public MoveDiceMessage(int tableCoordinate,  String endingCoordinates){
+    public MoveDiceMessage(int tableCoordinate,  int endingX, int endingY){
         this.messageType = "MoveDiceMessage";
         this.startingLocation = DiceLocation.TABLE;
         this.endingLocation = DiceLocation.WINDOWCELL;
         this.tableCoordinate = tableCoordinate - 1;
-        this.endingX = Integer.parseInt(endingCoordinates.substring(0,1)) - 1;
-        this.endingY = Integer.parseInt(endingCoordinates.substring(1,2)) - 1;
+        this.endingX = endingX;
+        this.endingY = endingY;
     }
 
     public DiceLocation getStartingLocation() {
