@@ -1,48 +1,86 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.utils.DiceColor;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class RoundTrack implements Serializable{
-    private ArrayList<Dice> roundTrack = new ArrayList<>();
+    private ArrayList<ArrayList<Dice>> roundTrack;
 
-    public ArrayList<Dice> getRoundTrack() {
+    public RoundTrack(){
+        roundTrack = new ArrayList<ArrayList<Dice>>();
+
+        for(int i = 0; i<9; i++){
+            roundTrack.add(i, new ArrayList<Dice>());
+        }
+    }
+
+    public ArrayList<ArrayList<Dice>> getRoundTrack() {
         return roundTrack;
     }
 
-    public void setRoundTrack(ArrayList<Dice> roundTrack) {
+    public void setRoundTrack(ArrayList<ArrayList<Dice>> roundTrack) {
         this.roundTrack = roundTrack;
     }
 
-    public void addDice(Dice d){
-        roundTrack.add(d);
-    }
+    public void addDice(Dice d, int round){
 
-    public void moveDice(int round, Dice d){
-        roundTrack.remove(round);
-        roundTrack.add(round, d);
+        roundTrack.get(round).add(d);
     }
 
 
     @Override
     public String toString() {
         String str = "";
-        int currentRound = roundTrack.size();
-        String verticalSeparatorTop = "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581";
-        String verticalSeparatorBottom = "\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594\u2594";
+        int max_width = 0;
+        int currentRound = 0;
+        String verticalSeparatorTop = "═";
 
-        str = str.concat(verticalSeparatorTop + "\n");
-        str = str.concat("|");
-        for(Dice d : roundTrack){
-           str = str.concat(d.toString());
-       }
-       for(int i = currentRound+1; i<11; i++){
-           str = str.concat("\u2610");
-       }
-        str = str.concat("|\n");
-        str = str.concat(verticalSeparatorBottom + "\n");
+        for(ArrayList<Dice> aD : roundTrack){
+            if(!aD.isEmpty()) {
+                if(aD.size() > max_width)
+                    max_width = aD.size();
+            }
+        }
+        str = str.concat(" Round tracker\n");
+        str = str.concat("╔");
+        for(int i = 0; i < max_width+4; i++){
+            str = str.concat(verticalSeparatorTop);
+        }
+        str = str.concat("╗\n");
 
+        for(ArrayList<Dice> aD : roundTrack){
+            str = str.concat("║");
+            int nDice = 0, nSpace = 0;
+            if(!aD.isEmpty()) {
+                nDice = aD.size();
+                nSpace = (max_width+4-nDice-1);
+                str = str.concat(" ");
+                for (Dice d : aD) {
+                    if (d.getNumber() != 0)
+                        str = str.concat(d.toString());
+                }
+                for(int i = 0; i < nSpace; i++){
+                    str = str.concat(" ");
+                }
+                currentRound++;
+            }
+            else{
+                for(int i = 0; i < max_width+4; i++){
+                    str = str.concat(" ");
+                }
+            }
+            str = str.concat("║\n");
+        }
+
+        //str = str.concat(verticalSeparatorBottom + "\n");
+        str = str.concat("╚");
+        for(int i = 0; i < max_width + 4; i++){
+            str = str.concat(verticalSeparatorTop);
+        }
+        str = str.concat("╝\n");
         return str;
 
     }
