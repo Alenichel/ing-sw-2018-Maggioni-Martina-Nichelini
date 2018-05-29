@@ -58,8 +58,8 @@ public class CliView extends View implements Observer {
         }
     }
 
-    private void handleTakeCommands(int n, String toPosition){
-        MoveDiceMessage mdm = new MoveDiceMessage(n, toPosition);
+    private void handleTakeCommands(int n, int endingX, int endingY){
+        MoveDiceMessage mdm = new MoveDiceMessage(n, endingX-1, endingY-1);
         this.setChanged();
         this.notifyObservers(mdm);
     }
@@ -101,7 +101,7 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "take":
-                    this.handleTakeCommands(Integer.parseInt(tokens[1]), tokens[2]);
+                    this.handleTakeCommands(Integer.parseInt(tokens[1]) , Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
                     break;
 
                 case "quit":
