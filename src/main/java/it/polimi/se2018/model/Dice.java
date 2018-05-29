@@ -14,7 +14,7 @@ public class Dice implements Serializable {
     private String color;
     private DiceLocation location;
     private String unicode = "";
-
+    public Dice(){}
     public Dice (DiceColor color){
         this.color = color.name();
         this.location = null;
