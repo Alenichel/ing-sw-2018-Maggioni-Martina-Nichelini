@@ -24,7 +24,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.CopperFoilBurnisher.toString());
             this.setDescription("Move any one die in your windows ingnoring shade restriction. You must obey all other placement restriction");
         }
-        if(toolCardEffect instanceof CopperFoilBurnisher){
+        if(toolCardEffect instanceof CorkBackedStraightedge){
             this.setName(ToolCardsName.CorkBackedStraightedge.toString());
             this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
         }
