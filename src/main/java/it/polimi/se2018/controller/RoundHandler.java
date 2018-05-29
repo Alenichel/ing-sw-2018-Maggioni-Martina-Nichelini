@@ -22,6 +22,7 @@ public class RoundHandler implements TimerInterface {
     private Game gameAssociated;
     private GameController gameController;
     private int turnNumber = 0;
+    private int actualRound;
     private boolean moved = false;
     private long timerID;
     private long moveTimer;
@@ -40,6 +41,11 @@ public class RoundHandler implements TimerInterface {
         this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
         this.activePlayer = this.gameAssociated.getActivePlayer();
         this.workingPatternCard = this.activePlayer.getActivePatternCard();
+        this.actualRound = this.gameAssociated.getActualRound();
+
+        if (this.actualRound != 1 )
+            this.gameAssociated.getRoundTrack().addDice((ArrayList)this.gameAssociated.getDiceOnTable(), this.actualRound);
+
         this.extractDice();
         this.timerID = TimerHandler.registerTimer(this, moveTimer); //register new turn timer
         TimerHandler.startTimer(this.timerID);
