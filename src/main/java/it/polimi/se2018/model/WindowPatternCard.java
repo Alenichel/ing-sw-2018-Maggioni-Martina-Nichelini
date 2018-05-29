@@ -245,22 +245,28 @@ public class WindowPatternCard extends Card implements Serializable {
     public String toString() {
         String string ="";
         int row = 1;
-        String verticalSeparator = "\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581\u2581";
-        //2581
+        String firstverticalSeparator = "\u250F\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2533\u2501\u2501\u2501\u2501\u2501\u2513";
+        String verticalSeparator = "\u2523\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u254B\u2501\u2501\u2501\u2501\u2501\u252B";
+        String lastverticalSeparator = "\u2517\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u251B";
+        //252C
         //String horizontalSeparator = "\u2595";
         String horizontalSeparator = "\u2503";
         final String BACK_TO_BLACK = (char) 27 + "[30m";
         string = string.concat((char) 27 + "[31m");
-        string = string.concat("   ------------------------------  \n");
-        //string = string.concat("   "+verticalSeparator + "  \n" );
+        //string = string.concat("   ------------------------------  \n");
+        //string = string.concat("  "+firstverticalSeparator + "  \n" );
         string = string.concat("     1     2     3     4     5     \n" + BACK_TO_BLACK);
         for (WindowCell[] line : grid) {
-            string = string.concat("   ------------------------------  \n");
-            //string = string.concat("   "+verticalSeparator + "  \n" );
+            //string = string.concat("   ------------------------------  \n");
+            if(row == 1)
+                string = string.concat("  "+firstverticalSeparator+"  \n");
+            else
+                string = string.concat("  "+verticalSeparator + "  \n" );
+
             string = string.concat((char) 27 + "[31m");
-            string = string.concat(((Integer)row).toString());
-            string = string.concat(" |  " + BACK_TO_BLACK);
-            //string = string.concat(" "+horizontalSeparator+ "  " + BACK_TO_BLACK);
+            string = string.concat(((Integer)row).toString()+ BACK_TO_BLACK);
+            //string = string.concat(" |  " + BACK_TO_BLACK);
+            string = string.concat(" "+horizontalSeparator+ "  " );
             for (WindowCell cell : line) {
                     if(cell.getAssignedDice() == null) {
                         //constraint or empty cell
@@ -269,20 +275,20 @@ public class WindowPatternCard extends Card implements Serializable {
                             string = string.concat(toUnicodeColor(cell.getColorConstraint()));
                             string = string.concat("\u25FE");
                             string = string.concat(BACK_TO_BLACK);
-                            string = string.concat("  |  ");
-                            //string = string.concat("  "+horizontalSeparator+"  ");
+                            //string = string.concat("  |  ");
+                            string = string.concat("  "+horizontalSeparator+"  ");
                         }
                         else if (cell.getNumberConstraint() != 0){
                             //number constraint
                             string = string.concat(((Integer)cell.getNumberConstraint()).toString());
-                            string = string.concat("  |  ");
-                            //string = string.concat("  "+horizontalSeparator+"  ");
+                            //string = string.concat("  |  ");
+                            string = string.concat("  "+horizontalSeparator+"  ");
                         }
                         else {
                             //empty cell
                             string = string.concat(" ");
-                            string = string.concat("  |  ");
-                            //string = string.concat("  " + horizontalSeparator + "  ");
+                            //string = string.concat("  |  ");
+                            string = string.concat("  " + horizontalSeparator + "  ");
 
                         }
                     }else{
@@ -292,12 +298,12 @@ public class WindowPatternCard extends Card implements Serializable {
                         if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
                             //color or number constraint with a die
                             string = string.concat("*");
-                            string = string.concat(" |  ");
-                            //string = string.concat(" "+horizontalSeparator+"  ");
+                            //string = string.concat(" |  ");
+                            string = string.concat(" "+horizontalSeparator+"  ");
 
                         }else{
-                            string = string.concat("  |  ");
-                            //string = string.concat("  "+horizontalSeparator+"  ");
+                            //string = string.concat("  |  ");
+                            string = string.concat("  "+horizontalSeparator+"  ");
 
                         }
                     }
@@ -306,8 +312,8 @@ public class WindowPatternCard extends Card implements Serializable {
             string = string.concat("\n");
             row++;
         }
-        string = string.concat("   ------------------------------  \n");
-        //string = string.concat("   "+verticalSeparator + "  \n" );
+        //string = string.concat("   ------------------------------  \n");
+        string = string.concat("  "+lastverticalSeparator + "  \n" );
         return string;
     }
 
