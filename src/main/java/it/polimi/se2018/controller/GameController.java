@@ -92,7 +92,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
         roundHandler = new RoundHandler(gameAssociated);
     }
 
-
     private void onInitializationComplete(){
         gameSetupController = null;
         this.gameAssociated.setInitializationComplete(true);
@@ -169,6 +168,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 break;
 
             case "MoveDiceMessage":
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage("Move received");
+                ((VirtualView) observable).controllerCallback(ccm);
                 this.roundHandler.update(observable, msg);
                 break;
 

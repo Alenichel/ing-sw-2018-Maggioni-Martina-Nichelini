@@ -26,6 +26,8 @@ public class WindowPatternCard extends Card implements Serializable {
     private WindowPatternCardsName wpname;
     private int numberOfFavorTokens;
 
+    private int placedDice = 0;
+
     /**
      * Class constructor
      * @param name
@@ -172,6 +174,10 @@ public class WindowPatternCard extends Card implements Serializable {
         }//end method
     }
 
+    public int getPlacedDice() {
+        return placedDice;
+    }
+
     /**
      * This method checks if it's possibile to place the given die in the selected cell looking for near dice.
      * @param windowCell
@@ -197,7 +203,8 @@ public class WindowPatternCard extends Card implements Serializable {
     private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint;
 
-        if(dice.getColor() != null && windowCell.getColorConstraint() != null) colorConstraint = (windowCell.getColorConstraint().equals(dice.getColor()));
+        if(dice.getColor() != null && windowCell.getColorConstraint() != null)
+            colorConstraint = (windowCell.getColorConstraint().equals(dice.getColor()));
         else colorConstraint = true;
 
         return colorConstraint;
@@ -206,7 +213,8 @@ public class WindowPatternCard extends Card implements Serializable {
     private boolean isValidNumberRestriction(WindowCell windowCell, Dice dice){
         boolean numberConstraint;
 
-        if(dice.getNumber() != 0) numberConstraint =  (windowCell.getNumberConstraint() == dice.getNumber());
+        if(dice.getNumber() != 0 && windowCell.getNumberConstraint() != 0)
+            numberConstraint =  (windowCell.getNumberConstraint() == dice.getNumber());
         else numberConstraint = true;
 
         return numberConstraint;
@@ -237,7 +245,10 @@ public class WindowPatternCard extends Card implements Serializable {
         if (checkPositionRestriction) positionRestriction = isValidPosition(this.getCell(row,column), dice);
         else positionRestriction = true;
 
-        if (colorRestriction && numberRestriction && positionRestriction) this.getCell(row, column).setAssignedDice(dice);
+        if (colorRestriction && numberRestriction && positionRestriction) {
+            this.getCell(row, column).setAssignedDice(dice);
+            this.placedDice++;
+        }
         else throw new NotValidInsertion("Not valid position");
     }
 

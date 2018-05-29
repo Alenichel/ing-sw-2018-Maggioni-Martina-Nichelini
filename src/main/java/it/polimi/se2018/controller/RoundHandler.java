@@ -3,10 +3,7 @@ package it.polimi.se2018.controller;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.message.*;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.Game;
-import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Server;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.VirtualView;
 
@@ -25,12 +22,14 @@ public class RoundHandler implements TimerInterface {
     private Game gameAssociated;
     private GameController gameController;
     private int turnNumber = 0;
-
+    private boolean moved = false;
     private long timerID;
     private long moveTimer;
     private Random rand = new Random();
 
     private final List<Player> turnList;
+    private Player activePlayer;
+    private WindowPatternCard workingPatternCard;
 
     public RoundHandler (Game game){
         this.gameAssociated = game;
@@ -39,6 +38,8 @@ public class RoundHandler implements TimerInterface {
         this.turnList = generateTurnList();
 
         this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
+        this.activePlayer = this.gameAssociated.getActivePlayer();
+        this.workingPatternCard = this.activePlayer.getActivePatternCard();
         this.extractDice();
         this.timerID = TimerHandler.registerTimer(this, moveTimer); //register new turn timer
         TimerHandler.startTimer(this.timerID);
@@ -98,7 +99,10 @@ public class RoundHandler implements TimerInterface {
     private void nextTurn(){
         try {
             this.turnNumber++;
+            this.moved = false;
             this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
+            this.activePlayer = turnList.get(this.turnNumber);
+            this.workingPatternCard = this.activePlayer.getActivePatternCard();
             if (TimerHandler.checkTimer(timerID)) TimerHandler.stopTimer(this.timerID);
             this.timerID = TimerHandler.registerTimer(this, moveTimer);
             TimerHandler.startTimer(this.timerID);
@@ -120,16 +124,30 @@ public class RoundHandler implements TimerInterface {
         }
     }
 
-    private void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
+    private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
 
-        if (mdm.getStartingLocation() == DiceLocation.TABLE) {
+        if (this.moved){
+            ErrorMessage em = new ErrorMessage("You have already taken a die");
+            ((VirtualView)observable).controllerCallback(em);
+            return;
+        }
+
+        if (mdm.getStartingLocation() == DiceLocation.TABLE) { //if the message handles taking action (From TABLE)
+
+            //handle first put case
+            if (this.workingPatternCard.getPlacedDice() == 0 &&
+                    this.workingPatternCard.getCell(mdm.getEndingX(),mdm.getEndingY()).getNeighbourCells().size() > 3){
+                ErrorMessage em = new ErrorMessage("First die has to be put in a corner cell");
+                ((VirtualView)observable).controllerCallback(em);
+                return;
+        }
+
             Dice d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
-            d.setLocation(mdm.getEndingLocation());
+            d.setLocation(mdm.getEndingLocation()); //set the dice final location to the right type
             try {
-                this.gameAssociated.getActivePlayer().getActivePatternCard().insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
-                List<Dice> diceOnTable = this.gameAssociated.getDiceOnTable();
-                diceOnTable.remove(d);
-                this.gameAssociated.setDiceOnTable(diceOnTable);
+                this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
+                this.gameAssociated.getDiceOnTable().remove(d);
+                this.moved = true;
             } catch (NotEmptyWindowCellException | NotValidInsertion e) {
                 Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not valid position");
