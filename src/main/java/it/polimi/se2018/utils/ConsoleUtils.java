@@ -1,12 +1,29 @@
 package it.polimi.se2018.utils;
 
+        import it.polimi.se2018.model.Player;
         import it.polimi.se2018.model.WindowPatternCard;
 
         import java.util.ArrayList;
+        import java.util.Collections;
         import java.util.List;
 
 public class ConsoleUtils {
-    public static void multiplePrint(ArrayList<WindowPatternCard> ws) {
+    public static void multiplePrint(ArrayList<WindowPatternCard> ws, Player player) {
+        int pos = 0;
+        WindowPatternCard appo;
+
+        for(WindowPatternCard w : ws){
+            if(player.getNickname().equals(w.getPlayer().getNickname())){
+                //Collections.swap(ws, pos,0);
+                if(pos == 0) break;
+                appo = ws.get(0);
+                ws.set(0, ws.get(pos));
+                ws.set(pos, appo);
+                break;
+            }
+            pos++;
+        }
+
         ArrayList<String[]> tokensTOT = new ArrayList<>();
 
         int i = 0, j = 0;
@@ -14,7 +31,7 @@ public class ConsoleUtils {
             tokensTOT.add(ws.get(i).toString().split("\n"));
             i++;
         }
-
+        System.out.println("Your card : ");
         for(int a = 0; a < tokensTOT.get(0).length; a++){
             for(int b = 0; b < tokensTOT.size(); b++){
                 System.out.print(tokensTOT.get(b)[a] + "   ");
