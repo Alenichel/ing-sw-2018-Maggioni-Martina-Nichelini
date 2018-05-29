@@ -1,6 +1,7 @@
 package it.polimi.se2018.strategy.toolcard;
 
 
+import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
@@ -28,9 +29,20 @@ public class LensCutter implements ToolCardEffectStrategy, Serializable {
     }
 
     @Override
-    public int executeEffect(){
-        /*rtDice.setLocation(DiceLocation.WINDOWCELL);
-        draftedDice.setLocation(DiceLocation.ROUNDTRACK); */
+    public int executeEffect() throws ToolCardException{
+        DiceLocation rtLocation = rtDice.getLocation();
+
+        if (!rtDice.getLocation().equals(DiceLocation.ROUNDTRACK)) {
+            throw new ToolCardException("die can not be chosen");
+        }
+
+        else {rtDice.setLocation(DiceLocation.TABLE);}
+
+
+        if (!draftedDice.getLocation().equals(DiceLocation.TABLE)) {
+            throw new ToolCardException("die can not be chosen");
+        }
+        draftedDice.setLocation(rtLocation);
         return 0;
     }
 }
