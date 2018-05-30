@@ -13,7 +13,7 @@ public class RoundTrack implements Serializable{
     public RoundTrack(){
         roundTrack = new ArrayList<ArrayList<Dice>>();
 
-        for(int i = 0; i<9; i++){
+        for(int i = 0; i<=9; i++){
             roundTrack.add(i, new ArrayList<Dice>());
         }
     }
