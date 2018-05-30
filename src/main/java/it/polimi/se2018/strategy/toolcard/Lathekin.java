@@ -46,8 +46,8 @@ public class Lathekin implements ToolCardEffectStrategy, Serializable {
         Dice d1 = this.start1.getAssignedDice();
         Dice d2 = this.start2.getAssignedDice();
         try {
-            this.windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, true);
-            this.windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, true);
+            this.windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, false);
+            this.windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, false);
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             throw e;
         }
