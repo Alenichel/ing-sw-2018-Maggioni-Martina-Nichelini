@@ -13,7 +13,7 @@ public class RoundTrack implements Serializable{
     public RoundTrack(){
         roundTrack = new ArrayList<ArrayList<Dice>>();
 
-        for(int i = 0; i<9; i++){
+        for(int i = 0; i<=9; i++){
             roundTrack.add(i, new ArrayList<Dice>());
         }
     }
@@ -61,7 +61,7 @@ public class RoundTrack implements Serializable{
         str = str.concat("╗\n");
 
         for(ArrayList<Dice> aD : roundTrack){
-            str = str.concat((char) 27 +"[34m" +roundStr[roundStri] + (char) 27 + "[30m");
+            str = str.concat((char) 27 +"[34m" +roundStr[roundStri]+ " " + (char) 27 + "[30m");
             roundStri++;
             str = str.concat("║");
             int nDice = 0, nSpace = 0;
