@@ -43,8 +43,11 @@ public class RoundHandler implements TimerInterface {
         this.workingPatternCard = this.activePlayer.getActivePatternCard();
         this.actualRound = this.gameAssociated.getActualRound();
 
-        if (this.actualRound != 1 )
-            this.gameAssociated.getRoundTrack().addDice((ArrayList)this.gameAssociated.getDiceOnTable(), this.actualRound);
+        if (this.actualRound != 1 ) {
+            this.gameAssociated.getRoundTrack().addDice((ArrayList) this.gameAssociated.getDiceOnTable(), this.actualRound-2);
+            ArrayList<Dice> aD = new ArrayList<>();
+            this.gameAssociated.setDiceOnTable(aD); //set empty arraylist for table
+        }
 
         this.extractDice();
         this.timerID = TimerHandler.registerTimer(this, moveTimer); //register new turn timer
@@ -114,6 +117,7 @@ public class RoundHandler implements TimerInterface {
             TimerHandler.startTimer(this.timerID);
         } catch (IndexOutOfBoundsException e){
             UpdateMessage um = new UpdateMessage("NextRound");
+            TimerHandler.stopTimer(this.timerID);
             gameController.update(null, um);
         }
     }
