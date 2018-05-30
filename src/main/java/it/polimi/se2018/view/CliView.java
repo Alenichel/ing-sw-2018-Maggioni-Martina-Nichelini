@@ -101,7 +101,9 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "take":
-                    this.handleTakeCommands(Integer.parseInt(tokens[1]) , Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    try {
+                        this.handleTakeCommands(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    } catch (NumberFormatException e) {Logger.ERROR(LoggerType.CLIENT_SIDE, "Wrong input format, retry");}
                     break;
 
                 case "quit":
@@ -133,12 +135,8 @@ public class CliView extends View implements Observer {
         List<WindowPatternCard> wpcs = new ArrayList<>();
         for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
 
-        System.out.println(rT.toString());
 
-        for (Dice d : game.getDiceOnTable())
-            System.out.print(d.toString() + " ");
         System.out.println("\n");
-        ConsoleUtils.multiplePrint((ArrayList)wpcs);
         System.out.print("\n");
         System.out.println("***********************************************************************************\n---------> OBJECTIVE <---------");
         for (ObjectiveCard oc : game.getObjectiveCards())
@@ -148,6 +146,16 @@ public class CliView extends View implements Observer {
         for (ToolCard tc : game.getToolCards())
             System.out.println(tc);
         System.out.println("***********************************************************************************");
+
+        System.out.println(rT.toString());
+        ConsoleUtils.multiplePrint((ArrayList)wpcs, player);
+
+        int i = 1;
+        for (Dice d : game.getDiceOnTable()) {
+            System.out.print( i + ") " +d.toString() + " ");
+            i++;
+        }
+        System.out.println("");
     }
 
     private void onGameStarted(Observable o){

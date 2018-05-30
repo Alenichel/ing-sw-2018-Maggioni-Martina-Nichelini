@@ -22,6 +22,7 @@ public class RoundHandler implements TimerInterface {
     private Game gameAssociated;
     private GameController gameController;
     private int turnNumber = 0;
+    private int actualRound;
     private boolean moved = false;
     private long timerID;
     private long moveTimer;
@@ -40,6 +41,14 @@ public class RoundHandler implements TimerInterface {
         this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
         this.activePlayer = this.gameAssociated.getActivePlayer();
         this.workingPatternCard = this.activePlayer.getActivePatternCard();
+        this.actualRound = this.gameAssociated.getActualRound();
+
+        if (this.actualRound != 1 ) {
+            this.gameAssociated.getRoundTrack().addDice((ArrayList) this.gameAssociated.getDiceOnTable(), this.actualRound-2);
+            ArrayList<Dice> aD = new ArrayList<>();
+            this.gameAssociated.setDiceOnTable(aD); //set empty arraylist for table
+        }
+
         this.extractDice();
         this.timerID = TimerHandler.registerTimer(this, moveTimer); //register new turn timer
         TimerHandler.startTimer(this.timerID);
@@ -108,6 +117,7 @@ public class RoundHandler implements TimerInterface {
             TimerHandler.startTimer(this.timerID);
         } catch (IndexOutOfBoundsException e){
             UpdateMessage um = new UpdateMessage("NextRound");
+            TimerHandler.stopTimer(this.timerID);
             gameController.update(null, um);
         }
     }
@@ -145,7 +155,9 @@ public class RoundHandler implements TimerInterface {
             Dice d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
             d.setLocation(mdm.getEndingLocation()); //set the dice final location to the right type
             try {
-                this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
+                if (this.gameAssociated.getActualRound() == 1 && this.workingPatternCard.getPlacedDice() == 0) this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, false);
+                else
+                    this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
                 this.moved = true;
             } catch (NotEmptyWindowCellException | NotValidInsertion e) {

@@ -13,8 +13,10 @@ import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
 /**
@@ -31,7 +33,7 @@ public class VirtualViewNetworkBridge extends Thread {
     private VirtualView associatedVirtualView;
     private Player player;
 
-    BlockingQueue queue = new SynchronousQueue();
+    BlockingQueue queue = new LinkedBlockingQueue();
 
     public VirtualViewNetworkBridge(Socket socket){
         this.socket = socket;
@@ -161,7 +163,12 @@ public class VirtualViewNetworkBridge extends Thread {
                 Message msg;
                 do {
                     msg = (Message) queue.take();
-                    oos.writeObject(msg);
+                    try { oos.writeObject(msg);}
+                    catch (ConcurrentModificationException e) {
+                        Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+                        sleep(100);
+                        oos.writeObject(msg);
+                    }
                     oos.flush();
                     oos.reset();
                 } while (msg.getMessageType() != "quit");
