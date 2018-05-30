@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.DiceColor;
 
 import java.awt.*;
@@ -42,14 +43,17 @@ public class RoundTrack implements Serializable{
         int max_width = 0;
         int currentRound = 0;
         String verticalSeparatorTop = "═";
-
+        String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"};
+        int roundStri = 0;
         for(ArrayList<Dice> aD : roundTrack){
             if(!aD.isEmpty()) {
                 if(aD.size() > max_width)
                     max_width = aD.size();
             }
         }
-        str = str.concat(" Round tracker\n");
+        //str = str.concat(" Round tracker\n");
+        str = str.concat((char) 27 +"[34m" +roundStr[roundStri] + (char) 27 + "[30m");
+        roundStri++;
         str = str.concat("╔");
         for(int i = 0; i < max_width+4; i++){
             str = str.concat(verticalSeparatorTop);
@@ -57,6 +61,8 @@ public class RoundTrack implements Serializable{
         str = str.concat("╗\n");
 
         for(ArrayList<Dice> aD : roundTrack){
+            str = str.concat((char) 27 +"[34m" +roundStr[roundStri] + (char) 27 + "[30m");
+            roundStri++;
             str = str.concat("║");
             int nDice = 0, nSpace = 0;
             if(!aD.isEmpty()) {
@@ -81,7 +87,7 @@ public class RoundTrack implements Serializable{
         }
 
         //str = str.concat(verticalSeparatorBottom + "\n");
-        str = str.concat("╚");
+        str = str.concat(" ╚");
         for(int i = 0; i < max_width + 4; i++){
             str = str.concat(verticalSeparatorTop);
         }
