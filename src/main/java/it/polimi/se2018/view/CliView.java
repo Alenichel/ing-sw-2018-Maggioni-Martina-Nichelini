@@ -129,13 +129,13 @@ public class CliView extends View implements Observer {
         else Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, callbackMessage.getStringMessage());
     }
 
-    private void printTable(Game game){
+    private void printTable(Game game, Message msg){
 
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
         for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
-
-
+        String tokens[] = ((UpdateMessage)msg).toString().split(":");
+        String playerName = tokens[1];
         System.out.println("\n");
         System.out.print("\n");
         System.out.println("***********************************************************************************\n---------> OBJECTIVE <---------");
@@ -156,6 +156,8 @@ public class CliView extends View implements Observer {
             i++;
         }
         System.out.println("");
+        if(playerName.equals(player.getNickname())) System.out.println((char) 27 +"[34m" + "Is your turn!" + (char) 27 + "[30m");
+        else System.out.println("This is the turn of player:" + playerName);
     }
 
     private void onGameStarted(Observable o){
@@ -181,13 +183,16 @@ public class CliView extends View implements Observer {
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
                 String wtu = ((UpdateMessage)msg).getWhatToUpdate();
-                Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
-
-                if(wtu.equals("GameStarted")) onGameStarted(o);
-
-                else if(wtu.equals("ActivePlayer")) printTable((Game)o);
-
-                else if(wtu.equals("ActivePlayer")) this.activePlayer = ((Game)o).getActivePlayer();
+                if(wtu.equals("ActivePlayer")) printTable((Game)o, (Message) msg);
+                else{
+                    Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
+                    if(wtu.equals("GameStarted")) {
+                        onGameStarted(o);
+                    }else if(wtu.equals("ActivePlayer")) {
+                        this.activePlayer = ((Game)o).getActivePlayer();
+                        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
+                    }
+                }
 
                 break;
             default: break;
