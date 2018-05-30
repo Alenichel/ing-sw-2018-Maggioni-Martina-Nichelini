@@ -30,8 +30,8 @@ public class ToolCardTest {
         Assert.assertNotEquals("brutta", t.getDescription());
 
         t.setDiceColor(DiceColor.yellow);
-        Assert.assertEquals("yellow", t.getDiceColor());
-        Assert.assertNotEquals("blue", t.getDiceColor());
+        Assert.assertEquals(DiceColor.yellow, t.getDiceColor());
+        Assert.assertNotEquals(DiceColor.blue, t.getDiceColor());
 
         t.setGameReference(g);
         Assert.assertEquals(g, t.getGameReference());
@@ -46,18 +46,20 @@ public class ToolCardTest {
     @Test
     public void testLathekin(){
         WindowPatternCard windowPatternCard = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
-        WindowCell wstart1 = windowPatternCard.getGrid()[1][1];
-        WindowCell wstart2 = windowPatternCard.getGrid()[2][1];
-        WindowCell wend1 = windowPatternCard.getGrid()[1][3];
-        WindowCell wend2 = windowPatternCard.getGrid()[2][3];
+        WindowCell wstart1 = windowPatternCard.getGrid()[1][1]; //2 2
+        WindowCell wstart2 = windowPatternCard.getGrid()[2][1]; //3 2
+        WindowCell wend1 = windowPatternCard.getGrid()[1][3];   //2 4
+        WindowCell wend2 = windowPatternCard.getGrid()[2][3];   //3 4
 
         Dice diceStart1 = new Dice(DiceColor.green);
-        Dice diceStart2 = new Dice(DiceColor.red);
-
+        Dice diceStart2 = new Dice(DiceColor.purple);
+        System.out.println(diceStart1.toString());
+        System.out.println(diceStart2.toString());
         try {
             wstart1.setAssignedDice(diceStart1);
             wstart2.setAssignedDice(diceStart2);
         }catch (NotEmptyWindowCellException e){
+            System.out.println(".....");
             fail();
         }
         Lathekin lathekin = new Lathekin();
