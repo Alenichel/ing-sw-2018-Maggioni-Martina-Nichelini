@@ -73,6 +73,11 @@ public class CliView extends View implements Observer {
             String input = sinput.nextLine();
             String[] tokens = input.toLowerCase().split(" ");
 
+            if (!this.client.getNickname().equals(this.activePlayer.getNickname()) ) {
+                Logger.ERROR(LoggerType.CLIENT_SIDE, "This not your turn");
+                continue;
+            }
+
             switch (tokens[0]) {
 
                 case "request":

@@ -12,7 +12,7 @@ public class Game extends Observable implements Serializable {
     private ArrayList<Dice> diceBag = new ArrayList<>();
     private ArrayList<Dice> diceOnTable = new ArrayList<>();
     private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
-    private ArrayList<ObjectiveCard> objectiveCards = new ArrayList<>();
+    private ArrayList<PublicObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
 
@@ -24,6 +24,7 @@ public class Game extends Observable implements Serializable {
 
     private GameController associatedGameController;
 
+    private Player winner = null;
 
     public Game(){
         associatedGameController = new GameController(this);
@@ -51,7 +52,7 @@ public class Game extends Observable implements Serializable {
     public void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = (ArrayList<WindowPatternCard>) patternCards;
     }
-    public void setObjectiveCards(ArrayList<ObjectiveCard> objectiveCards) {
+    public void setObjectiveCards(ArrayList<PublicObjectiveCard> objectiveCards) {
         this.objectiveCards = objectiveCards;
     }
     public void setToolCards(List<ToolCard> toolCards) {
@@ -112,10 +113,19 @@ public class Game extends Observable implements Serializable {
     public List<Dice> getDiceOnTable() {
         return diceOnTable;
     }
+
+    public void setWinner(Player winner) {
+        this.winner = winner;
+        UpdateMessage um = new UpdateMessage("Winner");
+        um.setStringMessage("THE WINNER IS: " + winner.getNickname());
+        notifyObservers(um);
+        System.exit(0);
+    }
+
     public List<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
-    public List<ObjectiveCard> getObjectiveCards() {
+    public List<PublicObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
     public List<ToolCard> getToolCards() {

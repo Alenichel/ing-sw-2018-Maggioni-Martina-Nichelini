@@ -1,16 +1,13 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.exception.GameException;
-import it.polimi.se2018.model.Server;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.utils.TimerHandler;
 import it.polimi.se2018.utils.TimerInterface;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.message.*;
-import it.polimi.se2018.model.Game;
-import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.WindowPatternCard;
 
 import java.io.Serializable;
 import java.util.*;
@@ -87,7 +84,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
-    private void onNextRound(){
+    protected void onNextRound(){
         this.gameAssociated.setActualRound(this.gameAssociated.getActualRound() + 1);
         roundHandler = new RoundHandler(gameAssociated);
     }
@@ -99,16 +96,26 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.roundHandler = new RoundHandler(gameAssociated);
     }
 
+    protected void onGameEnd(){
+        Player topPlayer = null;
+        int topScore = 0;
+        for (Player p: this.gameAssociated.getPlayers()) {
+            int score = 0;
+            for (PublicObjectiveCard oc : this.gameAssociated.getObjectiveCards()) {
+                score+=oc.scorePoint(p.getActivePatternCard());
+            }
+            p.setScore(score);
+            if (score > topScore) topScore = score;
+            }
+
+        }
+
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
         switch (message.getWhatToUpdate()){
 
             case "Pass":
                 this.roundHandler.update(observable, message);
-                break;
-
-            case "NextRound":
-                this.onNextRound();
                 break;
 
             default: break;

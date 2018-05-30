@@ -33,6 +33,11 @@ public class RoundHandler implements TimerInterface {
     private WindowPatternCard workingPatternCard;
 
     public RoundHandler (Game game){
+
+        if (this.actualRound == 11){
+            this.gameController.onGameEnd();
+        }
+
         this.gameAssociated = game;
         this.gameController = gameAssociated.getAssociatedGameController();
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
@@ -116,9 +121,8 @@ public class RoundHandler implements TimerInterface {
             this.timerID = TimerHandler.registerTimer(this, moveTimer);
             TimerHandler.startTimer(this.timerID);
         } catch (IndexOutOfBoundsException e){
-            UpdateMessage um = new UpdateMessage("NextRound");
+            this.gameController.onNextRound();
             TimerHandler.stopTimer(this.timerID);
-            gameController.update(null, um);
         }
     }
 

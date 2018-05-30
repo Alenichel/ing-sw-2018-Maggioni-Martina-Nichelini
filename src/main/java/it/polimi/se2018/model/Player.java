@@ -14,6 +14,7 @@ public class Player extends Observable implements Serializable{
     private PrivateObjectiveCard privateObjectiveCard;
     private int numberOfFavorTokens;
     private ArrayList<WindowPatternCard> windowPatternCardsPool;
+    private int score;
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -50,6 +51,9 @@ public class Player extends Observable implements Serializable{
     public void setWindowPatternCardsPool(List<WindowPatternCard> windowPatternCardsPool) {
         this.windowPatternCardsPool = (ArrayList<WindowPatternCard>) windowPatternCardsPool;
     }
+    public void setScore(int score) {
+        this.score = score;
+    }
 
     public Boolean getInGame() {
         return inGame;
@@ -77,6 +81,9 @@ public class Player extends Observable implements Serializable{
     }
     public List<WindowPatternCard> getWindowPatternCardsPool() {
         return windowPatternCardsPool;
+    }
+    public int getScore() {
+        return score;
     }
 
     @Override
