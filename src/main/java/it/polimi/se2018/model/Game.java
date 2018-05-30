@@ -93,7 +93,7 @@ public class Game extends Observable implements Serializable {
     public void setActivePlayer(Player activePlayer) {
         this.activePlayer = activePlayer;
         UpdateMessage um = new UpdateMessage("ActivePlayer");
-        um.setStringMessage("This is the turn of player: " + activePlayer.getNickname());
+        um.setStringMessage("This is the turn of player:" + activePlayer.getNickname());
         this.setChanged();
         this.notifyObservers(um);
     }
