@@ -57,7 +57,7 @@ public class Dice implements Serializable {
 
     public void rollDice(){
         Random rand = new Random();
-        this.number =rand.nextInt(4)+1;
+        this.number =rand.nextInt(6)+1;
         this.toUnicode(this.color, this.number);
     }
 
