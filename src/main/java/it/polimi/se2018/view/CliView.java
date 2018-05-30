@@ -14,7 +14,7 @@ public class CliView extends View implements Observer {
 
     private Player player;
     private transient Object lastObjectReceveid;
-    private Player activePlayer;
+    private Player activePlayer = null;
 
     public void setPlayer(Player player) {
         this.player = player;
@@ -73,7 +73,7 @@ public class CliView extends View implements Observer {
             String input = sinput.nextLine();
             String[] tokens = input.toLowerCase().split(" ");
 
-            if (!this.client.getNickname().equals(this.activePlayer.getNickname()) ) {
+            if ( this.activePlayer == null || !this.client.getNickname().equals(this.activePlayer.getNickname())) {
                 Logger.ERROR(LoggerType.CLIENT_SIDE, "This not your turn");
                 continue;
             }
