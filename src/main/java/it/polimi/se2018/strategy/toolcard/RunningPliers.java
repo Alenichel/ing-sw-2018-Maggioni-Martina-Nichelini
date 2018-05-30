@@ -8,7 +8,7 @@ import it.polimi.se2018.utils.ToolCardsName;
 import java.io.Serializable;
 
 /**
- * This class implements Tool Card #9 "Running Pliers" which lets the player choose a second die
+ * This class implements Tool Card #8 "Running Pliers" which lets the player choose a second die
  * right after his first turn.
  * The player will skip his second turn.
  */
@@ -26,6 +26,7 @@ public class RunningPliers implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect(){
+
         return 0;
     }
 

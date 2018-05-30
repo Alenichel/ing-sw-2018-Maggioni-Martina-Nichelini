@@ -30,7 +30,7 @@ public class LensCutter implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect() throws ToolCardException{
-        DiceLocation rtLocation = rtDice.getLocation();
+        DiceLocation rtLocation = rtDice.getLocation(); //posizione nel round track
 
         if (!rtDice.getLocation().equals(DiceLocation.ROUNDTRACK)) {
             throw new ToolCardException("die can not be chosen");
