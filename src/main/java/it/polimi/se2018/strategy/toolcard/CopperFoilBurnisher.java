@@ -46,7 +46,7 @@ public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable
             throw e;
         }
 
-        start.setAssignedDice(null);
+        start.removeDice();
 
         return 0;
     }

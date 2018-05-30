@@ -3,7 +3,9 @@ package it.polimi.se2018.strategy.toolcard;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.DiceColor;
+import it.polimi.se2018.utils.DiceLocation;
 import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
@@ -26,7 +28,10 @@ public class FluxBrush implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect(){
-        this.die.rollDice(); //se non è possibile piazzarlo, riporlo nella riserva (table)
+        this.die.rollDice();
+        //se non è possibile piazzarlo, riporlo nella riserva (table)
+        //if () {die.setLocation(DiceLocation.TABLE);}
         return 1;
+
     }
 }
