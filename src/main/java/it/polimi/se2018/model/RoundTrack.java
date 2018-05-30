@@ -52,7 +52,7 @@ public class RoundTrack implements Serializable{
             }
         }
         //str = str.concat(" Round tracker\n");
-        str = str.concat((char) 27 +"[34m" +roundStr[roundStri] + (char) 27 + "[30m");
+        str = str.concat((char) 27 +"[34m" + " " +roundStr[roundStri] + (char) 27 + "[30m");
         roundStri++;
         str = str.concat("╔");
         for(int i = 0; i < max_width+4; i++){
@@ -87,7 +87,7 @@ public class RoundTrack implements Serializable{
         }
 
         //str = str.concat(verticalSeparatorBottom + "\n");
-        str = str.concat(" ╚");
+        str = str.concat("  ╚");
         for(int i = 0; i < max_width + 4; i++){
             str = str.concat(verticalSeparatorTop);
         }
