@@ -90,7 +90,7 @@ public class GameSetupController implements Serializable {
         Random rand = new Random();
         int n;
         ArrayList<String> objectiveName = new ArrayList<>();
-        ArrayList<ObjectiveCard> selectedObject = new ArrayList<ObjectiveCard>();
+        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<PublicObjectiveCard>();
 
         for(ObjectiveCardsName po : ObjectiveCardsName.values()){
             objectiveName.add(po.toString());
