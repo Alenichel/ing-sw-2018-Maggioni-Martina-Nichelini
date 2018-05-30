@@ -43,7 +43,7 @@ public class RoundTrack implements Serializable{
         int max_width = 0;
         int currentRound = 0;
         String verticalSeparatorTop = "═";
-        String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"};
+        String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"," "};
         int roundStri = 0;
         for(ArrayList<Dice> aD : roundTrack){
             if(!aD.isEmpty()) {
