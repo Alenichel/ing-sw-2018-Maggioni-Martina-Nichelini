@@ -18,4 +18,9 @@ public class ObjectiveCard extends Card {
     public int scorePoint(){
         return 0;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().toString();
+    }
 }
