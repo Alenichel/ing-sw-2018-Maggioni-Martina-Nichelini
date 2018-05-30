@@ -101,7 +101,9 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "take":
-                    this.handleTakeCommands(Integer.parseInt(tokens[1]) , Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    try {
+                        this.handleTakeCommands(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
+                    } catch (NumberFormatException e) {Logger.ERROR(LoggerType.CLIENT_SIDE, "Wrong input format, retry");}
                     break;
 
                 case "quit":
