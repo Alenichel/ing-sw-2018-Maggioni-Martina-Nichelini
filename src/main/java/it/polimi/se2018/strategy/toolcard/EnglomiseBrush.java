@@ -41,7 +41,7 @@ public class EnglomiseBrush implements ToolCardEffectStrategy, Serializable {
         Dice d1 = this.start.getAssignedDice();
         try {
             start.removeDice();
-            this.windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
+            this.windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             start.setAssignedDice(d1);
             throw e;

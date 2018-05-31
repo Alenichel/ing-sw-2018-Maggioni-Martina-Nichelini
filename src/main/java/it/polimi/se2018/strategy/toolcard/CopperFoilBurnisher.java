@@ -41,7 +41,7 @@ public class CopperFoilBurnisher implements ToolCardEffectStrategy, Serializable
 
         Dice d1 = this.start.getAssignedDice();
         try {
-            this.windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
+            this.windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, false);
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             throw e;
         }
