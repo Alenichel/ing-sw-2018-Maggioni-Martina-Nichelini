@@ -280,7 +280,7 @@ public class WindowPatternCard extends Card implements Serializable {
         final String BACK_TO_BLACK = (char) 27 + "[30m";
         string = string.concat((char) 27 + "[32m");
         try {
-            string = string.concat("\" "+player.getNickname()+" \" \t\t\t\t\t\t\n");
+            string = string.concat("\" "+player.getNickname()+" \""+" - tokens: "+ BACK_TO_BLACK+player.getNumberOfFavorTokens()+ " \t\t\t\t\n");
         }catch (NullPointerException e){; }
         string = string.concat((char) 27 + "[31m");
         string = string.concat("     1     2     3     4     5     \n" + BACK_TO_BLACK);
