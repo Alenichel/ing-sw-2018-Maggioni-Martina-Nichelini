@@ -2,10 +2,7 @@ package it.polimi.se2018.controller;
 
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerType;
-import it.polimi.se2018.utils.TimerHandler;
-import it.polimi.se2018.utils.TimerInterface;
+import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.*;
 import it.polimi.se2018.message.*;
 
@@ -23,7 +20,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private long timerID;
     private long matchMakingTimer;
 
-    private int selectedPatterCards = 0;
 
     public GameController(Game game){
         this.server = Server.getInstance();
@@ -89,7 +85,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         roundHandler = new RoundHandler(gameAssociated);
     }
 
-    private void onInitializationComplete(){
+    protected void onInitializationComplete(){
         gameSetupController = null;
         this.gameAssociated.setInitializationComplete(true);
         this.gameAssociated.setActualRound(1);
@@ -136,11 +132,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
 
         if (message.getSelected().equals("PatternCard") && gameSetupController != null){
-            ControllerCallbackMessage ccm = new ControllerCallbackMessage("Selection acquired");
+            ControllerCallbackMessage ccm = new ControllerCallbackMessage("Selection acquired", LoggerPriority.NOTIFICATION);
             ((View)observable).controllerCallback(ccm);
             this.gameSetupController.update(observable, message);
-            selectedPatterCards++;
-            if (selectedPatterCards == gameAssociated.getPlayers().size()) this.onInitializationComplete();
         }
     }
 
@@ -175,7 +169,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 break;
 
             case "MoveDiceMessage":
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage("Move received");
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage("Move received", LoggerPriority.NOTIFICATION);
                 ((VirtualView) observable).controllerCallback(ccm);
                 this.roundHandler.update(observable, msg);
                 break;

@@ -2,6 +2,7 @@ package it.polimi.se2018.network;
 
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.View;
@@ -35,8 +36,8 @@ public class SocketClient implements Observer {
             this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
-            Logger.log(LoggerType.CLIENT_SIDE, "[*] Socket ready..\n");
-            Logger.log(LoggerType.CLIENT_SIDE, "[*] Connection established\n");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Socket ready..\n");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Connection established\n");
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
 
@@ -46,12 +47,12 @@ public class SocketClient implements Observer {
             if (rcv instanceof HandshakeConnectionMessage)
                 ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
             else {
-                Logger.log(LoggerType.CLIENT_SIDE, rcv.toString());
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,rcv.toString());
                 System.exit(1);
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            Logger.ERROR(LoggerType.CLIENT_SIDE,e.toString());
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, e.toString());
             e.printStackTrace();
             System.exit(1);
         }
@@ -74,7 +75,7 @@ public class SocketClient implements Observer {
                 try {
                     in = ois.readObject();
                 } catch (ClassNotFoundException | IOException e){
-                    Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR,e.toString());
                     System.exit(1);
                 }
                 //update from model (network)
@@ -102,7 +103,7 @@ public class SocketClient implements Observer {
                     oos.reset();
                 }
             } catch (InterruptedException | IOException e) {
-                Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
+                Logger.log(LoggerType.CLIENT_SIDE,LoggerPriority.ERROR, e.toString());
                 e.printStackTrace();
             }
         }
@@ -119,7 +120,7 @@ public class SocketClient implements Observer {
         try {
             queue.put(suc);
         } catch (InterruptedException e) {
-            Logger.ERROR(LoggerType.CLIENT_SIDE, "::SC_UPDATE: InterruptedException");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR,"::SC_UPDATE: InterruptedException");
             Thread.currentThread().interrupt();
         }
     }

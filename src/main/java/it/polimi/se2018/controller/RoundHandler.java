@@ -141,7 +141,7 @@ public class RoundHandler implements TimerInterface {
     private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
 
         if (this.moved){
-            ErrorMessage em = new ErrorMessage("You have already taken a die");
+            ControllerCallbackMessage em = new ControllerCallbackMessage("You have already taken a die", LoggerPriority.ERROR);
             ((VirtualView)observable).controllerCallback(em);
             return;
         }
@@ -151,7 +151,7 @@ public class RoundHandler implements TimerInterface {
             //handle first put case
             if (this.workingPatternCard.getPlacedDice() == 0 &&
                     this.workingPatternCard.getCell(mdm.getEndingX(),mdm.getEndingY()).getNeighbourCells().size() > 3){
-                ErrorMessage em = new ErrorMessage("First die has to be put in a corner cell");
+                ControllerCallbackMessage em = new ControllerCallbackMessage("First die has to be put in a corner cell", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(em);
                 return;
         }
@@ -164,9 +164,13 @@ public class RoundHandler implements TimerInterface {
                     this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
                 this.moved = true;
-            } catch (NotEmptyWindowCellException | NotValidInsertion e) {
-                Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not valid position");
+            } catch (NotValidInsertion e) {
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not valid position", LoggerPriority.ERROR);
+                ((VirtualView)observable).controllerCallback(ccm);
+            } catch (NotEmptyWindowCellException e){
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not empty cell", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(ccm);
             }
         }
@@ -176,6 +180,12 @@ public class RoundHandler implements TimerInterface {
     public void update(Observable observable, Object message){
         Message msg = (Message)message;
         Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":ROUND_HANDLER: Handling -> " + msg.getMessageType());
+
+        if (! (((VirtualView)observable).getClient().getNickname().equals(this.activePlayer.getNickname()))){
+            ControllerCallbackMessage ccm = new ControllerCallbackMessage("This is not your turn. Command ignored", LoggerPriority.ERROR);
+            ((VirtualView)observable).controllerCallback(ccm);
+            return;
+        }
 
         switch (msg.getMessageType()){
 

@@ -4,6 +4,7 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 
 import java.util.*;
@@ -73,11 +74,6 @@ public class CliView extends View implements Observer {
             String input = sinput.nextLine();
             String[] tokens = input.toLowerCase().split(" ");
 
-            if ( this.activePlayer != null && !this.client.getNickname().equals(this.activePlayer.getNickname())) {
-                Logger.ERROR(LoggerType.CLIENT_SIDE, "This is not your turn");
-                continue;
-            }
-
             switch (tokens[0]) {
 
                 case "request":
@@ -107,6 +103,10 @@ public class CliView extends View implements Observer {
 
                 case "take":
                     try {
+                        if (tokens.length < 4){
+                            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong params insertion: TAKE command has the following structure:\n take %diceNumber %targetX %targetY");
+                            break;
+                        }
                         this.handleTakeCommands(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
                     } catch (NumberFormatException e) {Logger.ERROR(LoggerType.CLIENT_SIDE, "Wrong input format, retry");}
                     break;
@@ -114,7 +114,7 @@ public class CliView extends View implements Observer {
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
-                    Logger.log(LoggerType.CLIENT_SIDE,"[*] Goodbye");
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Goodbye");
                     break loop;
 
                 default:
@@ -131,7 +131,8 @@ public class CliView extends View implements Observer {
 
     public void controllerCallback(Message callbackMessage){
         if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
-        else Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, callbackMessage.getStringMessage());
+        else if (callbackMessage instanceof ControllerCallbackMessage)
+            Logger.log(LoggerType.CLIENT_SIDE, ((ControllerCallbackMessage)callbackMessage).getPriority(),callbackMessage.getStringMessage());
     }
 
     private void printTable(Game game, Message msg){
@@ -168,16 +169,16 @@ public class CliView extends View implements Observer {
     private void onGameStarted(Observable o){
         Game game = ((Game)o);
         int i = 1;
-        Logger.log(LoggerType.CLIENT_SIDE, "Select one these cards : \n");
+        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Select one these cards : \n");
 
         ArrayList<WindowPatternCard> pool = null;
         for(Player p : game.getPlayers()){
             if(p.getNickname().equals(player.getNickname())) {
                 pool = (ArrayList<WindowPatternCard>)p.getWindowPatternCardsPool();
                 for (WindowPatternCard w : pool) {
-                    Logger.log(LoggerType.CLIENT_SIDE, ((Integer) i).toString() + ") " + w.getName());
-                    Logger.log(LoggerType.CLIENT_SIDE, ("Number of favor tokens : " + w.getNumberOfFavorTokens()) + "\n");
-                    Logger.log(LoggerType.CLIENT_SIDE, w.toString());
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,((Integer) i).toString() + ") " + w.getName());
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,("Number of favor tokens : " + w.getNumberOfFavorTokens()) + "\n");
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, w.toString());
                     i++;
                 }
             }

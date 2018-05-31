@@ -30,9 +30,27 @@ public final class Logger {
         printWriter.println("\n\n --------- SESSION STARTED --------- " + LocalDate.now() + " / " + LocalTime.now());
     }
 
-    public static void log (LoggerType side, String toLog){
-        System.out.print(toLog);
-        if (Side == side) printWriter.println(toLog);
+    public static void log (LoggerType side, LoggerPriority priority, String toLog){
+        if (Side == side) {
+            if (priority == LoggerPriority.NORMAL)
+                System.out.println(toLog);
+
+            else if (priority == LoggerPriority.NOTIFICATION ){
+                toLog = "[*] NOTIFICATION: " + toLog;
+                System.out.println(toLog);
+                printWriter.println(toLog);
+            }
+            else if (priority == LoggerPriority.WARNING){
+                toLog = "[*] WARNING: " + toLog;
+                System.out.println((char) 27 + "[33" + toLog + (char) 27 + "[3m");
+                printWriter.println(toLog);
+            }
+            else if (priority == LoggerPriority.ERROR){
+                toLog = "[*] ERROR: " + toLog;
+                System.out.println((char) 27 + "[31m"+ toLog + (char) 27 + "[3m");
+                printWriter.println(toLog);
+            }
+        }
     }
 
     public static void ERROR(LoggerType side, String toLog){

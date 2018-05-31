@@ -1,11 +1,13 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.strategy.toolcard.*;
 import it.polimi.se2018.utils.*;
+import it.polimi.se2018.view.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
 public class GameSetupController implements Serializable {
 
     private Game associatedGame;
+    private int selectedPatterCards = 0;
 
     public GameSetupController(Game game){
         this.associatedGame = game;
@@ -165,13 +168,21 @@ public class GameSetupController implements Serializable {
                 p.getActivePatternCard().setPlayer(p);
             }
         }
+        selectedPatterCards++;
+        if (selectedPatterCards == associatedGame.getPlayers().size())
+            associatedGame.getAssociatedGameController().onInitializationComplete();
     }
 
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
         switch (message.getSelected()){
 
             case "PatternCard":
-                onPatternCardSelection((int)message.getChosenItem(), message.getPlayer().getNickname() );
+                try {
+                    onPatternCardSelection((int)message.getChosenItem(), message.getPlayer().getNickname() );
+                } catch (IndexOutOfBoundsException e) {
+                    ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have inserted an out of range value" ,LoggerPriority.ERROR);
+                    ((VirtualView)observable).controllerCallback(ccm);
+                }
                 break;
 
             default: break;
