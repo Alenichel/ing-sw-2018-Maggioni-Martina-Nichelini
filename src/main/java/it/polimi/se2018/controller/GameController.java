@@ -13,6 +13,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
     private Server server;
+    private ServerController serverController;
     public final Game gameAssociated;
     private GameSetupController gameSetupController;
     private transient RoundHandler roundHandler;
@@ -23,6 +24,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     public GameController(Game game){
         this.server = Server.getInstance();
+        this.serverController = ServerController.getInstance();
         this.gameAssociated = game;
 
         this.matchMakingTimer = server.getDefaultMatchmakingTimer();
@@ -35,13 +37,25 @@ public class GameController implements Observer, Serializable, TimerInterface {
      * With whom, it divides actions and handles operation only on it's associated model class.
      * @param player The player to add to the game.
      */
-    private synchronized void connectPlayer(Player player) {
+    protected synchronized void connectPlayer(Player player) {
+
+        if (player.getLastGameJoined() != null && this.server.getActiveGames().contains(player.getLastGameJoined())){ //handling the case in witch a Player reconnect and was previosly reconnected
+            player.setInGame(true);
+            try {
+                player.getLastGameJoined().addPlayer(player);
+            } catch (GameException e ) {
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
+            }
+            return;
+        }
+
 
         try {
             gameAssociated.addPlayer(player);
         } catch (GameException e) {
-            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR,e.toString());
         }
+
         player.setInGame(true); // set player status to true
         this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of inGame players
         player.setLastGameJoined(server.getCurrentGame()); //change last game joined param
@@ -55,6 +69,13 @@ public class GameController implements Observer, Serializable, TimerInterface {
             if (TimerHandler.checkTimer(timerID)) TimerHandler.stopTimer(this.timerID);
             this.launchGame();
         }
+    }
+
+    private synchronized  void disconnectPlayer(Player player){
+        gameAssociated.removePlayer(player);
+        player.setInGame(false);
+        this.server.removePlayer(server.getInGamePlayers(), player);
+        this.serverController.disconnectPlayer(player);
     }
 
     private List<WindowPatternCard> getRandomPatternCards (){
@@ -121,11 +142,14 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
-                this.connectPlayer(message.getRequester());
-                this.gameAssociated.addObserver((Observer)observable);
+                this.connectPlayer(message.getRequester()); //connect the player
+                this.gameAssociated.addObserver((Observer)observable); //subscribe the player to the game
                 observable.addObserver(this); //subscribe gameController to the view
                 observable.deleteObserver(ServerController.getInstance()); //unsubscribe ServerController from the view
             }
+        }
+        else {
+                this.disconnectPlayer(message.getRequester());
         }
     }
 

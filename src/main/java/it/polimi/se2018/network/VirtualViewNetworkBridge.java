@@ -5,6 +5,7 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.VirtualView;
 
@@ -172,8 +173,9 @@ public class VirtualViewNetworkBridge extends Thread {
                     }
                     oos.flush();
                     oos.reset();
-                } while (msg.getMessageType() != "quit");
+                } while (msg.getMessageType() != "quit" &&  clientConnected);
             } catch (InterruptedException | IOException e) { Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());}
+
         }
     }
 
@@ -201,9 +203,10 @@ public class VirtualViewNetworkBridge extends Thread {
                 socket.close();
             }
             catch (EOFException e){
-                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "VVNB_LISTENER: Socket has been closed client side");
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +" )has been closed client side");
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
+                clientConnected = false;
                 return;
             }
             catch (IOException e) {

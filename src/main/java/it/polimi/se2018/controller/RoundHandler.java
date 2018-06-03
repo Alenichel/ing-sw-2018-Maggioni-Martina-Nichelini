@@ -34,7 +34,7 @@ public class RoundHandler implements TimerInterface {
 
     public RoundHandler (Game game){
 
-        if (this.actualRound == 11){
+        if (this.actualRound == 4){
             this.gameController.onGameEnd();
         }
 

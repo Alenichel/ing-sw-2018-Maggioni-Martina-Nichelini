@@ -157,12 +157,24 @@ public class Game extends Observable implements Serializable {
                 this.notifyObservers(um);
             }
 
-        }else{
+        }
+        else if (player.getLastGameJoined().equals(this)){
+            this.players.add(player);
+            UpdateMessage um = new UpdateMessage("NewPlayer");
+            um.setStringMessage(player.getNickname() + " rejoined the game");
+            this.setChanged();
+            this.notifyObservers(um);
+        }
+        else{
             throw new GameException("AlreadyStartedGame");
         }
     }
     public void removePlayer(Player player){
         this.players.remove(player);
+        UpdateMessage um = new UpdateMessage("PlayerDisconnection");
+        um.setStringMessage(player.getNickname() + " left the game");
+        this.setChanged();
+        this.notifyObservers(um);
     }
 
 

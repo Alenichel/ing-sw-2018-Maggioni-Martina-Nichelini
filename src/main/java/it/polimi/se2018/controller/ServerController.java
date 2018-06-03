@@ -10,11 +10,12 @@ import it.polimi.se2018.view.*;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
-public class ServerController implements Observer{
+public class ServerController implements Observer, Serializable{
     private static ServerController instance = null;
     private Server server = Server.getInstance();
     private ArrayList<GameController> gameControllers;
@@ -58,10 +59,16 @@ public class ServerController implements Observer{
     private synchronized void connectPlayer (Player player) {
         server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
+        if (player.getLastGameJoined() != null) {
+            player.getLastGameJoined().getAssociatedGameController().connectPlayer(player);
+            return;
+        }
+
         try {
             if (this.server.getCurrentGame() == null) {
                 this.server.setCurrentGame(new Game());
             }
+            this.server.getCurrentGame().getAssociatedGameController().connectPlayer(player);
 
         }catch (IndexOutOfBoundsException e){
             this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
@@ -72,11 +79,10 @@ public class ServerController implements Observer{
      * Disconnect player to server
      * @param player
      */
-    private synchronized void disconnectPlayer (Player player) {
+    protected synchronized void disconnectPlayer (Player player) {
         server.removePlayerFromOnlinePlayers(player);
-
+        server.addPlayer(server.getOfflinePlayers(), player);
         player.setOnline(false);
-        player.getLastGameJoined().removePlayer(player);
 
     }
 
@@ -84,15 +90,7 @@ public class ServerController implements Observer{
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
                 this.connectPlayer(message.getRequester());
-                this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
-            }
-        }
-        else {
-            if ( message.getTarget() == null  ) {
-                // delete the VirtualView as observer from Server and from all games.
-                server.deleteObserver((VirtualView) observable);
-                for (Game g : this.server.getActiveGames()) g.deleteObserver((VirtualView)observable);
-                this.disconnectPlayer(message.getRequester());
+                //this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
             }
         }
     }

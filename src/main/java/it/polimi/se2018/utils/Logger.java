@@ -42,7 +42,7 @@ public final class Logger {
             }
             else if (priority == LoggerPriority.WARNING){
                 toLog = "[*] WARNING: " + toLog;
-                System.out.println((char) 27 + "[33" + toLog + (char) 27 + "[3m");
+                System.out.println((char) 27 + "[33m" + toLog + (char) 27 + "[3m");
                 printWriter.println(toLog);
             }
             else if (priority == LoggerPriority.ERROR){

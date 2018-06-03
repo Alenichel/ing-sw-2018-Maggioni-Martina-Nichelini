@@ -7,9 +7,7 @@ import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.View;
 
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.Observable;
 import java.util.Observer;
@@ -74,8 +72,16 @@ public class SocketClient implements Observer {
             while (!socket.isClosed()){
                 try {
                     in = ois.readObject();
-                } catch (ClassNotFoundException | IOException e){
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR,e.toString());
+                } catch (EOFException e){
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Connection was closed server side. Closing...");
+                    System.exit(0);
+                }
+                catch (StreamCorruptedException e){
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, ":SOCKETCLIENT_LISTENER: caught java.io.StreamCorruptedException");
+                    break;
+                }
+                catch (ClassNotFoundException | IOException e){
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, ":SOCKETCLIENT_LISTENER:" +  e.toString());
                     System.exit(1);
                 }
                 //update from model (network)
