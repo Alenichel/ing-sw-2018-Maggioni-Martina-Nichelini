@@ -20,14 +20,6 @@ public class ServerController implements Observer, Serializable{
     private Server server = Server.getInstance();
     private ArrayList<GameController> gameControllers;
 
-    private Player getPlayerFromNick(String nickname){
-        for (Player p : server.getOnlinePlayers()){
-            if (p.getNickname().equals(nickname))
-                return p;
-        }
-        return null;
-    }
-
     public static ServerController getInstance(){
         if(instance == null){
             instance = new ServerController();
@@ -106,11 +98,8 @@ public class ServerController implements Observer, Serializable{
     }
 
     private synchronized void handleRequestMessage(Observable observable, RequestMessage rMsg){
-        if (rMsg.getRequest().equals("SubscribePlayer")) {
-            this.getPlayerFromNick(((View) observable).getClient().getNickname()).addObserver((Observer) observable);
-        }
 
-        else if (rMsg.getRequest().equals("ConnectedPlayers")){
+        if (rMsg.getRequest().equals("ConnectedPlayers")){
             ((VirtualView) observable).controllerCallback(new GiveMessage("ConnectedPlayers", server.getOnlinePlayers()));
         }
     }

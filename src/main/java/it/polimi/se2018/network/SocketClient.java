@@ -9,6 +9,7 @@ import it.polimi.se2018.view.View;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.BlockingQueue;
@@ -50,8 +51,7 @@ public class SocketClient implements Observer {
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, e.toString());
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
             System.exit(1);
         }
 
@@ -109,8 +109,7 @@ public class SocketClient implements Observer {
                     oos.reset();
                 }
             } catch (InterruptedException | IOException e) {
-                Logger.log(LoggerType.CLIENT_SIDE,LoggerPriority.ERROR, e.toString());
-                e.printStackTrace();
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
             }
         }
     }

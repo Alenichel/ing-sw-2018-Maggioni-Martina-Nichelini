@@ -2,6 +2,9 @@ package it.polimi.se2018.model;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
+import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
+import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -41,7 +44,7 @@ public class WindowPatternCard extends Card implements Serializable {
         } catch (FileNotFoundException e) {
             System.exit(1);
         } catch (IOException | SAXException | ParserConfigurationException e) {
-            e.printStackTrace();
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
 
         for (int x = 0; x < 4; x++){

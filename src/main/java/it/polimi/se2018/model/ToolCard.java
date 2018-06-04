@@ -3,11 +3,10 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.strategy.toolcard.*;
-import it.polimi.se2018.utils.ConsoleUtils;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.ToolCardsName;
+import it.polimi.se2018.utils.*;
 
 import java.io.Serializable;
+import java.util.Arrays;
 
 public class ToolCard extends Card implements Serializable {
     private DiceColor diceColor;
@@ -112,7 +111,7 @@ public class ToolCard extends Card implements Serializable {
         try{
             return toolCardEffect.executeEffect();
         }catch (ToolCardException | NotEmptyWindowCellException e){
-            e.printStackTrace();
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
             return 0;
         }
     }

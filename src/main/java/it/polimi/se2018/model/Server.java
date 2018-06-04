@@ -1,5 +1,8 @@
 package it.polimi.se2018.model;
 import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
+import it.polimi.se2018.utils.LoggerType;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -12,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 
@@ -47,7 +51,7 @@ public class Server extends Observable implements Serializable {
                 System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
                 System.exit(1);
             } catch (IOException | SAXException | ParserConfigurationException e) {
-                e.printStackTrace();
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
             }
         }
 
