@@ -19,8 +19,8 @@ public class WindowPatternCardTest {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         System.out.println(wpc);
 
-        wpc.insertDice(d,0,3,true, true,true);
-        Assert.assertEquals(d, wpc.getCell(0,3).getAssignedDice());
+        wpc.insertDice(d,0,1,true, true,false);
+        Assert.assertEquals(d, wpc.getCell(0,1).getAssignedDice());
     }
 
     @Test

@@ -1,11 +1,14 @@
 package it.polimi.se2018;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.ObjectiveCardsName;
 import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+
+import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
 
 public class GameTest {
 
@@ -24,9 +27,9 @@ public class GameTest {
         Dice die6 = new Dice("red", 6);
         Dice wrongDie = new Dice("pink", 7);
 
-        ObjectiveCard objective1 = new ObjectiveCard();
-        ObjectiveCard objective2 = new ObjectiveCard();
-        ObjectiveCard objective3 = new ObjectiveCard();
+        PublicObjectiveCard objective1 = new PublicObjectiveCard(ObjectiveCardsName.RowColorVariety);
+        PublicObjectiveCard objective2 = new PublicObjectiveCard(ObjectiveCardsName.LightShades);
+        PublicObjectiveCard objective3 = new PublicObjectiveCard(ObjectiveCardsName.ColorVariety);
 
         ToolCard tc1 = new ToolCard(null);
         ToolCard tc2 = new ToolCard(null);
@@ -40,7 +43,7 @@ public class GameTest {
         ArrayList<Player> players = new ArrayList<>();
         ArrayList<Dice> dice = new ArrayList<>();
         ArrayList<Dice> wrongDice = new ArrayList<>();
-        ArrayList<ObjectiveCard> objectives = new ArrayList<>();
+        ArrayList<PublicObjectiveCard> objectives = new ArrayList<>();
         ArrayList<ToolCard> tc = new ArrayList<>();
         ArrayList<WindowPatternCard> wpc = new ArrayList<>();
 

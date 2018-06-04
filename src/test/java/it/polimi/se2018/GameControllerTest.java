@@ -35,6 +35,7 @@ public class GameControllerTest {
     @Test
     public void testRoundHandler() throws GameException{
         Game g = new Game();
+        GameController gc = g.getAssociatedGameController();
         Player p1 = new Player("Alenichel");
         Player p2 = new Player("Stendus");
 
@@ -43,6 +44,6 @@ public class GameControllerTest {
         g.addPlayer(p1);
         g.addPlayer(p2);
 
-        RoundHandler rh = new RoundHandler(g);
+        //RoundHandler rh = new RoundHandler(g);
     }
 }

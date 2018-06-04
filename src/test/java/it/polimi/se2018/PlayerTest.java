@@ -65,6 +65,7 @@ public class PlayerTest {
 
 
         WindowPatternCard w = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
+        player.setInGame(true);
         player.assignPatternCard(w);
         Assert.assertEquals(player.getActivePatternCard().getName(), w.getName());
     }

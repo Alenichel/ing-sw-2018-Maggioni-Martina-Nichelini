@@ -4,6 +4,7 @@ import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.message.SocketUpdateContainer;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.utils.LoggerPriority;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class MessageTest {
 
     @Test
     public void testControllerCallbackMessage(){
-        ControllerCallbackMessage ccm = new ControllerCallbackMessage("Callback");
+        ControllerCallbackMessage ccm = new ControllerCallbackMessage("Callback", LoggerPriority.NORMAL);
         Assert.assertEquals(ccm.getStringMessage(), "Callback");
     }
 
