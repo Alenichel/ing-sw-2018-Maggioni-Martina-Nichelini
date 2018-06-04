@@ -54,13 +54,16 @@ public class ServerController implements Observer, Serializable{
     /**
      * This method handles the connection routine for class server. It's always called together with the same method of
      * game controller.
-     * @param player
+     * @param observable
+     * @param message
      */
-    private synchronized void connectPlayer (Player player) {
+    private synchronized void connectPlayer (Observable observable, ConnectionMessage message) {
+        Player player = message.getRequester();
         server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
+
         if (player.getLastGameJoined() != null) {
-            player.getLastGameJoined().getAssociatedGameController().connectPlayer(player);
+            player.getLastGameJoined().getAssociatedGameController().update(observable, message);
             return;
         }
 
@@ -68,7 +71,7 @@ public class ServerController implements Observer, Serializable{
             if (this.server.getCurrentGame() == null) {
                 this.server.setCurrentGame(new Game());
             }
-            this.server.getCurrentGame().getAssociatedGameController().connectPlayer(player);
+            this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
 
         }catch (IndexOutOfBoundsException e){
             this.server.addPlayer(server.getWaitingPlayers(), player); //in case of game full and not started, put it in waiting players
@@ -76,7 +79,7 @@ public class ServerController implements Observer, Serializable{
     }
 
     /**
-     * Disconnect player to server
+     * Disconnect player from server
      * @param player
      */
     protected synchronized void disconnectPlayer (Player player) {
@@ -86,11 +89,18 @@ public class ServerController implements Observer, Serializable{
 
     }
 
+
+
     private synchronized void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
-                this.connectPlayer(message.getRequester());
-                //this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
+                this.connectPlayer(observable, message);
+            }
+        }
+
+        else {
+            if ( message.getTarget() == null  ) {
+                this.disconnectPlayer(message.getRequester());
             }
         }
     }

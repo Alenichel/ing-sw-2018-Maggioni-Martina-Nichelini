@@ -208,5 +208,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
     @Override
     public void timerDoneAction(){
         this.launchGame();
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game started");
     }
 }

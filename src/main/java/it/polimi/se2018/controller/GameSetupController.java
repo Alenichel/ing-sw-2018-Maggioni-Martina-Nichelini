@@ -90,19 +90,11 @@ public class GameSetupController implements Serializable {
     }
 
     private void initializePublicObject(){
-        Random rand = new Random();
-        int n;
-        ArrayList<String> objectiveName = new ArrayList<>();
-        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<PublicObjectiveCard>();
+        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<>();
 
-        for(ObjectiveCardsName po : ObjectiveCardsName.values()){
-            objectiveName.add(po.toString());
-        }
-        for(int i = 0; i<3; i++){
-            n = rand.nextInt(objectiveName.size());
-            selectedObject.add(new PublicObjectiveCard(nameToObjectObjective(objectiveName.get(n))));
-            objectiveName.remove(n);
-        }
+        final int[] ints = new Random().ints(0, ObjectiveCardsName.values().length).distinct().limit(3).toArray();
+        for (int i : ints)
+            selectedObject.add(new PublicObjectiveCard(ObjectiveCardsName.values()[i]));
         this.associatedGame.setObjectiveCards(selectedObject);
     }
 
@@ -142,22 +134,6 @@ public class GameSetupController implements Serializable {
         }
     }
 
-    private ScorePointStrategy nameToObjectObjective(String name){
-        switch (name){
-            case "RowColorVariety" : return new RowVariety(VarietyType.COLOR);
-            case "ColumnColorVariety" : return new ColumnVariety(VarietyType.COLOR);
-            case "RowShadeVariety" : return new RowVariety(VarietyType.SHADE);
-            case "ColumnShadeVariety" : return new ColumnVariety(VarietyType.COLOR);
-            case "LightShades" : return new Shades("light");
-            case "MediumShades" : return new Shades("medium");
-            case "DarkShades" : return new Shades("dark");
-            case "ShadeVariety" : return new ShadeVariety();
-            case "ColorDiagonals" : return new ColorDiagonals();
-            case "ColorVariety" : return new ColorVariety();
-            default :
-                throw new IllegalArgumentException();
-        }
-    }
 
     private void onPatternCardSelection(int cardIndex, String playerNickName){
         for (Player p: associatedGame.getPlayers()){
