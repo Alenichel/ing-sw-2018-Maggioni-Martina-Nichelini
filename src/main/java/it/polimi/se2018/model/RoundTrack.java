@@ -1,9 +1,5 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.utils.ConsoleUtils;
-import it.polimi.se2018.utils.DiceColor;
-
-import java.awt.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 

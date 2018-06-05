@@ -21,14 +21,16 @@ public class FluxRemover implements ToolCardEffectStrategy, Serializable {
     private int number;
     private Dice d1;
     private Dice d2;
+    private boolean placeOnWpc;
 
     public FluxRemover(){
         }
 
-    public FluxRemover FluxRemover(FluxRemover fluxRemover, WindowPatternCard wpc, WindowCell wc) {
+    public FluxRemover FluxRemover(FluxRemover fluxRemover, WindowPatternCard wpc, int number, WindowCell wc, boolean placeOnWpc) {
         fluxRemover.wpc = wpc;
         fluxRemover.wc = wc;
         fluxRemover.number = number;
+        fluxRemover.placeOnWpc = placeOnWpc;
         return fluxRemover;
     }
 
@@ -51,7 +53,9 @@ public class FluxRemover implements ToolCardEffectStrategy, Serializable {
                 d2.setNumber(number);
             }
             else throw new ToolCardException("invalid number");
-        this.wpc.insertDice(d2, wc.getRow(), wc.getColumn(), true, true, true);
+
+            if(placeOnWpc) {this.wpc.insertDice(d2, wc.getRow(), wc.getColumn(), true, true, true);}
+            else {d2.setLocation(DiceLocation.TABLE);}
         }
 
         return 0;
