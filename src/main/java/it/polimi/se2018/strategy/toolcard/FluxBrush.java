@@ -17,11 +17,13 @@ import java.io.Serializable;
 public class FluxBrush implements ToolCardEffectStrategy, Serializable {
 
     private Dice die;
+    private boolean notPlaced;
 
     public FluxBrush(){
     }
 
-    public FluxBrush FluxBrush(FluxBrush fluxBrush, Dice die){
+    public FluxBrush FluxBrush(FluxBrush fluxBrush, Dice die, boolean notPlaced){
+        fluxBrush.notPlaced = notPlaced;
         fluxBrush.die = die;
         return fluxBrush;
     }
@@ -29,8 +31,7 @@ public class FluxBrush implements ToolCardEffectStrategy, Serializable {
     @Override
     public int executeEffect(){
         this.die.rollDice();
-        //se non è possibile piazzarlo, riporlo nella riserva (table)
-        //if () {die.setLocation(DiceLocation.TABLE);}
+        if (notPlaced) {die.setLocation(DiceLocation.TABLE);}
         return 1;
 
     }
