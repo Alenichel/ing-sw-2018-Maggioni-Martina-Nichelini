@@ -76,6 +76,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
         player.setInGame(false);
         this.server.removePlayer(server.getInGamePlayers(), player);
         this.serverController.disconnectPlayer(player);
+
+        if (gameAssociated.getPlayers().size() == 1){
+            onGameEnd();
+        }
     }
 
     private List<WindowPatternCard> getRandomPatternCards (){
@@ -113,18 +117,40 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.roundHandler = new RoundHandler(gameAssociated);
     }
 
-    protected void onGameEnd(){
-        Player topPlayer = null;
-        int topScore = 0;
-        for (Player p: this.gameAssociated.getPlayers()) {
-            int score = 0;
-            for (PublicObjectiveCard oc : this.gameAssociated.getObjectiveCards()) {
-                score+=oc.scorePoint(p.getActivePatternCard());
-            }
-            p.setScore(score);
-            if (score > topScore) topScore = score;
-            }
+    protected int calculateScore(Player player){
+        int score = 0;
 
+        for (PublicObjectiveCard poc : player.getLastGameJoined().getObjectiveCards()){
+            score += poc.scorePoint(player.getActivePatternCard());
+        }
+
+        score -= (20 - player.getActivePatternCard().getPlacedDice());
+        player.setScore(score);
+        return score;
+    }
+
+    protected void onGameEnd(){
+
+        Player topPlayer = null;
+        int topScore = -100;
+
+        if (gameAssociated.getPlayers().size() == 1){
+            topPlayer = gameAssociated.getPlayers().get(0);
+        }
+
+        else {
+            for (Player p : this.gameAssociated.getPlayers()) {
+                int playerScore = calculateScore(p);
+                if (playerScore > topScore) {
+                    topScore = playerScore;
+                    topPlayer = p;
+                }
+            }
+        }
+
+        this.gameAssociated.setWinner(topPlayer);
+        TimerHandler.stopTimer(this.timerID);
+        this.serverController.removeGame(this.gameAssociated);
         }
 
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
@@ -132,6 +158,11 @@ public class GameController implements Observer, Serializable, TimerInterface {
         switch (message.getWhatToUpdate()){
 
             case "Pass":
+                if (!this.gameAssociated.isInitiliazationComplete()){
+                    ControllerCallbackMessage ccm = new ControllerCallbackMessage("PatternCard has not been selected yet.", LoggerPriority.ERROR);
+                    ((View)observable).controllerCallback(ccm);
+                    break;
+                }
                 this.roundHandler.update(observable, message);
                 break;
 
@@ -146,6 +177,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 this.gameAssociated.addObserver((Observer)observable); //subscribe the player to the game
                 observable.addObserver(this); //subscribe gameController to the view
                 observable.deleteObserver(ServerController.getInstance()); //unsubscribe ServerController from the view
+                String string = "You joined to " + gameAssociated.getName().toString() + "game. There are " + gameAssociated.getPlayers().size()  + " player connected.";
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage(string,LoggerPriority.NOTIFICATION);
+                ((View)observable).controllerCallback(ccm);
             }
         }
         else {
@@ -166,7 +200,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     @Override
     public void update(Observable observable, Object msg){
 
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_CONTROLLER: Receveid -> " + ((Message)msg).getMessageType() );
+        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_CONTROLLER( " + this.gameAssociated.getName().toString() + " ): Receveid -> " + ((Message)msg).getMessageType() );
 
         switch(((Message)msg).getMessageType()){
 
@@ -209,5 +243,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
     public void timerDoneAction(){
         this.launchGame();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game started");
+        serverController.resetGame();
     }
 }

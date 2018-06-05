@@ -9,20 +9,16 @@ import it.polimi.se2018.utils.LoggerType;
 
 import java.util.*;
 
+import static it.polimi.se2018.utils.LoggerPriority.NOTIFICATION;
 
 
 public class CliView extends View implements Observer {
 
-    private Player player;
     private transient Object lastObjectReceveid;
     private Player activePlayer = null;
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
     private void handleSelectCommands(String command){
-        SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.player,"PatternCard");
+        SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
     }
@@ -68,7 +64,7 @@ public class CliView extends View implements Observer {
     public void run() {
         Scanner sinput = new Scanner(System.in);
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.player.getNickname() + " ***");
+        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.client.getNickname() + " ***");
 
         loop: while (true) {
             String input = sinput.nextLine();
@@ -154,7 +150,7 @@ public class CliView extends View implements Observer {
         System.out.println("***********************************************************************************");
 
         System.out.println(rT.toString());
-        ConsoleUtils.multiplePrint((ArrayList)wpcs, player);
+        ConsoleUtils.multiplePrint((ArrayList)wpcs, client);
 
         int i = 1;
         for (Dice d : game.getDiceOnTable()) {
@@ -162,7 +158,7 @@ public class CliView extends View implements Observer {
             i++;
         }
         System.out.println("");
-        if(playerName.equals(player.getNickname())) System.out.println((char) 27 +"[34m" + "Is your turn!" + (char) 27 + "[30m");
+        if(playerName.equals(client.getNickname())) System.out.println((char) 27 +"[34m" + "Is your turn!" + (char) 27 + "[30m");
         else System.out.println("This is the turn of player:" + playerName);
     }
 
@@ -173,7 +169,7 @@ public class CliView extends View implements Observer {
 
         ArrayList<WindowPatternCard> pool = null;
         for(Player p : game.getPlayers()){
-            if(p.getNickname().equals(player.getNickname())) {
+            if(p.getNickname().equals(client.getNickname())) {
                 pool = (ArrayList<WindowPatternCard>)p.getWindowPatternCardsPool();
                 for (WindowPatternCard w : pool) {
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,((Integer) i).toString() + ") " + w.getName());
@@ -185,18 +181,33 @@ public class CliView extends View implements Observer {
         }
     }
 
+    private void onWinnerProclamation(Game game){
+        if (game.getWinner().getNickname().equals(this.client.getNickname())){
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "************ You WON ************");
+        }
+        else {
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "************ You LOSE ************\nThe winner is: " + game.getWinner().getNickname());
+        }
+        System.exit(0);
+    }
+
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
                 String wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 if(wtu.equals("ActivePlayer")) printTable((Game)o, (Message) msg);
                 else{
-                    Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
                     if(wtu.equals("GameStarted")) {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         onGameStarted(o);
-                    }else if(wtu.equals("ActivePlayer")) {
+                    } else if(wtu.equals("ActivePlayer")) {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         this.activePlayer = ((Game)o).getActivePlayer();
-                        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE,msg.toString());
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
+                    } else if(wtu.equals("Winner")) {
+                        this.onWinnerProclamation((Game)o);
+                    } else {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                     }
                 }
 

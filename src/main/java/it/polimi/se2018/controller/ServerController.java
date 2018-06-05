@@ -27,7 +27,12 @@ public class ServerController implements Observer, Serializable{
         return instance;
     }
 
-    private void resetGame(){
+    /**
+     * This method handles the operation that happens to the server after a game starts.
+     * If there are not any players in the waiting room, it simply set to null the active game.
+     * Otherwise it handles the players moving from the waiting room to the active room.
+     */
+    protected void resetGame(){
         if (this.server.getWaitingPlayers().isEmpty()) this.server.setCurrentGame(null);
         else {
             this.server.setCurrentGame(new Game());
@@ -41,6 +46,10 @@ public class ServerController implements Observer, Serializable{
                 }
             }
         }
+    }
+
+    protected  void removeGame(Game game){
+        this.server.getActiveGames().remove(game);
     }
 
     /**
@@ -78,10 +87,7 @@ public class ServerController implements Observer, Serializable{
         server.removePlayerFromOnlinePlayers(player);
         server.addPlayer(server.getOfflinePlayers(), player);
         player.setOnline(false);
-
     }
-
-
 
     private synchronized void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){

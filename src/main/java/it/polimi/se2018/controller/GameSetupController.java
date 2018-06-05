@@ -1,12 +1,15 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.ControllerCallbackMessage;
+import it.polimi.se2018.message.ErrorMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.strategy.toolcard.*;
 import it.polimi.se2018.utils.*;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 
 import java.io.Serializable;
@@ -135,18 +138,22 @@ public class GameSetupController implements Serializable {
     }
 
 
-    private void onPatternCardSelection(int cardIndex, String playerNickName){
-        for (Player p: associatedGame.getPlayers()){
-            if (p.getNickname().equals(playerNickName)){
-                p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
-                p.setWindowPatternCardsPool(null);
-                p.setNumberOfFavorTokens(p.getActivePatternCard().getNumberOfFavorTokens());
-                p.getActivePatternCard().setPlayer(p);
-            }
+    private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
+
+        if (p.getActivePatternCard() == null) {
+            p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
+            p.setWindowPatternCardsPool(null);
+            p.setNumberOfFavorTokens(p.getActivePatternCard().getNumberOfFavorTokens());
+            p.getActivePatternCard().setPlayer(p);
+
+            selectedPatterCards++;
+            if (selectedPatterCards == associatedGame.getPlayers().size())
+                associatedGame.getAssociatedGameController().onInitializationComplete();
         }
-        selectedPatterCards++;
-        if (selectedPatterCards == associatedGame.getPlayers().size())
-            associatedGame.getAssociatedGameController().onInitializationComplete();
+
+        else {
+            throw new GameException("AlreadyChosenPatternCard");
+        }
     }
 
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
@@ -154,9 +161,14 @@ public class GameSetupController implements Serializable {
 
             case "PatternCard":
                 try {
-                    onPatternCardSelection((int)message.getChosenItem(), message.getPlayer().getNickname() );
-                } catch (IndexOutOfBoundsException e) {
-                    ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have inserted an out of range value" ,LoggerPriority.ERROR);
+                    onPatternCardSelection((int)message.getChosenItem(), ((View)observable).getClient());
+                }
+                catch ( GameException e){
+                    ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have already selected a pattern card", LoggerPriority.ERROR);
+                    ((VirtualView)observable).controllerCallback(ccm);
+                }
+                catch (IndexOutOfBoundsException e) {
+                    ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have inserted an out of range value", LoggerPriority.ERROR);
                     ((VirtualView)observable).controllerCallback(ccm);
                 }
                 break;

@@ -33,20 +33,20 @@ public class RoundHandler implements TimerInterface {
     private WindowPatternCard workingPatternCard;
 
     public RoundHandler (Game game){
+        this.gameAssociated = game;
+        this.actualRound = this.gameAssociated.getActualRound();
+        this.gameController = gameAssociated.getAssociatedGameController();
 
-        if (this.actualRound == 4){
+        if (this.actualRound == 2){
             this.gameController.onGameEnd();
         }
 
-        this.gameAssociated = game;
-        this.gameController = gameAssociated.getAssociatedGameController();
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
 
         this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
         this.activePlayer = this.gameAssociated.getActivePlayer();
         this.workingPatternCard = this.activePlayer.getActivePatternCard();
-        this.actualRound = this.gameAssociated.getActualRound();
 
         if (this.actualRound != 1 ) {
             this.gameAssociated.getRoundTrack().addDice((ArrayList) this.gameAssociated.getDiceOnTable(), this.actualRound-2);

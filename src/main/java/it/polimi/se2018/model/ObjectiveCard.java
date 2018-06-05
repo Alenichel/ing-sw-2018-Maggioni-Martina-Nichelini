@@ -1,7 +1,7 @@
 package it.polimi.se2018.model;
 
 public class ObjectiveCard extends Card {
-    private String description;
+    protected String description;
     private Game gameReference;
 
     public ObjectiveCard (){

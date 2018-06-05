@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.utils.GameNames;
 
 
 import java.io.Serializable;
@@ -24,11 +25,16 @@ public class Game extends Observable implements Serializable {
 
     private GameController associatedGameController;
 
+    private GameNames name;
+
     private Player winner = null;
 
     public Game(){
         associatedGameController = new GameController(this);
         this.roundTrack = new RoundTrack();
+
+        Random random = new Random();
+        name = GameNames.values()[random.nextInt(GameNames.values().length)];
     }
 
     public boolean isStarted() {
@@ -105,7 +111,12 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
-
+    public void setWinner(Player winner) {
+        this.winner = winner;
+        UpdateMessage um = new UpdateMessage("Winner");
+        this.setChanged();
+        this.notifyObservers(um);
+    }
 
     public List<Dice> getDiceBag() {
         return diceBag;
@@ -113,15 +124,16 @@ public class Game extends Observable implements Serializable {
     public List<Dice> getDiceOnTable() {
         return diceOnTable;
     }
-
-    public void setWinner(Player winner) {
-        this.winner = winner;
-        UpdateMessage um = new UpdateMessage("Winner");
-        um.setStringMessage("THE WINNER IS: " + winner.getNickname());
-        notifyObservers(um);
-        System.exit(0);
+    public boolean isInitiliazationComplete() {
+        return initiliazationComplete;
     }
 
+    public GameNames getName() {
+        return name;
+    }
+    public Player getWinner() {
+        return winner;
+    }
     public List<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
@@ -172,7 +184,8 @@ public class Game extends Observable implements Serializable {
     public void removePlayer(Player player){
         this.players.remove(player);
         UpdateMessage um = new UpdateMessage("PlayerDisconnection");
-        um.setStringMessage(player.getNickname() + " left the game");
+        if (this.players.size() > 1) um.setStringMessage(player.getNickname() + " left the game");
+        else um.setStringMessage(player.getNickname() + " left the game. You are the only human player left.");
         this.setChanged();
         this.notifyObservers(um);
     }

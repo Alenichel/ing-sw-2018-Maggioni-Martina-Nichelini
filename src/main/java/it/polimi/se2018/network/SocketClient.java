@@ -44,7 +44,7 @@ public class SocketClient implements Observer {
 
             Object rcv = ois.readObject();
             if (rcv instanceof HandshakeConnectionMessage)
-                ((CliView) associatedView).setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
+                associatedView.setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
             else {
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,rcv.toString());
                 System.exit(1);
