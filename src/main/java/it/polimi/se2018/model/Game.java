@@ -22,6 +22,7 @@ public class Game extends Observable implements Serializable {
     private boolean initiliazationComplete;
     private int actualRound = 0;
     private Player activePlayer = null;
+    private int timerSecondsLeft;
 
     private GameController associatedGameController;
 
@@ -65,8 +66,7 @@ public class Game extends Observable implements Serializable {
         this.toolCards = (ArrayList<ToolCard>) toolCards;
     }
     public void setTimerSecondLeft(int second){
-        int timerSecondLeft = 0;
-        timerSecondLeft = second;
+        this.timerSecondsLeft = second;
         this.setChanged();
         UpdateMessage um = new UpdateMessage("TimeLeft");
         um.setStringMessage(String.valueOf(timerSecondLeft));
@@ -127,7 +127,9 @@ public class Game extends Observable implements Serializable {
     public boolean isInitiliazationComplete() {
         return initiliazationComplete;
     }
-
+    public int getTimerSecondsLeft() {
+        return timerSecondsLeft;
+    }
     public GameNames getName() {
         return name;
     }
@@ -181,6 +183,7 @@ public class Game extends Observable implements Serializable {
             throw new GameException("AlreadyStartedGame");
         }
     }
+
     public void removePlayer(Player player){
         this.players.remove(player);
         UpdateMessage um = new UpdateMessage("PlayerDisconnection");
