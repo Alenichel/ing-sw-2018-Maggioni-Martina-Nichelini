@@ -69,7 +69,7 @@ public class Game extends Observable implements Serializable {
         this.timerSecondsLeft = second;
         this.setChanged();
         UpdateMessage um = new UpdateMessage("TimeLeft");
-        um.setStringMessage(String.valueOf(timerSecondLeft));
+        um.setStringMessage(String.valueOf(timerSecondsLeft));
         this.notifyObservers(um);
     }
     public void setStarted(boolean started) throws GameException {
