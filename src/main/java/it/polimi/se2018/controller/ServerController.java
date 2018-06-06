@@ -63,13 +63,13 @@ public class ServerController implements Observer, Serializable{
         server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
 
-        if (player.getLastGameJoined() != null) {
+        if (player.getLastGameJoined() != null) { //case the player was previously connected to a game
             player.getLastGameJoined().getAssociatedGameController().update(observable, message);
             return;
         }
 
         try {
-            if (this.server.getCurrentGame() == null) {
+            if (this.server.getCurrentGame() == null) { //case the game is not created yet
                 this.server.setCurrentGame(new Game());
             }
             this.server.getCurrentGame().getAssociatedGameController().update(observable, message);

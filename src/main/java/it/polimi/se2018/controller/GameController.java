@@ -39,7 +39,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
      */
     protected synchronized void connectPlayer(Player player) {
 
-        if (player.getLastGameJoined() != null && this.server.getActiveGames().contains(player.getLastGameJoined())){ //handling the case in witch a Player reconnect and was previosly reconnected
+        if (player.getLastGameJoined() != null && this.server.getActiveGames().contains(player.getLastGameJoined())){ //handling the case in witch a Player reconnect and was previously connected
             player.setInGame(true);
             try {
                 player.getLastGameJoined().addPlayer(player);
@@ -60,12 +60,13 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.server.addPlayer(server.getInGamePlayers(), player); //add him to the list of inGame players
         player.setLastGameJoined(server.getCurrentGame()); //change last game joined param
 
-        if (this.gameAssociated.getPlayers().size() == 2) {
+
+        if (this.gameAssociated.getPlayers().size() == 2) { //handling timer start
             if (!TimerHandler.checkTimer(this.timerID)) {
                 this.timerID = TimerHandler.registerTimer(this, this.matchMakingTimer);
                 TimerHandler.startTimer(this.timerID);
             }
-        } else if (this.gameAssociated.getPlayers().size() == 4) {
+        } else if (this.gameAssociated.getPlayers().size() == 4) { //handling game start
             if (TimerHandler.checkTimer(timerID)) TimerHandler.stopTimer(this.timerID);
             this.launchGame();
         }
@@ -173,11 +174,11 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
+                this.gameAssociated.addObserver((Observer)observable); //subscribe the view to the game
                 this.connectPlayer(message.getRequester()); //connect the player
-                this.gameAssociated.addObserver((Observer)observable); //subscribe the player to the game
                 observable.addObserver(this); //subscribe gameController to the view
                 observable.deleteObserver(ServerController.getInstance()); //unsubscribe ServerController from the view
-                String string = "You joined to " + gameAssociated.getName().toString() + "game. There are " + gameAssociated.getPlayers().size()  + " player connected.";
+                String string = gameAssociated.getName().toString() + " ---> There are " + gameAssociated.getPlayers().size()  + " player connected.";
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage(string,LoggerPriority.NOTIFICATION);
                 ((View)observable).controllerCallback(ccm);
             }
