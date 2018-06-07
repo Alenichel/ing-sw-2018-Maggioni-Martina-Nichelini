@@ -7,24 +7,29 @@ import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.utils.Security;
 import it.polimi.se2018.view.VirtualView;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.rmi.RemoteException;
 import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.SynchronousQueue;
 
+import static it.polimi.se2018.utils.Security.authenticateUser;
+
 /**
  * This class is the bridge between the virtual view and the rest of the network.
  */
-public class VirtualViewNetworkBridge extends Thread {
-
+public class SocketServerImplementation extends Thread implements ServerInterface {
+    //OLD VIRTUALVIEW NETWORK BRIDGE
     private Socket socket;
     private boolean clientConnected = true;
     private boolean clientAuthenticated;
@@ -36,13 +41,13 @@ public class VirtualViewNetworkBridge extends Thread {
 
     BlockingQueue queue = new LinkedBlockingQueue();
 
-    public VirtualViewNetworkBridge(Socket socket){
+    public SocketServerImplementation(Socket socket){
         this.socket = socket;
         try {
             this.oos = new ObjectOutputStream(socket.getOutputStream());
             this.ois = new ObjectInputStream(socket.getInputStream());
             HandshakeConnectionMessage hcm = (HandshakeConnectionMessage) this.ois.readObject();
-            authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
+            this.player = Security.authenticateUser(hcm.getUsername(), hcm.getEncodedPassword());
 
         }
         catch (AuthenticationErrorException e ) {
@@ -53,7 +58,7 @@ public class VirtualViewNetworkBridge extends Thread {
             Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
         }
 
-        if (this.clientAuthenticated){
+        if (this.player != null){
             //once the player is authenticated, I put him in the setupping game.
             this.associatedVirtualView = new VirtualView(this, this.player);
 
@@ -75,57 +80,6 @@ public class VirtualViewNetworkBridge extends Thread {
                 socket.close();
             } catch (IOException e){Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
         }
-    }
-
-    /**
-     * This method check if the server contains an instance of a player with the same name of the one
-     * provided. If true, it returns that instance, otherwise it create a new player whit that name and
-     * returns it.
-     * @param name of the player to generate
-     * @return
-     */
-    private Player generateUser(String name) throws  AuthenticationErrorException{
-        for ( Player p: Server.getInstance().getOnlinePlayers() )
-            if (p.getNickname().equals(name)) {
-            throw new AuthenticationErrorException("UserAlreadyConnected");
-            }
-
-        for ( Player p : Server.getInstance().getOfflinePlayers() ){
-            if ( p.getNickname().equals(name)) return p;
-        }
-        return new Player(name);
-    }
-
-    private void authenticateUser(String name, String password) throws AuthenticationErrorException {
-        String DB_PATH = "/sagrada_users_db.txt";
-        Path path = Paths.get("resources" + DB_PATH);
-        try (BufferedReader reader = Files.newBufferedReader(path);) {
-            String nextLine = reader.readLine();
-            while (!nextLine.equals("end")) {
-                nextLine = reader.readLine();
-                String[] userInfo = nextLine.split(":");
-                if (userInfo[0].equals(name)) {
-                    try {
-                        if (Server.getInstance().isConfigurationRequired()) {
-                            if (userInfo[1].equals(password)) {
-                                this.clientAuthenticated = true;
-                                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "user " + name + " has been authenticated");
-                                this.player = generateUser(name);
-                                return;
-                            }
-                        } else {
-                            this.clientAuthenticated = true;
-                            this.player = generateUser(name);
-                        }
-                    } catch (AuthenticationErrorException e) {
-                        this.clientAuthenticated = false;
-                        return;
-                    }
-                }
-            }
-            throw new AuthenticationErrorException("UserNotFound");
-        } catch (IOException e){Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
-
     }
 
     /**
@@ -216,12 +170,20 @@ public class VirtualViewNetworkBridge extends Thread {
         }
     }
 
+    public void addClient(ClientInterface client) throws RemoteException {
+        System.out.println("ciao");
+    }
+
     @Override
     public void run(){
         VirtualListener vl = new VirtualListener();
         Sender s = new Sender();
         vl.start();
         s.start();
+    }
+
+    public void receiver(Observable o, Object msg){
+        ;
     }
 }
 

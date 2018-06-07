@@ -94,7 +94,7 @@ public class CliView extends View implements Observer {
 
                 case "pass":
                     this.setChanged();
-                    this.notifyObservers(new UpdateMessage("Pass"));
+                    this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
                     break;
 
                 case "take":
@@ -194,17 +194,17 @@ public class CliView extends View implements Observer {
     public void update(Observable o, Object msg){
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
-                String wtu = ((UpdateMessage)msg).getWhatToUpdate();
-                if(wtu.equals("ActivePlayer")) printTable((Game)o, (Message) msg);
+                WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();
+                if(wtu.equals(WhatToUpdate.ActivePlayer)) printTable((Game)o, (Message) msg);
                 else{
-                    if(wtu.equals("GameStarted")) {
+                    if(wtu.equals(WhatToUpdate.GameStarted)) {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         onGameStarted(o);
-                    } else if(wtu.equals("ActivePlayer")) {
+                    } else if(wtu.equals(WhatToUpdate.ActivePlayer)) {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         this.activePlayer = ((Game)o).getActivePlayer();
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
-                    } else if(wtu.equals("Winner")) {
+                    } else if(wtu.equals(WhatToUpdate.Winner)) {
                         this.onWinnerProclamation((Game)o);
                     } else {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());

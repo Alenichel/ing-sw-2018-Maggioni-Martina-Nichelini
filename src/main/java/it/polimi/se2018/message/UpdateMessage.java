@@ -2,16 +2,16 @@ package it.polimi.se2018.message;
 
 public class UpdateMessage extends Message {
 
-    private String whatToUpdate;
+    private WhatToUpdate whatToUpdate;
 
 
-    public UpdateMessage(String whatToUpdate){
+    public UpdateMessage(WhatToUpdate whatToUpdate){
         this.whatToUpdate = whatToUpdate;
         this.messageType = "UpdateMessage";
     }
 
 
-    public String getWhatToUpdate() {
+    public WhatToUpdate getWhatToUpdate() {
         return whatToUpdate;
     }
 

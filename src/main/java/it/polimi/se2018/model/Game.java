@@ -3,6 +3,7 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.message.WhatToUpdate;
 import it.polimi.se2018.utils.GameNames;
 
 
@@ -51,7 +52,7 @@ public class Game extends Observable implements Serializable {
     }
     public void setDiceOnTable(List<Dice> diceOnTable) {
         this.diceOnTable = (ArrayList<Dice>)diceOnTable;
-        UpdateMessage um = new UpdateMessage("DiceOnTable");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.DiceOnTable);
         um.setStringMessage("Some dice have been draft and added to the table");
         this.setChanged();
         this.notifyObservers(um);
@@ -68,7 +69,7 @@ public class Game extends Observable implements Serializable {
     public void setTimerSecondLeft(int second){
         this.timerSecondsLeft = second;
         this.setChanged();
-        UpdateMessage um = new UpdateMessage("TimeLeft");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.TimeLeft);
         um.setStringMessage(String.valueOf(timerSecondsLeft));
         this.notifyObservers(um);
     }
@@ -77,13 +78,13 @@ public class Game extends Observable implements Serializable {
         else {
             if (this.players.size() > 1) {
                 this.isStarted = started;
-                UpdateMessage um = new UpdateMessage("GameStarted");
+                UpdateMessage um = new UpdateMessage(WhatToUpdate.GameStarted);
                 um.setStringMessage("Game started");
                 this.setChanged();
                 this.notifyObservers(um);
             }
             else{
-                UpdateMessage um = new UpdateMessage("Timer");
+                UpdateMessage um = new UpdateMessage(WhatToUpdate.Timer);
                 um.setStringMessage("Timer done but not enough players connected");
                 this.setChanged();
                 this.notifyObservers(um);
@@ -92,28 +93,28 @@ public class Game extends Observable implements Serializable {
     }
     public void setInitializationComplete(boolean initializationComplete) {
         this.initiliazationComplete = initializationComplete;
-        UpdateMessage um = new UpdateMessage("InitializationStatus");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.InitializationStatus);
         um.setStringMessage("Initialization complete");
         this.setChanged();
         this.notifyObservers(um);
     }
     public void setActivePlayer(Player activePlayer) {
         this.activePlayer = activePlayer;
-        UpdateMessage um = new UpdateMessage("ActivePlayer");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.ActivePlayer);
         um.setStringMessage("This is the turn of player:" + activePlayer.getNickname());
         this.setChanged();
         this.notifyObservers(um);
     }
     public void setActualRound(int actualRound) {
         this.actualRound = actualRound;
-        UpdateMessage um = new UpdateMessage("NewRound");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.NewRound);
         um.setStringMessage("This is round number: " + this.actualRound);
         this.setChanged();
         this.notifyObservers(um);
     }
     public void setWinner(Player winner) {
         this.winner = winner;
-        UpdateMessage um = new UpdateMessage("Winner");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.Winner);
         this.setChanged();
         this.notifyObservers(um);
     }
@@ -165,7 +166,7 @@ public class Game extends Observable implements Serializable {
                 throw new GameException("GameIsFull");
             else {
                 this.players.add(player);
-                UpdateMessage um = new UpdateMessage("NewPlayer");
+                UpdateMessage um = new UpdateMessage(WhatToUpdate.NewPlayer);
                 um.setStringMessage(player.getNickname() + " has just joined the game");
                 this.setChanged();
                 this.notifyObservers(um);
@@ -174,7 +175,7 @@ public class Game extends Observable implements Serializable {
         }
         else if (player.getLastGameJoined().equals(this)){
             this.players.add(player);
-            UpdateMessage um = new UpdateMessage("NewPlayer");
+            UpdateMessage um = new UpdateMessage(WhatToUpdate.NewPlayer);
             um.setStringMessage(player.getNickname() + " rejoined the game");
             this.setChanged();
             this.notifyObservers(um);
@@ -186,7 +187,7 @@ public class Game extends Observable implements Serializable {
 
     public void removePlayer(Player player){
         this.players.remove(player);
-        UpdateMessage um = new UpdateMessage("PlayerDisconnection");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.PlayerDisconnection);
         if (this.players.size() > 1) um.setStringMessage(player.getNickname() + " left the game");
         else um.setStringMessage(player.getNickname() + " left the game. You are the only human player left.");
         this.setChanged();

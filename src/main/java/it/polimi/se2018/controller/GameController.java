@@ -156,18 +156,14 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
-        switch (message.getWhatToUpdate()){
+        WhatToUpdate wtu = message.getWhatToUpdate();
 
-            case "Pass":
+        if (wtu.equals(WhatToUpdate.Pass)){
                 if (!this.gameAssociated.isInitiliazationComplete()){
                     ControllerCallbackMessage ccm = new ControllerCallbackMessage("PatternCard has not been selected yet.", LoggerPriority.ERROR);
                     ((View)observable).controllerCallback(ccm);
-                    break;
                 }
-                this.roundHandler.update(observable, message);
-                break;
-
-            default: break;
+                else this.roundHandler.update(observable, message);
         }
     }
 

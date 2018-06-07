@@ -128,14 +128,9 @@ public class RoundHandler implements TimerInterface {
 
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
-        switch (message.getWhatToUpdate()){
+        WhatToUpdate wtu = message.getWhatToUpdate();
 
-            case "Pass":
-                this.nextTurn();
-                break;
-
-            default:  break;
-        }
+        if (wtu.equals(WhatToUpdate.Pass)) this.nextTurn();
     }
 
     private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {

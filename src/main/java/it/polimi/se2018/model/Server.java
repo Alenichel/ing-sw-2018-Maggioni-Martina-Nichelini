@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.message.WhatToUpdate;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
@@ -20,7 +21,7 @@ import java.util.List;
 import java.util.Observable;
 
 /**
- * Server class represents the server with all default params and list of active games and active players.
+ * RMIServer class represents the server with all default params and list of active games and active players.
  */
 public class Server extends Observable implements Serializable {
 
@@ -106,7 +107,7 @@ public class Server extends Observable implements Serializable {
     }
 
     /**
-     * Server port getter.
+     * RMIServer port getter.
      * @return server port.
      */
     public int getServerPort() {
@@ -148,7 +149,7 @@ public class Server extends Observable implements Serializable {
         this.onlinePlayers.remove(player);
         this.offlinePlayers.add(player);
 
-        UpdateMessage um = new UpdateMessage("PlayerStatus");
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.PlayerStatus);
         um.setStringMessage(player.toString() + " went offline");
         this.setChanged();
         this.notifyObservers(um);

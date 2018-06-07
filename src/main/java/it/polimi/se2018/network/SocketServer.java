@@ -19,8 +19,8 @@ public class SocketServer extends Thread {
             while (true) {
                 Socket socket = this.ssocket.accept();
                 System.out.println("[*] NOTIFICATION: new client connected");
-                VirtualViewNetworkBridge virtualClientThread;
-                virtualClientThread = new VirtualViewNetworkBridge(socket);
+                SocketServerImplementation virtualClientThread;
+                virtualClientThread = new SocketServerImplementation(socket);
                 virtualClientThread.start();
             }
         } catch (IOException e){

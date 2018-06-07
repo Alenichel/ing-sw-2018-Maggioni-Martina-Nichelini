@@ -30,7 +30,7 @@ public class SocketClient implements Observer {
 
     private View associatedView;
 
-    public SocketClient(String serverIP, int port, String nickname, String password ,View associatedView) {
+    public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) {
         try {
             this.associatedView = associatedView;
 
@@ -101,7 +101,7 @@ public class SocketClient implements Observer {
         @Override
         public void run() {
             try {
-                Message msg = new UpdateMessage("ciao");
+                Message msg = new UpdateMessage(WhatToUpdate.Pass);
                 while (msg.getMessageType() != "quit") {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
