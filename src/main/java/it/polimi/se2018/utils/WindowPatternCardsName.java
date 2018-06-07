@@ -21,7 +21,7 @@ public enum WindowPatternCardsName {
         gravitas,
         luxAstram,
         luxMundi,
-        luzCelestial,
+        luxCelestial,
         ripplesOfLight,
         sunsGlory,
         waterOfLife
