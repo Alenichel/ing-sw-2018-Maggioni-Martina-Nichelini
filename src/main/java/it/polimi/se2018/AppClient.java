@@ -63,7 +63,7 @@ public class AppClient extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        GuiView gw = new GuiView();
-        gw.setupLoginView(primaryStage);
+        GuiView gw = new GuiView(primaryStage);
+        gw.setupLoginView();
     }
 }
