@@ -32,20 +32,18 @@ import java.util.ResourceBundle;
 public class WaitingAreaController implements Serializable {
 
     @FXML private ListView<?> onlinePlayers;
-
     @FXML private Text gameName;
-
     @FXML private Label waitingTimer;
-
     @FXML private Label nOfPlayers;
-
     @FXML private AnchorPane gameView;
+    @FXML private Label player1;
+    @FXML private Label player2;
+    @FXML private Label player3;
+    @FXML private Label player4;
+
 
     private Scene scene;
 
-    @FXML
-    private void initialize() {
-    }
 
     protected void setupWaitingAreaController(Stage primaryStage){
         scene = primaryStage.getScene();
@@ -66,15 +64,17 @@ public class WaitingAreaController implements Serializable {
 
     public void printOnlinePlayers(List<Player> players){
         ArrayList<Label> panes = new ArrayList<Label>();
-        panes.add((Label)scene.lookup("#player1"));
-        panes.add((Label)scene.lookup("#player2"));
-        panes.add((Label)scene.lookup("#player3"));
-        panes.add((Label)scene.lookup("#player4"));
+
+        panes.add(player1);
+        panes.add(player2);
+        panes.add(player3);
+        panes.add(player4);
         Label appoLabel;
+
         int n = 0;
+
         for(Player p : players){
-            appoLabel = panes.get(n);
-            appoLabel.setText(p.getNickname());
+            panes.get(n).setText(p.getNickname());
             n++;
         }
         for(int i = n; i < 4; i++){

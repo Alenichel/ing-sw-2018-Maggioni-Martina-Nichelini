@@ -33,7 +33,7 @@ public class LoginController {
         String logInUsernme = username.getText();
         String logInPassword = password.getText();
 
-        GuiView gw = new GuiView((Stage)button.getScene().getWindow());
+        GuiView gw = new GuiView();
 
         if (!(Server.getInstance().isConfigurationRequired())) {
             logInPassword = null;
@@ -42,6 +42,6 @@ public class LoginController {
         gw.addObserver(sc);
 
 
-        gw.run();
+        gw.run((Stage)button.getScene().getWindow());
     }
 }
