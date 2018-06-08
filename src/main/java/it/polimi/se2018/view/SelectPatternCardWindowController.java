@@ -19,7 +19,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 public class SelectPatternCardWindowController {
-    
+
     protected void printPool(Stage primaryStage, Player player){
         Scene scene = primaryStage.getScene();
         ArrayList<ImageView> imageViews = new ArrayList<>();
