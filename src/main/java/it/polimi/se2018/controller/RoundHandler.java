@@ -37,7 +37,7 @@ public class RoundHandler implements TimerInterface {
         this.actualRound = this.gameAssociated.getActualRound();
         this.gameController = gameAssociated.getAssociatedGameController();
 
-        if (this.actualRound == 2){
+        if (this.actualRound == Server.getInstance().getnOfTurn()){
             this.gameController.onGameEnd();
         }
 
@@ -117,8 +117,6 @@ public class RoundHandler implements TimerInterface {
 
             this.activePlayer = turnList.get(this.turnNumber);
             this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
-
-            //this.gameAssociated.setActivePlayer(this.activePlayer);
 
             //case if players is offline
             if (!this.gameAssociated.getPlayers().contains(this.activePlayer)){

@@ -29,6 +29,7 @@ public class Server extends Observable implements Serializable {
     private int defaultMatchmakingTimer;
     private int defaultMoveTimer;
     private boolean configurationRequired;
+    private int nOfTurn;
 
     private static final String HOME_PATH = System.getProperty("user.home");
     private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
@@ -84,6 +85,7 @@ public class Server extends Observable implements Serializable {
                 this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakingTimer").item(0).getTextContent());
                 this.defaultMoveTimer = Integer.parseInt(doc.getElementsByTagName("defaultMoveTimer").item(0).getTextContent());
                 this.configurationRequired = Boolean.parseBoolean(doc.getElementsByTagName("requirePassword").item(0).getTextContent());
+                this.nOfTurn = Integer.parseInt(doc.getElementsByTagName("numberOfTurn").item(0).getTextContent());;
         }
 
     /**
@@ -116,6 +118,10 @@ public class Server extends Observable implements Serializable {
 
     public Game getCurrentGame() {
         return currentGame;
+    }
+
+    public int getnOfTurn() {
+        return nOfTurn;
     }
 
     /**
