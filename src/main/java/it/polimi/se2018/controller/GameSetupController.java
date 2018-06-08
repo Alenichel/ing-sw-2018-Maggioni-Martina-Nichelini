@@ -143,7 +143,6 @@ public class GameSetupController implements Serializable {
         if (p.getActivePatternCard() == null) {
             p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
             p.setWindowPatternCardsPool(null);
-            p.setNumberOfFavorTokens(p.getActivePatternCard().getNumberOfFavorTokens());
             p.getActivePatternCard().setPlayer(p);
 
             selectedPatterCards++;

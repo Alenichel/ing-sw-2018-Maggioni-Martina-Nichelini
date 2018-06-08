@@ -5,16 +5,15 @@ import java.util.*;
 
 public class Player extends Observable implements Serializable{
     private String nickname;
-    private Date firstSeen;
     private Boolean online;
     private Boolean inGame;
     private Game lastGameJoined;
     private int playerNumber;
     private WindowPatternCard activePatternCard;
     private PrivateObjectiveCard privateObjectiveCard;
-    private int numberOfFavorTokens;
     private ArrayList<WindowPatternCard> windowPatternCardsPool;
     private int score;
+    private HashMap<String, Integer> scores = new HashMap<>();
 
     public Player(String nickname) {
         this.nickname = nickname;
@@ -29,7 +28,6 @@ public class Player extends Observable implements Serializable{
     }
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
-        this.numberOfFavorTokens = windowPatternCard.getNumberOfFavorTokens();
     }
     public void setPlayerNumber(int number){
         this.playerNumber = number;
@@ -44,9 +42,6 @@ public class Player extends Observable implements Serializable{
     public void assignObjectiveCard(PrivateObjectiveCard card){
         if (!inGame ) throw  new IllegalArgumentException();
         else privateObjectiveCard = card;
-    }
-    public void setNumberOfFavorTokens(int numberOfFavorTokens) {
-        this.numberOfFavorTokens = numberOfFavorTokens;
     }
     public void setWindowPatternCardsPool(List<WindowPatternCard> windowPatternCardsPool) {
         this.windowPatternCardsPool = (ArrayList<WindowPatternCard>) windowPatternCardsPool;
@@ -76,14 +71,15 @@ public class Player extends Observable implements Serializable{
     public int getPlayerNumber(){
         return this.playerNumber;
     }
-    public int getNumberOfFavorTokens() {
-        return numberOfFavorTokens;
-    }
+
     public List<WindowPatternCard> getWindowPatternCardsPool() {
         return windowPatternCardsPool;
     }
     public int getScore() {
         return score;
+    }
+    public HashMap<String, Integer> getScores() {
+        return scores;
     }
 
     @Override
@@ -98,7 +94,6 @@ public class Player extends Observable implements Serializable{
         Player player = (Player) o;
         return playerNumber == player.playerNumber &&
                 Objects.equals(nickname, player.nickname) &&
-                Objects.equals(firstSeen, player.firstSeen) &&
                 Objects.equals(online, player.online) &&
                 Objects.equals(inGame, player.inGame) &&
                 Objects.equals(lastGameJoined, player.lastGameJoined) &&
@@ -109,6 +104,6 @@ public class Player extends Observable implements Serializable{
     @Override
     public int hashCode() {
 
-        return Objects.hash(nickname, firstSeen, online, inGame, lastGameJoined, playerNumber,  activePatternCard, privateObjectiveCard);
+        return Objects.hash(nickname, online, inGame, lastGameJoined, playerNumber,  activePatternCard, privateObjectiveCard);
     }
 }

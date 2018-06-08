@@ -2,7 +2,7 @@ package it.polimi.se2018.utils;
 
 import it.polimi.se2018.controller.GameController;
 
-public class Timer extends Thread{
+public class Timer extends Thread {
 
     private long duration;
     private TimerInterface timerInterface;
@@ -12,11 +12,10 @@ public class Timer extends Thread{
         this.timerInterface = timerInterface;
     }
 
-
     @Override
     public void run() {
         try {
-            Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer started");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Timer[n"+ this.getId() + "]started");
             long slept = 0;
             while (slept < duration*1000){
                 sleep(1000);
@@ -26,11 +25,11 @@ public class Timer extends Thread{
             }
 
         }catch (InterruptedException e){
-            Logger.WARNING(LoggerType.SERVER_SIDE, "Timer interrupted");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"Timer[n" + this.getId() + "]interrupted");
             Thread.currentThread().interrupt();
             return;
         }
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE,"Timer done");
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION,"Timer[n"+ this.getId() + "]done");
         timerInterface.timerDoneAction();
     }
 }

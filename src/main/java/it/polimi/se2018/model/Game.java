@@ -26,6 +26,8 @@ public class Game extends Observable implements Serializable {
     private Player activePlayer = null;
     private int timerSecondsLeft;
 
+    private HashMap scores = new HashMap<Player, Integer>();
+
     private GameController associatedGameController;
 
     private GameNames name;
@@ -115,6 +117,7 @@ public class Game extends Observable implements Serializable {
     }
     public void setWinner(Player winner) {
         this.winner = winner;
+
         UpdateMessage um = new UpdateMessage(WhatToUpdate.Winner);
         this.setChanged();
         this.notifyObservers(um);
@@ -155,6 +158,9 @@ public class Game extends Observable implements Serializable {
     }
     public List<Player> getPlayersOrder() {
         return playersOrder;
+    }
+    public HashMap getScores() {
+        return scores;
     }
 
     public Player getActivePlayer() {
