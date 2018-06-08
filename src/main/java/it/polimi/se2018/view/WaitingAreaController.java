@@ -8,12 +8,18 @@ import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.BorderRepeat;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,13 +29,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static it.polimi.se2018.view.LoginController.pstage;
-
 public class WaitingAreaController implements Serializable {
 
     @FXML private ListView<?> onlinePlayers;
 
-    @FXML private Label gameName;
+    @FXML private Text gameName;
 
     @FXML private Label waitingTimer;
 
@@ -37,45 +41,47 @@ public class WaitingAreaController implements Serializable {
 
     @FXML private AnchorPane gameView;
 
+    private Scene scene;
+
     @FXML
     private void initialize() {
-        gameName.setText("pippo");
     }
 
-    protected void setupWaitingAreaController(){
-
-        Platform.runLater(
-                ()-> {
-                    try {
-                        URL url = new File("src/main/resources/WaitingArea.fxml").toURL();
-                        FXMLLoader loader = new FXMLLoader();
-                        loader.setLocation(url);
-                        gameView = loader.load();
-                        pstage.setScene(new Scene(gameView));
-                        pstage.setTitle("Waiting area");
-                        pstage.show();
-                    }catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                });
+    protected void setupWaitingAreaController(Stage primaryStage){
+        scene = primaryStage.getScene();
     }
 
 
-    protected void printPlayers(List<Player> players){
-        nOfPlayers.setText((Integer.toString(players.size())));
+    public void printGameName( GameNames name ){
+            gameName.setText(name.toString());
     }
 
-    protected void printGameName(GameNames name){
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                gameName.setText(name.toString());
-            }
-        });
+    public void printPlayerCount( int n ){
+        nOfPlayers.setText(Integer.toString(n));
     }
 
-    @FXML
-    protected void printTimer(int timer){
-        waitingTimer.setText(Integer.toString(timer));
+    public void printTimer( int n ){
+        waitingTimer.setText(Integer.toString(n));
     }
+
+    public void printOnlinePlayers(List<Player> players){
+        ArrayList<Label> panes = new ArrayList<Label>();
+        panes.add((Label)scene.lookup("#player1"));
+        panes.add((Label)scene.lookup("#player2"));
+        panes.add((Label)scene.lookup("#player3"));
+        panes.add((Label)scene.lookup("#player4"));
+        Label appoLabel;
+        int n = 0;
+        for(Player p : players){
+            appoLabel = panes.get(n);
+            appoLabel.setText(p.getNickname());
+            n++;
+        }
+        for(int i = n; i < 4; i++){
+            appoLabel = panes.get(i);
+            appoLabel.setText("Not already connected");
+        }
+    }
+
 }
+
