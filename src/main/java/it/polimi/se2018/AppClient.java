@@ -7,9 +7,12 @@ import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.view.CliView;
-import it.polimi.se2018.view.GuiView;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.util.Scanner;
 
 public class AppClient extends Application{
@@ -63,7 +66,12 @@ public class AppClient extends Application{
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        GuiView gw = new GuiView(primaryStage);
-        gw.setupLoginView();
+        Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
+
+        primaryStage.setTitle("Welcome!");
+        Scene sceneLogin = new Scene(root, 620, 300);
+
+        primaryStage.setScene(sceneLogin);
+        primaryStage.show();
     }
 }
