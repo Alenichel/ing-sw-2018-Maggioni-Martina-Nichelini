@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.WindowPatternCard;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -9,13 +10,17 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+import javax.imageio.ImageIO;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class SelectPatternCardWindowController {
 
-
-    protected void setupWaitingAreaController(Stage primaryStage, Player player){
+    protected void printPool(Stage primaryStage, Player player){
         Scene scene = primaryStage.getScene();
         ArrayList<ImageView> imageViews = new ArrayList<>();
         imageViews.add((ImageView) scene.lookup("#window1"));
@@ -26,8 +31,12 @@ public class SelectPatternCardWindowController {
         ArrayList<Image> images = new ArrayList<>();
 
         ArrayList<WindowPatternCard> pool = (ArrayList<WindowPatternCard>) player.getWindowPatternCardsPool();
+
         for(WindowPatternCard w : pool){
-            images.add(new Image(getClass().getResource(w.getName()).toString()+".png", true));
+            String url = "/windowPatternCardImage/"+w.getName().toString()+".png";
+            //System.out.println("url: " + url);
+            Image image = new Image(url);
+            images.add(image);
         }
         int i = 0;
         for(ImageView imageView : imageViews){
@@ -35,5 +44,7 @@ public class SelectPatternCardWindowController {
             i++;
         }
     }
+
+
 
 }

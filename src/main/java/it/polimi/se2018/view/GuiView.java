@@ -27,48 +27,62 @@ import java.util.Observer;
 
 public class GuiView extends View implements Observer {
     private WaitingAreaController waitingAreaController;
-    private SelectPatternCardWindowController selectPatternCardWindowController = new SelectPatternCardWindowController();
+    private SelectPatternCardWindowController selectPatternCardWindowController;
     private Stage primaryStage;
-    private Player activePlayer;
-    private Scene scene;
+    private Scene sceneWaintingRoom;
+    private Scene scenePatternCard;
+    private Scene sceneLogin;
 
-    public GuiView(Stage primaryStage){
+    public GuiView(){
+
+    }
+
+    public void run(Stage primaryStage) {
         this.primaryStage = primaryStage;
+
+        setupSelectPatternCard();
+        setupWaintingArea();
+        printWaintingArea();
     }
 
-    public void run() {
-        Platform.runLater(
-            ()->{
-                Parent root;
-                FXMLLoader loader= new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
-                try {
-                    //root = FXMLLoader.load(getClass().getResource("/SelectPatternCardWindow.fxml"));
+    public void setupWaintingArea(){
+        //Parent root;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
+        try {
+            Parent root = loader.load();
+            primaryStage.setTitle("Wainting area");
+            sceneWaintingRoom = new Scene(root);
 
-                    root = loader.load();
-                    primaryStage.setTitle("Select your pattern card!");
-                    scene = new Scene(root);
-                    primaryStage.setScene(scene);
-                    primaryStage.show();
-                    waitingAreaController = loader.getController();
-                }catch (IOException e){ e.printStackTrace(); }
-            }
-        );
+            waitingAreaController = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void setupLoginView(){
-        Platform.runLater(new Runnable() {
-              @Override
-              public void run() {
-                  try {
-                      Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
 
-                      primaryStage.setTitle("Welcome!");
-                      primaryStage.setScene(new Scene(root, 620, 300));
-                      primaryStage.show();
+    public void setupSelectPatternCard(){
+        Parent root;
+        FXMLLoader loader= new FXMLLoader(getClass().getResource("/SelectPatternCardWindow.fxml"));
+        try {
+            root = loader.load();
 
-                  }catch (IOException e){e.printStackTrace();}
-              }
-          });
+            primaryStage.setTitle("Select your pattern card!");
+            scenePatternCard = new Scene(root);
+            selectPatternCardWindowController = loader.getController();
+        }catch (IOException e){e.printStackTrace();}
+
+    }
+
+    public void printWaintingArea(){
+        primaryStage.setScene(sceneWaintingRoom);
+        primaryStage.show();
+    }
+
+
+    public void printSelectPatternCard(){
+        primaryStage.setScene(scenePatternCard);
+        primaryStage.show();
     }
 
     @Override
@@ -79,27 +93,31 @@ public class GuiView extends View implements Observer {
     @Override
     public void update(Observable o, Object message) {
 
+        if(o instanceof Game){
+            for(Player p : ((Game) o).getPlayers())
+                if(p.getNickname().equals(client.getNickname()))
+                    client = p;
+        }
+
         switch(((Message)message).getMessageType()){
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)message).getWhatToUpdate();
                 Platform.runLater(
-                        ()-> {
-                            if (wtu.equals(WhatToUpdate.NewPlayer)) {
-                                waitingAreaController.printGameName(((Game) o).getName());
-                                waitingAreaController.printPlayerCount(((Game)o).getPlayers().size());
-                                //waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
-                                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
-                            }
-                            if (wtu.equals(WhatToUpdate.TimeLeft)){
-                                waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
-                            }
-                            /*if (wtu.equals("GameStarted")){
-                                selectPatternCardWindowController.setupWaitingAreaController(primaryStage, activePlayer);
-                            }
-                            if(wtu.equals("ActivePlayer")){
-                                this.activePlayer = ((Game)o).getActivePlayer();
-                            }*/
-                        });
+                    ()-> {
+                if (wtu.equals(WhatToUpdate.NewPlayer)) {
+                    waitingAreaController.printGameName(((Game) o).getName());
+                    waitingAreaController.printPlayerCount(((Game)o).getPlayers().size());
+                    waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
+                }
+                if (wtu.equals(WhatToUpdate.TimeLeft)){
+                    waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
+                }
+                if (wtu.equals(WhatToUpdate.GameStarted)){
+                    printSelectPatternCard();
+                    selectPatternCardWindowController.printPool(primaryStage, getClient());
+                }
+            });
                 break;
             default: break;
         }
