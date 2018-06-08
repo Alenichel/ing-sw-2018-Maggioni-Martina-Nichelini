@@ -25,13 +25,7 @@ import java.util.Observable;
 public class RMIServerImplementation extends UnicastRemoteObject implements
 		ServerInterface {
 
-    //private Player player;
-   // private  VirtualView associatedVirtualView;
-
-	//private ArrayList<ClientInterface> clients = new ArrayList<>();
-
 	private HashMap clients = new HashMap<String, Pair<ClientInterface, View>>();
-
 	protected RMIServerImplementation() throws RemoteException {
 		super(0);		
 	}
@@ -53,8 +47,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         clients.put(client.getInsertedNickname(), clientView);
         vv.mySetChanged();
         vv.notifyObservers(new ConnectionMessage(player, true));
-        //clients.add(client);
-        //this.associatedVirtualView = new VirtualView(this, this.player);
     }
 
 	@Override
@@ -63,7 +55,6 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
 	        Pair pair = (Pair)clients.get(callbackMessage.getSignedBy());
             ClientInterface client = (ClientInterface) pair.getKey();
             client.notify(callbackMessage);
-	        //clients.get(0).notify(callbackMessage); (client, vv);
         } catch ( Exception e) {
             e.printStackTrace();
         }
@@ -76,8 +67,17 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
             Pair pair = ((Pair)clients.get(((Message)msg).getSignedBy()));
             ClientInterface client = (ClientInterface) pair.getKey();
             client.notify(suc);
-        } catch (Exception e) {
-        e.printStackTrace();
+        } catch (ConnectException e) {
+            String pName = ((Message)msg).getSignedBy();
+            Pair pair = (Pair)clients.get(pName);
+            VirtualView vv = (VirtualView) pair.getValue();
+            Player p = vv.getClient();
+            vv.mySetChanged();
+            vv.notifyObservers(new ConnectionMessage(p, false));
+            clients.remove(pName);
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, ":RMIServer -> Player: " + pName +" || The RMI connection seems to have died");
+        } catch (RemoteException e){
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
         }
 	}
 

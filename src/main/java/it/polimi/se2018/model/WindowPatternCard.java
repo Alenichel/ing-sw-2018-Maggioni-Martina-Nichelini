@@ -42,6 +42,7 @@ public class WindowPatternCard extends Card implements Serializable {
         try {
             loadConfiguration();
         } catch (FileNotFoundException e) {
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
             System.exit(1);
         } catch (IOException | SAXException | ParserConfigurationException e) {
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));

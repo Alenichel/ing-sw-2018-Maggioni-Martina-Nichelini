@@ -98,6 +98,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     private void launchGame(){
         try {
+            this.gameAssociated.setPlayersOrder(this.gameAssociated.getPlayers());
             this.gameSetupController.initialize();
             this.gameAssociated.setStarted(true);
 
@@ -180,7 +181,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
             }
         }
         else {
-                this.disconnectPlayer(message.getRequester());
+            observable.deleteObserver(this);
+            this.gameAssociated.deleteObserver((Observer)observable);
+            this.disconnectPlayer(message.getRequester());
         }
     }
 

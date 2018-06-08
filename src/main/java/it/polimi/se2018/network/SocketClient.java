@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.model.Player;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
@@ -24,7 +25,7 @@ public class SocketClient implements Observer {
     private Socket socket;
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
-    private boolean clientConnected;
+    private boolean keepAlive;
     BlockingQueue queue = new SynchronousQueue();
 
 
@@ -32,6 +33,7 @@ public class SocketClient implements Observer {
 
     public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) {
         try {
+            this.keepAlive = true;
             this.associatedView = associatedView;
 
             socket = new Socket(serverIP, port);
@@ -69,7 +71,7 @@ public class SocketClient implements Observer {
         @Override
         public void run(){
             Object in = null;
-            while (!socket.isClosed()){
+            while (!socket.isClosed() && keepAlive){
                 try {
                     in = ois.readObject();
                 } catch (EOFException e){
@@ -102,7 +104,7 @@ public class SocketClient implements Observer {
         public void run() {
             try {
                 Message msg = new UpdateMessage(WhatToUpdate.Pass);
-                while (msg.getMessageType() != "quit") {
+                while (keepAlive) {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
                     oos.flush();
@@ -113,7 +115,6 @@ public class SocketClient implements Observer {
             }
         }
     }
-
 
     /**
      * This method implements Observer interface and simply take updating params and sends it trough the network.

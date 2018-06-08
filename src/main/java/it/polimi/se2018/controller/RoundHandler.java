@@ -85,7 +85,7 @@ public class RoundHandler implements TimerInterface {
      * @return List of swaped players.
      */
     private List<Player> swapPlayerList(){
-        List<Player> players = this.gameAssociated.getPlayers();
+        List<Player> players = this.gameAssociated.getPlayersOrder();
         int swap = (gameAssociated.getActualRound()-1) % players.size();
 
         List<Player> toReturn = new ArrayList<>();
@@ -114,12 +114,25 @@ public class RoundHandler implements TimerInterface {
         try {
             this.turnNumber++;
             this.moved = false;
-            this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
+
             this.activePlayer = turnList.get(this.turnNumber);
+            this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
+
+            //this.gameAssociated.setActivePlayer(this.activePlayer);
+
+            //case if players is offline
+            if (!this.gameAssociated.getPlayers().contains(this.activePlayer)){
+                this.nextTurn();
+                return;
+            }
+
             this.workingPatternCard = this.activePlayer.getActivePatternCard();
+
+            //Still active timer handling
             if (TimerHandler.checkTimer(timerID)) TimerHandler.stopTimer(this.timerID);
             this.timerID = TimerHandler.registerTimer(this, moveTimer);
             TimerHandler.startTimer(this.timerID);
+
         } catch (IndexOutOfBoundsException e){
             this.gameController.onNextRound();
             TimerHandler.stopTimer(this.timerID);

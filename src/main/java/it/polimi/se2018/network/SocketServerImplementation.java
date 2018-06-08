@@ -61,13 +61,11 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         if (this.player != null){
             //once the player is authenticated, I put him in the setupping game.
             this.associatedVirtualView = new VirtualView(this, this.player);
-
             associatedVirtualView.mySetChanged();
             associatedVirtualView.notifyObservers(new ConnectionMessage(this.player, true));
 
             //sending back the instance of the player
             try {
-
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException /*| InterruptedException*/ e){
                 Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
@@ -121,7 +119,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                     msg = (Message) queue.take();
                     try { oos.writeObject(msg);}
                     catch (ConcurrentModificationException e) {
-                        Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+                        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,  e.toString());
                         sleep(100);
                         oos.writeObject(msg);
                     }

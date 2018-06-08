@@ -17,6 +17,7 @@ public class Game extends Observable implements Serializable {
     private ArrayList<PublicObjectiveCard> objectiveCards = new ArrayList<>();
     private ArrayList<ToolCard> toolCards = new ArrayList<>();
     private List<Player> players = new ArrayList<>();
+    private List<Player> playersOrder = new ArrayList<>();
 
     private RoundTrack roundTrack;
     private boolean isStarted;
@@ -118,6 +119,9 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+    public void setPlayersOrder(List<Player> playersOrder) {
+        this.playersOrder = playersOrder;
+    }
 
     public List<Dice> getDiceBag() {
         return diceBag;
@@ -149,6 +153,10 @@ public class Game extends Observable implements Serializable {
     public List<Player> getPlayers() {
         return players;
     }
+    public List<Player> getPlayersOrder() {
+        return playersOrder;
+    }
+
     public Player getActivePlayer() {
         return activePlayer;
     }
@@ -184,7 +192,6 @@ public class Game extends Observable implements Serializable {
             throw new GameException("AlreadyStartedGame");
         }
     }
-
     public void removePlayer(Player player){
         this.players.remove(player);
         UpdateMessage um = new UpdateMessage(WhatToUpdate.PlayerDisconnection);
