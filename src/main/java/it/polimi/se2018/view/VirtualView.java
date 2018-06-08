@@ -24,11 +24,6 @@ public class VirtualView extends View implements Observer {
         this.setChanged();
     }
 
-    public ServerInterface getVirtualClient() {
-        return virtualClient;
-    }
-
-    //Da CONTROLLER a VIEW -> deve passare per la rete
     public void controllerCallback(Message callbackMessage) {
         try {
             callbackMessage.setSignedBy(this.client.getNickname());
@@ -38,7 +33,6 @@ public class VirtualView extends View implements Observer {
         }
     }
 
-    //Da MODEL a VIEW -> deve passare per la rete
     public void update(Observable o, Object msg) {
         try {
             ((Message)msg).setSignedBy(this.client.getNickname());
@@ -46,6 +40,5 @@ public class VirtualView extends View implements Observer {
         } catch (Exception e) {
             System.out.println(e);
         }
-
     }
 }

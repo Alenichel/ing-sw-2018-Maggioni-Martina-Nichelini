@@ -110,7 +110,6 @@ public class CliView extends View implements Observer {
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Goodbye");
                     break loop;
 
                 default:
