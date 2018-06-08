@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.SelectPatternCardWindowController">
+   <children>
+      <ImageView fx:id="window1" fitHeight="182.0" fitWidth="267.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" />
+      <ImageView fx:id="window2" fitHeight="182.0" fitWidth="267.0" layoutX="14.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" />
+      <ImageView fx:id="window3" fitHeight="182.0" fitWidth="267.0" layoutX="293.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" />
+      <ImageView fx:id="window4" fitHeight="182.0" fitWidth="267.0" layoutX="293.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" />
+   </children>
+</AnchorPane>
