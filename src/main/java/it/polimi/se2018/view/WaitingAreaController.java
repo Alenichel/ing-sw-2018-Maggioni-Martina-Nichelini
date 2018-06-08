@@ -29,17 +29,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class WaitingAreaController implements Serializable {
+public class WaitingAreaController implements Serializable{
 
-    @FXML private ListView<?> onlinePlayers;
-    @FXML private Text gameName;
-    @FXML private Label waitingTimer;
-    @FXML private Label nOfPlayers;
-    @FXML private AnchorPane gameView;
-    @FXML private Label player1;
-    @FXML private Label player2;
-    @FXML private Label player3;
-    @FXML private Label player4;
+    @FXML private transient ListView<?> onlinePlayers;
+    @FXML private transient Text gameName;
+    @FXML private transient Label waitingTimer;
+    @FXML private transient Label nOfPlayers;
+    @FXML private transient AnchorPane gameView;
+    @FXML private transient Label player1;
+    @FXML private transient Label player2;
+    @FXML private transient Label player3;
+    @FXML private transient Label player4;
 
 
     private Scene scene;

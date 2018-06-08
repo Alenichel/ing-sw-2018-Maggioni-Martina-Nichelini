@@ -1,9 +1,6 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.message.Message;
-import it.polimi.se2018.message.RequestMessage;
-import it.polimi.se2018.message.UpdateMessage;
-import it.polimi.se2018.message.WhatToUpdate;
+import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.utils.GameNames;
@@ -28,10 +25,13 @@ import java.util.Observer;
 public class GuiView extends View implements Observer {
     private WaitingAreaController waitingAreaController;
     private SelectPatternCardWindowController selectPatternCardWindowController;
-    private Stage primaryStage;
-    private Scene sceneWaintingRoom;
-    private Scene scenePatternCard;
-    private Scene sceneLogin;
+    private GameWindowController gameWindowController;
+
+    private transient Stage primaryStage;
+    private transient Scene sceneWaintingRoom;
+    private transient Scene scenePatternCard;
+    //private transient Scene sceneLogin;
+    private transient Scene sceneGame;
 
     public GuiView(){
 
@@ -57,7 +57,19 @@ public class GuiView extends View implements Observer {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void setupGameWindow(){
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameWindow.fxml"));
+        try {
+            Parent root = loader.load();
+            primaryStage.setTitle("Game Window");
+            sceneGame = new Scene(root);
+
+            gameWindowController = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -85,10 +97,20 @@ public class GuiView extends View implements Observer {
         primaryStage.show();
     }
 
+    public void printGameWindow(){
+        primaryStage.setScene(sceneGame);
+        primaryStage.show();
+    }
+
     @Override
     public void controllerCallback(Message msg){
     }
 
+    protected void selectedPatternCard(int n){
+        SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
+        this.setChanged();
+        this.notifyObservers(sm);
+    }
 
     @Override
     public void update(Observable o, Object message) {
@@ -104,21 +126,25 @@ public class GuiView extends View implements Observer {
                 WhatToUpdate wtu = ((UpdateMessage)message).getWhatToUpdate();
                 Platform.runLater(
                     ()-> {
-                if (wtu.equals(WhatToUpdate.NewPlayer)) {
-                    waitingAreaController.printGameName(((Game) o).getName());
-                    waitingAreaController.printPlayerCount(((Game)o).getPlayers().size());
-                    waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
-                }
-                if (wtu.equals(WhatToUpdate.TimeLeft)){
-                    waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
-                }
-                if (wtu.equals(WhatToUpdate.GameStarted)){
-                    printSelectPatternCard();
-                    selectPatternCardWindowController.printPool(primaryStage, getClient());
-                }
-            });
-                break;
+                        if (wtu.equals(WhatToUpdate.NewPlayer)) {
+                            waitingAreaController.printGameName(((Game) o).getName());
+                            waitingAreaController.printPlayerCount(((Game)o).getPlayers().size());
+                            waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
+                            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
+                        }
+                        if (wtu.equals(WhatToUpdate.TimeLeft)){
+                            waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
+                        }
+                        if (wtu.equals(WhatToUpdate.GameStarted)){
+                            printSelectPatternCard();
+                            selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
+                        }
+                        if(wtu.equals(WhatToUpdate.ActivePlayer)){
+                            printGameWindow();
+                        }
+                    }
+                );
+            break;
             default: break;
         }
     }

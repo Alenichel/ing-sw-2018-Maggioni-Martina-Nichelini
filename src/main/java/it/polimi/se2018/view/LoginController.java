@@ -9,15 +9,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+import java.io.Serializable;
 import java.util.ResourceBundle;
 
-public class LoginController {
+public class LoginController implements Serializable{
 
-    @FXML private Button button;
+    @FXML private transient Button button;
 
-    @FXML private TextField username;
+    @FXML private transient TextField username;
 
-    @FXML private TextField password;
+    @FXML private transient TextField password;
 
 
 
