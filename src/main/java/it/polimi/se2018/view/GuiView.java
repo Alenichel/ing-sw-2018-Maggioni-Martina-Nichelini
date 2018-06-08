@@ -3,7 +3,9 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.RequestMessage;
 import it.polimi.se2018.message.UpdateMessage;
+import it.polimi.se2018.message.WhatToUpdate;
 import it.polimi.se2018.model.Game;
+import it.polimi.se2018.model.Player;
 import it.polimi.se2018.utils.GameNames;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
@@ -23,20 +25,37 @@ import java.net.URL;
 import java.util.Observable;
 import java.util.Observer;
 
-import static it.polimi.se2018.view.LoginController.pstage;
-
 public class GuiView extends View implements Observer {
-    private WaitingAreaController waitingAreaController = new WaitingAreaController();
+    private WaitingAreaController waitingAreaController;
+    private SelectPatternCardWindowController selectPatternCardWindowController = new SelectPatternCardWindowController();
+    private Stage primaryStage;
+    private Player activePlayer;
+    private Scene scene;
+
+    public GuiView(Stage primaryStage){
+        this.primaryStage = primaryStage;
+    }
 
     public void run() {
         Platform.runLater(
-                ()->{
-                    waitingAreaController.setupWaitingAreaController();
-                }
+            ()->{
+                Parent root;
+                FXMLLoader loader= new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
+                try {
+                    //root = FXMLLoader.load(getClass().getResource("/SelectPatternCardWindow.fxml"));
+
+                    root = loader.load();
+                    primaryStage.setTitle("Select your pattern card!");
+                    scene = new Scene(root);
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                    waitingAreaController = loader.getController();
+                }catch (IOException e){ e.printStackTrace(); }
+            }
         );
     }
 
-    public void setupLoginView(Stage primaryStage){
+    public void setupLoginView(){
         Platform.runLater(new Runnable() {
               @Override
               public void run() {
@@ -62,18 +81,25 @@ public class GuiView extends View implements Observer {
 
         switch(((Message)message).getMessageType()){
             case "UpdateMessage":
-                String wtu = ((UpdateMessage)message).getWhatToUpdate();
-
-                if(wtu.equals("NewPlayer")){
-                    Platform.runLater(new Runnable() {
-                        @Override
-                        public void run() {
-                            waitingAreaController.printGameName(((Game)o).getName());
-                            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
-                        }
-                    });
-                }
-
+                WhatToUpdate wtu = ((UpdateMessage)message).getWhatToUpdate();
+                Platform.runLater(
+                        ()-> {
+                            if (wtu.equals(WhatToUpdate.NewPlayer)) {
+                                waitingAreaController.printGameName(((Game) o).getName());
+                                waitingAreaController.printPlayerCount(((Game)o).getPlayers().size());
+                                //waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
+                                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
+                            }
+                            if (wtu.equals(WhatToUpdate.TimeLeft)){
+                                waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
+                            }
+                            /*if (wtu.equals("GameStarted")){
+                                selectPatternCardWindowController.setupWaitingAreaController(primaryStage, activePlayer);
+                            }
+                            if(wtu.equals("ActivePlayer")){
+                                this.activePlayer = ((Game)o).getActivePlayer();
+                            }*/
+                        });
                 break;
             default: break;
         }

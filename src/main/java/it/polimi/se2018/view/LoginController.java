@@ -15,14 +15,11 @@ public class LoginController {
 
     @FXML private Button button;
 
-    @FXML private AnchorPane container;
-
     @FXML private TextField username;
 
     @FXML private TextField password;
 
-    @FXML private TextField whatsappend;
-    static Stage pstage;
+
 
     @FXML
     private void initialize() {
@@ -36,9 +33,7 @@ public class LoginController {
         String logInUsernme = username.getText();
         String logInPassword = password.getText();
 
-        GuiView gw = new GuiView();
-
-
+        GuiView gw = new GuiView((Stage)button.getScene().getWindow());
 
         if (!(Server.getInstance().isConfigurationRequired())) {
             logInPassword = null;
@@ -46,7 +41,6 @@ public class LoginController {
         SocketClient sc = new SocketClient("localhost", 9091, logInUsernme, logInPassword, gw);
         gw.addObserver(sc);
 
-        pstage = (Stage)button.getScene().getWindow();
 
         gw.run();
     }
