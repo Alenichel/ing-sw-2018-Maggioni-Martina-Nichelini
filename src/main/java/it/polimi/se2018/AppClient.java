@@ -11,6 +11,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.Scanner;
@@ -61,6 +62,7 @@ public class AppClient extends Application{
             cw.run();
         }else {
             launch(args);
+            //new Thread(() -> Application.launch(args)).start();
         }
     }
 
@@ -70,8 +72,15 @@ public class AppClient extends Application{
 
         primaryStage.setTitle("Welcome!");
         Scene sceneLogin = new Scene(root, 620, 300);
+        String url = "/logo.png";
+        Image image = new Image(url);
+        primaryStage.getIcons().add(image);
 
         primaryStage.setScene(sceneLogin);
         primaryStage.show();
+
+
+        //Image image = new Image(XYZ.class.getClassLoader().getResource("my.png").toExternalForm());
+
     }
 }
