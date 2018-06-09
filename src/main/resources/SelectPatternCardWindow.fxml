@@ -2,13 +2,19 @@
 
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.SelectPatternCardWindowController">
+<AnchorPane fx:id="anchorPane" prefHeight="400.0" prefWidth="580.0" xmlns="http://javafx.com/javafx/9.0.4" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.se2018.view.SelectPatternCardWindowController">
    <children>
       <ImageView fx:id="window1" fitHeight="182.0" fitWidth="267.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" />
       <ImageView fx:id="window2" fitHeight="182.0" fitWidth="267.0" layoutX="14.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="10.0" />
       <ImageView fx:id="window3" fitHeight="182.0" fitWidth="267.0" layoutX="293.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" />
       <ImageView fx:id="window4" fitHeight="182.0" fitWidth="267.0" layoutX="293.0" layoutY="204.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="10.0" />
+      <Pane fx:id="hadledPane" layoutX="10.0" layoutY="14.0" prefHeight="373.0" prefWidth="560.0" style="-fx-background-color: #d1e2ff#d1e2ff;" visible="false">
+         <children>
+            <Text fill="RED" layoutX="137.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Selection handled, wait that game began" />
+         </children>
+      </Pane>
    </children>
 </AnchorPane>
