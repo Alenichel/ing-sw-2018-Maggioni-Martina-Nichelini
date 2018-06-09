@@ -121,12 +121,24 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     protected int calculateScore(Player player){
         int score = 0;
+        int pocScore = 0;
+
+        HashMap<String, Integer> scoreMap = player.getScores();
 
         for (PublicObjectiveCard poc : player.getLastGameJoined().getObjectiveCards()){
-            score += poc.scorePoint(player.getActivePatternCard());
+            pocScore += poc.scorePoint(player.getActivePatternCard());
         }
+        score += pocScore;
+        scoreMap.put("Public Objective Score", pocScore);
 
-        score -= (20 - player.getActivePatternCard().getPlacedDice());
+        int diceScore = (20 - player.getActivePatternCard().getPlacedDice());
+        score -= diceScore;
+        scoreMap.put("DiceScore", -diceScore);
+
+        int favourTokensLeft = player.getActivePatternCard().getNumberOfFavorTokens();
+        score += favourTokensLeft;
+        scoreMap.put("FavourTokensLeft", favourTokensLeft);
+
         player.setScore(score);
         return score;
     }

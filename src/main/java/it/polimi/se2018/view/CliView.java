@@ -16,6 +16,7 @@ public class CliView extends View implements Observer {
 
     private transient Object lastObjectReceveid;
     private Player activePlayer = null;
+    Scanner sinput = new Scanner(System.in);
 
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
@@ -62,7 +63,6 @@ public class CliView extends View implements Observer {
     }
 
     public void run() {
-        Scanner sinput = new Scanner(System.in);
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
         Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.client.getNickname() + " ***");
 
@@ -158,7 +158,7 @@ public class CliView extends View implements Observer {
         }
         System.out.println("");
         if(playerName.equals(client.getNickname())) System.out.println((char) 27 +"[34m" + "Is your turn!" + (char) 27 + "[30m");
-        else System.out.println("This is the turn of player:" + playerName);
+        else System.out.println("This is the turn of player: " + playerName);
     }
 
     private void onGameStarted(Observable o){
@@ -182,12 +182,28 @@ public class CliView extends View implements Observer {
 
     private void onWinnerProclamation(Game game){
         if (game.getWinner().getNickname().equals(this.client.getNickname())){
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "************ You WON ************");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You WON ************");
         }
         else {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "************ You LOSE ************\nThe winner is: " + game.getWinner().getNickname());
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You LOSE ************\nThe winner is: " + game.getWinner().getNickname());
         }
-        System.exit(0);
+
+        for (Player p: game.getPlayers()){
+            HashMap<String, Integer> scoreMap = p.getScores();
+
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
+            for (String s: scoreMap.keySet()){
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\t- " + s + ": " + scoreMap.get(s));
+            }
+        }
+
+        int choose = 0;
+        while (choose != 1 && choose != 2){
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Choose: \n\t1) Search for another game\n\t2)Quit" );
+            choose = sinput.nextInt();
+        }
+
+        if (choose == 2) System.exit(0);
     }
 
     public void update(Observable o, Object msg){
