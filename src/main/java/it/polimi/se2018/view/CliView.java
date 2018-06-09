@@ -205,7 +205,12 @@ public class CliView extends View implements Observer {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                     } else if(wtu.equals(WhatToUpdate.Winner)) {
                         this.onWinnerProclamation((Game)o);
-                    } else {
+                    } else if(wtu.equals(WhatToUpdate.TimeLeft)){
+                        if(!((Game)o).isStarted()){
+                            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
+                        }
+                    }
+                        else {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                     }
                 }
