@@ -63,6 +63,10 @@ public class PublicObjectiveCard extends ObjectiveCard{
         return scorePointStrategy.scorePoint(windowPatternCard);
     }
 
+    public ObjectiveCardsName getName() {
+        return name;
+    }
+
     @Override
     public String toString() {
         return this.name.toString() + ": " + this.description + "|| Point: " + this.points;

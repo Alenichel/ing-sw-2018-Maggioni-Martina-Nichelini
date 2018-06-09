@@ -11,6 +11,10 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
     }
 
+    public DiceColor getColor(){
+        return this.color;
+    }
+
     public PrivateObjectiveCard(DiceColor diceColor){
         this.color = diceColor;
     }
