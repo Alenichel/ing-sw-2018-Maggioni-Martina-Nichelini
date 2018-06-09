@@ -32,6 +32,10 @@ public class RoundHandler implements TimerInterface {
     private Player activePlayer;
     private WindowPatternCard workingPatternCard;
 
+    public Game getGameAssociated() {
+        return gameAssociated;
+    }
+
     public RoundHandler (Game game){
         this.gameAssociated = game;
         this.actualRound = this.gameAssociated.getActualRound();
@@ -40,6 +44,7 @@ public class RoundHandler implements TimerInterface {
         if (this.actualRound == Server.getInstance().getnOfTurn()){
             this.gameController.onGameEnd();
         }
+
 
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
