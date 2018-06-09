@@ -12,6 +12,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ public class SelectPatternCardWindowController implements Serializable {
     @FXML private transient ImageView window2;
     @FXML private transient ImageView window3;
     @FXML private transient ImageView window4;
+    @FXML private transient Pane hadledPane;
 
 
     protected void printPool(Stage primaryStage, Player player, GuiView gw){
@@ -44,8 +46,7 @@ public class SelectPatternCardWindowController implements Serializable {
         ArrayList<WindowPatternCard> pool = (ArrayList<WindowPatternCard>) player.getWindowPatternCardsPool();
 
         for(WindowPatternCard w : pool){
-            String url = "/windowPatternCardImage/"+w.getName().toString()+".png";
-            //System.out.println("url: " + url);
+            String url = "/windowPatternCardImage/"+w.getName()+".png";
             Image image = new Image(url);
             images.add(image);
         }
@@ -56,21 +57,31 @@ public class SelectPatternCardWindowController implements Serializable {
         }
 
         window1.setOnMouseClicked((MouseEvent e) -> {
+            hadledPane.setVisible(true);
             handleClick(1);
         });
         window2.setOnMouseClicked((MouseEvent e) -> {
+            hadledPane.setVisible(true);
             handleClick(2);
         });
         window3.setOnMouseClicked((MouseEvent e) -> {
+            hadledPane.setVisible(true);
             handleClick(3);
         });
         window4.setOnMouseClicked((MouseEvent e) -> {
+            hadledPane.setVisible(true);
             handleClick(4);
         });
+
+        /*window1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                hadledPane.setVisible(true);
+            }
+        });*/
     }
 
     private void handleClick(int n){
         gw.selectedPatternCard(n);
     }
-
 }
