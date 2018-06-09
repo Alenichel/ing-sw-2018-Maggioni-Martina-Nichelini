@@ -42,6 +42,7 @@ public class GuiView extends View implements Observer {
 
         setupSelectPatternCard();
         setupWaintingArea();
+        setupGameWindow();
         printWaintingArea();
     }
 
@@ -97,9 +98,10 @@ public class GuiView extends View implements Observer {
         primaryStage.show();
     }
 
-    public void printGameWindow(){
+    public void printGameWindow(Game game, Player player){
         primaryStage.setScene(sceneGame);
         primaryStage.show();
+        gameWindowController.print(game, player);
     }
 
     @Override
@@ -134,13 +136,14 @@ public class GuiView extends View implements Observer {
                         }
                         if (wtu.equals(WhatToUpdate.TimeLeft)){
                             waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
+                            gameWindowController.printTimerLeft(((Game)o).getTimerSecondsLeft());
                         }
                         if (wtu.equals(WhatToUpdate.GameStarted)){
                             printSelectPatternCard();
                             selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
                         }
                         if(wtu.equals(WhatToUpdate.ActivePlayer)){
-                            printGameWindow();
+                            printGameWindow((Game)o, client);
                         }
                     }
                 );
