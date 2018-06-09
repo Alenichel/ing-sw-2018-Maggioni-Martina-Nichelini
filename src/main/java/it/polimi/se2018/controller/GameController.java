@@ -10,7 +10,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class GameController implements Observer, Serializable, TimerInterface {
-    private ArrayList<WindowPatternCard> initializedPatternCards = new ArrayList<>();
+    private List<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
     private Server server;
     private ServerController serverController;
@@ -85,7 +85,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     private List<WindowPatternCard> getRandomPatternCards (){
         int selectedIndex = 0;
-        ArrayList<WindowPatternCard> toReturn = new ArrayList<>();
+        List<WindowPatternCard> toReturn = new ArrayList<>();
         Random rand = new Random();
         for (int i = 0; i < 4; i++){
             selectedIndex = rand.nextInt(this.initializedPatternCards.size());
@@ -133,11 +133,11 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
         int diceScore = (20 - player.getActivePatternCard().getPlacedDice());
         score -= diceScore;
-        scoreMap.put("DiceScore", -diceScore);
+        scoreMap.put("Dice Score", -diceScore);
 
         int favourTokensLeft = player.getActivePatternCard().getNumberOfFavorTokens();
         score += favourTokensLeft;
-        scoreMap.put("FavourTokensLeft", favourTokensLeft);
+        scoreMap.put("Favour Tokens Left", favourTokensLeft);
 
         player.setScore(score);
         return score;

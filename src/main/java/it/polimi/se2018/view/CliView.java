@@ -16,7 +16,7 @@ public class CliView extends View implements Observer {
 
     private transient Object lastObjectReceveid;
     private Player activePlayer = null;
-    Scanner sinput = new Scanner(System.in);
+    transient Scanner sinput = new Scanner(System.in);
 
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");

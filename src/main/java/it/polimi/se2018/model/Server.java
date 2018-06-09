@@ -13,12 +13,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.ArrayList;
+import java.util.*;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Observable;
 
 /**
  * RMIServer class represents the server with all default params and list of active games and active players.
@@ -34,13 +31,13 @@ public class Server extends Observable implements Serializable {
     private static final String HOME_PATH = System.getProperty("user.home");
     private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
 
-    private ArrayList<Player> onlinePlayers = new ArrayList<>();
-    private ArrayList<Player> offlinePlayers = new ArrayList<>();
-    private ArrayList<Player> inGamePlayers = new ArrayList<>();
-    private ArrayList<Player> waitingPlayers = new ArrayList<>();
+    private List<Player> onlinePlayers = new Vector<>();
+    private List<Player> offlinePlayers = new Vector<>();
+    private List<Player> inGamePlayers = new Vector<>();
+    private List<Player> waitingPlayers = new Vector<>();
     private Game currentGame;
 
-    private ArrayList<Game> activeGames = new ArrayList<>();
+    private List<Game> activeGames = new Vector<>();
 
     private static Server instance = null;
 
@@ -130,19 +127,19 @@ public class Server extends Observable implements Serializable {
      */
     public List<Player> getOnlinePlayers() {return this.onlinePlayers;}
 
-    public ArrayList<Player> getInGamePlayers() {
+    public List<Player> getInGamePlayers() {
         return inGamePlayers;
     }
 
-    public ArrayList<Player> getWaitingPlayers() {
+    public List<Player> getWaitingPlayers() {
         return waitingPlayers;
     }
 
-    public ArrayList<Game> getActiveGames() {
+    public List<Game> getActiveGames() {
         return activeGames;
     }
 
-    public ArrayList<Player> getOfflinePlayers() {
+    public List<Player> getOfflinePlayers() {
         return offlinePlayers;
     }
 

@@ -18,10 +18,10 @@ public class WindowCell implements Serializable{
     private int numberConstraint;
     private Dice assignedDice;
 
-    private ArrayList<WindowCell> neighbourCells = new ArrayList<>();
+    private List<WindowCell> neighbourCells = new ArrayList<>();
     private boolean neighbourhoodAssigned = false;
 
-    private ArrayList<WindowCell> diagonalCells = new ArrayList<>();
+    private List<WindowCell> diagonalCells = new ArrayList<>();
     private boolean isDiagonal = false;
 
     /**

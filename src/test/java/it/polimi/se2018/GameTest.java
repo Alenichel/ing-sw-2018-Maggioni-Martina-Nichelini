@@ -8,8 +8,6 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
-
 public class GameTest {
 
     @Test
@@ -110,4 +108,5 @@ public class GameTest {
         Assert.assertNotEquals(tc, game.getPatternCards());
 
     }
+
 }

@@ -14,6 +14,7 @@ import it.polimi.se2018.view.VirtualView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Random;
 
@@ -43,12 +44,12 @@ public class GameSetupController implements Serializable {
     }
 
     private void assignWindowsPatternCardsPool(){
-        ArrayList<Player> players = new ArrayList<Player>(associatedGame.getPlayers());
+        List<Player> players = new ArrayList<>(associatedGame.getPlayers());
         Random random = new Random();
-        ArrayList<WindowPatternCard> genericWindowPatternCards= new ArrayList<WindowPatternCard>(associatedGame.getPatternCards());
+        List<WindowPatternCard> genericWindowPatternCards= new ArrayList<WindowPatternCard>(associatedGame.getPatternCards());
 
         for(Player p : players){
-            ArrayList<WindowPatternCard> patternCardsPool = new ArrayList<>();
+            List<WindowPatternCard> patternCardsPool = new ArrayList<>();
             for(int i = 0; i < 4; i++){
                 int n = random.nextInt(genericWindowPatternCards.size());
                 patternCardsPool.add(genericWindowPatternCards.get(n));
@@ -64,8 +65,8 @@ public class GameSetupController implements Serializable {
     private void initializeToolCards(){
         Random rand = new Random();
         int n;
-        ArrayList<String> toolName = new ArrayList<>();
-        ArrayList<ToolCard> selectedToolCards = new ArrayList<ToolCard>();
+        List<String> toolName = new ArrayList<>();
+        List<ToolCard> selectedToolCards = new ArrayList<ToolCard>();
 
         for(ToolCardsName t : ToolCardsName.values()){
             toolName.add(t.toString());
@@ -93,7 +94,7 @@ public class GameSetupController implements Serializable {
     }
 
     private void initializePublicObject(){
-        ArrayList<PublicObjectiveCard> selectedObject = new ArrayList<>();
+        List<PublicObjectiveCard> selectedObject = new ArrayList<>();
 
         final int[] ints = new Random().ints(0, ObjectiveCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
@@ -102,16 +103,10 @@ public class GameSetupController implements Serializable {
     }
 
     private void initializePrivateObjectiveCards(){
-        Random rand = new Random();
-        int n;
-        ArrayList<DiceColor> colorName = new ArrayList<>();
-        for(DiceColor d : DiceColor.values()){
-            colorName.add(d);
-        }
-        for(Player p : this.associatedGame.getPlayers()){
-            n = rand.nextInt(this.associatedGame.getPlayers().size());
-            p.assignObjectiveCard(new PrivateObjectiveCard(colorName.get(n)));
-            colorName.remove(n);
+
+        final int[] ints = new Random().ints(0, DiceColor.values().length).distinct().limit(this.associatedGame.getPlayers().size()).toArray();
+        for (int i = 0; i < this.associatedGame.getPlayers().size(); i++){
+            this.associatedGame.getPlayers().get(i).assignObjectiveCard(new PrivateObjectiveCard(DiceColor.values()[i]));
         }
     }
 

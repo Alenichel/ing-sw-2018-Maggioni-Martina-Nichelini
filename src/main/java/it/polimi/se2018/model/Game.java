@@ -11,13 +11,13 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Game extends Observable implements Serializable {
-    private ArrayList<Dice> diceBag = new ArrayList<>();
-    private ArrayList<Dice> diceOnTable = new ArrayList<>();
-    private ArrayList<WindowPatternCard> patternCards = new ArrayList<>();
-    private ArrayList<PublicObjectiveCard> objectiveCards = new ArrayList<>();
-    private ArrayList<ToolCard> toolCards = new ArrayList<>();
-    private List<Player> players = new ArrayList<>();
-    private List<Player> playersOrder = new ArrayList<>();
+    private List<Dice> diceBag = new Vector<>();
+    private List<Dice> diceOnTable = new Vector<>();
+    private List<WindowPatternCard> patternCards = new Vector<>();
+    private List<PublicObjectiveCard> objectiveCards = new Vector<>();
+    private List<ToolCard> toolCards = new Vector<>();
+    private List<Player> players = new Vector<>();
+    private List<Player> playersOrder = new Vector<>();
 
     private RoundTrack roundTrack;
     private boolean isStarted;
@@ -51,23 +51,23 @@ public class Game extends Observable implements Serializable {
     }
 
     public void setDiceBag(List<Dice> diceBag) {
-        this.diceBag = (ArrayList<Dice>) diceBag;
+        this.diceBag = diceBag;
     }
     public void setDiceOnTable(List<Dice> diceOnTable) {
-        this.diceOnTable = (ArrayList<Dice>)diceOnTable;
+        this.diceOnTable = diceOnTable;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.DiceOnTable);
         um.setStringMessage("Some dice have been draft and added to the table");
         this.setChanged();
         this.notifyObservers(um);
     }
     public void setPatternCards(List<WindowPatternCard> patternCards) {
-        this.patternCards = (ArrayList<WindowPatternCard>) patternCards;
+        this.patternCards = patternCards;
     }
-    public void setObjectiveCards(ArrayList<PublicObjectiveCard> objectiveCards) {
+    public void setObjectiveCards(List<PublicObjectiveCard> objectiveCards) {
         this.objectiveCards = objectiveCards;
     }
     public void setToolCards(List<ToolCard> toolCards) {
-        this.toolCards = (ArrayList<ToolCard>) toolCards;
+        this.toolCards = toolCards;
     }
     public void setTimerSecondLeft(int second){
         this.timerSecondsLeft = second;

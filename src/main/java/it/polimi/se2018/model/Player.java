@@ -11,7 +11,7 @@ public class Player extends Observable implements Serializable{
     private int playerNumber;
     private WindowPatternCard activePatternCard;
     private PrivateObjectiveCard privateObjectiveCard;
-    private ArrayList<WindowPatternCard> windowPatternCardsPool;
+    private List<WindowPatternCard> windowPatternCardsPool;
     private int score;
     private HashMap<String, Integer> scores = new HashMap<>();
 

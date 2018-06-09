@@ -124,7 +124,7 @@ public class GameWindowController implements Serializable {
     }
 
     private void printFavourToken(Player p){
-        favToken.setText(((Integer) p.getNumberOfFavorTokens()).toString());
+        favToken.setText(((Integer) p.getActivePatternCard().getNumberOfFavorTokens()).toString());
     }
 
     private void printPrivateObjective(Player me){

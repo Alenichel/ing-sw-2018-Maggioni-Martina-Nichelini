@@ -2,23 +2,23 @@ package it.polimi.se2018.model;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 public class RoundTrack implements Serializable{
-    private ArrayList<ArrayList<Dice>> roundTrack;
+    private List<ArrayList<Dice>> roundTrack = new ArrayList<ArrayList<Dice>>();
 
     public RoundTrack(){
-        roundTrack = new ArrayList<ArrayList<Dice>>();
 
         for(int i = 0; i<=9; i++){
             roundTrack.add(i, new ArrayList<Dice>());
         }
     }
 
-    public ArrayList<ArrayList<Dice>> getRoundTrack() {
+    public List<ArrayList<Dice>> getRoundTrack() {
         return roundTrack;
     }
 
-    public void setRoundTrack(ArrayList<ArrayList<Dice>> roundTrack) {
+    public void setRoundTrack(List<ArrayList<Dice>> roundTrack) {
         this.roundTrack = roundTrack;
     }
 
@@ -26,12 +26,11 @@ public class RoundTrack implements Serializable{
         roundTrack.get(round).add(d);
     }
 
-    public void addDice(ArrayList<Dice> d, int round){
+    public void addDice(List<Dice> d, int round){
         for(Dice p : d){
             roundTrack.get(round).add(p);
         }
     }
-
 
     @Override
     public String toString() {
@@ -41,7 +40,7 @@ public class RoundTrack implements Serializable{
         String verticalSeparatorTop = "═";
         String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"," "};
         int roundStri = 0;
-        for(ArrayList<Dice> aD : roundTrack){
+        for(List<Dice> aD : roundTrack){
             if(!aD.isEmpty()) {
                 if(aD.size() > max_width)
                     max_width = aD.size();
@@ -56,7 +55,7 @@ public class RoundTrack implements Serializable{
         }
         str = str.concat("╗\n");
 
-        for(ArrayList<Dice> aD : roundTrack){
+        for(List<Dice> aD : roundTrack){
             str = str.concat((char) 27 +"[34m" +roundStr[roundStri]+ " " + (char) 27 + "[30m");
             roundStri++;
             str = str.concat("║");
@@ -81,8 +80,6 @@ public class RoundTrack implements Serializable{
             }
             str = str.concat("║\n");
         }
-
-        //str = str.concat(verticalSeparatorBottom + "\n");
         str = str.concat("  ╚");
         for(int i = 0; i < max_width + 4; i++){
             str = str.concat(verticalSeparatorTop);

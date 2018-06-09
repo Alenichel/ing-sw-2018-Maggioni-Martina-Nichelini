@@ -16,7 +16,7 @@ public class Timer extends Thread {
     @Override
     public void run() {
         try {
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Timer[n"+ this.getId() + "]started");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Timer["+ this.getId() + "]started");
             long slept = 0;
             while (slept < duration*1000){
                 sleep(1000);

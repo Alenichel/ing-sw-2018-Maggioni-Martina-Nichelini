@@ -147,7 +147,6 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                         associatedVirtualView.notifyObservers(/*packet.getObservable(), */packet.getObject());
                     } catch (ClassNotFoundException e){
                         Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
-                        Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
                     }
                 }
                 ois.close();
@@ -164,6 +163,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
             catch (IOException e) {
                 Logger.ERROR(LoggerType.SERVER_SIDE, "VVNB_LISTENER: " + e);
                 Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+                e.printStackTrace();
             }
         }
     }

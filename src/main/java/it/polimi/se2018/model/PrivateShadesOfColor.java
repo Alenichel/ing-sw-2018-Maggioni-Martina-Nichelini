@@ -1,16 +1,15 @@
 package it.polimi.se2018.model;
 
 
+import it.polimi.se2018.utils.DiceColor;
+
 public class PrivateShadesOfColor {
+    private final DiceColor dc;
     String color;
 
-    public PrivateShadesOfColor (String type){
-        if(type == "red") this.color = "red";
-        else if(type == "yellow") this.color = "yellow";
-        else if(type == "blue") this.color = "blue";
-        else if(type == "green") this.color = "green";
-        else if(type == "purple") this.color = "purple";
-        else throw new IllegalArgumentException("Invalid type");
+    public PrivateShadesOfColor (DiceColor type){
+        this.dc = type;
+        this.color = this.dc.toString();
     }
 
     private boolean isColor(WindowCell a) {

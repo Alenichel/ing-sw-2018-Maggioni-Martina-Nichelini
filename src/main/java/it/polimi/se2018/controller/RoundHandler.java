@@ -54,8 +54,8 @@ public class RoundHandler implements TimerInterface {
         this.workingPatternCard = this.activePlayer.getActivePatternCard();
 
         if (this.actualRound != 1 ) {
-            this.gameAssociated.getRoundTrack().addDice((ArrayList) this.gameAssociated.getDiceOnTable(), this.actualRound-2);
-            ArrayList<Dice> aD = new ArrayList<>();
+            this.gameAssociated.getRoundTrack().addDice(this.gameAssociated.getDiceOnTable(), this.actualRound-2);
+            List<Dice> aD = new ArrayList<>();
             this.gameAssociated.setDiceOnTable(aD); //set empty arraylist for table
         }
 

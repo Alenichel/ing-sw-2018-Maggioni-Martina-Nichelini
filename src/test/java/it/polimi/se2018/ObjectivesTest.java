@@ -7,6 +7,7 @@ import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;
+import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
@@ -181,7 +182,7 @@ public class ObjectivesTest {
         wpc.insertDice(d4, 2,3,false,false,false);
         wpc.insertDice(d5, 3,4,false,false,false);
 
-        PrivateShadesOfColor sp = new PrivateShadesOfColor("blue");
+        PrivateShadesOfColor sp = new PrivateShadesOfColor(DiceColor.blue);
         Assert.assertEquals(3, sp.scorePoint(wpc));
     }
 

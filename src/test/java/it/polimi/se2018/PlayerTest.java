@@ -49,10 +49,6 @@ public class PlayerTest {
         Assert.assertEquals(windowPatternCard, player.getActivePatternCard());
         Assert.assertNotEquals(windowPatternCard2, player.getActivePatternCard());
 
-        player.setNumberOfFavorTokens(4);
-        Assert.assertEquals(4, player.getNumberOfFavorTokens());
-        Assert.assertNotEquals(3, player.getNumberOfFavorTokens());
-
         player.setWindowPatternCardsPool(windowPatternCards);
         Assert.assertNotEquals(null, player.getWindowPatternCardsPool());
         Assert.assertEquals(windowPatternCards, player.getWindowPatternCardsPool());
