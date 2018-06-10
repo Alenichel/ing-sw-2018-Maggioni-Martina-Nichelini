@@ -3,11 +3,11 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.RMIClient;
 import it.polimi.se2018.network.SocketClient;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -19,21 +19,42 @@ public class LoginController implements Serializable{
     @FXML private transient Button button;
     @FXML private transient TextField username;
     @FXML private transient TextField password;
-
-
+    @FXML private transient RadioButton rmi;
+    @FXML private transient RadioButton socket;
+    String methodConnection;
 
     @FXML
     private void initialize() {
         if (!(Server.getInstance().isConfigurationRequired())) {
             password.setDisable(true);
+            button.setDisable(true);
         }
+        final ToggleGroup group = new ToggleGroup();
+        rmi.setToggleGroup(group);
+        rmi.setUserData("RMI");
+        socket.setToggleGroup(group);
+        socket.setUserData("socket");
+
+        group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
+            public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
+                if (group.getSelectedToggle() != null) {
+                    //System.out.println(group.getSelectedToggle().getUserData().toString());
+                    methodConnection = group.getSelectedToggle().getUserData().toString();
+                    button.setDisable(false);
+                    System.out.println(group.getSelectedToggle().getUserData().toString());
+                }
+            }
+        });
+
+
     }
 
     @FXML
     private void connectionEvent(){
         String logInUsernme = username.getText();
         String logInPassword = password.getText();
-
+        SocketClient sc;
+        RMIClient rmiClient;
         GuiView gw = new GuiView();
 
         if (!(Server.getInstance().isConfigurationRequired())) {
@@ -41,17 +62,15 @@ public class LoginController implements Serializable{
         }
 
         //String methodConnection = toggleConnection.getSelectedToggle().getUserData().toString();
-        /*if(methodConnection.equals("rmi")){
+        if(methodConnection.equals("RMI")){
             //RMI CONNECTION
-            RMIClient rmiClient = new RMIClient();
+            rmiClient = new RMIClient();
             gw.addObserver(rmiClient.run(gw, logInUsernme, logInPassword));
-        }else {
+        }else if(methodConnection.equals("socket")){
             //SOCKET CONNECTION
-            SocketClient sc = new SocketClient("localhost", 9091, logInUsernme, logInPassword, gw);
+            sc = new SocketClient("localhost", 9091, logInUsernme, logInPassword, gw);
             gw.addObserver(sc);
-        }*/
-        SocketClient sc = new SocketClient("localhost", 9091, logInUsernme, logInPassword, gw);
-        gw.addObserver(sc);
+        }
         gw.run((Stage)button.getScene().getWindow());
     }
 }
