@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.ObjectiveCardsName;
 import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
@@ -17,13 +18,12 @@ public class GameTest {
         Player player3 = new Player("ste");
         Player wrongPlayer = new Player("was");
 
-        Dice die1 = new Dice("red", 1);
-        Dice die2 = new Dice("red", 2);
-        Dice die3 = new Dice("red", 3);
-        Dice die4 = new Dice("red", 4);
-        Dice die5 = new Dice("red", 5);
-        Dice die6 = new Dice("red", 6);
-        Dice wrongDie = new Dice("pink", 7);
+        Dice die1 = new Dice(DiceColor.red, 1);
+        Dice die2 = new Dice(DiceColor.red, 2);
+        Dice die3 = new Dice(DiceColor.red, 3);
+        Dice die4 = new Dice(DiceColor.red, 4);
+        Dice die5 = new Dice(DiceColor.red, 5);
+        Dice die6 = new Dice(DiceColor.red, 6);
 
         PublicObjectiveCard objective1 = new PublicObjectiveCard(ObjectiveCardsName.RowColorVariety);
         PublicObjectiveCard objective2 = new PublicObjectiveCard(ObjectiveCardsName.LightShades);
@@ -82,7 +82,6 @@ public class GameTest {
 
         //getDiceBag test
         wrongDice = (ArrayList<Dice>) dice.clone();
-        wrongDice.add(wrongDie);
         game.setDiceBag(dice);
         Assert.assertEquals(dice, game.getDiceBag());
         Assert.assertNotEquals(wrongDice, game.getDiceBag());

@@ -19,7 +19,7 @@ import java.util.Scanner;
 public class AppClient extends Application{
 
     public static void main(String[] args) {
-        Logger.setSide(LoggerType.CLIENT_SIDE);
+        Logger.setSide(LoggerType.CLIENT_SIDE, false);
         Scanner inputInit = new Scanner(System.in);
         boolean cli;
 
@@ -60,6 +60,7 @@ public class AppClient extends Application{
                 cw.addObserver(rmiClient.run(cw, nickname, password));
             }
             cw.run();
+
         }else {
             launch(args);
             //new Thread(() -> Application.launch(args)).start();

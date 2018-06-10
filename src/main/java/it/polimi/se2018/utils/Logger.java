@@ -17,9 +17,11 @@ public final class Logger {
     private static LoggerType Side;
     private static FileWriter fileWriter;
     private static PrintWriter printWriter;
+    private static boolean DebugMode;
 
-    public static void setSide(LoggerType side){
+    public static void setSide(LoggerType side, boolean debugMode){
         Side = side;
+        DebugMode = debugMode;
 
         Path path;
         try {
@@ -50,24 +52,12 @@ public final class Logger {
                 System.out.println((char) 27 + "[31m"+ toLog + (char) 27 + "[3m");
                 printWriter.println(toLog);
             }
+            else if(priority == LoggerPriority.DEBUG && DebugMode){
+                toLog = "[*] DEBUG: " + toLog;
+                System.out.println(toLog);
+                printWriter.println(toLog);
+            }
         }
     }
 
-    public static void ERROR(LoggerType side, String toLog){
-        toLog = "[*] ERROR: " + toLog;
-        System.out.println((char) 27 + "[31m"+ toLog + (char) 27 + "[3m");
-        if (Side == side) printWriter.println(toLog);
-    }
-
-    public static void WARNING(LoggerType side, String toLog){
-        toLog = "[*] WARNING: " + toLog;
-        System.out.println((char) 27 + "[33" + toLog + (char) 27 + "[3m");
-        if (Side == side) printWriter.println(toLog);
-    }
-
-    public static void NOTIFICATION(LoggerType side, String toLog){
-        toLog = "[*] NOTIFICATION: " + toLog;
-        System.out.println(toLog);
-        if (Side == side) printWriter.println(toLog);
-    }
 }

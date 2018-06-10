@@ -7,7 +7,7 @@ import it.polimi.se2018.utils.LoggerType;
 
 public class AppServer {
     public static void main(String[] args) {
-        Logger.setSide(LoggerType.SERVER_SIDE);
+        Logger.setSide(LoggerType.SERVER_SIDE, false);
         SocketServer ss = new SocketServer();
         ss.start();
         RMIServer rmiServer = new RMIServer();

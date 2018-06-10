@@ -103,7 +103,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
             this.gameAssociated.setStarted(true);
 
         }catch (GameException e){
-            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
         }
     }
 
@@ -163,7 +163,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
 
         this.gameAssociated.setWinner(topPlayer);
-        TimerHandler.stopTimer(this.timerID);
+        TimerHandler.stopTimer(roundHandler.timerID);
         this.serverController.removeGame(this.gameAssociated);
         }
 
@@ -208,11 +208,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
-
     @Override
     public void update(Observable observable, Object msg){
 
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_CONTROLLER( " + this.gameAssociated.getName().toString() + " ): Receveid -> " + ((Message)msg).getMessageType() );
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, ":GAME_CONTROLLER( " + this.gameAssociated.getName().toString() + " ): Receveid -> " + ((Message)msg).getMessageType() );
 
         switch(((Message)msg).getMessageType()){
 

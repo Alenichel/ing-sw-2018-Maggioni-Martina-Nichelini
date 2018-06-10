@@ -29,13 +29,14 @@ public class GameSetupController implements Serializable {
 
     private Game associatedGame;
     private int selectedPatterCards = 0;
+    private transient Random rand = new Random();
 
     public GameSetupController(Game game){
         this.associatedGame = game;
     }
 
     /**
-     * This method initialize all windows pattern cards, before asking player which card he wants to use during this game
+     * This method initialize all windows pattern cards, before asking player which card he wants to use during this game.
      */
     private void initializePatternCard(){
         for(WindowPatternCardsName w : WindowPatternCardsName.values()){
@@ -43,15 +44,18 @@ public class GameSetupController implements Serializable {
         }
     }
 
-    private void assignWindowsPatternCardsPool(){
-        List<Player> players = new ArrayList<>(associatedGame.getPlayers());
-        Random random = new Random();
-        List<WindowPatternCard> genericWindowPatternCards= new ArrayList<WindowPatternCard>(associatedGame.getPatternCards());
+    /**
+     * This method assign to each player the pool of pattern cards that will be presented to him.
 
-        for(Player p : players){
+     */
+    private void assignWindowsPatternCardsPool(){
+
+        List<WindowPatternCard> genericWindowPatternCards= new ArrayList<>(associatedGame.getPatternCards());
+
+        for(Player p : this.associatedGame.getPlayers()){
             List<WindowPatternCard> patternCardsPool = new ArrayList<>();
             for(int i = 0; i < 4; i++){
-                int n = random.nextInt(genericWindowPatternCards.size());
+                int n = this.rand.nextInt(genericWindowPatternCards.size());
                 patternCardsPool.add(genericWindowPatternCards.get(n));
                 genericWindowPatternCards.remove(n);
             }
@@ -60,19 +64,18 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method initialize three random toolcards
+     * This method initialize three random toolcards.
      */
     private void initializeToolCards(){
-        Random rand = new Random();
         int n;
         List<String> toolName = new ArrayList<>();
-        List<ToolCard> selectedToolCards = new ArrayList<ToolCard>();
+        List<ToolCard> selectedToolCards = new ArrayList<>();
 
         for(ToolCardsName t : ToolCardsName.values()){
             toolName.add(t.toString());
         }
         for(int i = 0; i<3; i++){
-            n = rand.nextInt(toolName.size());
+            n = this.rand.nextInt(toolName.size());
             selectedToolCards.add(new ToolCard(nameToObjectTool(toolName.get(n))));
             toolName.remove(n);
         }
@@ -86,7 +89,7 @@ public class GameSetupController implements Serializable {
     private void diceInitializer(){
         for (DiceColor dc : DiceColor.values()){
             for (int i = 0; i < 18; i++){
-                Dice newDice = new Dice(dc.name());
+                Dice newDice = new Dice(dc);
                 newDice.setLocation(DiceLocation.BAG);
                 this.associatedGame.getDiceBag().add(newDice);
             }
@@ -96,7 +99,7 @@ public class GameSetupController implements Serializable {
     private void initializePublicObject(){
         List<PublicObjectiveCard> selectedObject = new ArrayList<>();
 
-        final int[] ints = new Random().ints(0, ObjectiveCardsName.values().length).distinct().limit(3).toArray();
+        final int[] ints = this.rand.ints(0, ObjectiveCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
             selectedObject.add(new PublicObjectiveCard(ObjectiveCardsName.values()[i]));
         this.associatedGame.setObjectiveCards(selectedObject);
@@ -104,9 +107,9 @@ public class GameSetupController implements Serializable {
 
     private void initializePrivateObjectiveCards(){
 
-        final int[] ints = new Random().ints(0, DiceColor.values().length).distinct().limit(this.associatedGame.getPlayers().size()).toArray();
+        final int[] ints = this.rand.ints(0, DiceColor.values().length).distinct().limit(this.associatedGame.getPlayers().size()).toArray();
         for (int i = 0; i < this.associatedGame.getPlayers().size(); i++){
-            this.associatedGame.getPlayers().get(i).assignObjectiveCard(new PrivateObjectiveCard(DiceColor.values()[i]));
+            this.associatedGame.getPlayers().get(i).assignObjectiveCard(new PrivateObjectiveCard(DiceColor.values()[ints[i]]));
         }
     }
 
@@ -132,7 +135,6 @@ public class GameSetupController implements Serializable {
         }
     }
 
-
     private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
 
         if (p.getActivePatternCard() == null) {
@@ -157,7 +159,7 @@ public class GameSetupController implements Serializable {
                 try {
                     onPatternCardSelection((int)message.getChosenItem(), ((View)observable).getClient());
                 }
-                catch ( GameException e){
+                catch (GameException e){
                     ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have already selected a pattern card", LoggerPriority.ERROR);
                     ((VirtualView)observable).controllerCallback(ccm);
                 }
@@ -171,7 +173,6 @@ public class GameSetupController implements Serializable {
         }
     }
 
-
     public void initialize(){
         this.diceInitializer();
         this.initializePatternCard();
@@ -183,7 +184,7 @@ public class GameSetupController implements Serializable {
 
     public void update(Observable observable, Object message){
         Message msg = (Message)message;
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":GAME_SETUP_CONTROLLER: Handling -> " + msg.getMessageType());
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, ":GAME_SETUP_CONTROLLER: Handling -> " + msg.getMessageType());
 
         switch (msg.getMessageType()){
 

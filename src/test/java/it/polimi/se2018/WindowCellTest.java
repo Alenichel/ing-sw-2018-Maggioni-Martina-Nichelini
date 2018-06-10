@@ -3,6 +3,7 @@ package it.polimi.se2018;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.WindowCell;
+import it.polimi.se2018.utils.DiceColor;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -13,7 +14,7 @@ public class WindowCellTest {
         int nc = 5;
         int row = 1;
         int column = 1;
-        String color = "green";
+        DiceColor color = DiceColor.green;
         Dice d = new Dice(color);
         WindowCell wc = new WindowCell(row, column, nc);
         wc.setAssignedDice(d);

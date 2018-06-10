@@ -1,20 +1,18 @@
 package it.polimi.se2018.utils;
 
-        import it.polimi.se2018.model.Player;
-        import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.WindowPatternCard;
+import java.util.ArrayList;
+import java.util.List;
 
-        import java.util.ArrayList;
-        import java.util.Collections;
-        import java.util.List;
 
 public class ConsoleUtils {
-    public static void multiplePrint(ArrayList<WindowPatternCard> ws, Player player) {
+    public static void multiplePrint(List<WindowPatternCard> ws, Player player) {
         int pos = 0;
         WindowPatternCard appo;
 
         for(WindowPatternCard w : ws){
             if(player.getNickname().equals(w.getPlayer().getNickname())){
-                //Collections.swap(ws, pos,0);
                 if(pos == 0) break;
                 appo = ws.get(0);
                 ws.set(0, ws.get(pos));
@@ -24,9 +22,9 @@ public class ConsoleUtils {
             pos++;
         }
 
-        ArrayList<String[]> tokensTOT = new ArrayList<>();
+        List<String[]> tokensTOT = new ArrayList<>();
 
-        int i = 0, j = 0;
+        int i = 0;
         for (WindowPatternCard w : ws) {
             tokensTOT.add(ws.get(i).toString().split("\n"));
             i++;
@@ -63,49 +61,6 @@ public class ConsoleUtils {
         }
     }
 }
-
-   /* public static void frame(List<?> ws){
-        ArrayList<String[]> tokensTOT = new ArrayList<>();
-        String res = "";
-        int i = 0, j = 0;
-        for (Object w : ws) {
-            tokensTOT.add(ws.get(i).toString().split("\n"));
-            i++;
-        }
-
-        String field = "═";
-        String topLeft = "╔";
-        String topRight = "╗";
-        String bottomLeft = "╚";
-        String bottomRight = "╝";
-        String field_ = "║";
-
-
-        int length = tokensTOT.size();
-        int heigth = tokensTOT.get(0).length;
-
-        res = res.concat(topLeft);
-        for(int a = 0; a < length; a++){
-            res = res.concat(field);
-        }
-
-        res = res.concat(topRight);
-        res = res.concat("\n");
-
-        for(int b = 0; b < heigth; b++){
-            res = res.concat(field_);
-            for(int a = 0; a < length; a++){
-                res = res.concat(" ");
-            }
-            if(b%2 == 0){
-                res = res.concat("\n");
-            }
-        }
-
-        System.out.println(res);
-
-
-    }*/
 
 
 

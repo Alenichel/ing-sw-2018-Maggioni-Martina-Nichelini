@@ -51,11 +51,11 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
 
         }
         catch (AuthenticationErrorException e ) {
-            Logger.WARNING(LoggerType.SERVER_SIDE, ":WWNB_CONSTRUCTOR: Unidentified user tried to log in");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, ":WWNB_CONSTRUCTOR: Unidentified user tried to log in");
             }
         catch (IOException | ClassNotFoundException e){
-            Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB_CONSTRUCTOR: " + e);
-            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, ":WWNB_CONSTRUCTOR: " + e);
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
         }
 
         if (this.player != null){
@@ -68,7 +68,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
             try {
                 oos.writeObject(new HandshakeConnectionMessage(player));
             }catch (IOException /*| InterruptedException*/ e){
-                Logger.ERROR(LoggerType.SERVER_SIDE, ":WWNB:: " + e);
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, ":WWNB:: " + e);
             }
         }
         else {
@@ -76,7 +76,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 oos.writeObject(new
                         ErrorMessage("Authentication Error"));
                 socket.close();
-            } catch (IOException e){Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());}
+            } catch (IOException e){
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
+            }
         }
     }
 
@@ -89,7 +91,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         try {
             queue.put(callbackMessage);
         } catch (InterruptedException e) {
-            Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());
             Thread.currentThread().interrupt();
         }
     }
@@ -105,7 +107,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         try {
             queue.put(suc);
         } catch (InterruptedException e){
-            Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());
             Thread.currentThread().interrupt();
         }
     }
@@ -126,7 +128,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                     oos.flush();
                     oos.reset();
                 } while (msg.getMessageType() != "quit" &&  clientConnected);
-            } catch (InterruptedException | IOException e) { Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());}
+            } catch (InterruptedException | IOException e) { Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());}
 
         }
     }
@@ -146,7 +148,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                         associatedVirtualView.mySetChanged();
                         associatedVirtualView.notifyObservers(/*packet.getObservable(), */packet.getObject());
                     } catch (ClassNotFoundException e){
-                        Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+                        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
                     }
                 }
                 ois.close();
@@ -161,15 +163,10 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 return;
             }
             catch (IOException e) {
-                Logger.ERROR(LoggerType.SERVER_SIDE, "VVNB_LISTENER: " + e);
-                Logger.WARNING(LoggerType.SERVER_SIDE, e.toString());
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "VVNB_LISTENER: " + e.toString());
                 e.printStackTrace();
             }
         }
-    }
-
-    public void addClient(ClientInterface client) throws RemoteException {
-        System.out.println("ciao");
     }
 
     @Override
@@ -180,7 +177,20 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         s.start();
     }
 
+
+
+    // ---------------> Come risolvere ?
     public void receiver(Observable o, Object msg){
+        ;
+    }
+
+    @Override
+    public void addClient(ClientInterface client) throws RemoteException {
+        System.out.println("ciao");
+    }
+
+    @Override
+    public void pong(){
         ;
     }
 }

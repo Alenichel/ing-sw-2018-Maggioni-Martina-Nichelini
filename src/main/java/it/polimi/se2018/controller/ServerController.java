@@ -4,6 +4,7 @@ import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 import it.polimi.se2018.utils.TimerInterface;
 import it.polimi.se2018.view.*;
@@ -112,7 +113,7 @@ public class ServerController implements Observer, Serializable{
 
     public void update (Observable observable, Object message){
 
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":SERVER_CONTROLLER: Received -> " + ((Message) message).getMessageType());
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, ":SERVER_CONTROLLER: Received -> " + ((Message) message).getMessageType());
         switch(((Message)message).getMessageType()){
 
             case "ConnectionMessage":

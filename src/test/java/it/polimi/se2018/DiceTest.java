@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.DiceLocation;
 import org.junit.Assert;
 import org.junit.Test;
@@ -9,7 +10,7 @@ public class DiceTest {
 
     @Test
     public void testGetter(){
-        String color = "green";
+        DiceColor color = DiceColor.green;
         DiceLocation location = DiceLocation.BAG;
         int n = 3;
         Dice d = new Dice(color);

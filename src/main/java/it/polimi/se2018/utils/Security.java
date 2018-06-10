@@ -52,7 +52,7 @@ public class Security {
                     try {
                         if (Server.getInstance().isConfigurationRequired()) {
                             if (userInfo[1].equals(password)) {
-                                Logger.NOTIFICATION(LoggerType.SERVER_SIDE, "user " + name + " has been authenticated");
+                                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "user " + name + " has been authenticated");
                                 return generateUser(name);
                             }
                         } else {
@@ -65,7 +65,7 @@ public class Security {
             }
             throw new AuthenticationErrorException("UserNotFound");
         } catch (IOException e){
-            Logger.ERROR(LoggerType.SERVER_SIDE, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
             return null;
         }
     }

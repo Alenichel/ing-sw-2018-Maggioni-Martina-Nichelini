@@ -24,7 +24,7 @@ public class Timer extends Thread {
                 if (timerInterface instanceof GameController)
                     ((GameController)timerInterface).gameAssociated.setTimerSecondLeft((int)(duration-slept/1000));
                 if( timerInterface instanceof RoundHandler){
-                    ((RoundHandler)timerInterface).getGameAssociated().setTimerSecondLeft((int)(duration-slept/1000));
+                    ((RoundHandler)timerInterface).gameAssociated.setTimerSecondLeft((int)(duration-slept/1000));
 
                 }
             }

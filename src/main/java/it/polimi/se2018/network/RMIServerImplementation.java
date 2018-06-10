@@ -81,11 +81,17 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         }
 	}
 
+	@Override
 	public void receiver(Observable o, Object msg) {
         String key = ((Message)msg).getSignedBy();
         Pair pair = (Pair) clients.get(key);
         VirtualView view = (VirtualView) pair.getValue();
         view.mySetChanged();
         view.notifyObservers(/*packet.getObservable(), */msg);
+    }
+
+    @Override
+    public void pong () {
+	    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.DEBUG, "Received PING. PONGED");
     }
 }

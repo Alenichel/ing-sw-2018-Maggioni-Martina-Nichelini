@@ -8,8 +8,8 @@ import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 
 import java.util.*;
+import static it.polimi.se2018.utils.LoggerPriority.ERROR;
 
-import static it.polimi.se2018.utils.LoggerPriority.NOTIFICATION;
 
 
 public class CliView extends View implements Observer {
@@ -63,8 +63,8 @@ public class CliView extends View implements Observer {
     }
 
     public void run() {
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "Cli started..");
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, "*** " + this.client.getNickname() + " ***");
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Cli started..");
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "*** " + this.client.getNickname() + " ***");
 
         loop: while (true) {
             String input = sinput.nextLine();
@@ -76,7 +76,7 @@ public class CliView extends View implements Observer {
                     try {
                         this.handleRequestCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
-                        Logger.ERROR(LoggerType.CLIENT_SIDE, e.toString());
+                        Logger.log(LoggerType.CLIENT_SIDE, ERROR, e.toString());
                     }
                     break;
 
@@ -84,11 +84,15 @@ public class CliView extends View implements Observer {
                     try {
                         this.handleGetCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
-                        Logger.ERROR(LoggerType.CLIENT_SIDE, "not valid command found");
+                        Logger.log(LoggerType.CLIENT_SIDE, ERROR, "not valid command found");
                     }
                     break;
 
                 case "select":
+                    if (tokens.length == 1) {
+                        Logger.log(LoggerType.CLIENT_SIDE, ERROR, "argument is missing");
+                        break;
+                    }
                     handleSelectCommands(tokens[1]);
                     break;
 
@@ -104,7 +108,7 @@ public class CliView extends View implements Observer {
                             break;
                         }
                         this.handleTakeCommands(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-                    } catch (NumberFormatException e) {Logger.ERROR(LoggerType.CLIENT_SIDE, "Wrong input format, retry");}
+                    } catch (NumberFormatException e) {Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
                     break;
 
                 case "quit":
@@ -113,7 +117,7 @@ public class CliView extends View implements Observer {
                     break loop;
 
                 default:
-                    Logger.ERROR(LoggerType.CLIENT_SIDE, "Unrecognized command");
+                    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Unrecognized command");
                     break;
             } //end while
         }
@@ -121,7 +125,7 @@ public class CliView extends View implements Observer {
 
     private void requestCallback(GiveMessage callbackMessage){
         this.lastObjectReceveid = callbackMessage.getGivenObject();
-        Logger.NOTIFICATION(LoggerType.CLIENT_SIDE, lastObjectReceveid.toString());
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, lastObjectReceveid.toString());
     }
 
     public void controllerCallback(Message callbackMessage){
@@ -199,7 +203,7 @@ public class CliView extends View implements Observer {
 
         int choose = 0;
         while (choose != 1 && choose != 2){
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Choose: \n\t1) Search for another game\n\t2)Quit" );
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Choose: \n\t1) Search for another game\n\t2) Quit" );
             choose = sinput.nextInt();
         }
 

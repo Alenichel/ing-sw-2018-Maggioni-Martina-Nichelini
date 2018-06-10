@@ -1,18 +1,16 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
-import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.View;
-import javafx.beans.Observable;
-
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Observer;
+
 
 public class RMIClient {
 
@@ -24,6 +22,9 @@ public class RMIClient {
 			client = new RMIClientImplementation(view, nickname, password, server);
 			ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
 			server.addClient(remoteRef);
+
+			Ping pinger = new Ping(server);
+			pinger.start();
             return client;
 		} catch (MalformedURLException e) {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Not found URL");
@@ -34,5 +35,30 @@ public class RMIClient {
 		}
         return client;
 	}
+
+	private static class Ping extends Thread{
+
+	    private ServerInterface si;
+
+	    private Ping(ServerInterface si){
+	        this.si = si;
+        }
+
+	    @Override
+        public void run(){
+	        while (true){
+	            try {
+                    sleep(5 * 1000);
+                    si.pong();
+                } catch (RemoteException e){
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Server seems to have died. Closing..");
+                    System.exit(1);
+                } catch (InterruptedException e){
+                    Thread.currentThread().interrupt();
+                    return;
+                }
+            }
+        }
+    }
 
 }

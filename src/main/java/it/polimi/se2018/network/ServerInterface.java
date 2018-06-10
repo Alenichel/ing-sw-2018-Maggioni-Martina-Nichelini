@@ -6,9 +6,12 @@ import java.util.Observable;
 
 import it.polimi.se2018.message.Message;
 
-public interface ServerInterface extends Remote {	
+public interface ServerInterface extends Remote {
 	
     void addClient(ClientInterface client) throws RemoteException;
+
+    void pong() throws RemoteException;
+
 
     void controllerCallback(Message callbackMessage)throws RemoteException;
 

@@ -15,6 +15,7 @@ public class Dice implements Serializable {
     private DiceLocation location;
     private String unicode = "";
     public Dice(){}
+
     public Dice (DiceColor color){
         this.color = color.name();
         this.location = null;
@@ -22,15 +23,8 @@ public class Dice implements Serializable {
         this.toUnicode(this.color, this.getNumber());
     }
 
-    public Dice(String color){
-        this.color = color;
-        this.location = null;
-        this.rollDice();
-        this.toUnicode(this.color, this.getNumber());
-    }
-
-    public Dice(String color, int number){
-        this.color = color;
+    public Dice(DiceColor color, int number){
+        this.color = color.name();
         this.location = null;
         this.number = number;
     }

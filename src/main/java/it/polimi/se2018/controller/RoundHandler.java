@@ -19,22 +19,18 @@ import java.util.Random;
  */
 public class RoundHandler implements TimerInterface {
 
-    private Game gameAssociated;
+    public final Game gameAssociated;
     private GameController gameController;
     private int turnNumber = 0;
     private int actualRound;
     private boolean moved = false;
-    private long timerID;
+    protected long timerID;
     private long moveTimer;
     private Random rand = new Random();
 
     private final List<Player> turnList;
     private Player activePlayer;
     private WindowPatternCard workingPatternCard;
-
-    public Game getGameAssociated() {
-        return gameAssociated;
-    }
 
     public RoundHandler (Game game){
         this.gameAssociated = game;
@@ -44,7 +40,6 @@ public class RoundHandler implements TimerInterface {
         if (this.actualRound == Server.getInstance().getnOfTurn()){
             this.gameController.onGameEnd();
         }
-
 
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
@@ -162,7 +157,7 @@ public class RoundHandler implements TimerInterface {
             //handle first put case
             if (this.workingPatternCard.getPlacedDice() == 0 &&
                     this.workingPatternCard.getCell(mdm.getEndingX(),mdm.getEndingY()).getNeighbourCells().size() > 3){
-                ControllerCallbackMessage em = new ControllerCallbackMessage("First die has to be put in a corner cell", LoggerPriority.ERROR);
+                ControllerCallbackMessage em = new ControllerCallbackMessage("First die has to be put in a outer cell", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(em);
                 return;
         }
@@ -190,7 +185,7 @@ public class RoundHandler implements TimerInterface {
 
     public void update(Observable observable, Object message){
         Message msg = (Message)message;
-        Logger.NOTIFICATION(LoggerType.SERVER_SIDE, ":ROUND_HANDLER: Handling -> " + msg.getMessageType());
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION,":ROUND_HANDLER: Handling -> " + msg.getMessageType());
 
         if (! (((VirtualView)observable).getClient().getNickname().equals(this.activePlayer.getNickname()))){
             ControllerCallbackMessage ccm = new ControllerCallbackMessage("This is not your turn. Command ignored", LoggerPriority.ERROR);
