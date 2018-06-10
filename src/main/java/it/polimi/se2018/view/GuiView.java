@@ -30,12 +30,7 @@ public class GuiView extends View implements Observer {
     private transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
-    //private transient Scene sceneLogin;
     private transient Scene sceneGame;
-
-    public GuiView(){
-
-    }
 
     public void run(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -101,7 +96,8 @@ public class GuiView extends View implements Observer {
     public void printGameWindow(Game game, Player player){
         primaryStage.setScene(sceneGame);
         primaryStage.show();
-        gameWindowController.print(game, player);
+        gameWindowController.printGameWindow(game, player, this);
+        gameWindowController.printPatternCards(game);
     }
 
     @Override
@@ -112,6 +108,11 @@ public class GuiView extends View implements Observer {
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
+    }
+
+    protected void passTurn(){
+        this.setChanged();
+        this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
     }
 
     @Override
@@ -144,6 +145,7 @@ public class GuiView extends View implements Observer {
                         }
                         if(wtu.equals(WhatToUpdate.ActivePlayer)){
                             printGameWindow((Game)o, client);
+                            gameWindowController.printCurrentRound(((Game)o), ((Game)o).getActivePlayer());
                         }
                     }
                 );
