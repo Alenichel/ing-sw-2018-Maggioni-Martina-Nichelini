@@ -58,27 +58,22 @@ public class SelectPatternCardWindowController implements Serializable {
 
         window1.setOnMouseClicked((MouseEvent e) -> {
             hadledPane.setVisible(true);
-            handleClick(1);
+            handleClick(0);
         });
         window2.setOnMouseClicked((MouseEvent e) -> {
             hadledPane.setVisible(true);
-            handleClick(2);
+            handleClick(1);
         });
         window3.setOnMouseClicked((MouseEvent e) -> {
             hadledPane.setVisible(true);
-            handleClick(3);
+            handleClick(2);
         });
         window4.setOnMouseClicked((MouseEvent e) -> {
             hadledPane.setVisible(true);
-            handleClick(4);
+            handleClick(3);
         });
 
-        /*window1.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                hadledPane.setVisible(true);
-            }
-        });*/
+
     }
 
     private void handleClick(int n){
