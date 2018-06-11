@@ -4,12 +4,13 @@ import it.polimi.se2018.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -19,39 +20,53 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class GameWindowController implements Serializable {
-    @FXML private transient AnchorPane page;
-    @FXML private transient Label name0;
-    @FXML private transient Label name1;
-    @FXML private transient Label name3;
-    @FXML private transient Label name2;
-    @FXML private transient GridPane windowPattern0;
-    @FXML private transient GridPane windowPattern1;
-    @FXML private transient GridPane windowPattern2;
-    @FXML private transient GridPane windowPattern3;
-    @FXML private transient ImageView privateObjective;
-    @FXML private transient ImageView objective1;
-    @FXML private transient ImageView objective3;
-    @FXML private transient ImageView objective2;
-    @FXML private transient ImageView mouseOverPublicObjective;
-    @FXML private transient Label timerLeft;
-    @FXML private transient ImageView dot1;
-    @FXML private transient ImageView dot2;
-    @FXML private transient ImageView dot3;
-    @FXML private transient ImageView dot4;
-    @FXML private transient ImageView dot5;
-    @FXML private transient ImageView dot6;
-    @FXML private transient ImageView clock;
-    @FXML private transient ImageView privateObjectiveZoom;
-    @FXML private transient Button passTurn;
+    @FXML private AnchorPane page;
+    @FXML private Label name0;
+    @FXML private Label name1;
+    @FXML private Label name3;
+    @FXML private Label name2;
+    @FXML private GridPane windowPattern0;
+    @FXML private GridPane windowPattern1;
+    @FXML private GridPane windowPattern2;
+    @FXML private GridPane windowPattern3;
+    @FXML private ImageView privateObjective;
+    @FXML private ImageView objective1;
+    @FXML private ImageView objective3;
+    @FXML private ImageView objective2;
+    @FXML private ImageView mouseOverPublicObjective;
+    @FXML private Label timerLeft;
+    @FXML private ImageView dot1;
+    @FXML private ImageView dot2;
+    @FXML private ImageView dot3;
+    @FXML private ImageView dot4;
+    @FXML private ImageView dot5;
+    @FXML private ImageView dot6;
+    @FXML private ImageView clock;
+    @FXML private ImageView privateObjectiveZoom;
+    @FXML private Button passTurn;
+
+    @FXML private Pane drafted1;
+    @FXML private Pane drafted2;
+    @FXML private Pane drafted3;
+    @FXML private Pane drafted4;
+    @FXML private Pane drafted5;
+    @FXML private Pane drafted6;
+    @FXML private Pane drafted7;
+    @FXML private Pane drafted8;
+    @FXML private Pane drafted9;
+
+
 
     private GuiView gw;
 
-    transient ArrayList<Label> labels;
-    transient ArrayList<GridPane> gridPanes;
+    transient List<Label> labels;
+    transient List<GridPane> gridPanes;
+    transient List<Pane> draftedDice;
 
-    protected void setup(Game game){
+    private void setup(Game game){
         labels = new ArrayList<>();
         gridPanes = new ArrayList<>();
+        draftedDice = new ArrayList<>();
         labels.add(name0);
         labels.add(name1);
         labels.add(name2);
@@ -60,6 +75,17 @@ public class GameWindowController implements Serializable {
         gridPanes.add(windowPattern1);
         gridPanes.add(windowPattern2);
         gridPanes.add(windowPattern3);
+        draftedDice.add(drafted1);
+        draftedDice.add(drafted2);
+        draftedDice.add(drafted3);
+        draftedDice.add(drafted4);
+        draftedDice.add(drafted5);
+        draftedDice.add(drafted6);
+        draftedDice.add(drafted7);
+        draftedDice.add(drafted8);
+        draftedDice.add(drafted9);
+
+        passTurn.setDisable(true);
 
 
         passTurn.setOnMouseClicked((MouseEvent e) -> {
@@ -135,6 +161,19 @@ public class GameWindowController implements Serializable {
                 privateObjectiveZoom.setVisible(false);
             }
         });
+
+
+        for(Pane p : draftedDice){
+           p.setOnDragDetected(new EventHandler<MouseEvent>() {
+               public void handle(MouseEvent event) {
+                   Dragboard db = p.startDragAndDrop(TransferMode.ANY);
+                   ClipboardContent content = new ClipboardContent();
+                   content.putImage(p.getBackground().getImages().get(0).getImage());
+                   db.setContent(content);
+                   event.consume();
+               }
+           });
+       }
     }
 
     private void printPlayerName(List<Player> ps, Player me){
@@ -212,8 +251,11 @@ public class GameWindowController implements Serializable {
 
     protected String toPath(WindowCell w){
         String str="";
-
-        if(w.getColorConstraint() != null){
+        if(w.getAssignedDice() != null) {
+            str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
+            //System.out.println("dice path: "+str);
+        }
+        else if(w.getColorConstraint() != null){
             str = "/constraint/color/"+w.getColorConstraint()+".png";
             //System.out.println("color constraint image path: "+str);
         }
@@ -221,10 +263,7 @@ public class GameWindowController implements Serializable {
             str = "/constraint/number/"+w.getNumberConstraint()+".png";
             //System.out.println("number constraint image path: "+str);
         }
-        else if(w.getAssignedDice() != null) {
-            str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getNumberConstraint()+".png";
-            //System.out.println("dice path: "+str);
-        }else{
+        else{
             str ="BLANK";
         }
         return str;
@@ -244,6 +283,13 @@ public class GameWindowController implements Serializable {
     }
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
+
+    private void printWindowCell(WindowCell in, String path, GridPane gridPane){
+        BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        Pane pane = (Pane) getNodeByRowColumnIndex(in.getRow(), in.getColumn(), gridPane);
+        pane.setBackground(new Background(myBI));
+    }
+
     private void printPatternCard(GridPane gridPane, Game game) {
         String playerName = gridPane.getId().split("-")[0];
         Player nowPlayer = new Player("#");
@@ -258,14 +304,7 @@ public class GameWindowController implements Serializable {
                         for (WindowCell in : windowCell) {
                             String path = toPath(in);
                             if (!path.equals("BLANK")) {
-                                Image image = new Image(path);
-
-                                ImageView imageView = new ImageView(image);
-                                imageView.setFitHeight(50);
-                                imageView.setFitWidth(50);
-
-                                Pane pane = (Pane) getNodeByRowColumnIndex(in.getRow(), in.getColumn(), gridPane);
-                                pane.getChildren().add(imageView);
+                                printWindowCell(in, path, gridPane);
                             }
                         }
                     }
@@ -275,14 +314,38 @@ public class GameWindowController implements Serializable {
             if (nowPlayer.getNickname().equals("#")) return;
         }
 
+        for(int x = 0; x<= 4; x++){
+            for(int y = 0; y<=3; y++){
+                Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
+                pane.setOnDragDropped(new EventHandler<DragEvent>() {
+                    @Override
+                    public void handle(DragEvent event) {
+                        System.out.println("DROPPED");
+                        /* data dropped */
+                        /* if there is a string data on dragboard, read it and use it */
+                        Dragboard db = event.getDragboard();
+                        boolean success = false;
+                        if (db.hasString()) {
+                            BackgroundImage myBI= new BackgroundImage(db.getImage(),
+                                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+                            pane.setBackground(new Background(myBI));
+                            success = true;
+                        }
+                        event.setDropCompleted(success);
+                        event.consume();
+                    }
+                });
+            }
+        }
+
     }
 
-
-    protected void printCurrentRound(Game game, Player me){
+    protected void printCurrentRound( Player me){
         DropShadow dropShadow = new DropShadow();
         DropShadow dropShadowEnd = new DropShadow();
-        dropShadow.setColor(Color.LIGHTBLUE);
-        dropShadow.setRadius(30.0);
+        dropShadow.setColor(Color.BLACK);
+        dropShadow.setRadius(60.0);
         dropShadowEnd.setRadius(0);
         int n = 0;
 
@@ -296,7 +359,21 @@ public class GameWindowController implements Serializable {
         }
     }
 
-
-
-
+    protected void printDratfedDice(List<Dice> dices){
+        passTurn.setDisable(false);
+        int n = 0;
+        for(Pane pane: draftedDice){
+            pane.setBackground(null);
+        }
+        for(Dice d : dices){
+            String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+            BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true),
+                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            Pane draftedDie = draftedDice.get(n);
+            draftedDie.setCursor(Cursor.OPEN_HAND);
+            draftedDie.setDisable(false);
+            draftedDie.setBackground(new Background(myBI));
+            n++;
+        }
+    }
 }

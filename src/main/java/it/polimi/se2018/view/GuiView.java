@@ -23,9 +23,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class GuiView extends View implements Observer {
-    private WaitingAreaController waitingAreaController;
-    private SelectPatternCardWindowController selectPatternCardWindowController;
-    private GameWindowController gameWindowController;
+    private transient WaitingAreaController waitingAreaController;
+    private transient SelectPatternCardWindowController selectPatternCardWindowController;
+    private transient GameWindowController gameWindowController;
 
     private transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
@@ -98,6 +98,8 @@ public class GuiView extends View implements Observer {
         primaryStage.show();
         gameWindowController.printGameWindow(game, player, this);
         gameWindowController.printPatternCards(game);
+        gameWindowController.printDratfedDice(game.getDiceOnTable());
+        gameWindowController.printCurrentRound(game.getActivePlayer());
     }
 
     @Override
@@ -145,7 +147,7 @@ public class GuiView extends View implements Observer {
                         }
                         if(wtu.equals(WhatToUpdate.ActivePlayer)){
                             printGameWindow((Game)o, client);
-                            gameWindowController.printCurrentRound(((Game)o), ((Game)o).getActivePlayer());
+
                         }
                     }
                 );
