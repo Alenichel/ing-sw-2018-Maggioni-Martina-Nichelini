@@ -3,6 +3,7 @@ package it.polimi.se2018.view;
 import it.polimi.se2018.model.*;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
@@ -56,7 +57,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted9;
 
     private GuiView gw;
-
+    boolean draggable = false;
     transient List<Label> labels;
     transient List<GridPane> gridPanes;
     transient List<Pane> draftedDice;
@@ -91,17 +92,20 @@ public class GameWindowController implements Serializable {
         passTurn.setOnMouseClicked((MouseEvent e) -> {
             handlePassTurn();
         });
+
     }
 
     private void setDragDetection(){
         for(Pane p : draftedDice){
             p.setOnDragDetected(new EventHandler<MouseEvent>() {
                 public void handle(MouseEvent event) {
-                    Dragboard db = p.startDragAndDrop(TransferMode.MOVE);
-                    ClipboardContent content = new ClipboardContent();
-                    content.putImage(p.getBackground().getImages().get(0).getImage());
-                    db.setContent(content);
-                    event.consume();
+                    if(draggable) {
+                        Dragboard db = p.startDragAndDrop(TransferMode.MOVE);
+                        ClipboardContent content = new ClipboardContent();
+                        content.putImage(p.getBackground().getImages().get(0).getImage());
+                        db.setContent(content);
+                        event.consume();
+                    }
                 }
             });
         }
@@ -119,11 +123,8 @@ public class GameWindowController implements Serializable {
     private void setOnDragOver(Pane target){
         target.setOnDragOver(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                /* data is dragged over the target */
-                /* accept it only if it is not dragged from the same node
-                 * and if it has a string data */
+
                 if (event.getGestureSource() != target ) {
-                    /* allow for both copying and moving, whatever user chooses */
                     event.acceptTransferModes(TransferMode.MOVE);
                 }
 
@@ -135,8 +136,7 @@ public class GameWindowController implements Serializable {
     private void setOnDragDropped (Pane target){
         target.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-                /* data dropped */
-                /* if there is a string data on dragboard, read it and use it */
+
                 Dragboard db = event.getDragboard();
                 boolean success = false;
 
@@ -145,8 +145,13 @@ public class GameWindowController implements Serializable {
 
                 target.setBackground(new Background(myBI));
                 success = true;
-                /* let the source know whether the string was successfully
-                 * transferred and used */
+
+                for(Pane p : draftedDice){
+                    if(target.getBackground().getImages().get(0).getImage().equals(p.getBackground().getImages().get(0).getImage())){
+                        p.setBackground(null);
+                    }
+                }
+
                 event.setDropCompleted(success);
 
                 event.consume();
@@ -380,6 +385,18 @@ public class GameWindowController implements Serializable {
             }
             n++;
         }
+        toggleDraggable(me);
+    }
+
+    private void toggleDraggable(Player currentPlayer){
+        String player = windowPattern0.getId().split("-")[0];
+
+        if(player.equals(currentPlayer.getNickname())){
+            draggable = true;
+        }else{
+            draggable = false;
+        }
+
     }
 
     protected void printDratfedDice(List<Dice> dices){
