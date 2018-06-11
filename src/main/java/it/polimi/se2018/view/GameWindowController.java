@@ -57,12 +57,12 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted9;
 
     private GuiView gw;
-    boolean draggable = false;
-    transient List<Label> labels;
-    transient List<GridPane> gridPanes;
-    transient List<Pane> draftedDice;
+    private boolean draggable = false;
+    private transient List<Label> labels;
+    private transient List<GridPane> gridPanes;
+    private transient List<Pane> draftedDice;
 
-    private void setup(Game game){
+    private void setup(){
         labels = new ArrayList<>();
         gridPanes = new ArrayList<>();
         draftedDice = new ArrayList<>();
@@ -89,9 +89,7 @@ public class GameWindowController implements Serializable {
 
 
         passTurn.setDisable(true);
-        passTurn.setOnMouseClicked((MouseEvent e) -> {
-            handlePassTurn();
-        });
+        passTurn.setOnMouseClicked((MouseEvent e) -> handlePassTurn());
 
     }
 
@@ -102,8 +100,14 @@ public class GameWindowController implements Serializable {
                     if(draggable) {
                         Dragboard db = p.startDragAndDrop(TransferMode.MOVE);
                         ClipboardContent content = new ClipboardContent();
+
+                        //put as content last number of the ID
+                        content.putString(p.getId().substring(p.getId().length()-1));
+
+                        //put as image the background image of the dragged die
                         content.putImage(p.getBackground().getImages().get(0).getImage());
                         db.setContent(content);
+                        p.setBackground(null);
                         event.consume();
                     }
                 }
@@ -115,6 +119,7 @@ public class GameWindowController implements Serializable {
         for(int x = 0; x<= 4; x++)
             for(int y = 0; y<=3; y++){
                 Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
+                pane.setId("pane-"+x+"-"+y);
                 this.setOnDragOver(pane);
                 this.setOnDragDropped(pane);
             }
@@ -138,19 +143,17 @@ public class GameWindowController implements Serializable {
             public void handle(DragEvent event) {
 
                 Dragboard db = event.getDragboard();
-                boolean success = false;
+                boolean success;
+
+                int n = Integer.parseInt(db.getString());
 
                 BackgroundImage myBI= new BackgroundImage(db.getImage(),
                         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
+                gw.placeDice(n, Integer.parseInt(target.getId().split("-")[1]), Integer.parseInt(target.getId().split("-")[2]));
                 target.setBackground(new Background(myBI));
                 success = true;
+                draggable = false;
 
-                for(Pane p : draftedDice){
-                    if(target.getBackground().getImages().get(0).getImage().equals(p.getBackground().getImages().get(0).getImage())){
-                        p.setBackground(null);
-                    }
-                }
 
                 event.setDropCompleted(success);
 
@@ -167,7 +170,7 @@ public class GameWindowController implements Serializable {
 
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
-        setup(game);
+        setup();
         printFavourToken(me);
         printPlayerName(game.getPlayers(), me);
         printPrivateObjective(me);
@@ -304,19 +307,16 @@ public class GameWindowController implements Serializable {
         }
     }
 
-    protected String toPath(WindowCell w){
-        String str="";
+    private String toPath(WindowCell w){
+        String str;
         if(w.getAssignedDice() != null) {
             str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
-            //System.out.println("dice path: "+str);
         }
         else if(w.getColorConstraint() != null){
             str = "/constraint/color/"+w.getColorConstraint()+".png";
-            //System.out.println("color constraint image path: "+str);
         }
         else if(w.getNumberConstraint() != 0){
             str = "/constraint/number/"+w.getNumberConstraint()+".png";
-            //System.out.println("number constraint image path: "+str);
         }
         else{
             str ="BLANK";
@@ -339,9 +339,14 @@ public class GameWindowController implements Serializable {
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
     private void printWindowCell(WindowCell in, String path, GridPane gridPane){
-        BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         Pane pane = (Pane) getNodeByRowColumnIndex(in.getRow(), in.getColumn(), gridPane);
-        pane.setBackground(new Background(myBI));
+        if(path.equals("BLANK")){
+            pane.setBackground(null);
+        }else{
+            BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+            pane.setBackground(new Background(myBI));
+        }
+
     }
 
     private void printPatternCard(GridPane gridPane, Game game) {
@@ -354,7 +359,7 @@ public class GameWindowController implements Serializable {
                 if (p.getNickname().equals(playerName)) {
                     nowPlayer = p;
                     windowPatternCard = nowPlayer.getActivePatternCard();
-                    for (WindowCell windowCell[] : windowPatternCard.getGrid()) {
+                    for (WindowCell[] windowCell : windowPatternCard.getGrid()) {
                         for (WindowCell in : windowCell) {
                             String path = toPath(in);
                             if (!path.equals("BLANK")) {
@@ -365,7 +370,7 @@ public class GameWindowController implements Serializable {
                 }
             }
             //serve per non riempire le pattern di nessuno
-            if (nowPlayer.getNickname().equals("#")) return;
+            //if (nowPlayer.getNickname().equals("#")) return;
         }
     }
 
@@ -393,9 +398,14 @@ public class GameWindowController implements Serializable {
 
         if(player.equals(currentPlayer.getNickname())){
             draggable = true;
+            for(Pane pane : draftedDice)
+                pane.setCursor(Cursor.OPEN_HAND);
         }else{
             draggable = false;
+            for(Pane pane : draftedDice)
+                pane.setCursor(Cursor.CLOSED_HAND);
         }
+
 
     }
 
