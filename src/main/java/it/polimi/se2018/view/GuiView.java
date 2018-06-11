@@ -1,8 +1,10 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.message.*;
+import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.utils.GameNames;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
@@ -115,6 +117,13 @@ public class GuiView extends View implements Observer {
     protected void passTurn(){
         this.setChanged();
         this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
+    }
+
+    protected void placeDice(int n, int x, int y){
+        MoveDiceMessage mdm = new MoveDiceMessage(n, x-1, y-1);
+        this.setChanged();
+        this.notifyObservers(mdm);
+
     }
 
     @Override
