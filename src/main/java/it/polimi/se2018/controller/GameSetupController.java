@@ -166,6 +166,7 @@ public class GameSetupController implements Serializable {
                 catch (IndexOutOfBoundsException e) {
                     ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have inserted an out of range value", LoggerPriority.ERROR);
                     ((VirtualView)observable).controllerCallback(ccm);
+                    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
                 }
                 break;
 
