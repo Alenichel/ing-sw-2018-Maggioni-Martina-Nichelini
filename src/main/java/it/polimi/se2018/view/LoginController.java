@@ -16,12 +16,14 @@ import java.util.ResourceBundle;
 import javafx.scene.image.Image;
 public class LoginController implements Serializable{
 
-    @FXML private transient Button button;
-    @FXML private transient TextField username;
-    @FXML private transient TextField password;
-    @FXML private transient RadioButton rmi;
-    @FXML private transient RadioButton socket;
-    @FXML private transient TextField server;
+    @FXML private Button button;
+    @FXML private TextField username;
+    @FXML private TextField password;
+    @FXML private RadioButton rmi;
+    @FXML private RadioButton socket;
+    @FXML private TextField server;
+    @FXML private TextField port;
+
     String methodConnection;
 
     @FXML
@@ -40,6 +42,8 @@ public class LoginController implements Serializable{
             public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
                 if (group.getSelectedToggle() != null) {
                     methodConnection = group.getSelectedToggle().getUserData().toString();
+                    if (methodConnection.equals("RMI")) port.setText("1099");
+                    else port.setText("9091");
                     button.setDisable(false);
                     System.out.println(group.getSelectedToggle().getUserData().toString());
                 }
@@ -54,6 +58,7 @@ public class LoginController implements Serializable{
         String logInUsernme = username.getText();
         String logInPassword = password.getText();
         String serverURL = server.getText();
+        String serverPort = port.getText();
 
         SocketClient sc;
         RMIClient rmiClient;
@@ -69,7 +74,7 @@ public class LoginController implements Serializable{
             gw.addObserver(rmiClient.run(gw, serverURL, logInUsernme, logInPassword));
         }else if(methodConnection.equals("socket")){
             //SOCKET CONNECTION
-            sc = new SocketClient(serverURL, 9091, logInUsernme, logInPassword, gw);
+            sc = new SocketClient(serverURL, Integer.parseInt(serverPort), logInUsernme, logInPassword, gw);
             gw.addObserver(sc);
         }
         gw.run((Stage)button.getScene().getWindow());

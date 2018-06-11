@@ -71,7 +71,7 @@ public class AppClient extends Application{
         Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
 
         primaryStage.setTitle("Welcome!");
-        Scene sceneLogin = new Scene(root, 620, 331);
+        Scene sceneLogin = new Scene(root);
         String url = "/logo.png";
         Image image = new Image(url);
         primaryStage.getIcons().add(image);
