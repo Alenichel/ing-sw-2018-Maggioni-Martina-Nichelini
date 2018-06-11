@@ -21,6 +21,7 @@ public class LoginController implements Serializable{
     @FXML private transient TextField password;
     @FXML private transient RadioButton rmi;
     @FXML private transient RadioButton socket;
+    @FXML private transient TextField server;
     String methodConnection;
 
     @FXML
@@ -38,7 +39,6 @@ public class LoginController implements Serializable{
         group.selectedToggleProperty().addListener(new ChangeListener<Toggle>(){
             public void changed(ObservableValue<? extends Toggle> ov, Toggle oldToggle, Toggle newToggle) {
                 if (group.getSelectedToggle() != null) {
-                    //System.out.println(group.getSelectedToggle().getUserData().toString());
                     methodConnection = group.getSelectedToggle().getUserData().toString();
                     button.setDisable(false);
                     System.out.println(group.getSelectedToggle().getUserData().toString());
@@ -53,6 +53,8 @@ public class LoginController implements Serializable{
     private void connectionEvent(){
         String logInUsernme = username.getText();
         String logInPassword = password.getText();
+        String serverURL = server.getText();
+
         SocketClient sc;
         RMIClient rmiClient;
         GuiView gw = new GuiView();
@@ -61,14 +63,13 @@ public class LoginController implements Serializable{
             logInPassword = null;
         }
 
-        //String methodConnection = toggleConnection.getSelectedToggle().getUserData().toString();
         if(methodConnection.equals("RMI")){
             //RMI CONNECTION
             rmiClient = new RMIClient();
-            gw.addObserver(rmiClient.run(gw, logInUsernme, logInPassword));
+            gw.addObserver(rmiClient.run(gw, serverURL, logInUsernme, logInPassword));
         }else if(methodConnection.equals("socket")){
             //SOCKET CONNECTION
-            sc = new SocketClient("localhost", 9091, logInUsernme, logInPassword, gw);
+            sc = new SocketClient(serverURL, 9091, logInUsernme, logInPassword, gw);
             gw.addObserver(sc);
         }
         gw.run((Stage)button.getScene().getWindow());

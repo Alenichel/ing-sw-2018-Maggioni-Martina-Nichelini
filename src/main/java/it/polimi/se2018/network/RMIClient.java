@@ -14,11 +14,11 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class RMIClient {
 
-	public static RMIClientImplementation run(View view, String nickname, String password) {
+	public static RMIClientImplementation run(View view, String serverURL,String nickname, String password) {
 		ServerInterface server;
         RMIClientImplementation client = null;
 		try {
-			server = (ServerInterface)Naming.lookup("//localhost/MyServer");
+			server = (ServerInterface)Naming.lookup("//" + serverURL + "/SagradaServer");
 			client = new RMIClientImplementation(view, nickname, password, server);
 			ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
 			server.addClient(remoteRef);

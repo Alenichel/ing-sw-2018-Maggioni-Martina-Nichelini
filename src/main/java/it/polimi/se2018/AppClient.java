@@ -57,31 +57,30 @@ public class AppClient extends Application{
 
             if (network == 2) {
                 RMIClient rmiClient = new RMIClient();
-                cw.addObserver(rmiClient.run(cw, nickname, password));
+                cw.addObserver(rmiClient.run(cw, "localhost", nickname, password));
             }
             cw.run();
 
         }else {
             launch(args);
-            //new Thread(() -> Application.launch(args)).start();
         }
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/Login.fxml"));
 
         primaryStage.setTitle("Welcome!");
-        Scene sceneLogin = new Scene(root, 620, 300);
+        Scene sceneLogin = new Scene(root, 620, 331);
         String url = "/logo.png";
         Image image = new Image(url);
         primaryStage.getIcons().add(image);
 
         primaryStage.setScene(sceneLogin);
+        primaryStage.setResizable(false);
+        primaryStage.sizeToScene();
         primaryStage.show();
 
-
-        //Image image = new Image(XYZ.class.getClassLoader().getResource("my.png").toExternalForm());
 
     }
 }

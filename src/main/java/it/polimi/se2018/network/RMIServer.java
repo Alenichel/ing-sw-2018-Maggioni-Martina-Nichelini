@@ -17,7 +17,7 @@ public class RMIServer {
 		}
 		try {
 			RMIServerImplementation serverImplementation = new RMIServerImplementation();
-			Naming.rebind("//localhost/MyServer", serverImplementation);
+			Naming.rebind("//localhost/SagradaServer", serverImplementation);
 		} catch (MalformedURLException e) {
 			System.err.println("Impossible to register the given object");
 		} catch (RemoteException e) {

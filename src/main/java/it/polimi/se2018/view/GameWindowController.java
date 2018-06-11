@@ -55,8 +55,6 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
 
-
-
     private GuiView gw;
 
     transient List<Label> labels;
@@ -85,19 +83,84 @@ public class GameWindowController implements Serializable {
         draftedDice.add(drafted8);
         draftedDice.add(drafted9);
 
+        this.setDragDetection();
+        this.setTargetEvents();
+
+
         passTurn.setDisable(true);
-
-
         passTurn.setOnMouseClicked((MouseEvent e) -> {
             handlePassTurn();
         });
     }
 
+    private void setDragDetection(){
+        for(Pane p : draftedDice){
+            p.setOnDragDetected(new EventHandler<MouseEvent>() {
+                public void handle(MouseEvent event) {
+                    Dragboard db = p.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+                    content.putImage(p.getBackground().getImages().get(0).getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
+            });
+        }
+    }
+
+    private void setTargetEvents(){
+        for(int x = 0; x<= 4; x++)
+            for(int y = 0; y<=3; y++){
+                Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
+                this.setOnDragOver(pane);
+                this.setOnDragDropped(pane);
+            }
+    }
+
+    private void setOnDragOver(Pane target){
+        target.setOnDragOver(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                /* data is dragged over the target */
+                /* accept it only if it is not dragged from the same node
+                 * and if it has a string data */
+                if (event.getGestureSource() != target ) {
+                    /* allow for both copying and moving, whatever user chooses */
+                    event.acceptTransferModes(TransferMode.MOVE);
+                }
+
+                event.consume();
+            }
+        });
+    }
+
+    private void setOnDragDropped (Pane target){
+        target.setOnDragDropped(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                /* data dropped */
+                /* if there is a string data on dragboard, read it and use it */
+                Dragboard db = event.getDragboard();
+                boolean success = false;
+
+                BackgroundImage myBI= new BackgroundImage(db.getImage(),
+                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+                target.setBackground(new Background(myBI));
+                success = true;
+                /* let the source know whether the string was successfully
+                 * transferred and used */
+                event.setDropCompleted(success);
+
+                event.consume();
+            }
+        });
+    }
+
+    //------------------------------------------------------------------
+
     private void handlePassTurn(){
         gw.passTurn();
     }
 
-    protected void printGameWindow(Game game, Player me, GuiView gw){
+    protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
         setup(game);
         printFavourToken(me);
@@ -161,24 +224,12 @@ public class GameWindowController implements Serializable {
                 privateObjectiveZoom.setVisible(false);
             }
         });
-
-
-        for(Pane p : draftedDice){
-           p.setOnDragDetected(new EventHandler<MouseEvent>() {
-               public void handle(MouseEvent event) {
-                   Dragboard db = p.startDragAndDrop(TransferMode.ANY);
-                   ClipboardContent content = new ClipboardContent();
-                   content.putImage(p.getBackground().getImages().get(0).getImage());
-                   db.setContent(content);
-                   event.consume();
-               }
-           });
-       }
     }
 
     private void printPlayerName(List<Player> ps, Player me){
         int n = 1;
 
+        labels.get(0).setText(me.getNickname());
         labels.get(0).setText(me.getNickname());
         gridPanes.get(0).setId(me.getNickname() + "-windowPattern");
 
@@ -242,7 +293,6 @@ public class GameWindowController implements Serializable {
         timerLeft.setText("min: "+min+" sec: "+sec);
     }
 
-
     protected void printPatternCards(Game game){
         for(GridPane gridPane : gridPanes){
             printPatternCard(gridPane, game);
@@ -283,7 +333,6 @@ public class GameWindowController implements Serializable {
     }
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-
     private void printWindowCell(WindowCell in, String path, GridPane gridPane){
         BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true), BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         Pane pane = (Pane) getNodeByRowColumnIndex(in.getRow(), in.getColumn(), gridPane);
@@ -313,32 +362,6 @@ public class GameWindowController implements Serializable {
             //serve per non riempire le pattern di nessuno
             if (nowPlayer.getNickname().equals("#")) return;
         }
-
-        for(int x = 0; x<= 4; x++){
-            for(int y = 0; y<=3; y++){
-                Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
-                pane.setOnDragDropped(new EventHandler<DragEvent>() {
-                    @Override
-                    public void handle(DragEvent event) {
-                        System.out.println("DROPPED");
-                        /* data dropped */
-                        /* if there is a string data on dragboard, read it and use it */
-                        Dragboard db = event.getDragboard();
-                        boolean success = false;
-                        if (db.hasString()) {
-                            BackgroundImage myBI= new BackgroundImage(db.getImage(),
-                                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-                            pane.setBackground(new Background(myBI));
-                            success = true;
-                        }
-                        event.setDropCompleted(success);
-                        event.consume();
-                    }
-                });
-            }
-        }
-
     }
 
     protected void printCurrentRound( Player me){
