@@ -26,7 +26,6 @@ public class RunningPliers implements ToolCardEffectStrategy, Serializable {
 
     @Override
     public int executeEffect(){
-
         return 0;
     }
 

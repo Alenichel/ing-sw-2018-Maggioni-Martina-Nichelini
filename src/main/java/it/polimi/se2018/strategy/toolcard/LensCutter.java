@@ -22,7 +22,7 @@ public class LensCutter implements ToolCardEffectStrategy, Serializable {
     public LensCutter(){
    }
 
-    public LensCutter LensCutter(LensCutter lensCutter, Dice draftedDice) {
+    public LensCutter LensCutter(LensCutter lensCutter, Dice draftedDice, Dice rtDice) {
         lensCutter.draftedDice = draftedDice;
         lensCutter.rtDice = rtDice;
         return lensCutter;
