@@ -71,6 +71,7 @@ public class CliView extends View implements Observer {
 
             HashMap<ToolcardContent, Object> htc= new HashMap<ToolcardContent, Object>();
             htc.put(ToolcardContent.DraftedDie, diceInput);
+            htc.put(ToolcardContent.Increase, increase);
 
             ToolCardMessage tcm = new ToolCardMessage(toolCards.get(n).getToolCardName(), htc);
             this.setChanged();
