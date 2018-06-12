@@ -52,8 +52,13 @@ public class ToolCardController {
 
     private void handleEnglomiseBrush(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
         WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-        WindowCell start = (WindowCell) params.get(ToolcardContent.WindowCellStart);
-        WindowCell end = (WindowCell) params.get(ToolcardContent.WindowCellEnd);
+
+        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
+        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
+
+        WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+        WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+
 
         if(start.isEmpty())
             throw new ToolCardException("empty window cell");

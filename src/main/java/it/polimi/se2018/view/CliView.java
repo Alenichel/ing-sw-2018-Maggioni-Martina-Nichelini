@@ -78,18 +78,19 @@ public class CliView extends View implements Observer {
             this.notifyObservers(tcm);
         }
         //EnglomiseBrush
-        if(tc.equals(ToolCardsName.EnglomiseBrush)){
+        else if(tc.equals(ToolCardsName.EnglomiseBrush)){
             //ci servono le due coordinate e la pattern del giocatore
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select start window cell %x %y ");
-            int xStart = Integer.parseInt(sinput.nextLine().split(" ")[0])-1;
-            int yStart = Integer.parseInt(sinput.nextLine().split(" ")[1])-1;
+            String input =  sinput.nextLine();
+            int xStart = Integer.parseInt(input.split(" ")[0])-1;
+            int yStart = Integer.parseInt(input.split(" ")[1])-1;
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select end window cell %x %y ");
-            int xEnd = Integer.parseInt(sinput.nextLine().split(" ")[0])-1;
-            int yEnd = Integer.parseInt(sinput.nextLine().split(" ")[1])-1;
+            input =  sinput.nextLine();
+            int xEnd = Integer.parseInt(input.split(" ")[0])-1;
+            int yEnd = Integer.parseInt(input.split(" ")[1])-1;
 
             int[] cooStart = {xStart, yStart};
             int[] cooEnd = {xEnd, yEnd};
-
 
             WindowPatternCard w = getClient().getActivePatternCard();
 
@@ -100,7 +101,9 @@ public class CliView extends View implements Observer {
 
             ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.EnglomiseBrush,htc);
             this.setChanged();
-            this.notifyObservers();
+            this.notifyObservers(tcm);
+        }else{
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "ERRORE");
         }
 
 
@@ -267,6 +270,11 @@ public class CliView extends View implements Observer {
     }
 
     public void update(Observable o, Object msg){
+        if(o instanceof Game){
+            for(Player p : ((Game) o).getPlayers())
+                if(p.getNickname().equals(client.getNickname()))
+                    client = p;
+        }
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();

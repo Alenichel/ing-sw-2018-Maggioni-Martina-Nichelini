@@ -69,12 +69,12 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GrindingStone.toString());
             this.setToolCardName(ToolCardsName.GrindingStone);
             this.setDescription("After drafting flip the die to its opposite side.");
-        }*/
+        }
         if(ToolCardsName.FluxRemover.equals(tcn)){
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
             this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag ");
-        }
+        }*/
         if(ToolCardsName.TapWheel.equals(tcn)){
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
