@@ -43,13 +43,13 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable{
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard){
         WindowCell[][] grid = windowPatternCard.getGrid();
-        int globalScore = 0;
+        int scoreCounter = 0;
 
         for (int i=0; i<4; i++)
             for (int j=0; j<5; j++){
-                    globalScore+=exploreDiagonal(0, grid, grid[i][j]);
+                    scoreCounter+=exploreDiagonal(0, grid, grid[i][j]);
             }
-            return globalScore;
+            return scoreCounter;
     }
 
     /*
