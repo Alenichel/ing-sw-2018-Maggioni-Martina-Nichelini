@@ -6,6 +6,7 @@ import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.utils.GameNames;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -48,7 +49,6 @@ public class WaitingAreaController implements Serializable{
     protected void setupWaitingAreaController(Stage primaryStage){
         scene = primaryStage.getScene();
     }
-
 
     public void printGameName( GameNames name ){
             gameName.setText(name.toString());

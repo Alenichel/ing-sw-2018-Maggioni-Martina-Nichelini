@@ -44,7 +44,6 @@ public class GuiView extends View implements Observer {
     }
 
     public void setupWaintingArea(){
-        //Parent root;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
         try {
             Parent root = loader.load();
@@ -70,7 +69,6 @@ public class GuiView extends View implements Observer {
         }
     }
 
-
     public void setupSelectPatternCard(){
         Parent root;
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/SelectPatternCardWindow.fxml"));
@@ -84,11 +82,12 @@ public class GuiView extends View implements Observer {
 
     }
 
+
+
     public void printWaintingArea(){
         primaryStage.setScene(sceneWaintingRoom);
         primaryStage.show();
     }
-
 
     public void printSelectPatternCard(){
         primaryStage.setScene(scenePatternCard);
@@ -97,12 +96,11 @@ public class GuiView extends View implements Observer {
 
     public void printGameWindow(Game game, Player player){
         gameWindowController.printGameWindow(game, player, this);
-        //gameWindowController.printPatternCards(game);
-        //gameWindowController.printDratfedDice(game.getDiceOnTable());
-        //gameWindowController.printCurrentRound(game.getActivePlayer());
         primaryStage.setScene(sceneGame);
         primaryStage.show();
     }
+
+
 
     @Override
     public void controllerCallback(Message msg) {
@@ -114,7 +112,6 @@ public class GuiView extends View implements Observer {
             }
         }
     }
-
 
     protected void selectedPatternCard(int n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
