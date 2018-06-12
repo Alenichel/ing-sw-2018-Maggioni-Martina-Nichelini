@@ -28,6 +28,10 @@ public class FluxBrush implements ToolCardEffectStrategy, Serializable {
         return fluxBrush;
     }
 
+    /**
+     * Set notPlaced to true if the die can not be placed
+     */
+
     @Override
     public int executeEffect(){
         this.die.rollDice();

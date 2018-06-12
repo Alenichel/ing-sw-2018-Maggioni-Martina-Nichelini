@@ -21,16 +21,16 @@ public class FluxRemover implements ToolCardEffectStrategy, Serializable {
     private int number;
     private Dice d1;
     private Dice d2;
-    private boolean placeOnWpc;
 
     public FluxRemover(){
         }
 
-    public FluxRemover FluxRemover(FluxRemover fluxRemover, WindowPatternCard wpc, int number, WindowCell wc, boolean placeOnWpc) {
+    public FluxRemover FluxRemover(FluxRemover fluxRemover, Dice d1, Dice d2, WindowPatternCard wpc, int number, WindowCell wc) {
         fluxRemover.wpc = wpc;
         fluxRemover.wc = wc;
         fluxRemover.number = number;
-        fluxRemover.placeOnWpc = placeOnWpc;
+        fluxRemover.d1 = d1;
+        fluxRemover.d2 = d2;
         return fluxRemover;
     }
 
@@ -45,7 +45,7 @@ public class FluxRemover implements ToolCardEffectStrategy, Serializable {
         }
 
         if(!d2.getLocation().equals(DiceLocation.BAG)){
-            throw new ToolCardException("die can not be chosen");
+            throw new ToolCardException("die can not be chosen 2");
         }
 
         else{
@@ -54,8 +54,9 @@ public class FluxRemover implements ToolCardEffectStrategy, Serializable {
             }
             else throw new ToolCardException("invalid number");
 
-            if(placeOnWpc) {this.wpc.insertDice(d2, wc.getRow(), wc.getColumn(), true, true, true);}
-            else {d2.setLocation(DiceLocation.TABLE);}
+
+            this.wpc.insertDice(d2, wc.getRow(), wc.getColumn(), true, true, true);
+
         }
 
         return 0;
