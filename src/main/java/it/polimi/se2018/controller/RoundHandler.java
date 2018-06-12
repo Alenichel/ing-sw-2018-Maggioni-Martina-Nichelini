@@ -157,7 +157,7 @@ public class RoundHandler implements TimerInterface {
             //handle first put case
             if (this.workingPatternCard.getPlacedDice() == 0 &&
                     this.workingPatternCard.getCell(mdm.getEndingX(),mdm.getEndingY()).getNeighbourCells().size() > 3){
-                ControllerCallbackMessage em = new ControllerCallbackMessage("First die has to be put in a outer cell", LoggerPriority.ERROR);
+                ControllerCallbackMessage em = new ControllerCallbackMessage(CallbackMessageSubject.MoveNack, "First die has to be put in a outer cell", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(em);
                 return;
         }
@@ -170,13 +170,17 @@ public class RoundHandler implements TimerInterface {
                     this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
                 this.moved = true;
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, LoggerPriority.NOTIFICATION);
+                ((VirtualView) observable).controllerCallback(ccm);
+
             } catch (NotValidInsertion e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not valid position", LoggerPriority.ERROR);
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveNack,"NOT_VALID_INSERTION: Not valid position", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(ccm);
+
             } catch (NotEmptyWindowCellException e){
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage("NOT_VALID_INSERTION: Not empty cell", LoggerPriority.ERROR);
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveNack, "NOT_VALID_INSERTION: Not empty cell", LoggerPriority.ERROR);
                 ((VirtualView)observable).controllerCallback(ccm);
             }
         }

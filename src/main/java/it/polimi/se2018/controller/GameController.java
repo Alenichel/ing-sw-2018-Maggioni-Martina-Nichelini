@@ -238,9 +238,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 break;
 
             case "MoveDiceMessage":
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage("Move received", LoggerPriority.NOTIFICATION);
-                ((VirtualView) observable).controllerCallback(ccm);
                 this.roundHandler.update(observable, msg);
+
                 break;
 
             default: break;

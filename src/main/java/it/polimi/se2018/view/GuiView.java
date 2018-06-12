@@ -105,8 +105,16 @@ public class GuiView extends View implements Observer {
     }
 
     @Override
-    public void controllerCallback(Message msg){
+    public void controllerCallback(Message msg) {
+        if (msg instanceof ControllerCallbackMessage) {
+            if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveAck)) {
+                gameWindowController.getControllerCallbackSemaphore().release(2);
+            } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveAck)) {
+                gameWindowController.getControllerCallbackSemaphore().release(1);
+            }
+        }
     }
+
 
     protected void selectedPatternCard(int n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
@@ -119,13 +127,6 @@ public class GuiView extends View implements Observer {
         this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
     }
 
-    protected void placeDice(int n, int x, int y){
-        MoveDiceMessage mdm = new MoveDiceMessage(n, x-1, y-1);
-        this.setChanged();
-        this.notifyObservers(mdm);
-
-    }
-
     @Override
     public void update(Observable o, Object message) {
 
@@ -136,6 +137,11 @@ public class GuiView extends View implements Observer {
         }
 
         switch(((Message)message).getMessageType()){
+
+            case "ControllerCallbackMessage":
+                this.controllerCallback((Message)message);
+                break;
+
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)message).getWhatToUpdate();
                 Platform.runLater(

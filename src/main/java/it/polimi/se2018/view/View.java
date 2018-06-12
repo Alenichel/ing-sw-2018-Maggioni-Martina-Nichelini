@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.message.Message;
+import it.polimi.se2018.message.MoveDiceMessage;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
@@ -28,4 +29,11 @@ public abstract class View extends Observable implements Serializable {
     public void setPlayer(Player player) {
         this.client = player;
     }
+
+    public void placeDice(int n, int endingX, int endingY) {
+        MoveDiceMessage mdm = new MoveDiceMessage(n, endingX - 1, endingY - 1);
+        this.setChanged();
+        this.notifyObservers(mdm);
+    }
+
 }

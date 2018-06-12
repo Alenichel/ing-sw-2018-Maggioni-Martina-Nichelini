@@ -1,6 +1,9 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.LoggerPriority;
+import it.polimi.se2018.utils.LoggerType;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -16,6 +19,8 @@ import javafx.scene.layout.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
@@ -62,6 +67,9 @@ public class GameWindowController implements Serializable {
     private transient List<GridPane> gridPanes;
     private transient List<Pane> draftedDice;
 
+    private Semaphore controllerCallbackSemaphore;
+
+
     private void setup(){
         labels = new ArrayList<>();
         gridPanes = new ArrayList<>();
@@ -84,7 +92,7 @@ public class GameWindowController implements Serializable {
         draftedDice.add(drafted8);
         draftedDice.add(drafted9);
 
-        this.setDragDetection();
+        this.setSourceEvents();
         this.setTargetEvents();
 
 
@@ -93,33 +101,48 @@ public class GameWindowController implements Serializable {
 
     }
 
-    private void setDragDetection(){
+
+    private void setSourceEvents(){
         for(Pane p : draftedDice){
-            p.setOnDragDetected(new EventHandler<MouseEvent>() {
-                public void handle(MouseEvent event) {
-                    if(draggable) {
-                        Dragboard db = p.startDragAndDrop(TransferMode.MOVE);
-                        ClipboardContent content = new ClipboardContent();
-
-                        //put as content last number of the ID
-                        content.putString(p.getId().substring(p.getId().length()-1));
-
-                        //put as image the background image of the dragged die
-                        content.putImage(p.getBackground().getImages().get(0).getImage());
-                        db.setContent(content);
-                        p.setBackground(null);
-                        event.consume();
-                    }
-                }
-            });
+            this.setOnDragDetection(p);
+            this.setOnDragDone(p);
         }
     }
+
+    private void setOnDragDetection(Pane source){
+        source.setOnDragDetected( new EventHandler<MouseEvent>() {
+            public void handle(MouseEvent event) {
+                if(draggable) {
+                    Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
+                    ClipboardContent content = new ClipboardContent();
+
+                    //put as content last number of the ID
+                    content.putString(source.getId().substring(source.getId().length()-1));
+
+                    //put as image the background image of the dragged die
+                    content.putImage(source.getBackground().getImages().get(0).getImage());
+                    db.setContent(content);
+                    event.consume();
+                }
+            }
+        });
+    }
+
+    private void setOnDragDone(Pane source){
+        source.setOnDragDone(new EventHandler<DragEvent>() {
+            public void handle(DragEvent event) {
+                if (event.getTransferMode() != null) source.setBackground(null);
+                event.consume();
+            }
+        });
+    }
+
 
     private void setTargetEvents(){
         for(int x = 0; x<= 4; x++)
             for(int y = 0; y<=3; y++){
                 Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
-                pane.setId("pane-"+x+"-"+y);
+                pane.setId("pane-"+(y+1)+"-"+(x+1));
                 this.setOnDragOver(pane);
                 this.setOnDragDropped(pane);
             }
@@ -142,27 +165,49 @@ public class GameWindowController implements Serializable {
         target.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
 
+                controllerCallbackSemaphore = new Semaphore(2);
+                controllerCallbackSemaphore.acquireUninterruptibly(2);
+
                 Dragboard db = event.getDragboard();
-                boolean success;
+                boolean success = false;
 
                 int n = Integer.parseInt(db.getString());
 
                 BackgroundImage myBI= new BackgroundImage(db.getImage(),
                         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                 gw.placeDice(n, Integer.parseInt(target.getId().split("-")[1]), Integer.parseInt(target.getId().split("-")[2]));
-                target.setBackground(new Background(myBI));
-                success = true;
-                draggable = false;
 
+                try {
+                    controllerCallbackSemaphore.tryAcquire(1, TimeUnit.SECONDS);
+
+                    if (controllerCallbackSemaphore.availablePermits() == 0) {
+                        success = false;
+                    }
+                    else if (controllerCallbackSemaphore.availablePermits() == 1){
+                        target.setBackground(new Background(myBI));
+                        success = true;
+                        draggable = false;
+                    }
+
+                    controllerCallbackSemaphore.release();
+                } catch (InterruptedException e){
+                    success = false;
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Network Error");
+                }
 
                 event.setDropCompleted(success);
-
                 event.consume();
             }
         });
     }
 
+
     //------------------------------------------------------------------
+
+
+    public Semaphore getControllerCallbackSemaphore() {
+        return controllerCallbackSemaphore;
+    }
 
     private void handlePassTurn(){
         gw.passTurn();
