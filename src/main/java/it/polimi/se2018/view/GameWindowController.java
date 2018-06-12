@@ -221,7 +221,8 @@ public class GameWindowController implements Serializable {
         printPrivateObjective(me);
         printPublicObjective(game.getObjectiveCards());
         printPatternCards(game);
-
+        printDratfedDice(game.getDiceOnTable());
+        printCurrentRound(game.getActivePlayer());
         objective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent t) {
@@ -343,7 +344,10 @@ public class GameWindowController implements Serializable {
         clock.setImage(clockImage);
         int min = t/60;
         int sec = t%60;
-        timerLeft.setText("min: "+min+" sec: "+sec);
+        if(min != 0)
+            timerLeft.setText("min: "+min+" sec: "+sec);
+        else
+            timerLeft.setText("sec: "+sec);
     }
 
     protected void printPatternCards(Game game){

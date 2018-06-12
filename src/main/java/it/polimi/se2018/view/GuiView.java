@@ -96,12 +96,12 @@ public class GuiView extends View implements Observer {
     }
 
     public void printGameWindow(Game game, Player player){
+        gameWindowController.printGameWindow(game, player, this);
+        //gameWindowController.printPatternCards(game);
+        //gameWindowController.printDratfedDice(game.getDiceOnTable());
+        //gameWindowController.printCurrentRound(game.getActivePlayer());
         primaryStage.setScene(sceneGame);
         primaryStage.show();
-        gameWindowController.printGameWindow(game, player, this);
-        gameWindowController.printPatternCards(game);
-        gameWindowController.printDratfedDice(game.getDiceOnTable());
-        gameWindowController.printCurrentRound(game.getActivePlayer());
     }
 
     @Override
@@ -162,7 +162,6 @@ public class GuiView extends View implements Observer {
                         }
                         if(wtu.equals(WhatToUpdate.ActivePlayer)){
                             printGameWindow((Game)o, client);
-
                         }
                     }
                 );

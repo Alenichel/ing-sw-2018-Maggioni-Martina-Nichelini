@@ -2,10 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.ConsoleUtils;
-import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.utils.*;
 
 import java.util.*;
 import static it.polimi.se2018.utils.LoggerPriority.ERROR;
@@ -17,7 +14,7 @@ public class CliView extends View implements Observer {
     private transient Object lastObjectReceveid;
     private Player activePlayer = null;
     transient Scanner sinput = new Scanner(System.in);
-
+    private ArrayList<ToolCard> toolCards;
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
         this.setChanged();
@@ -60,6 +57,26 @@ public class CliView extends View implements Observer {
         MoveDiceMessage mdm = new MoveDiceMessage(n, endingX-1, endingY-1);
         this.setChanged();
         this.notifyObservers(mdm);
+    }
+
+    private void handleUseCommands(int n){
+        ToolCardsName tc = toolCards.get(n).getToolCardName();
+        //GrozingPliers
+        if(tc.equals(ToolCardsName.GrozingPliers)){
+            //Dado e booleano
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "Please select a dice: ");
+            int diceInput = Integer.parseInt(sinput.nextLine());
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "Please 1 to increas or 2 to decrease: ");
+            boolean increase = Integer.parseInt(sinput.nextLine()) == 1;
+
+            HashMap<ToolcardContent, Object> htc= new HashMap<ToolcardContent, Object>();
+            htc.put(ToolcardContent.DraftedDie, diceInput);
+
+            ToolCardMessage tcm = new ToolCardMessage(toolCards.get(n).getToolCardName(), htc);
+            this.setChanged();
+            this.notifyObservers();
+        }
+
     }
 
     public void run() {
@@ -111,6 +128,16 @@ public class CliView extends View implements Observer {
                     } catch (NumberFormatException e) {Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
                     break;
 
+                case "use":
+                    try {
+                        if (tokens.length < 3){
+                            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong params insertion: USE command has the following structure:\n use %toolcardNumber");
+                            break;
+                        }
+                        this.handleUseCommands(Integer.parseInt(tokens[1]));
+                    } catch (NumberFormatException e) {Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
+                    break;
+
                 case "quit":
                     this.setChanged();
                     this.notifyObservers(new ConnectionMessage(client, false));
@@ -143,11 +170,13 @@ public class CliView extends View implements Observer {
         String playerName = tokens[1];
         System.out.println("\n");
         System.out.print("\n");
-        System.out.println("***********************************************************************************\n---------> OBJECTIVE <---------");
+        System.out.println("***********************************************************************************");
+        System.out.println("---------> OBJECTIVE <---------");
         for (ObjectiveCard oc : game.getObjectiveCards())
             System.out.println(oc);
 
-        System.out.println("\n***********************************************************************************\n---------> TOOLCARDS <---------");
+        System.out.println("\n***********************************************************************************");
+        System.out.println("---------> TOOLCARDS <---------");
         for (ToolCard tc : game.getToolCards())
             System.out.println(tc);
         System.out.println("***********************************************************************************");
@@ -214,9 +243,12 @@ public class CliView extends View implements Observer {
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();
-                if(wtu.equals(WhatToUpdate.ActivePlayer)) printTable((Game)o, (Message) msg);
+                if(wtu.equals(WhatToUpdate.ActivePlayer)) {
+                    printTable((Game)o, (Message) msg);
+                }
                 else{
                     if(wtu.equals(WhatToUpdate.GameStarted)) {
+                        toolCards = (ArrayList<ToolCard>)((Game)o).getToolCards();
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         onGameStarted(o);
                     } else if(wtu.equals(WhatToUpdate.ActivePlayer)) {
