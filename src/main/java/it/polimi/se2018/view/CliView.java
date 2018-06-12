@@ -60,22 +60,22 @@ public class CliView extends View implements Observer {
     }
 
     private void handleUseCommands(int n){
-        ToolCardsName tc = toolCards.get(n).getToolCardName();
+        ToolCardsName tc = toolCards.get(n-1).getToolCardName();
         //GrozingPliers
         if(tc.equals(ToolCardsName.GrozingPliers)){
             //Dado e booleano
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "Please select a dice: ");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a dice: ");
             int diceInput = Integer.parseInt(sinput.nextLine());
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "Please 1 to increas or 2 to decrease: ");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increas or 2 to decrease: ");
             boolean increase = Integer.parseInt(sinput.nextLine()) == 1;
 
             HashMap<ToolcardContent, Object> htc= new HashMap<ToolcardContent, Object>();
-            htc.put(ToolcardContent.DraftedDie, diceInput);
+            htc.put(ToolcardContent.DraftedDie, diceInput-1);
             htc.put(ToolcardContent.Increase, increase);
 
-            ToolCardMessage tcm = new ToolCardMessage(toolCards.get(n).getToolCardName(), htc);
+            ToolCardMessage tcm = new ToolCardMessage(toolCards.get(n-1).getToolCardName(), htc);
             this.setChanged();
-            this.notifyObservers();
+            this.notifyObservers(tcm);
         }
 
     }
@@ -131,7 +131,7 @@ public class CliView extends View implements Observer {
 
                 case "use":
                     try {
-                        if (tokens.length < 3){
+                        if (tokens.length < 2){
                             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong params insertion: USE command has the following structure:\n use %toolcardNumber");
                             break;
                         }

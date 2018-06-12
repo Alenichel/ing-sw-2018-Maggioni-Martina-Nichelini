@@ -20,7 +20,6 @@ public class Dice implements Serializable {
         this.color = color.name();
         this.location = null;
         this.rollDice();
-        this.toUnicode(this.color, this.getNumber());
     }
 
     public Dice(DiceColor color, int number){

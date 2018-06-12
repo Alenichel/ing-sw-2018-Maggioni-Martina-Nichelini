@@ -25,7 +25,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.GrozingPliers);
             this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
         }
-        if(ToolCardsName.EnglomiseBrush.equals(tcn)){
+        /*if(ToolCardsName.EnglomiseBrush.equals(tcn)){
             this.setName(ToolCardsName.EnglomiseBrush.toString());
             this.setToolCardName(ToolCardsName.EnglomiseBrush);
             this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
@@ -69,7 +69,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GrindingStone.toString());
             this.setToolCardName(ToolCardsName.GrindingStone);
             this.setDescription("After drafting flip the die to its opposite side.");
-        }
+        }*/
         if(ToolCardsName.FluxRemover.equals(tcn)){
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
