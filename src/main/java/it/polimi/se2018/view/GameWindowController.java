@@ -4,7 +4,12 @@ import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
@@ -24,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
     @FXML private AnchorPane page;
@@ -60,6 +66,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted7;
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
+    @FXML private Pane responeInsert;
 
     private GuiView gw;
     private boolean draggable = false;
@@ -164,7 +171,7 @@ public class GameWindowController implements Serializable {
     private void setOnDragDropped (Pane target){
         target.setOnDragDropped(new EventHandler<DragEvent>() {
             public void handle(DragEvent event) {
-
+                //final Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), (ActionEvent even) -> removeResponse()));
                 controllerCallbackSemaphore = new Semaphore(2);
                 controllerCallbackSemaphore.acquireUninterruptibly(2);
 
@@ -178,20 +185,36 @@ public class GameWindowController implements Serializable {
                 gw.placeDice(n, Integer.parseInt(target.getId().split("-")[1]), Integer.parseInt(target.getId().split("-")[2]));
 
                 try {
-                    controllerCallbackSemaphore.tryAcquire(1, TimeUnit.SECONDS);
-
+                    controllerCallbackSemaphore.tryAcquire(3, TimeUnit.SECONDS);
                     if (controllerCallbackSemaphore.availablePermits() == 0) {
+                        System.out.println("X");
+
+                        BackgroundImage x= new BackgroundImage(new Image("/x.png",55,55,false,true),
+                                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                        responeInsert.setBackground(new Background(x));
+
                         success = false;
+                        //timer.setCycleCount(Timeline.INDEFINITE);
+                        //timer.play();
                     }
                     else if (controllerCallbackSemaphore.availablePermits() == 1){
+                        System.out.println("OK");
                         target.setBackground(new Background(myBI));
-                        success = true;
+
                         draggable = false;
+                        BackgroundImage tick= new BackgroundImage(new Image("/tick.png",55,55,false,true),
+                                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                        responeInsert.setBackground(new Background(tick));
+
+                        success = true;
+                        //timer.setCycleCount(Timeline.INDEFINITE);
+                        //timer.play();
                     }
 
                     controllerCallbackSemaphore.release();
                 } catch (InterruptedException e){
                     success = false;
+
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Network Error");
                 }
 
@@ -204,6 +227,9 @@ public class GameWindowController implements Serializable {
 
     //------------------------------------------------------------------
 
+    private void removeResponse(){
+        responeInsert.setBackground(null);
+    }
 
     public Semaphore getControllerCallbackSemaphore() {
         return controllerCallbackSemaphore;
