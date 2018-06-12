@@ -238,5 +238,6 @@
       <Pane fx:id="drafted7" layoutX="704.0" layoutY="466.0" prefHeight="50.0" prefWidth="50.0" />
       <Pane fx:id="drafted8" layoutX="754.0" layoutY="466.0" prefHeight="50.0" prefWidth="50.0" />
       <Pane fx:id="drafted9" layoutX="804.0" layoutY="466.0" prefHeight="50.0" prefWidth="50.0" />
+      <Pane fx:id="responeInsert" disable="true" layoutX="372.0" layoutY="562.0" prefHeight="64.0" prefWidth="64.0" />
    </children>
 </AnchorPane>
