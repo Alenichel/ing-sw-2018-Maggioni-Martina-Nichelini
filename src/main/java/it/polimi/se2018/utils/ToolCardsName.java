@@ -2,7 +2,7 @@ package it.polimi.se2018.utils;
 
 public enum ToolCardsName {
     GrozingPliers,
-    //EnglomiseBrush,
+    EnglomiseBrush,
     //CopperFoilBurnisher,
     //Lathekin,
     //LensCutter,
