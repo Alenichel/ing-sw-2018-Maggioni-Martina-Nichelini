@@ -1,14 +1,12 @@
 package it.polimi.se2018.controller;
 
 import it.polimi.se2018.exception.GameException;
+import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.message.CallbackMessageSubject;
 import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.ToolCardMessage;
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.Game;
-import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.ToolCard;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.ToolCardsName;
 import it.polimi.se2018.utils.ToolcardContent;
@@ -52,6 +50,51 @@ public class ToolCardController {
         }
     }
 
+    private void handleEnglomiseBrush(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
+        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
+        WindowCell start = (WindowCell) params.get(ToolcardContent.WindowCellStart);
+        WindowCell end = (WindowCell) params.get(ToolcardContent.WindowCellEnd);
+
+        if(start.isEmpty())
+            throw new ToolCardException("empty window cell");
+
+        if(!end.isEmpty())
+            throw new ToolCardException("not empty window cell");
+
+
+        Dice d1 = start.getAssignedDice();
+        try {
+            start.removeDice();
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
+        }catch (ToolCardException | NotEmptyWindowCellException e) {
+            start.setAssignedDice(d1);
+            throw e;
+        }
+
+        start.setAssignedDice(null);
+    }
+
+    /*private  void handleCopperFoilBurnisher(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
+        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
+        WindowCell start = (WindowCell) params.get(ToolcardContent.WindowCellStart);
+        WindowCell end = (WindowCell) params.get(ToolcardContent.WindowCellEnd);
+        if(start.isEmpty())
+            throw new ToolCardException("empty window cell");
+
+        if(!end.isEmpty())
+            throw new ToolCardException("not empty window cell");
+
+
+        Dice d1 = start.getAssignedDice();
+        try {
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, false);
+        }catch (ToolCardException | NotEmptyWindowCellException e) {
+            throw e;
+        }
+
+        start.removeDice();
+    }*/
+
     protected void activateToolcard(VirtualView observable, ToolCardMessage toolCardMessage){
 
         Player player = observable.getClient();
@@ -69,14 +112,36 @@ public class ToolCardController {
             case GrozingPliers:
                 try {
                     handleGrozingPliers(toolCardMessage.getParameters());
-                } catch (ToolCardException e){
+                } catch (ToolCardException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
                 this.onSuccess(observable);
                 break;
 
+            case EnglomiseBrush:
+                try {
+                    handleEnglomiseBrush(toolCardMessage.getParameters());
+                } catch (ToolCardException | NotEmptyWindowCellException e) {
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+                this.onSuccess(observable);
+                break;
+
+            /*case CopperFoilBurnisher:
+                try {
+                    handleCopperFoilBurnisher(toolCardMessage.getParameters());
+                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+                this.onSuccess(observable);
+                break;*/
+
             default: break;
+
+
 
 
         }

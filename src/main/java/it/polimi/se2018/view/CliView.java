@@ -66,17 +66,43 @@ public class CliView extends View implements Observer {
             //Dado e booleano
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a dice: ");
             int diceInput = Integer.parseInt(sinput.nextLine());
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increas or 2 to decrease: ");
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increase or 2 to decrease: ");
             boolean increase = Integer.parseInt(sinput.nextLine()) == 1;
 
             HashMap<ToolcardContent, Object> htc= new HashMap<ToolcardContent, Object>();
             htc.put(ToolcardContent.DraftedDie, diceInput-1);
             htc.put(ToolcardContent.Increase, increase);
 
-            ToolCardMessage tcm = new ToolCardMessage(toolCards.get(n-1).getToolCardName(), htc);
+            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.GrozingPliers, htc);
             this.setChanged();
             this.notifyObservers(tcm);
         }
+        //EnglomiseBrush
+        if(tc.equals(ToolCardsName.EnglomiseBrush)){
+            //ci servono le due coordinate e la pattern del giocatore
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select start window cell %x %y ");
+            int xStart = Integer.parseInt(sinput.nextLine().split(" ")[0])-1;
+            int yStart = Integer.parseInt(sinput.nextLine().split(" ")[1])-1;
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select end window cell %x %y ");
+            int xEnd = Integer.parseInt(sinput.nextLine().split(" ")[0])-1;
+            int yEnd = Integer.parseInt(sinput.nextLine().split(" ")[1])-1;
+
+            int[] cooStart = {xStart, yStart};
+            int[] cooEnd = {xEnd, yEnd};
+
+
+            WindowPatternCard w = getClient().getActivePatternCard();
+
+            HashMap<ToolcardContent, Object> htc = new HashMap<>();
+            htc.put(ToolcardContent.WindowCellStart, cooStart);
+            htc.put(ToolcardContent.WindowCellEnd, cooEnd);
+            htc.put(ToolcardContent.WindowPattern, w);
+
+            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.EnglomiseBrush,htc);
+            this.setChanged();
+            this.notifyObservers();
+        }
+
 
     }
 

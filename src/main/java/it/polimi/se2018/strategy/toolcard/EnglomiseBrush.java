@@ -47,7 +47,7 @@ public class EnglomiseBrush implements ToolCardEffectStrategy, Serializable {
             throw e;
         }
 
-        //start.setAssignedDice(null);
+        start.setAssignedDice(null);
 
         return 0;
     }
