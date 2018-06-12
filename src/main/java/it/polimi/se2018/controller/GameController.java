@@ -16,6 +16,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private ServerController serverController;
     public final Game gameAssociated;
     private GameSetupController gameSetupController;
+    private transient final ToolCardController toolCardController;
     private transient RoundHandler roundHandler;
 
     private long timerID;
@@ -30,6 +31,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.matchMakingTimer = server.getDefaultMatchmakingTimer();
 
         this.gameSetupController = new GameSetupController(this.gameAssociated);
+        this.toolCardController = new ToolCardController(this.gameAssociated);
     }
 
     /**
@@ -239,7 +241,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
             case "MoveDiceMessage":
                 this.roundHandler.update(observable, msg);
+                break;
 
+            case "ToolcardMessage":
+                toolCardController.activateToolcard( (VirtualView)observable,(ToolCardMessage)msg);
                 break;
 
             default: break;

@@ -1,5 +1,6 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.utils.Logger;
@@ -84,9 +85,11 @@ public class WindowPatternCard extends Card implements Serializable {
     public int getNumberOfFavorTokens() {
         return numberOfFavorTokens;
     }
+
     public String getName(){
         return this.name;
     }
+
     public WindowPatternCardsName getWPName() {
         return wpname;
     }
@@ -189,6 +192,12 @@ public class WindowPatternCard extends Card implements Serializable {
 
     public int getPlacedDice() {
         return placedDice;
+    }
+
+
+    public void useToken() throws GameException {
+        if (numberOfFavorTokens > 0) numberOfFavorTokens--;
+        else throw new GameException("NotEnoughTokens");
     }
 
     /**

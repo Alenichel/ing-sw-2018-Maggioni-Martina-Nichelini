@@ -6,7 +6,7 @@ import it.polimi.se2018.utils.ToolcardContent;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class ToolCardMessage {
+public class ToolCardMessage extends Message{
 
     private ToolCardsName toolCardName;
     private HashMap<ToolcardContent, Object> parameters;
@@ -14,6 +14,7 @@ public class ToolCardMessage {
     public ToolCardMessage(ToolCardsName toolCardName, HashMap<ToolcardContent, Object> parameters){
         this.toolCardName = toolCardName;
         this.parameters = parameters;
+        this.messageType="ToolcardMessage";
 
     }
     public ToolCardsName getToolCardName() {
