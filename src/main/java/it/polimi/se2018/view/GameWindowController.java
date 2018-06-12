@@ -362,9 +362,16 @@ public class GameWindowController implements Serializable {
 
         for(GridPane g : gridPanes){
             if(g.getId().split("-")[0].equals(me.getNickname())){
-                gridPanes.get(n).setEffect(dropShadow);
+                final String cssDefault = "-fx-border-color: red;\n"
+                        + "-fx-border-width: 10;\n";
+
+                //gridPanes.get(n).setEffect(dropShadow);
+                g.setStyle(cssDefault);
             }else{
-                gridPanes.get(n).setEffect(null);
+                final String cssDefault = "-fx-border-color: black;\n"
+                        + "-fx-border-width: 3;\n";
+                //gridPanes.get(n).setEffect(null);
+                g.setStyle(cssDefault);
             }
             n++;
         }
