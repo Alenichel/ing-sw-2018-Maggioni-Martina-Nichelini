@@ -52,7 +52,6 @@ public class Dice implements Serializable {
     public void rollDice(){
         Random rand = new Random();
         this.number =rand.nextInt(6)+1;
-        this.toUnicode(this.color, this.number);
     }
 
     private void toUnicode(String color, int n){
@@ -63,9 +62,8 @@ public class Dice implements Serializable {
         this.unicode = this.unicode.concat((char) 27 + "[30m");
     }
 
-
-
     public String toString(){
+        this.toUnicode(this.color, this.number);
         return this.unicode;
     }
     @Override

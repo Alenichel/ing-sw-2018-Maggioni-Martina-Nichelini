@@ -67,19 +67,14 @@ public class GameSetupController implements Serializable {
      * This method initialize three random toolcards.
      */
     private void initializeToolCards(){
-        int n;
-        List<String> toolName = new ArrayList<>();
-        List<ToolCard> selectedToolCards = new ArrayList<>();
 
-        for(ToolCardsName t : ToolCardsName.values()){
-            toolName.add(t.toString());
-        }
-        for(int i = 0; i<3; i++){
-            n = this.rand.nextInt(toolName.size());
-            selectedToolCards.add(new ToolCard(nameToObjectTool(toolName.get(n))));
-            toolName.remove(n);
-        }
-        this.associatedGame.setToolCards(selectedToolCards);
+        List<ToolCard> selectedToolcards= new ArrayList<>();
+
+        final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
+        for (int i : ints)
+            selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));
+        this.associatedGame.setToolCards(selectedToolcards);
+
     }
 
     /**
@@ -110,28 +105,6 @@ public class GameSetupController implements Serializable {
         final int[] ints = this.rand.ints(0, DiceColor.values().length).distinct().limit(this.associatedGame.getPlayers().size()).toArray();
         for (int i = 0; i < this.associatedGame.getPlayers().size(); i++){
             this.associatedGame.getPlayers().get(i).assignObjectiveCard(new PrivateObjectiveCard(DiceColor.values()[ints[i]]));
-        }
-    }
-
-    private ToolCardEffectStrategy nameToObjectTool(String name){
-        switch (name){
-            case "GrozingPliers" : return new GrozingPliers();
-            case "EnglomiseBrush" : return new EnglomiseBrush();
-            case "CopperFoilBurnisher" : return new CopperFoilBurnisher();
-            case "Lathekin" : return new Lathekin();
-            case "LensCutter" : return new LensCutter();
-            case "FluxBrush" : return new FluxBrush();
-            case "GlazingHammer" : return new GlazingHammer();
-            case "RunningPliers" : return new RunningPliers();
-            //case "CorkBackedStraightedge" : return new CorkBackedStraightedge();
-            case "CorkBackedStraightedge" : return new GrindingStone();
-            case "GrindingStone" : return new GrindingStone();
-            case "FluxRemover" : return new FluxRemover();
-            case "TapWheel" : return new TapWheel();
-            default :
-                System.out.println(name);
-                throw new IllegalArgumentException();
-
         }
     }
 
