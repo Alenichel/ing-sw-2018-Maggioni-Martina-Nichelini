@@ -14,57 +14,70 @@ public class ToolCard extends Card implements Serializable {
     private boolean used;
     private ToolCardEffectStrategy toolCardEffect;
     private Game gameReference;
+    private ToolCardsName toolCardName;
 
     public ToolCard(){}
     public ToolCard(ToolCardsName tcn){
         this.toolCardEffect = toolCardEffect;
 
-        if(ToolCardsName.CopperFoilBurnisher.equals(tcn)){
-            this.setName(ToolCardsName.CopperFoilBurnisher.toString());
-            this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction");
-        }
-        if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
-            this.setName(ToolCardsName.CorkBackedStraightedge.toString());
-            this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
+        if(ToolCardsName.GrozingPliers.equals(tcn)){
+            this.setName(ToolCardsName.GrozingPliers.toString());
+            this.setToolCardName(ToolCardsName.GrozingPliers);
+            this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
         }
         if(ToolCardsName.EnglomiseBrush.equals(tcn)){
             this.setName(ToolCardsName.EnglomiseBrush.toString());
+            this.setToolCardName(ToolCardsName.EnglomiseBrush);
             this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
         }
-        if(ToolCardsName.FluxBrush.equals(tcn)){
-            this.setName(ToolCardsName.FluxBrush.toString());
-            this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
-        }
-        if(ToolCardsName.FluxRemover.equals(tcn)){
-            this.setName(ToolCardsName.FluxRemover.toString());
-            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag ");
-        }
-        if(ToolCardsName.GlazingHammer.equals(tcn)){
-            this.setName(ToolCardsName.GlazingHammer.toString());
-            this.setDescription("Re roll all dice in the drafted pool. This may only used on your second turn before drafting.");
-        }
-        if(ToolCardsName.GrindingStone.equals(tcn)){
-            this.setName(ToolCardsName.GrindingStone.toString());
-            this.setDescription("After drafting flip the die to its opposite side.");
-        }
-        if(ToolCardsName.GrozingPliers.equals(tcn)){
-            this.setName(ToolCardsName.GrozingPliers.toString());
-            this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
+        if(ToolCardsName.CopperFoilBurnisher.equals(tcn)){
+            this.setName(ToolCardsName.CopperFoilBurnisher.toString());
+            this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
+            this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction");
         }
         if(ToolCardsName.Lathekin.equals(tcn)){
             this.setName(ToolCardsName.Lathekin.toString());
+            this.setToolCardName(ToolCardsName.Lathekin);
             this.setDescription("Move exactly two dice, obeying all placement restrictions");
         }
         if(ToolCardsName.LensCutter.equals(tcn)){
             this.setName(ToolCardsName.LensCutter.toString());
+            this.setToolCardName(ToolCardsName.LensCutter);
             this.setDescription("After drafted swap the drafted die with a die from the round track");
+        }
+        if(ToolCardsName.FluxBrush.equals(tcn)){
+            this.setName(ToolCardsName.FluxBrush.toString());
+            this.setToolCardName(ToolCardsName.FluxBrush);
+            this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
+        }
+        if(ToolCardsName.GlazingHammer.equals(tcn)){
+            this.setName(ToolCardsName.GlazingHammer.toString());
+            this.setToolCardName(ToolCardsName.GlazingHammer);
+            this.setDescription("Re roll all dice in the drafted pool. This may only used on your second turn before drafting.");
         }
         if(ToolCardsName.RunningPliers.equals(tcn)){
             this.setName(ToolCardsName.RunningPliers.toString());
+            this.setToolCardName(ToolCardsName.RunningPliers);
             this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round");
+        }
+        if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
+            this.setName(ToolCardsName.CorkBackedStraightedge.toString());
+            this.setToolCardName(ToolCardsName.CorkBackedStraightedge);
+            this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
+        }
+        if(ToolCardsName.GrindingStone.equals(tcn)){
+            this.setName(ToolCardsName.GrindingStone.toString());
+            this.setToolCardName(ToolCardsName.GrindingStone);
+            this.setDescription("After drafting flip the die to its opposite side.");
+        }
+        if(ToolCardsName.FluxRemover.equals(tcn)){
+            this.setName(ToolCardsName.FluxRemover.toString());
+            this.setToolCardName(ToolCardsName.FluxRemover);
+            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag ");
         }
         if(ToolCardsName.TapWheel.equals(tcn)){
             this.setName(ToolCardsName.TapWheel.toString());
+            this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction");
         }
     }
@@ -87,6 +100,9 @@ public class ToolCard extends Card implements Serializable {
     public void setName(String name){
         this.name = name;
     }
+    public  void setToolCardName(ToolCardsName toolCardName) {
+        this.toolCardName = toolCardName;
+    }
 
     public DiceColor getDiceColor() {
         return diceColor;
@@ -106,7 +122,13 @@ public class ToolCard extends Card implements Serializable {
     public String getDescription(){
         return description;
     }
-    public String getName() {return name;}
+    public ToolCardsName getToolCardName() {
+        return toolCardName;
+    }
+    public String getName() {
+        return name;
+    }
+
 
 
     public int executeEffect() throws ToolCardException, NotEmptyWindowCellException{
