@@ -11,6 +11,6 @@ public enum ToolCardsName {
     RunningPliers,
     CorkBackedStraightedge,
     GrindingStone,*/
-    FluxRemover,
+    //FluxRemover,
     TapWheel
 }
