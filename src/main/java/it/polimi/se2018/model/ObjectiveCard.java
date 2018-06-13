@@ -7,9 +7,6 @@ public class ObjectiveCard extends Card {
     public ObjectiveCard (){
         this.gameReference = null;
     }
-    public ObjectiveCard (Game game){
-        this.gameReference = game;
-    }
 
     public String getDescription() {
         return description;

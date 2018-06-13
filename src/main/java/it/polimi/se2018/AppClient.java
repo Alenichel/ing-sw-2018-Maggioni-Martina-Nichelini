@@ -61,7 +61,7 @@ public class AppClient extends Application{
             }
             cw.run();
 
-        }else {
+        } else {
             launch(args);
         }
     }
@@ -80,7 +80,5 @@ public class AppClient extends Application{
         primaryStage.setResizable(false);
         primaryStage.sizeToScene();
         primaryStage.show();
-
-
     }
 }

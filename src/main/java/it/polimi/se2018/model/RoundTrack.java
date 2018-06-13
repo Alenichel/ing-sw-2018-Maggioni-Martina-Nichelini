@@ -46,7 +46,7 @@ public class RoundTrack implements Serializable{
                     max_width = aD.size();
             }
         }
-        //str = str.concat(" Round tracker\n");
+
         str = str.concat((char) 27 +"[34m"+ roundStr[roundStri]+ " "  + (char) 27 + "[30m");
         roundStri++;
         str = str.concat("╔");

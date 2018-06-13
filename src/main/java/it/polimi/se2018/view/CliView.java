@@ -282,14 +282,11 @@ public class CliView extends View implements Observer {
                     printTable((Game)o, (Message) msg);
                 }
                 else{
+
                     if(wtu.equals(WhatToUpdate.GameStarted)) {
                         toolCards = (ArrayList<ToolCard>)((Game)o).getToolCards();
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
                         onGameStarted(o);
-                    } else if(wtu.equals(WhatToUpdate.ActivePlayer)) {
-                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
-                        this.activePlayer = ((Game)o).getActivePlayer();
-                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                     } else if(wtu.equals(WhatToUpdate.Winner)) {
                         this.onWinnerProclamation((Game)o);
                     } else if(wtu.equals(WhatToUpdate.TimeLeft)){

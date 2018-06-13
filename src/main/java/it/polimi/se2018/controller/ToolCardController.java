@@ -61,13 +61,14 @@ public class ToolCardController {
 
 
         if(start.isEmpty())
-            throw new ToolCardException("empty window cell");
+            throw new ToolCardException("EmptyWindowCell");
 
         if(!end.isEmpty())
-            throw new ToolCardException("not empty window cell");
+            throw new ToolCardException("NotEmptyWindowCell");
 
 
         Dice d1 = start.getAssignedDice();
+
         try {
             start.removeDice();
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
@@ -75,8 +76,6 @@ public class ToolCardController {
             start.setAssignedDice(d1);
             throw e;
         }
-
-        start.setAssignedDice(null);
     }
 
     /*private  void handleCopperFoilBurnisher(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{

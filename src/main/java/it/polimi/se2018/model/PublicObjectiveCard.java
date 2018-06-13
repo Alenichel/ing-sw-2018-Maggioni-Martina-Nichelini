@@ -5,7 +5,7 @@ import it.polimi.se2018.utils.ObjectiveCardsName;
 
 public class PublicObjectiveCard extends ObjectiveCard{
     private int points;
-    private ObjectiveCardsName name;
+    private ObjectiveCardsName Name;
     private ScorePointStrategy scorePointStrategy;
 
     private ScorePointStrategy nameToObjectObjective(ObjectiveCardsName ocn){
@@ -55,7 +55,7 @@ public class PublicObjectiveCard extends ObjectiveCard{
     }
 
     public PublicObjectiveCard(ObjectiveCardsName name){
-        this.name = name;
+        this.Name = name;
         this.scorePointStrategy = nameToObjectObjective(name);
     }
 
@@ -64,11 +64,11 @@ public class PublicObjectiveCard extends ObjectiveCard{
     }
 
     public ObjectiveCardsName getName() {
-        return name;
+        return Name;
     }
 
     @Override
     public String toString() {
-        return this.name.toString() + ": " + this.description + "|| Point: " + this.points;
+        return this.Name.toString() + ": " + this.description + "|| Point: " + this.points;
     }
 }

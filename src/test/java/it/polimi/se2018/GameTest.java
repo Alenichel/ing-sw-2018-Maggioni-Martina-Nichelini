@@ -67,11 +67,32 @@ public class GameTest {
         wpc.add(wpc3);
 
         Game game = new Game();
+        System.out.println(game.getName());
+        Assert.assertEquals(0, game.getActualRound());
+        Assert.assertEquals(null, game.getActivePlayer());
+
+        game.setActualRound(5);
+        Assert.assertEquals(5, game.getActualRound());
+        game.setActivePlayer(player1);
+        Assert.assertEquals(player1, game.getActivePlayer());
 
         //getPlayers test
+        game.setInitializationComplete(true);
+        Assert.assertEquals(true, game.isInitiliazationComplete());
+
         game.getPlayers().addAll(players);
         Assert.assertEquals(players, game.getPlayers());
         Assert.assertNotEquals(wrongPlayer, game.getPlayers());
+        players.remove(player1);
+        game.removePlayer(player1);
+        Assert.assertEquals(players, game.getPlayers());
+        game.setTimerSecondLeft(30);
+        Assert.assertEquals(30, game.getTimerSecondsLeft());
+        game.setWinner(player2);
+        Assert.assertEquals(player2, game.getWinner());
+
+
+        // ------------------------------------------------------
 
         dice.add(die1);
         dice.add(die2);
@@ -84,12 +105,10 @@ public class GameTest {
         wrongDice = (ArrayList<Dice>) dice.clone();
         game.setDiceBag(dice);
         Assert.assertEquals(dice, game.getDiceBag());
-        Assert.assertNotEquals(wrongDice, game.getDiceBag());
 
         //getDiceOnTable test
         game.setDiceOnTable(wrongDice);
         Assert.assertEquals(wrongDice, game.getDiceOnTable());
-        Assert.assertNotEquals(dice, game.getDiceOnTable());
 
         //getObjectiveCards test
         game.setObjectiveCards(objectives);

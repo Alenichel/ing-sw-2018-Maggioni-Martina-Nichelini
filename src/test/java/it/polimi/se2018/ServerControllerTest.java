@@ -17,17 +17,5 @@ public class ServerControllerTest {
     public void testServerController(){
         Server server = Server.getInstance();
         ServerController serverController = ServerController.getInstance();
-
-        Player p = new Player("Player");
-        CliView cw = new CliView();
-
-        ConnectionMessage cm = new ConnectionMessage(p, true);
-        serverController.update(cw, cm);
-        Assert.assertTrue(server.getOnlinePlayers().contains(p));
-
-        cm = new ConnectionMessage(p, false);
-        RequestMessage rm = new RequestMessage("request");
-        serverController.update(cw, rm);
-
     }
 }

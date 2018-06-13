@@ -44,9 +44,6 @@ public class RoundHandler implements TimerInterface {
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
 
-        this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
-        this.activePlayer = this.gameAssociated.getActivePlayer();
-        this.workingPatternCard = this.activePlayer.getActivePatternCard();
 
         if (this.actualRound != 1 ) {
             this.gameAssociated.getRoundTrack().addDice(this.gameAssociated.getDiceOnTable(), this.actualRound-2);
@@ -55,6 +52,9 @@ public class RoundHandler implements TimerInterface {
         }
 
         this.extractDice();
+        this.gameAssociated.setActivePlayer(turnList.get(turnNumber)); //set the first player as active player
+        this.activePlayer = this.gameAssociated.getActivePlayer();
+        this.workingPatternCard = this.activePlayer.getActivePatternCard();
         this.timerID = TimerHandler.registerTimer(this, moveTimer); //register new turn timer
         TimerHandler.startTimer(this.timerID);
     }
@@ -170,7 +170,7 @@ public class RoundHandler implements TimerInterface {
                     this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
                 this.moved = true;
-                ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, LoggerPriority.NOTIFICATION);
+                ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, "Move received", LoggerPriority.NOTIFICATION);
                 ((VirtualView) observable).controllerCallback(ccm);
 
             } catch (NotValidInsertion e) {

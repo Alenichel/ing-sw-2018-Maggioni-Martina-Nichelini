@@ -11,6 +11,7 @@ public class ToolCardTest {
     @Test
     public void testToolCard() {
         ToolCard t = new ToolCard(ToolCardsName.EnglomiseBrush);
+        System.out.println(t);
 
         Game g = new Game();
         Game g1 = new Game();

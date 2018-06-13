@@ -7,10 +7,6 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
     DiceColor color;
 
-    public PrivateObjectiveCard(){
-
-    }
-
     public DiceColor getColor(){
         return this.color;
     }
@@ -19,9 +15,6 @@ public class PrivateObjectiveCard extends ObjectiveCard {
         this.color = diceColor;
     }
 
-    public int scorePoint(){
-        return 0;
-    }
     @Override
     public String toString() {
         ConsoleUtils c = new ConsoleUtils();

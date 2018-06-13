@@ -4,6 +4,7 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.PrivateObjectiveCard;
 import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.DiceColor;
 import it.polimi.se2018.utils.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
@@ -28,10 +29,16 @@ public class PlayerTest {
 
         Game game = new Game();
 
+        player.setLastGameJoined(game);
+        Assert.assertEquals(game, player.getLastGameJoined());
+
+        player.setScore(300);
+        Assert.assertEquals(300, player.getScore());
+
         Assert.assertEquals("pippo", player.getNickname());
 
 
-        PrivateObjectiveCard p = new PrivateObjectiveCard();
+        PrivateObjectiveCard p = new PrivateObjectiveCard(DiceColor.blue);
 
         player.setOnline(true);
         Assert.assertEquals(true, player.getOnline());
@@ -54,11 +61,6 @@ public class PlayerTest {
         Assert.assertEquals(windowPatternCards, player.getWindowPatternCardsPool());
 
         Assert.assertEquals("pippo", player.toString());
-
-        /*player.setInGame(true);
-        player.assignObjectiveCard("yellow");
-        Assert.assertEquals(player.getPrivateObjectiveCard(), "yellow");*/
-
 
         WindowPatternCard w = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         player.setInGame(true);
