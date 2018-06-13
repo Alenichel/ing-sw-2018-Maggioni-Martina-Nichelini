@@ -61,10 +61,10 @@ public class ToolCardController {
 
 
         if(start.isEmpty())
-            throw new ToolCardException("empty window cell");
+            throw new ToolCardException(":ENGLOMISE_BRUSH: this window cell is empty");
 
         if(!end.isEmpty())
-            throw new ToolCardException("not empty window cell");
+            throw new ToolCardException(":ENGLOMISE_BRUSH: this window cell is not empty");
 
 
         Dice d1 = start.getAssignedDice();
@@ -75,14 +75,17 @@ public class ToolCardController {
             start.setAssignedDice(d1);
             throw e;
         }
-
-        start.setAssignedDice(null);
     }
 
-    /*private  void handleCopperFoilBurnisher(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
+    private  void handleCopperFoilBurnisher(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
         WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-        WindowCell start = (WindowCell) params.get(ToolcardContent.WindowCellStart);
-        WindowCell end = (WindowCell) params.get(ToolcardContent.WindowCellEnd);
+
+        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
+        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
+
+        WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+        WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+
         if(start.isEmpty())
             throw new ToolCardException("empty window cell");
 
@@ -92,13 +95,45 @@ public class ToolCardController {
 
         Dice d1 = start.getAssignedDice();
         try {
+            start.removeDice();
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, false);
+        }catch (ToolCardException | NotEmptyWindowCellException e) {
+            start.setAssignedDice(d1);
+            throw e;
+        }
+    }
+
+    private  void handleLathekin(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
+
+        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
+        int[] cooStart2 = (int[]) params.get(ToolcardContent.WindowCellStart);
+        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
+        int[] cooEnd2 = (int[]) params.get(ToolcardContent.WindowCellEnd);
+
+        WindowCell start1 = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+        WindowCell start2 = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+        WindowCell end1 = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+        WindowCell end2 = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+
+        if(start1.isEmpty() || start2.isEmpty())
+            throw new ToolCardException("empty window cell");
+
+        if(!end1.isEmpty() || !end2.isEmpty())
+            throw new ToolCardException("not empty window cell");
+
+
+        Dice d1 = start1.getAssignedDice();
+        Dice d2 = start2.getAssignedDice();
+        try {
+            start1.removeDice();
+            start2.removeDice();
+            windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, false);
+            windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, false);
         }catch (ToolCardException | NotEmptyWindowCellException e) {
             throw e;
         }
-
-        start.removeDice();
-    }*/
+    }
 
     protected void activateToolcard(VirtualView observable, ToolCardMessage toolCardMessage){
 
@@ -134,7 +169,7 @@ public class ToolCardController {
                 this.onSuccess(observable);
                 break;
 
-            /*case CopperFoilBurnisher:
+            case CopperFoilBurnisher:
                 try {
                     handleCopperFoilBurnisher(toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e){
@@ -142,13 +177,19 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable);
-                break;*/
+                break;
+
+            case Lathekin:
+                try {
+                    handleLathekin(toolCardMessage.getParameters());
+                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+                this.onSuccess(observable);
+                break;
 
             default: break;
-
-
-
-
         }
     }
 }
