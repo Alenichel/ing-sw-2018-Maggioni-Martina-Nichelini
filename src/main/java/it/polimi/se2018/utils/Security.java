@@ -4,8 +4,7 @@ import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -41,9 +40,9 @@ public class Security {
      */
     public static Player authenticateUser(String name, String password) throws AuthenticationErrorException {
         String DB_PATH = "/sagrada_users_db.txt";
-        Path path = Paths.get("resources" + DB_PATH);
+        InputStream dbResource = Security.class.getResourceAsStream(DB_PATH);
 
-        try (BufferedReader reader = Files.newBufferedReader(path);) {
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(dbResource));) {
             String nextLine = reader.readLine();
             while (!nextLine.equals("end")) {
                 nextLine = reader.readLine();

@@ -12,10 +12,8 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
@@ -109,11 +107,10 @@ public class WindowPatternCard extends Card implements Serializable {
      * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-        String WINDOWSPATTERNCARD_PATH = "resources/patternCards";
-        File configurationFile = new File(WINDOWSPATTERNCARD_PATH + "/" + this.name + ".xml");
+        InputStream xmlResource = getClass().getResourceAsStream("/patternCards" + "/" + this.name + ".xml");
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = documentBuilder.parse(configurationFile);
+        Document doc = documentBuilder.parse(xmlResource);
 
         Element virtus = doc.getDocumentElement();
 

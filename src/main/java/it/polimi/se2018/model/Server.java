@@ -6,16 +6,12 @@ import it.polimi.se2018.utils.LoggerPriority;
 import it.polimi.se2018.utils.LoggerType;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-
-import javax.swing.text.StyledEditorKit;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
+import java.net.URL;
 import java.util.*;
-import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * RMIServer class represents the server with all default params and list of active games and active players.
@@ -47,7 +43,9 @@ public class Server extends Observable implements Serializable {
             try {
                 loadConfiguration();
             } catch (FileNotFoundException e){
-                System.out.println("[*] Configuration file not found in " + HOME_PATH + CONFIGURATION_FILENAME + "\n[*] Aborting..");
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR ,"Configuration file not found\n[*] Aborting..");
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR ,"Configuration file not found\n[*] Aborting..");
+                e.printStackTrace();
                 System.exit(1);
             } catch (IOException | SAXException | ParserConfigurationException e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
@@ -73,16 +71,17 @@ public class Server extends Observable implements Serializable {
      * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
-                File configurationFile = new File("resources" + CONFIGURATION_FILENAME);
-                DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
-                DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
-                Document doc = documentBuilder.parse(configurationFile);
+            InputStream xmlResource = getClass().getResourceAsStream("/sagrada_server_conf.xml");
 
-                this.port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
-                this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakingTimer").item(0).getTextContent());
-                this.defaultMoveTimer = Integer.parseInt(doc.getElementsByTagName("defaultMoveTimer").item(0).getTextContent());
-                this.configurationRequired = Boolean.parseBoolean(doc.getElementsByTagName("requirePassword").item(0).getTextContent());
-                this.nOfTurn = Integer.parseInt(doc.getElementsByTagName("numberOfTurn").item(0).getTextContent());;
+            DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
+            Document doc = documentBuilder.parse(xmlResource);
+
+            this.port = Integer.parseInt(doc.getElementsByTagName("port").item(0).getTextContent());
+            this.defaultMatchmakingTimer = Integer.parseInt(doc.getElementsByTagName("defaultMatchmakingTimer").item(0).getTextContent());
+            this.defaultMoveTimer = Integer.parseInt(doc.getElementsByTagName("defaultMoveTimer").item(0).getTextContent());
+            this.configurationRequired = Boolean.parseBoolean(doc.getElementsByTagName("requirePassword").item(0).getTextContent());
+            this.nOfTurn = Integer.parseInt(doc.getElementsByTagName("numberOfTurn").item(0).getTextContent());
         }
 
     /**

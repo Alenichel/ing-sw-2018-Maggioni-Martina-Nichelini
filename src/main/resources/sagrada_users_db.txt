@@ -3,4 +3,6 @@ Alenichel:sagrada
 Valentina:sagrada
 Stendus:sagrada
 Bot1:sagrada
+Bot2:sagrada
+Bot3:sagrada
 end
