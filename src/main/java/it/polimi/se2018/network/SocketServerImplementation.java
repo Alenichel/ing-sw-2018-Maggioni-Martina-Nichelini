@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.RemoteException;
+import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
@@ -164,7 +165,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
             }
             catch (IOException e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "VVNB_LISTENER: " + e.toString());
-                e.printStackTrace();
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
             }
         }
     }

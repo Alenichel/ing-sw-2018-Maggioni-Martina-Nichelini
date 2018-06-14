@@ -40,7 +40,7 @@ public class RoundHandler implements TimerInterface {
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
 
-        if (this.actualRound == Server.getInstance().getnOfTurn()){
+        if (this.actualRound - 1 == Server.getInstance().getnOfTurn()){
             this.gameController.onGameEnd();
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + game.getName().toString() + " ended.");
             return;
