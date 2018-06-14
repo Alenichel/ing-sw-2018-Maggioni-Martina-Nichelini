@@ -13,6 +13,7 @@ import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -163,9 +164,17 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 clientConnected = false;
                 return;
             }
+            catch (SocketException e){
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "VVNB_LISTENER: " + e.toString());
+                associatedVirtualView.mySetChanged();
+                associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
+                clientConnected = false;
+                return;
+            }
             catch (IOException e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "VVNB_LISTENER: " + e.toString());
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+
             }
         }
     }

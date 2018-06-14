@@ -392,10 +392,10 @@ public class GameWindowController implements Serializable {
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
 
-        if (game.getActualRound() == 1) setup(game.getPlayers().size());
+        if (game.getActualRound() == 1) setup(game.getPlayersOrder().size());
         printFavourToken(me);
         printRoundLabel(game);
-        printPlayerName(game.getPlayers(), me);
+        printPlayerName(game.getPlayersOrder(), me);
         printPrivateObjective(me);
         printPublicObjective(game.getObjectiveCards());
         printToolCards(game.getToolCards());
@@ -449,7 +449,7 @@ public class GameWindowController implements Serializable {
         WindowPatternCard windowPatternCard;
 
         if (!playerName.equals("nada")) {
-            for (Player p : game.getPlayers()) {
+            for (Player p : game.getPlayersOrder()) {
                 if (p.getNickname().equals(playerName)) {
                     nowPlayer = p;
                     windowPatternCard = nowPlayer.getActivePatternCard();
@@ -606,7 +606,7 @@ public class GameWindowController implements Serializable {
             text = text.concat("The winner is: " + game.getWinner().getNickname());
         }
 
-        for (Player p: game.getPlayers()){
+        for (Player p: game.getPlayersOrder()){
             HashMap<String, Integer> scoreMap = p.getScores();
             text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
 

@@ -7,14 +7,13 @@ import it.polimi.se2018.utils.GameNames;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.BorderRepeat;
@@ -37,6 +36,7 @@ public class WaitingAreaController implements Serializable{
     @FXML private transient Label waitingTimer;
     @FXML private transient Label nOfPlayers;
     @FXML private transient AnchorPane gameView;
+    @FXML private transient MenuItem quitItem;
     @FXML private transient Label player1;
     @FXML private transient Label player2;
     @FXML private transient Label player3;
@@ -48,6 +48,11 @@ public class WaitingAreaController implements Serializable{
 
     protected void setupWaitingAreaController(Stage primaryStage){
         scene = primaryStage.getScene();
+        quitItem.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent t) {
+                System.exit(0);
+            }
+        });
     }
 
     public void printGameName( GameNames name ){
@@ -63,7 +68,7 @@ public class WaitingAreaController implements Serializable{
     }
 
     public void printOnlinePlayers(List<Player> players){
-        ArrayList<Label> panes = new ArrayList<Label>();
+        ArrayList<Label> panes = new ArrayList<>();
 
         panes.add(player1);
         panes.add(player2);

@@ -288,8 +288,8 @@ public class CliView extends View implements Observer {
                 if(wtu.equals(WhatToUpdate.ActivePlayer)) {
                     printTable((Game)o, (Message) msg);
                 }
-                else{
 
+                else{
                     if(wtu.equals(WhatToUpdate.GameStarted)) {
                         toolCards = (ArrayList<ToolCard>)((Game)o).getToolCards();
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, msg.toString());
@@ -301,7 +301,7 @@ public class CliView extends View implements Observer {
                             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                         }
                     }
-                        else {
+                    else {
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION ,msg.toString());
                     }
                 }

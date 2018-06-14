@@ -65,7 +65,7 @@ public class RoundHandler implements TimerInterface {
      * in the constructor.
      */
     private void extractDice(){
-        int nOfPlayers = this.gameAssociated.getPlayers().size();
+        int nOfPlayers = this.gameAssociated.getPlayersOrder().size();
         int diceToExtract = nOfPlayers * 2 + 1; //See Sagrada's rules.
         List<Dice> dB = this.gameAssociated.getDiceBag();
         List<Dice> dT = this.gameAssociated.getDiceOnTable();
