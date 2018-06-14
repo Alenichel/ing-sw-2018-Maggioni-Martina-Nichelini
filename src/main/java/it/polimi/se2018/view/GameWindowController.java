@@ -24,6 +24,7 @@ import javafx.scene.layout.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
@@ -31,33 +32,45 @@ import java.util.concurrent.TimeUnit;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
     @FXML private AnchorPane page;
+
     @FXML private Label name0;
     @FXML private Label name1;
     @FXML private Label name3;
     @FXML private Label name2;
+
     @FXML private Label roundLabel;
+
     @FXML private GridPane windowPattern0;
     @FXML private GridPane windowPattern1;
     @FXML private GridPane windowPattern2;
     @FXML private GridPane windowPattern3;
+
     @FXML private ImageView privateObjective;
+
     @FXML private ImageView objective1;
     @FXML private ImageView objective3;
     @FXML private ImageView objective2;
     @FXML private ImageView mouseOverPublicObjective;
+    @FXML private ImageView tool1;
+    @FXML private ImageView tool2;
+    @FXML private ImageView tool3;
+
     @FXML private Label timerLeft;
+
     @FXML private ImageView dot1;
     @FXML private ImageView dot2;
     @FXML private ImageView dot3;
     @FXML private ImageView dot4;
     @FXML private ImageView dot5;
     @FXML private ImageView dot6;
-    @FXML private ImageView clock;
+
     @FXML private ImageView privateObjectiveZoom;
+
     @FXML private Button passTurn;
 
     @FXML private Pane drafted1;
@@ -69,11 +82,16 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted7;
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
+
     @FXML private Pane responeInsert;
 
-    @FXML private ImageView tool1;
-    @FXML private ImageView tool2;
-    @FXML private ImageView tool3;
+    @FXML private Pane winnerPane;
+    @FXML private ImageView winnerImage;
+    @FXML private Text winnerText;
+    @FXML private Button winnerEndGame;
+    @FXML private Button winnerAnoterMatch;
+
+
 
     private GuiView gw;
     private boolean draggable = false;
@@ -298,8 +316,6 @@ public class GameWindowController implements Serializable {
                 try {
                     controllerCallbackSemaphore.tryAcquire(500, TimeUnit.MILLISECONDS);
                     if (controllerCallbackSemaphore.availablePermits() == 0) {
-                        System.out.println("X");
-
                         BackgroundImage x= new BackgroundImage(new Image("/x.png",55,55,false,true),
                                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
                         responeInsert.setBackground(new Background(x));
@@ -309,7 +325,6 @@ public class GameWindowController implements Serializable {
                         timer.play();
                     }
                     else if (controllerCallbackSemaphore.availablePermits() == 1){
-                        System.out.println("OK");
                         target.setBackground(new Background(myBI));
 
                         draggable = false;
@@ -530,15 +545,12 @@ public class GameWindowController implements Serializable {
         String endPath = ".png";
 
         String url1 =  partOfPath+ts.get(0).getToolCardName()+endPath;
-        System.out.println(url1);
         Image image1 = new Image(url1);
 
         String url2 =  partOfPath+ts.get(1).getToolCardName()+endPath;
-        System.out.println(url2);
         Image image2 = new Image(url2);
 
         String url3 =  partOfPath+ts.get(2).getToolCardName()+endPath;
-        System.out.println(url3);
         Image image3 = new Image(url3);
 
         tool1.setImage(image1);
@@ -558,6 +570,31 @@ public class GameWindowController implements Serializable {
     }
 
 
+    protected void printEndGame(Game game, Player client){
+        System.out.println("End controller");
+        String text = "";
+        winnerPane.setVisible(true);
+        winnerPane.setDisable(false);
+
+        if (game.getWinner().getNickname().equals(client.getNickname())){
+            winnerImage.setImage(new Image("/victory.png"));
+        }
+        else {
+            winnerImage.setImage(new Image("/lose.png"));
+            text = text.concat("The winner is: " + game.getWinner().getNickname());
+        }
+
+        for (Player p: game.getPlayers()){
+            HashMap<String, Integer> scoreMap = p.getScores();
+            text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
+
+            for (String s: scoreMap.keySet()){
+                text = text.concat("\t- " + s + ": " + scoreMap.get(s));
+            }
+        }
+
+        winnerText.setText(text);
+    }
 
     //------------------------------------------------------------------
 
