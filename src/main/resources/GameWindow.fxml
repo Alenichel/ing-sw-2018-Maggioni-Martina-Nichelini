@@ -246,7 +246,7 @@
       <ImageView fx:id="tool2" fitHeight="152.0" fitWidth="111.0" layoutX="1008.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tool3" fitHeight="152.0" fitWidth="111.0" layoutX="1143.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="mouseOverPublicObjective" disable="true" fitHeight="372.0" fitWidth="258.0" layoutX="957.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" />
-      <Pane layoutX="247.0" layoutY="114.0" prefHeight="441.0" prefWidth="781.0" style="-fx-background-color: white;">
+      <Pane layoutX="247.0" fx:id="winnerPane" layoutY="114.0" prefHeight="441.0" prefWidth="781.0" style="-fx-background-color: white;">
          <children>
             <ImageView fx:id="winnerImage" fitHeight="150.0" fitWidth="737.0" layoutX="24.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" />
             <Text fx:id="winnerText" layoutX="26.0" layoutY="193.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="736.9999788701534" />
