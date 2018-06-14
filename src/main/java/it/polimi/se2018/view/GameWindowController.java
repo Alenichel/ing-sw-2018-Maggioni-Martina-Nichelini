@@ -21,6 +21,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
@@ -68,6 +70,10 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted9;
     @FXML private Pane responeInsert;
 
+    @FXML private ImageView tool1;
+    @FXML private ImageView tool2;
+    @FXML private ImageView tool3;
+
     private GuiView gw;
     private boolean draggable = false;
     private transient List<Label> labels;
@@ -77,7 +83,7 @@ public class GameWindowController implements Serializable {
     private Semaphore controllerCallbackSemaphore;
 
 
-    private void setup(){
+    private void setup(int nOfPlayers){
         labels = new ArrayList<>();
         gridPanes = new ArrayList<>();
         draftedDice = new ArrayList<>();
@@ -105,6 +111,20 @@ public class GameWindowController implements Serializable {
 
         passTurn.setDisable(true);
         passTurn.setOnMouseClicked((MouseEvent e) -> handlePassTurn());
+        String path;
+
+        if(nOfPlayers == 4)
+            path = "/backgrounds/4player.png";
+        else if(nOfPlayers == 3)
+            path = "/backgrounds/3player.png";
+        else
+            path = "/backgrounds/2player.png";
+
+        BackgroundImage myBI= new BackgroundImage(new Image(path,1275,720,false,true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+        page.setBackground(new Background(myBI));
+
 
     }
 
@@ -225,13 +245,10 @@ public class GameWindowController implements Serializable {
     }
 
 
-    //------------------------------------------------------------------
-
     public Semaphore getControllerCallbackSemaphore() {
         return controllerCallbackSemaphore;
     }
 
-    //------------------------------------------------------------------
 
     private void handlePassTurn(){
         gw.passTurn();
@@ -245,11 +262,12 @@ public class GameWindowController implements Serializable {
 
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
-        setup();
+        setup(game.getPlayers().size());
         printFavourToken(me);
         printPlayerName(game.getPlayers(), me);
         printPrivateObjective(me);
         printPublicObjective(game.getObjectiveCards());
+        printToolCards(game.getToolCards());
         printPatternCards(game);
         printDratfedDice(game.getDiceOnTable());
         printCurrentRound(game.getActivePlayer());
@@ -308,17 +326,79 @@ public class GameWindowController implements Serializable {
                 privateObjectiveZoom.setVisible(false);
             }
         });
+
+        tool1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool1.getImage());
+            }
+        });
+
+        tool1.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+
+        tool2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool2.getImage());
+            }
+        });
+
+        tool2.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+
+        tool3.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool3.getImage());
+            }
+        });
+
+        tool3.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+
     }
 
     protected void printTimerLeft(int t){
-        Image clockImage = new Image("/clock.gif");
-        clock.setImage(clockImage);
+        String clk="";
         int min = t/60;
         int sec = t%60;
+
         if(min != 0)
-            timerLeft.setText("min: "+min+" sec: "+sec);
+            if(min > 9)
+                clk = clk.concat(Integer.toString(min)+" : ");
+            else
+                clk = clk.concat("0"+ Integer.toString(min)+" : ");
         else
-            timerLeft.setText("sec: "+sec);
+            clk = clk.concat("00 : ");
+
+        if(sec>9)
+            clk = clk.concat(Integer.toString(sec));
+        else
+            clk = clk.concat("0" + Integer.toString(sec));
+
+        if(t < 10)
+            timerLeft.setTextFill(Color.RED);
+
+        else
+            timerLeft.setTextFill(Color.BLACK);
+
+        timerLeft.setText(clk);
     }
 
     private void printPatternCards(Game game){
@@ -352,30 +432,24 @@ public class GameWindowController implements Serializable {
         }
     }
 
-    private void printCurrentRound( Player me){
-        DropShadow dropShadow = new DropShadow();
-        DropShadow dropShadowEnd = new DropShadow();
-        dropShadow.setColor(Color.BLACK);
-        dropShadow.setRadius(60.0);
-        dropShadowEnd.setRadius(0);
+    private void printCurrentRound( Player activePlayer){
         int n = 0;
 
         for(GridPane g : gridPanes){
-            if(g.getId().split("-")[0].equals(me.getNickname())){
+            if(g.getId().split("-")[0].equals(activePlayer.getNickname())){
                 final String cssDefault = "-fx-border-color: red;\n"
                         + "-fx-border-width: 10;\n";
-
-                //gridPanes.get(n).setEffect(dropShadow);
                 g.setStyle(cssDefault);
+
+
             }else{
                 final String cssDefault = "-fx-border-color: black;\n"
-                        + "-fx-border-width: 3;\n";
-                //gridPanes.get(n).setEffect(null);
+                        + "-fx-border-width: 10;\n";
                 g.setStyle(cssDefault);
             }
             n++;
         }
-        toggleDraggable(me);
+        toggleDraggable(activePlayer);
     }
 
     private void printDratfedDice(List<Dice> dices){
@@ -395,11 +469,6 @@ public class GameWindowController implements Serializable {
             n++;
         }
     }
-
-    private void printRoundTrack(Game game){
-        //for (Pane pane: )
-    }
-
 
 
     private void printPlayerName(List<Player> ps, Player me){
@@ -459,6 +528,27 @@ public class GameWindowController implements Serializable {
         objective1.setImage(image1);
         objective2.setImage(image2);
         objective3.setImage(image3);
+    }
+
+    private void printToolCards(List <ToolCard> ts){
+        String partOfPath ="/toolCards/";
+        String endPath = ".png";
+
+        String url1 =  partOfPath+ts.get(0).getToolCardName()+endPath;
+        System.out.println(url1);
+        Image image1 = new Image(url1);
+
+        String url2 =  partOfPath+ts.get(1).getToolCardName()+endPath;
+        System.out.println(url2);
+        Image image2 = new Image(url2);
+
+        String url3 =  partOfPath+ts.get(2).getToolCardName()+endPath;
+        System.out.println(url3);
+        Image image3 = new Image(url3);
+
+        tool1.setImage(image1);
+        tool2.setImage(image2);
+        tool3.setImage(image3);
     }
 
     private void printWindowCell(WindowCell in, String path, GridPane gridPane){

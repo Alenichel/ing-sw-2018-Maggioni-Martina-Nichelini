@@ -30,7 +30,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.EnglomiseBrush);
             this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
         }
-        /*if(ToolCardsName.CopperFoilBurnisher.equals(tcn)){
+        if(ToolCardsName.CopperFoilBurnisher.equals(tcn)){
             this.setName(ToolCardsName.CopperFoilBurnisher.toString());
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction");
@@ -40,7 +40,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.Lathekin);
             this.setDescription("Move exactly two dice, obeying all placement restrictions");
         }
-        if(ToolCardsName.LensCutter.equals(tcn)){
+        /*if(ToolCardsName.LensCutter.equals(tcn)){
             this.setName(ToolCardsName.LensCutter.toString());
             this.setToolCardName(ToolCardsName.LensCutter);
             this.setDescription("After drafted swap the drafted die with a die from the round track");
