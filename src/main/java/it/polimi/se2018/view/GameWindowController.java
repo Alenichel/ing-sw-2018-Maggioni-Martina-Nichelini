@@ -8,6 +8,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -610,7 +611,7 @@ public class GameWindowController implements Serializable {
             text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
 
             for (String s: scoreMap.keySet()){
-                text = text.concat("\t- " + s + ": " + scoreMap.get(s));
+                text = text.concat("\t- " + s + ": " + scoreMap.get(s)+"\n");
             }
         }
 
@@ -659,6 +660,11 @@ public class GameWindowController implements Serializable {
         }
 
 
+    }
+    @FXML
+    private void quit(){
+        Platform.exit();
+        System.exit(0);
     }
 
     private void toggleDraggable(Player currentPlayer){
