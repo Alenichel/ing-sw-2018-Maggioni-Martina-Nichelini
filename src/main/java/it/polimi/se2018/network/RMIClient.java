@@ -48,7 +48,7 @@ public class RMIClient {
         public void run(){
 	        while (true){
 	            try {
-                    sleep(5 * 1000);
+                    sleep((long) 5 * 1000);
                     si.pong();
                 } catch (RemoteException e){
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Server seems to have died. Closing..");

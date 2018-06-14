@@ -20,7 +20,9 @@ import javafx.stage.StageStyle;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -52,7 +54,7 @@ public class GuiView extends View implements Observer {
 
             waitingAreaController = loader.getController();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -65,7 +67,7 @@ public class GuiView extends View implements Observer {
 
             gameWindowController = loader.getController();
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -78,7 +80,9 @@ public class GuiView extends View implements Observer {
             primaryStage.setTitle("Select your pattern card!");
             scenePatternCard = new Scene(root);
             selectPatternCardWindowController = loader.getController();
-        }catch (IOException e){e.printStackTrace();}
+        }catch (IOException e){
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+        }
 
     }
 

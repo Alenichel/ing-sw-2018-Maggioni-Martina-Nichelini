@@ -42,22 +42,22 @@ public class AppClient extends Application{
 
             String nickname = input.toString();
 
-            String password = "";
+            String pass = "";
             if (Server.getInstance().isConfigurationRequired()) {
                 System.out.print("\n[*] Please insert your password: ");
-                password = sinput.nextLine();
+                pass = sinput.nextLine();
             }
 
             CliView cw = new CliView();
 
             if (network == 1) {
-                SocketClient sc = new SocketClient("localhost", 9091, nickname, password, cw);
+                SocketClient sc = new SocketClient("localhost", 9091, nickname, pass, cw);
                 cw.addObserver(sc);
             }
 
             if (network == 2) {
                 RMIClient rmiClient = new RMIClient();
-                cw.addObserver(rmiClient.run(cw, "localhost", nickname, password));
+                cw.addObserver(rmiClient.run(cw, "localhost", nickname, pass));
             }
             cw.run();
 

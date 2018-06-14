@@ -42,11 +42,11 @@ public class Game extends Observable implements Serializable {
         name = GameNames.values()[random.nextInt(GameNames.values().length)];
     }
 
-    public boolean isStarted() {
+    public synchronized boolean isStarted() {
         return isStarted;
     }
 
-    public GameController getAssociatedGameController() {
+    public synchronized GameController getAssociatedGameController() {
         return associatedGameController;
     }
 

@@ -16,10 +16,7 @@ import javafx.util.Pair;
 import java.rmi.ConnectException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Observable;
+import java.util.*;
 
 
 public class RMIServerImplementation extends UnicastRemoteObject implements
@@ -56,7 +53,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
             ClientInterface client = (ClientInterface) pair.getKey();
             client.notify(callbackMessage);
         } catch ( Exception e) {
-            e.printStackTrace();
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
     }
 
