@@ -39,6 +39,7 @@ public class GameWindowController implements Serializable {
     @FXML private Label name1;
     @FXML private Label name3;
     @FXML private Label name2;
+    @FXML private Label roundLabel;
     @FXML private GridPane windowPattern0;
     @FXML private GridPane windowPattern1;
     @FXML private GridPane windowPattern2;
@@ -105,11 +106,103 @@ public class GameWindowController implements Serializable {
         draftedDice.add(drafted8);
         draftedDice.add(drafted9);
 
+        objective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(objective1.getImage());
+            }
+        });
+        objective1.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+        objective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(objective2.getImage());
+            }
+        });
+        objective2.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+        objective3.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(objective3.getImage());
+            }
+        });
+        objective3.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+        privateObjective.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                privateObjectiveZoom.setVisible(true);
+                privateObjectiveZoom.setImage(privateObjective.getImage());
+            }
+        });
+        privateObjective.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                privateObjectiveZoom.setVisible(false);
+            }
+        });
+
+        tool1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool1.getImage());
+            }
+        });
+        tool1.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+        tool2.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool2.getImage());
+            }
+        });
+        tool2.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+        tool3.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(true);
+                mouseOverPublicObjective.setImage(tool3.getImage());
+            }
+        });
+        tool3.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                mouseOverPublicObjective.setVisible(false);
+            }
+        });
+
         this.setSourceEvents();
         this.setTargetEvents();
 
 
-        passTurn.setDisable(true);
         passTurn.setOnMouseClicked((MouseEvent e) -> handlePassTurn());
         String path;
 
@@ -124,8 +217,6 @@ public class GameWindowController implements Serializable {
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
         page.setBackground(new Background(myBI));
-
-
     }
 
 
@@ -262,8 +353,10 @@ public class GameWindowController implements Serializable {
 
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
-        setup(game.getPlayers().size());
+
+        if (game.getActualRound() == 1) setup(game.getPlayers().size());
         printFavourToken(me);
+        printRoundLabel(game);
         printPlayerName(game.getPlayers(), me);
         printPrivateObjective(me);
         printPublicObjective(game.getObjectiveCards());
@@ -271,107 +364,11 @@ public class GameWindowController implements Serializable {
         printPatternCards(game);
         printDratfedDice(game.getDiceOnTable());
         printCurrentRound(game.getActivePlayer());
-        objective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective1.getImage());
-            }
-        });
-        objective1.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
+    }
 
-        objective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective2.getImage());
-            }
-        });
-        objective2.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-
-        objective3.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective3.getImage());
-            }
-        });
-        objective3.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-
-        privateObjective.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                privateObjectiveZoom.setVisible(true);
-                privateObjectiveZoom.setImage(privateObjective.getImage());
-            }
-        });
-        privateObjective.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                privateObjectiveZoom.setVisible(false);
-            }
-        });
-
-        tool1.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool1.getImage());
-            }
-        });
-
-        tool1.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-
-        tool2.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool2.getImage());
-            }
-        });
-
-        tool2.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-
-        tool3.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool3.getImage());
-            }
-        });
-
-        tool3.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-
+    private void printRoundLabel(Game game){
+        roundLabel.setTextFill(Color.WHITE);
+        roundLabel.setText("Round: " + String.valueOf(game.getActualRound()));
     }
 
     protected void printTimerLeft(int t){
@@ -453,7 +450,6 @@ public class GameWindowController implements Serializable {
     }
 
     private void printDratfedDice(List<Dice> dices){
-        passTurn.setDisable(false);
         int n = 0;
         for(Pane pane: draftedDice){
             pane.setBackground(null);
@@ -472,15 +468,14 @@ public class GameWindowController implements Serializable {
 
 
     private void printPlayerName(List<Player> ps, Player me){
-        int n = 1;
-
         labels.get(0).setText(me.getNickname());
         labels.get(0).setText(me.getNickname());
         gridPanes.get(0).setId(me.getNickname() + "-windowPattern");
 
+        int n = 1;
         for(Player p: ps){
-            gridPanes.get(n).setId(p.getNickname() + "-windowPattern");
             if(!p.getNickname().equals(me.getNickname())) {
+                gridPanes.get(n).setId(p.getNickname() + "-windowPattern");
                 labels.get(n).setText(p.getNickname());
                 n++;
             }
