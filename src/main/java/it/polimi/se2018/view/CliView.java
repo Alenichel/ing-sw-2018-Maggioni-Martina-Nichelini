@@ -6,7 +6,7 @@ import it.polimi.se2018.utils.*;
 
 import java.util.*;
 import static it.polimi.se2018.utils.LoggerPriority.ERROR;
-
+import static it.polimi.se2018.utils.LoggerPriority.NORMAL;
 
 
 public class CliView extends View implements Observer {
@@ -15,6 +15,8 @@ public class CliView extends View implements Observer {
     private Player activePlayer = null;
     transient Scanner sinput = new Scanner(System.in);
     private ArrayList<ToolCard> toolCards;
+    private boolean gameEnd = false;
+
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
         this.setChanged();
@@ -116,6 +118,16 @@ public class CliView extends View implements Observer {
         loop: while (true) {
             String input = sinput.nextLine();
             String[] tokens = input.toLowerCase().split(" ");
+
+            if (gameEnd) {
+
+                if (Integer.parseInt(input) == 2){
+                    Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Goodbye");
+                    System.exit(0);
+                    continue;
+                }
+                else Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nChoose: \n\t1) Search for another game\n\t2) Quit" );
+            }
 
             switch (tokens[0]) {
 
@@ -260,13 +272,8 @@ public class CliView extends View implements Observer {
             }
         }
 
-        int choose = 0;
-        while (choose != 1 && choose != 2){
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Choose: \n\t1) Search for another game\n\t2) Quit" );
-            choose = sinput.nextInt();
-        }
-
-        if (choose == 2) System.exit(0);
+        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nChoose: \n\t1) Search for another game\n\t2) Quit" );
+        this.gameEnd = true;
     }
 
     public void update(Observable o, Object msg){

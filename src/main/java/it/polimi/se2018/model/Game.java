@@ -50,33 +50,33 @@ public class Game extends Observable implements Serializable {
         return associatedGameController;
     }
 
-    public void setDiceBag(List<Dice> diceBag) {
+    public synchronized void setDiceBag(List<Dice> diceBag) {
         this.diceBag = diceBag;
     }
-    public void setDiceOnTable(List<Dice> diceOnTable) {
+    public synchronized void setDiceOnTable(List<Dice> diceOnTable) {
         this.diceOnTable = diceOnTable;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.DiceOnTable);
         um.setStringMessage("Some dice have been draft and added to the table");
         this.setChanged();
         this.notifyObservers(um);
     }
-    public void setPatternCards(List<WindowPatternCard> patternCards) {
+    public synchronized void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = patternCards;
     }
-    public void setObjectiveCards(List<PublicObjectiveCard> objectiveCards) {
+    public synchronized void setObjectiveCards(List<PublicObjectiveCard> objectiveCards) {
         this.objectiveCards = objectiveCards;
     }
-    public void setToolCards(List<ToolCard> toolCards) {
+    public synchronized void setToolCards(List<ToolCard> toolCards) {
         this.toolCards = toolCards;
     }
-    public void setTimerSecondLeft(int second){
+    public synchronized void setTimerSecondLeft(int second){
         this.timerSecondsLeft = second;
         this.setChanged();
         UpdateMessage um = new UpdateMessage(WhatToUpdate.TimeLeft);
         um.setStringMessage(String.valueOf(timerSecondsLeft));
         this.notifyObservers(um);
     }
-    public void setStarted(boolean started) throws GameException {
+    public synchronized void setStarted(boolean started) throws GameException {
         if (this.isStarted) throw new GameException("Game already started");
         else {
             if (this.players.size() > 1) {
@@ -94,87 +94,83 @@ public class Game extends Observable implements Serializable {
             }
         }
     }
-    public void setInitializationComplete(boolean initializationComplete) {
+    public synchronized void setInitializationComplete(boolean initializationComplete) {
         this.initiliazationComplete = initializationComplete;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.InitializationStatus);
         um.setStringMessage("Initialization complete");
         this.setChanged();
         this.notifyObservers(um);
     }
-    public void setActivePlayer(Player activePlayer) {
+    public synchronized void setActivePlayer(Player activePlayer) {
         this.activePlayer = activePlayer;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.ActivePlayer);
         um.setStringMessage("This is the turn of player:" + activePlayer.getNickname());
         this.setChanged();
         this.notifyObservers(um);
     }
-    public void setActualRound(int actualRound) {
+    public synchronized void setActualRound(int actualRound) {
         this.actualRound = actualRound;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.NewRound);
         um.setStringMessage("This is round number: " + this.actualRound);
         this.setChanged();
         this.notifyObservers(um);
     }
-    public void setWinner(Player winner) {
+    public synchronized void setWinner(Player winner) {
         this.winner = winner;
 
         UpdateMessage um = new UpdateMessage(WhatToUpdate.Winner);
         this.setChanged();
         this.notifyObservers(um);
     }
-    public void setPlayersOrder(List<Player> playersOrder) {
+    public synchronized void setPlayersOrder(List<Player> playersOrder) {
         this.playersOrder = playersOrder;
     }
-
-    public List<Dice> getDiceBag() {
+    public synchronized List<Dice> getDiceBag() {
         return diceBag;
     }
-    public List<Dice> getDiceOnTable() {
+    public synchronized List<Dice> getDiceOnTable() {
         return diceOnTable;
     }
-    public boolean isInitiliazationComplete() {
+    public synchronized boolean isInitiliazationComplete() {
         return initiliazationComplete;
     }
-    public int getTimerSecondsLeft() {
+    public synchronized int getTimerSecondsLeft() {
         return timerSecondsLeft;
     }
-    public GameNames getName() {
+    public synchronized GameNames getName() {
         return name;
     }
-    public Player getWinner() {
+    public synchronized Player getWinner() {
         return winner;
     }
-    public List<WindowPatternCard> getPatternCards() {
+    public synchronized List<WindowPatternCard> getPatternCards() {
         return patternCards;
     }
-    public List<PublicObjectiveCard> getObjectiveCards() {
+    public synchronized List<PublicObjectiveCard> getObjectiveCards() {
         return objectiveCards;
     }
-    public List<ToolCard> getToolCards() {
+    public synchronized List<ToolCard> getToolCards() {
         return toolCards;
     }
-    public List<Player> getPlayers() {
+    public synchronized List<Player> getPlayers() {
         return players;
     }
-    public List<Player> getPlayersOrder() {
+    public synchronized List<Player> getPlayersOrder() {
         return playersOrder;
     }
-    public HashMap getScores() {
+    public synchronized HashMap getScores() {
         return scores;
     }
-
-    public Player getActivePlayer() {
+    public synchronized Player getActivePlayer() {
         return activePlayer;
     }
-    public RoundTrack getRoundTrack() {
+    public synchronized RoundTrack getRoundTrack() {
         return roundTrack;
     }
-
-    public int getActualRound() {
+    public synchronized int getActualRound() {
         return actualRound;
     }
-
-    public void addPlayer(Player player) throws GameException{
+    public synchronized void addPlayer(Player player) throws GameException{
         if(!isStarted){
             if(this.players.size() > 3)
                 throw new GameException("GameIsFull");
@@ -198,7 +194,7 @@ public class Game extends Observable implements Serializable {
             throw new GameException("AlreadyStartedGame");
         }
     }
-    public void removePlayer(Player player){
+    public synchronized void removePlayer(Player player){
         this.players.remove(player);
         UpdateMessage um = new UpdateMessage(WhatToUpdate.PlayerDisconnection);
         if (this.players.size() > 1) um.setStringMessage(player.getNickname() + " left the game");
@@ -206,8 +202,6 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
-
-
 }
 
 

@@ -37,13 +37,14 @@ public class RoundHandler implements TimerInterface {
         this.actualRound = this.gameAssociated.getActualRound();
         this.gameController = gameAssociated.getAssociatedGameController();
 
-        if (this.actualRound == Server.getInstance().getnOfTurn()){
-            this.gameController.onGameEnd();
-        }
-
         this.moveTimer = Server.getInstance().getDefaultMoveTimer();
         this.turnList = generateTurnList();
 
+        if (this.actualRound == Server.getInstance().getnOfTurn()){
+            this.gameController.onGameEnd();
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + game.getName().toString() + " ended.");
+            return;
+        }
 
         if (this.actualRound != 1 ) {
             this.gameAssociated.getRoundTrack().addDice(this.gameAssociated.getDiceOnTable(), this.actualRound-2);
