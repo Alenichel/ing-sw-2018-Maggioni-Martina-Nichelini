@@ -149,16 +149,19 @@ public class GuiView extends View implements Observer {
                             waitingAreaController.printOnlinePlayers(((Game)o).getPlayers());
                             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, message.toString());
                         }
-                        if (wtu.equals(WhatToUpdate.TimeLeft)){
+                        else if (wtu.equals(WhatToUpdate.TimeLeft)){
                             waitingAreaController.printTimer(((Game)o).getTimerSecondsLeft());
                             gameWindowController.printTimerLeft(((Game)o).getTimerSecondsLeft());
                         }
-                        if (wtu.equals(WhatToUpdate.GameStarted)){
+                        else if (wtu.equals(WhatToUpdate.GameStarted)){
                             printSelectPatternCard();
                             selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
                         }
-                        if(wtu.equals(WhatToUpdate.ActivePlayer)){
+                        else if(wtu.equals(WhatToUpdate.ActivePlayer)){
                             printGameWindow((Game)o, client);
+                        }
+                        else if (wtu.equals(WhatToUpdate.Winner)){
+                            gameWindowController.printEndGame((Game)o, client);
                         }
                     }
                 );
