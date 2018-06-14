@@ -209,16 +209,16 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="1" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="2" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="3" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="4" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="5" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="6" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="7" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="8" />
-            <Pane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" GridPane.columnIndex="9" />
+            <Pane fx:id="roundTrack0" prefHeight="200.0" prefWidth="200.0" />
+            <Pane fx:id="roundTrack1" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <Pane fx:id="roundTrack2" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="2" />
+            <Pane fx:id="roundTrack3" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="3" />
+            <Pane fx:id="roundTrack4" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="4" />
+            <Pane fx:id="roundTrack5" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="5" />
+            <Pane fx:id="roundTrack6" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="6" />
+            <Pane fx:id="roundTrack7" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="7" />
+            <Pane fx:id="roundTrack8" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="8" />
+            <Pane fx:id="roundTrack9" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="9" />
          </children>
       </GridPane>
       <ImageView fx:id="privateObjective" fitHeight="236.0" fitWidth="200.0" layoutX="14.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="16.0" />

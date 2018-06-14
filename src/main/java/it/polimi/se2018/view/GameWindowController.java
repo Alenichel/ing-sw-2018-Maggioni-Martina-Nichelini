@@ -91,13 +91,24 @@ public class GameWindowController implements Serializable {
     @FXML private Button winnerEndGame;
     @FXML private Button winnerAnoterMatch;
 
+    @FXML private Pane roundTrack0;
+    @FXML private Pane roundTrack1;
+    @FXML private Pane roundTrack2;
+    @FXML private Pane roundTrack3;
+    @FXML private Pane roundTrack4;
+    @FXML private Pane roundTrack5;
+    @FXML private Pane roundTrack6;
+    @FXML private Pane roundTrack7;
+    @FXML private Pane roundTrack8;
+    @FXML private Pane roundTrack9;
 
 
     private GuiView gw;
     private boolean draggable = false;
-    private transient List<Label> labels;
-    private transient List<GridPane> gridPanes;
-    private transient List<Pane> draftedDice;
+    private List<Label> labels;
+    private List<GridPane> gridPanes;
+    private List<Pane> draftedDice;
+    private List<Pane> roundTrack;
 
     private Semaphore controllerCallbackSemaphore;
 
@@ -106,6 +117,7 @@ public class GameWindowController implements Serializable {
         labels = new ArrayList<>();
         gridPanes = new ArrayList<>();
         draftedDice = new ArrayList<>();
+        roundTrack = new ArrayList<>();
         labels.add(name0);
         labels.add(name1);
         labels.add(name2);
@@ -123,6 +135,16 @@ public class GameWindowController implements Serializable {
         draftedDice.add(drafted7);
         draftedDice.add(drafted8);
         draftedDice.add(drafted9);
+        roundTrack.add(roundTrack0);
+        roundTrack.add(roundTrack1);
+        roundTrack.add(roundTrack2);
+        roundTrack.add(roundTrack3);
+        roundTrack.add(roundTrack4);
+        roundTrack.add(roundTrack5);
+        roundTrack.add(roundTrack6);
+        roundTrack.add(roundTrack7);
+        roundTrack.add(roundTrack8);
+        roundTrack.add(roundTrack9);
 
         objective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
             @Override
@@ -379,6 +401,7 @@ public class GameWindowController implements Serializable {
         printPatternCards(game);
         printDratfedDice(game.getDiceOnTable());
         printCurrentRound(game.getActivePlayer());
+        printRoundTrack(game.getRoundTrack(), game.getActualRound());
     }
 
     private void printRoundLabel(Game game){
@@ -481,7 +504,6 @@ public class GameWindowController implements Serializable {
         }
     }
 
-
     private void printPlayerName(List<Player> ps, Player me){
         labels.get(0).setText(me.getNickname());
         labels.get(0).setText(me.getNickname());
@@ -569,7 +591,6 @@ public class GameWindowController implements Serializable {
 
     }
 
-
     protected void printEndGame(Game game, Player client){
         System.out.println("End controller");
         String text = "";
@@ -596,8 +617,6 @@ public class GameWindowController implements Serializable {
         winnerText.setText(text);
     }
 
-    //------------------------------------------------------------------
-
     private String toPath(WindowCell w){
         String str;
         if(w.getAssignedDice() != null) {
@@ -615,7 +634,6 @@ public class GameWindowController implements Serializable {
         return str;
     }
 
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     private Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
         Node result = null;
         ObservableList<Node> childrens = gridPane.getChildren();
@@ -627,7 +645,21 @@ public class GameWindowController implements Serializable {
         }
         return result;
     }
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+    private void printRoundTrack(RoundTrack rt, int round){
+        if(round > 1) {
+            Dice d = rt.getRoundTrack().get(round - 2).get(0);
+
+            String path = "/dice/" + d.getColor() + "/" + d.getNumber() + ".png";
+            System.out.println(path);
+            BackgroundImage myBI = new BackgroundImage(new Image(path, 55, 55, false, true),
+                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+            roundTrack.get(round - 2).setBackground(new Background(myBI));
+        }
+
+
+    }
 
     private void toggleDraggable(Player currentPlayer){
         String player = windowPattern0.getId().split("-")[0];
