@@ -5,12 +5,12 @@ public enum ToolCardsName {
     EnglomiseBrush,
     CopperFoilBurnisher,
     Lathekin,
-    //LensCutter,
-    //FluxBrush,
-    /*GlazingHammer,
+    LensCutter,
+    FluxBrush,
+    GlazingHammer,
     RunningPliers,
     CorkBackedStraightedge,
-    GrindingStone,*/
-    //FluxRemover,
+    GrindingStone,
+    FluxRemover,
     TapWheel
 }
