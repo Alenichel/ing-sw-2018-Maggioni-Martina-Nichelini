@@ -1,4 +1,4 @@
-package it.polimi.se2018.message;
+package it.polimi.se2018.enumeration;
 
 public enum WhatToUpdate {
     NewPlayer,

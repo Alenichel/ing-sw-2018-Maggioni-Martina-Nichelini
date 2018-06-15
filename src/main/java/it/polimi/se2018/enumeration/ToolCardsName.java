@@ -1,4 +1,4 @@
-package it.polimi.se2018.utils;
+package it.polimi.se2018.enumeration;
 
 public enum ToolCardsName {
     GrozingPliers,

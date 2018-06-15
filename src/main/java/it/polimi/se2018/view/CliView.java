@@ -1,12 +1,13 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.*;
 
 import java.util.*;
-import static it.polimi.se2018.utils.LoggerPriority.ERROR;
-import static it.polimi.se2018.utils.LoggerPriority.NORMAL;
+import static it.polimi.se2018.enumeration.LoggerPriority.ERROR;
+import static it.polimi.se2018.enumeration.LoggerPriority.NORMAL;
 
 
 public class CliView extends View implements Observer {

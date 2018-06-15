@@ -3,29 +3,21 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.utils.Security;
 import it.polimi.se2018.view.VirtualView;
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.SynchronousQueue;
-
-import static it.polimi.se2018.utils.Security.authenticateUser;
 
 /**
  * This class is the bridge between the virtual view and the rest of the network.

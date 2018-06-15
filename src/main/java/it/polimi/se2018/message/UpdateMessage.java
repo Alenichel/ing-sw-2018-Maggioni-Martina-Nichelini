@@ -1,5 +1,7 @@
 package it.polimi.se2018.message;
 
+import it.polimi.se2018.enumeration.WhatToUpdate;
+
 public class UpdateMessage extends Message {
 
     private WhatToUpdate whatToUpdate;

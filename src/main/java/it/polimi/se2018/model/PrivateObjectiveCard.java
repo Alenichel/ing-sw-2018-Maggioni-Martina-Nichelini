@@ -1,7 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.utils.ConsoleUtils;
-import it.polimi.se2018.utils.DiceColor;
+import it.polimi.se2018.enumeration.DiceColor;
 
 public class PrivateObjectiveCard extends ObjectiveCard {
 

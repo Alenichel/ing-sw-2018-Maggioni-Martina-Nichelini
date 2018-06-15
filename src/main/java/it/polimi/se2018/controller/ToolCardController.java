@@ -3,13 +3,13 @@ package it.polimi.se2018.controller;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.message.CallbackMessageSubject;
+import it.polimi.se2018.enumeration.CallbackMessageSubject;
 import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.ToolCardsName;
-import it.polimi.se2018.utils.ToolcardContent;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.ToolCardsName;
+import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
@@ -134,6 +134,8 @@ public class ToolCardController {
             throw e;
         }
     }
+
+
 
     protected void activateToolcard(VirtualView observable, ToolCardMessage toolCardMessage){
 

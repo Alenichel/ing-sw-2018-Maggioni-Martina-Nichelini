@@ -1,8 +1,8 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.ToolCardsName;
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.ToolCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 

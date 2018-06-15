@@ -1,7 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.strategy.objective.*;
-import it.polimi.se2018.utils.ObjectiveCardsName;
+import it.polimi.se2018.enumeration.ObjectiveCardsName;
 
 public class PublicObjectiveCard extends ObjectiveCard{
     private int points;

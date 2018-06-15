@@ -1,9 +1,8 @@
 package it.polimi.se2018.message;
 
-import it.polimi.se2018.utils.ToolCardsName;
-import it.polimi.se2018.utils.ToolcardContent;
+import it.polimi.se2018.enumeration.ToolCardsName;
+import it.polimi.se2018.enumeration.ToolcardContent;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ToolCardMessage extends Message{

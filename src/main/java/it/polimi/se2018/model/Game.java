@@ -3,8 +3,8 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.UpdateMessage;
-import it.polimi.se2018.message.WhatToUpdate;
-import it.polimi.se2018.utils.GameNames;
+import it.polimi.se2018.enumeration.WhatToUpdate;
+import it.polimi.se2018.enumeration.GameNames;
 
 
 import java.io.Serializable;

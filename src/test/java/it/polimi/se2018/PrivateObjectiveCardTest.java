@@ -1,8 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.model.PrivateObjectiveCard;
-import it.polimi.se2018.model.PublicObjectiveCard;
-import it.polimi.se2018.utils.DiceColor;
+import it.polimi.se2018.enumeration.DiceColor;
 import org.junit.Assert;
 import org.junit.Test;
 

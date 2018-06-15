@@ -5,7 +5,7 @@ import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.RMIClient;
 import it.polimi.se2018.network.SocketClient;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.view.CliView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

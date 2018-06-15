@@ -1,13 +1,11 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.message.ControllerCallbackMessage;
-import it.polimi.se2018.message.ErrorMessage;
 import it.polimi.se2018.message.Message;
 import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.strategy.objective.*;
-import it.polimi.se2018.strategy.toolcard.*;
 import it.polimi.se2018.utils.*;
 import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
@@ -17,9 +15,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-
-import static it.polimi.se2018.utils.ObjectiveCardsName.LightShades;
-import static it.polimi.se2018.utils.ObjectiveCardsName.RowColorVariety;
 
 /**
  * This class handles the first phases of the game in which each players is assigned with all cards and all game elements

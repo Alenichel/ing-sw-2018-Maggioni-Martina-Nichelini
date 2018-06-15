@@ -1,13 +1,12 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 public class Security {
 

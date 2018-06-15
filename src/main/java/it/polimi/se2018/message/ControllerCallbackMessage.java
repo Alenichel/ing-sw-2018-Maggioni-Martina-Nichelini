@@ -1,6 +1,7 @@
 package it.polimi.se2018.message;
 
-import it.polimi.se2018.utils.LoggerPriority;
+import it.polimi.se2018.enumeration.CallbackMessageSubject;
+import it.polimi.se2018.enumeration.LoggerPriority;
 
 public class ControllerCallbackMessage extends Message{
 

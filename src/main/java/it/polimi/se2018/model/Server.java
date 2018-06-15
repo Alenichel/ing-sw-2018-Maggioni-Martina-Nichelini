@@ -1,16 +1,15 @@
 package it.polimi.se2018.model;
 import it.polimi.se2018.message.UpdateMessage;
-import it.polimi.se2018.message.WhatToUpdate;
+import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
-import java.net.URL;
 import java.util.*;
 
 /**

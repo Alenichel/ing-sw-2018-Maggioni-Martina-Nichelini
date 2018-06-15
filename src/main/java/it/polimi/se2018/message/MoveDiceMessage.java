@@ -1,7 +1,6 @@
 package it.polimi.se2018.message;
 
-import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.utils.DiceLocation;
+import it.polimi.se2018.enumeration.DiceLocation;
 
 public class MoveDiceMessage extends Message {
 

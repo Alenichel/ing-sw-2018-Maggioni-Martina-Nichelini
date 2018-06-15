@@ -4,8 +4,8 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.PrivateObjectiveCard;
 import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.WindowPatternCardsName;
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 

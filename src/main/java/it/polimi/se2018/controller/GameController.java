@@ -1,5 +1,8 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.*;

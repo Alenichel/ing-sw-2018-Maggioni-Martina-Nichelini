@@ -1,5 +1,8 @@
 package it.polimi.se2018.utils;
 
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;

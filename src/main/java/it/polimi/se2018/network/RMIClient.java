@@ -1,9 +1,8 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.view.View;
 import java.net.MalformedURLException;
 import java.rmi.Naming;

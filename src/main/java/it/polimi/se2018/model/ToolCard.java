@@ -1,8 +1,11 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.enumeration.ToolCardsName;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.strategy.toolcard.*;
 import it.polimi.se2018.utils.*;
 
 import java.io.Serializable;

@@ -2,6 +2,8 @@ package it.polimi.se2018.utils;
 
 import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.controller.RoundHandler;
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 
 public class Timer extends Thread {
 

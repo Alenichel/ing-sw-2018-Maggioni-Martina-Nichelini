@@ -3,7 +3,6 @@ package it.polimi.se2018.strategy.toolcard;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.ToolCardsName;
 
 import java.io.Serializable;
 

@@ -3,7 +3,7 @@ package it.polimi.se2018;
 import it.polimi.se2018.network.RMIServer;
 import it.polimi.se2018.network.SocketServer;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerType;
+import it.polimi.se2018.enumeration.LoggerType;
 
 public class AppServer {
     public static void main(String[] args) {

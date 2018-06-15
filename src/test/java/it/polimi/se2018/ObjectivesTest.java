@@ -7,8 +7,8 @@ import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.WindowPatternCardsName;
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 

@@ -4,11 +4,9 @@ import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.message.SocketUpdateContainer;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.utils.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerPriority;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Observable;
 
 public class MessageTest {
 

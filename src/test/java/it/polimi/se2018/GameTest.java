@@ -1,9 +1,9 @@
 package it.polimi.se2018;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.ObjectiveCardsName;
-import it.polimi.se2018.utils.WindowPatternCardsName;
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.ObjectiveCardsName;
+import it.polimi.se2018.enumeration.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 

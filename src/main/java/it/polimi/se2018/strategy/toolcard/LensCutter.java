@@ -3,10 +3,8 @@ package it.polimi.se2018.strategy.toolcard;
 
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.model.Dice;
-import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.model.ToolCardEffectStrategy;
-import it.polimi.se2018.utils.DiceLocation;
-import it.polimi.se2018.utils.ToolCardsName;
+import it.polimi.se2018.enumeration.DiceLocation;
 
 import java.io.Serializable;
 

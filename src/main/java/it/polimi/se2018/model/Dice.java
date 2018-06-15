@@ -2,8 +2,8 @@ package it.polimi.se2018.model;
 
 
 import it.polimi.se2018.utils.ConsoleUtils;
-import it.polimi.se2018.utils.DiceColor;
-import it.polimi.se2018.utils.DiceLocation;
+import it.polimi.se2018.enumeration.DiceColor;
+import it.polimi.se2018.enumeration.DiceLocation;
 
 import java.io.Serializable;
 import java.util.Objects;

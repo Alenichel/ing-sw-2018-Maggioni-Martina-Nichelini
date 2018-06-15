@@ -1,27 +1,17 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.message.*;
-import it.polimi.se2018.model.Dice;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.WindowPatternCard;
-import it.polimi.se2018.utils.GameNames;
 import it.polimi.se2018.utils.Logger;
-import it.polimi.se2018.utils.LoggerPriority;
-import it.polimi.se2018.utils.LoggerType;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.URL;
 import java.util.Arrays;
 import java.util.Observable;
 import java.util.Observer;
