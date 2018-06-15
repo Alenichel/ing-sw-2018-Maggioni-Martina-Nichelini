@@ -31,27 +31,27 @@ public class ToolCard extends Card implements Serializable {
         if(ToolCardsName.EnglomiseBrush.equals(tcn)){
             this.setName(ToolCardsName.EnglomiseBrush.toString());
             this.setToolCardName(ToolCardsName.EnglomiseBrush);
-            this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction");
+            this.setDescription("Move any one die in your windows ignoring the color restriction. You must obey all other placement restriction.");
         }
         if(ToolCardsName.CopperFoilBurnisher.equals(tcn)){
             this.setName(ToolCardsName.CopperFoilBurnisher.toString());
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
-            this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction");
+            this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
         }
         if(ToolCardsName.Lathekin.equals(tcn)){
             this.setName(ToolCardsName.Lathekin.toString());
             this.setToolCardName(ToolCardsName.Lathekin);
-            this.setDescription("Move exactly two dice, obeying all placement restrictions");
+            this.setDescription("Move exactly two dice, obeying all placement restrictions.");
         }
-        /*if(ToolCardsName.LensCutter.equals(tcn)){
+        if(ToolCardsName.LensCutter.equals(tcn)){
             this.setName(ToolCardsName.LensCutter.toString());
             this.setToolCardName(ToolCardsName.LensCutter);
-            this.setDescription("After drafted swap the drafted die with a die from the round track");
+            this.setDescription("After drafted swap the drafted die with a die from the round track.");
         }
         if(ToolCardsName.FluxBrush.equals(tcn)){
             this.setName(ToolCardsName.FluxBrush.toString());
             this.setToolCardName(ToolCardsName.FluxBrush);
-            this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool");
+            this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool.");
         }
         if(ToolCardsName.GlazingHammer.equals(tcn)){
             this.setName(ToolCardsName.GlazingHammer.toString());
@@ -61,7 +61,7 @@ public class ToolCard extends Card implements Serializable {
         if(ToolCardsName.RunningPliers.equals(tcn)){
             this.setName(ToolCardsName.RunningPliers.toString());
             this.setToolCardName(ToolCardsName.RunningPliers);
-            this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round");
+            this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round.");
         }
         if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
             this.setName(ToolCardsName.CorkBackedStraightedge.toString());
@@ -76,12 +76,12 @@ public class ToolCard extends Card implements Serializable {
         if(ToolCardsName.FluxRemover.equals(tcn)){
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
-            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag ");
-        }*/
+            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag.");
+        }
         if(ToolCardsName.TapWheel.equals(tcn)){
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
-            this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction");
+            this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");
         }
     }
 
