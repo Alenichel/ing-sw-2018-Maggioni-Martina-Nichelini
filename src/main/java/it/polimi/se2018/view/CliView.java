@@ -62,53 +62,55 @@ public class CliView extends View implements Observer {
         this.notifyObservers(mdm);
     }
 
-    private void handleUseCommands(int n){
-        ToolCardsName tc = toolCards.get(n-1).getToolCardName();
-        //GrozingPliers
-        if(tc.equals(ToolCardsName.GrozingPliers)){
-            //Dado e booleano
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a dice: ");
-            int diceInput = Integer.parseInt(sinput.nextLine());
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increase or 2 to decrease: ");
-            boolean increase = Integer.parseInt(sinput.nextLine()) == 1;
+    private Object handleUseIO(ToolcardContent tcc){
+        if (tcc.equals(ToolcardContent.RunBy)) return this.client.getNickname();
 
-            HashMap<ToolcardContent, Object> htc= new HashMap<ToolcardContent, Object>();
-            htc.put(ToolcardContent.DraftedDie, diceInput-1);
-            htc.put(ToolcardContent.Increase, increase);
-
-            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.GrozingPliers, htc);
-            this.setChanged();
-            this.notifyObservers(tcm);
+        else if (tcc.equals(ToolcardContent.DraftedDie)) {
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a die: ");
+            return Integer.parseInt(sinput.nextLine()) - 1;
         }
-        //EnglomiseBrush
-        else if(tc.equals(ToolCardsName.EnglomiseBrush)){
-            //ci servono le due coordinate e la pattern del giocatore
+
+        else if (tcc.equals(ToolcardContent.Increase)) {
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increase or 2 to decrease: ");
+            return Integer.parseInt(sinput.nextLine()) == 1;
+        }
+
+        else if (tcc.equals(ToolcardContent.WindowCellStart)) {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select start window cell %x %y ");
             String input =  sinput.nextLine();
             int xStart = Integer.parseInt(input.split(" ")[0])-1;
             int yStart = Integer.parseInt(input.split(" ")[1])-1;
+            int[] cooStart = {xStart, yStart};
+            return cooStart;
+        }
+        else if (tcc.equals(ToolcardContent.WindowCellEnd)){
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select end window cell %x %y ");
-            input =  sinput.nextLine();
+            String input =  sinput.nextLine();
             int xEnd = Integer.parseInt(input.split(" ")[0])-1;
             int yEnd = Integer.parseInt(input.split(" ")[1])-1;
-
-            int[] cooStart = {xStart, yStart};
             int[] cooEnd = {xEnd, yEnd};
-
-
-            HashMap<ToolcardContent, Object> htc = new HashMap<>();
-            htc.put(ToolcardContent.RunBy, this.client.getNickname());
-            htc.put(ToolcardContent.WindowCellStart, cooStart);
-            htc.put(ToolcardContent.WindowCellEnd, cooEnd);
-
-            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.EnglomiseBrush, htc);
-            this.setChanged();
-            this.notifyObservers(tcm);
-        }else{
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NOTIFICATION, "ERRORE");
+            return cooEnd;
         }
 
+        return null;
+    }
 
+    private void handleUseCommands(int n){
+        ToolCard tc = toolCards.get(n-1);
+        ToolCardsName tcn = tc.getToolCardName();
+
+        Map<ToolcardContent, Object> htc= new HashMap<>();
+        ToolcardContent content[] = tc.getContent();
+
+        if (content != null) {
+            for (ToolcardContent tcc : tc.getContent()) {
+                htc.put(tcc, this.handleUseIO(tcc));
+            }
+        }
+
+        ToolCardMessage tcm = new ToolCardMessage(tcn, htc);
+        this.setChanged();
+        this.notifyObservers(tcm);
     }
 
     public void run() {

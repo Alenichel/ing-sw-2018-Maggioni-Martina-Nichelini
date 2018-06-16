@@ -23,6 +23,7 @@ public class Game extends Observable implements Serializable {
     private boolean isStarted;
     private boolean initiliazationComplete;
     private int actualRound = 0;
+    private int actualTurn;
     private Player activePlayer = null;
     private int timerSecondsLeft;
 
@@ -108,6 +109,7 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+    public synchronized void setActualTurn (int turn) { this.actualTurn = turn;}
     public synchronized void setActualRound(int actualRound) {
         this.actualRound = actualRound;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.NewRound);
@@ -158,7 +160,7 @@ public class Game extends Observable implements Serializable {
     public synchronized List<Player> getPlayersOrder() {
         return playersOrder;
     }
-    public synchronized HashMap getScores() {
+    public synchronized Map getScores() {
         return scores;
     }
     public synchronized Player getActivePlayer() {
@@ -170,6 +172,7 @@ public class Game extends Observable implements Serializable {
     public synchronized int getActualRound() {
         return actualRound;
     }
+    public synchronized int getActualTurn() {return actualTurn; }
     public synchronized void addPlayer(Player player) throws GameException{
         if(!isStarted){
             if(this.players.size() > 3)

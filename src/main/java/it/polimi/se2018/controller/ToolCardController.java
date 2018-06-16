@@ -13,6 +13,7 @@ import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class implements the controller for the 12 Tool Cards
@@ -43,7 +44,7 @@ public class ToolCardController {
     /**
      * Tool Card #1 "Grozing Pliers": After drafting increase or decrease the value of the drafted die by 1.
      */
-    private void handleGrozingPliers(HashMap<ToolcardContent, Object> params) throws ToolCardException{
+    private void handleGrozingPliers(Map<ToolcardContent, Object> params) throws ToolCardException{
         int tableDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice tableDie = this.gameAssociated.getDiceOnTable().get(tableDieIndex);
         Boolean increase = (boolean) params.get(ToolcardContent.Increase);
@@ -68,7 +69,7 @@ public class ToolCardController {
      *  - Tool Card #3 "Copper Foil Burnisher": Move any one die in your windows ignoring shade restriction.
      *    You must obey all other placement restriction.
      */
-    private void handleMovingDiceToolcard( ToolCardsName name, HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+    private void handleMovingDiceToolcard( ToolCardsName name, Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
 
         int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
@@ -95,7 +96,7 @@ public class ToolCardController {
     /**
      * Tool Card #4 "Lathekin": Move exactly two dice, obeying all placement restrictions.
      */
-    private  void handleLathekin(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+    private  void handleLathekin(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
         WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
         int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
@@ -129,7 +130,7 @@ public class ToolCardController {
     /**
      * Tool Card #5 "Lens Cutter": After drafted swap the drafted die with a die from the round track.
      */
-    private void handleLensCutter(HashMap<ToolcardContent, Object> params) throws ToolCardException {
+    private void handleLensCutter(Map<ToolcardContent, Object> params) throws ToolCardException {
 
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
@@ -155,7 +156,7 @@ public class ToolCardController {
      * Tool Card #6 "Flux Brush": After drafting re roll the drafted die. If it cannot be placed,
      * return it to the drafted pool.
      */
-    private void handleFluxBrush(HashMap<ToolcardContent, Object> params) {
+    private void handleFluxBrush(Map<ToolcardContent, Object> params) {
 
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
@@ -168,24 +169,24 @@ public class ToolCardController {
      * Tool Card #7 "Glazing Hammer": Re roll all dice in the drafted pool.
      * This may only used on your second turn before drafting.
      */
-    private void handleGlazingHammer(HashMap<ToolcardContent, Object> params) throws ToolCardException{
+    private void handleGlazingHammer(Map<ToolcardContent, Object> params) throws ToolCardException{
 
-        List<Dice> draftedDice = this.gameAssociated.getDiceOnTable();
+        int turn = gameAssociated.getActualTurn() + 1;
 
-        for(Dice die: draftedDice){
-            die.rollDice();
+        if (turn - this.gameAssociated.getPlayersOrder().size() < 0 ) {
+            throw new ToolCardException("NotSecondTurn");
         }
 
-        /*controllare che sia usata solo durante il secondo turno
-        if (turnNumber != 2) {throw new ToolCardException(":GLAZING_HAMMER: This may only used on your second turn before drafting.")}
-        */
+        for(Dice die: this.gameAssociated.getDiceOnTable()){
+            die.rollDice();
+        }
     }
 
     /**
      *  Tool Card #9 "Cork Backed Straightedge": After drafting, place the die in a spot that is not adjacent to another die.
      *  You must obey all other placement restriction.
      */
-    private void handleCorkBackedStraightedge(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
+    private void handleCorkBackedStraightedge(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
 
         WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
@@ -209,7 +210,7 @@ public class ToolCardController {
     /**
      * Tool Card #10 "Grinding Stone": After drafting flip the die to its opposite side.
      */
-    private void handleGrindingStone(HashMap<ToolcardContent, Object> params) {
+    private void handleGrindingStone(Map<ToolcardContent, Object> params) {
 
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
@@ -221,7 +222,7 @@ public class ToolCardController {
      * Tool Card #11 "Flux Remover": After drafting return the die to the dice bag and pull 1 die from the bag.
      * Choose a value and place the new die, obeying all placement restriction or return to the dice bag.
      */
-    private void handleFluxRemover(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+    private void handleFluxRemover(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
         WindowPatternCard wpc = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
@@ -259,7 +260,7 @@ public class ToolCardController {
      * Tool Card #12 "Tap Wheel": Move up to two dice of the same color that match the color of a die in the round track.
      * You must obey all the placement restriction.
      */
-    private void handleTapWheel(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
+    private void handleTapWheel(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
 
         int number = (int) params.get(ToolcardContent.Number);
         WindowPatternCard wpc = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
@@ -377,7 +378,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable);
-                break;
+                break;*/
 
             case GlazingHammer:
                 try {
@@ -386,8 +387,8 @@ public class ToolCardController {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
-                break;
+                this.onSuccess(observable, tcn);
+                break; /*
 
             case CorkBackedStraightedge:
                 try {

@@ -115,6 +115,7 @@ public class RoundHandler implements TimerInterface {
     private void nextTurn(){
         try {
             this.turnNumber++;
+            this.gameAssociated.setActualTurn(turnNumber);
             this.moved = false;
 
             this.activePlayer = turnList.get(this.turnNumber);
