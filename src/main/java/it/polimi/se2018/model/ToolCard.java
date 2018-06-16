@@ -1,9 +1,6 @@
 package it.polimi.se2018.model;
 
-import it.polimi.se2018.enumeration.DiceColor;
-import it.polimi.se2018.enumeration.LoggerPriority;
-import it.polimi.se2018.enumeration.LoggerType;
-import it.polimi.se2018.enumeration.ToolCardsName;
+import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.utils.*;
@@ -18,8 +15,8 @@ public class ToolCard extends Card implements Serializable {
     private ToolCardEffectStrategy toolCardEffect;
     private Game gameReference;
     private ToolCardsName toolCardName;
+    private ToolcardContent content[];
 
-    public ToolCard(){}
     public ToolCard(ToolCardsName tcn){
         this.toolCardEffect = toolCardEffect;
 
@@ -37,6 +34,9 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.CopperFoilBurnisher.toString());
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
+            content = new ToolcardContent[]{
+                    ToolcardContent.RunBy, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd
+            };
         }
         /*if(ToolCardsName.Lathekin.equals(tcn)){
             this.setName(ToolCardsName.Lathekin.toString());
@@ -132,21 +132,12 @@ public class ToolCard extends Card implements Serializable {
         return name;
     }
 
-
-
-    public int executeEffect() throws ToolCardException, NotEmptyWindowCellException{
-        try{
-            return toolCardEffect.executeEffect();
-        }catch (ToolCardException | NotEmptyWindowCellException e){
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
-            return 0;
-        }
+    public ToolcardContent[] getContent() {
+        return content;
     }
 
     public String toString(){
         String str ="";
-        ConsoleUtils c = new ConsoleUtils();
-        //str = str.concat(c.toUnicodeColor(this.diceColor.toString()));
         str = str.concat(this.name + "  " + (char) 27 + "[30m");
         str = str.concat("\""+ this.description + "\"");
         if(isUsed()){
