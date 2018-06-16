@@ -95,14 +95,13 @@ public class CliView extends View implements Observer {
             int[] cooStart = {xStart, yStart};
             int[] cooEnd = {xEnd, yEnd};
 
-            WindowPatternCard w = getClient().getActivePatternCard();
 
             HashMap<ToolcardContent, Object> htc = new HashMap<>();
+            htc.put(ToolcardContent.RunBy, this.client.getNickname());
             htc.put(ToolcardContent.WindowCellStart, cooStart);
             htc.put(ToolcardContent.WindowCellEnd, cooEnd);
-            htc.put(ToolcardContent.WindowPattern, w);
 
-            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.EnglomiseBrush,htc);
+            ToolCardMessage tcm = new ToolCardMessage(ToolCardsName.EnglomiseBrush, htc);
             this.setChanged();
             this.notifyObservers(tcm);
         }else{

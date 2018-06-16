@@ -38,7 +38,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
         }
-        if(ToolCardsName.Lathekin.equals(tcn)){
+        /*if(ToolCardsName.Lathekin.equals(tcn)){
             this.setName(ToolCardsName.Lathekin.toString());
             this.setToolCardName(ToolCardsName.Lathekin);
             this.setDescription("Move exactly two dice, obeying all placement restrictions.");
@@ -82,7 +82,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");
-        }
+        }*/
     }
 
     public void setUsed(boolean value){

@@ -1,16 +1,14 @@
 package it.polimi.se2018.controller;
 
+import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.enumeration.CallbackMessageSubject;
 import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.enumeration.DiceLocation;
-import it.polimi.se2018.enumeration.LoggerPriority;
-import it.polimi.se2018.enumeration.ToolCardsName;
-import it.polimi.se2018.enumeration.ToolcardContent;
+import it.polimi.se2018.utils.Logger;
+import it.polimi.se2018.utils.Security;
 import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
@@ -30,11 +28,15 @@ public class ToolCardController {
 
     private void onFailure(VirtualView vv, String errorMessage){
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , errorMessage, LoggerPriority.NOTIFICATION);
+        ccm.setStringMessage("Toolcard NACK.");
         vv.controllerCallback(ccm);
     }
 
-    private void onSuccess(VirtualView vv){
+    private void onSuccess(VirtualView vv, ToolCardsName name){
+        Player p = vv.getClient();
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + "successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
+        ccm.setStringMessage("Toolcard ACK.");
         vv.controllerCallback(ccm);
     }
 
@@ -59,11 +61,15 @@ public class ToolCardController {
     }
 
     /**
-     * Tool Card #2 "Englomise Brush": Move any one die in your windows ignoring the color restriction.
-     * You must obey all other placement restrictions.
+     * This method handles the effects of the followinf described toolcards:
+     *
+     *  - Tool Card #2 "Englomise Brush": Move any one die in your windows ignoring the color restriction.
+     *    You must obey all other placement restrictions.
+     *  - Tool Card #3 "Copper Foil Burnisher": Move any one die in your windows ignoring shade restriction.
+     *    You must obey all other placement restriction.
      */
-    private void handleEnglomiseBrush(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
-        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
+    private void handleMovingDiceToolcard( ToolCardsName name, HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+        WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
 
         int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
@@ -71,52 +77,19 @@ public class ToolCardController {
         WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
         WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
 
+        if (start.isEmpty())
+            throw new ToolCardException("EmptyWindowCell");
 
-        if(start.isEmpty())
-            throw new ToolCardException(":ENGLOMISE_BRUSH: this window cell is empty");
-
-        if(!end.isEmpty())
-            throw new ToolCardException(":ENGLOMISE_BRUSH: this window cell is not empty");
-
+        if (!end.isEmpty())
+            throw new ToolCardException("NotEmptyWindowCell");
 
         Dice d1 = start.getAssignedDice();
-        try {
-            start.removeDice();
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
-        }catch (ToolCardException | NotEmptyWindowCellException e) {
-            start.setAssignedDice(d1);
-            throw e;
-        }
-    }
 
-    /**
-     * Tool Card #3 "Copper Foil Burnisher": Move any one die in your windows ignoring shade restriction.
-     * You must obey all other placement restriction.
-     */
-    private  void handleCopperFoilBurnisher(HashMap<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
-        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-
-        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
-        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-
-        WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
-        WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
-
-        if(start.isEmpty())
-            throw new ToolCardException(":COPPER_FOIL_BURNISHER: this window cell is empty");
-
-        if(!end.isEmpty())
-            throw new ToolCardException(":COPPER_FOIL_BURNISHER: this window cell is not empty");
-
-
-        Dice d1 = start.getAssignedDice();
-        try {
-            start.removeDice();
+        if (name.equals(ToolCardsName.CopperFoilBurnisher))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, false);
-        }catch (ToolCardException | NotEmptyWindowCellException e) {
-            start.setAssignedDice(d1);
-            throw e;
-        }
+        else if(name.equals(ToolCardsName.EnglomiseBrush))
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
+        start.removeDice();
     }
 
     /**
@@ -363,30 +336,30 @@ public class ToolCardController {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
+                this.onSuccess(observable, tcn);
                 break;
 
             case EnglomiseBrush:
                 try {
-                    handleEnglomiseBrush(toolCardMessage.getParameters());
+                    handleMovingDiceToolcard(tcn ,toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
+                this.onSuccess(observable, tcn);
                 break;
 
             case CopperFoilBurnisher:
                 try {
-                    handleCopperFoilBurnisher(toolCardMessage.getParameters());
+                    handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
+                this.onSuccess(observable, tcn);
                 break;
 
-            case Lathekin:
+            /*case Lathekin:
                 try {
                     handleLathekin(toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e){
@@ -444,7 +417,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable);
-                break;
+                break;*/
 
             default: break;
         }

@@ -10,6 +10,12 @@ import java.io.*;
 
 public class Security {
 
+    public static Player getUser(String name){
+        for ( Player p: Server.getInstance().getOnlinePlayers() )
+            if (p.getNickname().equals(name)) return p;
+        return null;
+    }
+
     /**
      * This method check if the server contains an instance of a player with the same name of the one
      * provided. If true, it returns that instance, otherwise it create a new player whit that name and
@@ -17,11 +23,8 @@ public class Security {
      * @param name of the player to generate
      * @return the player.
      */
-    private static Player generateUser(String name) throws  AuthenticationErrorException{
-        for ( Player p: Server.getInstance().getOnlinePlayers() )
-            if (p.getNickname().equals(name)) {
-                throw new AuthenticationErrorException("UserAlreadyConnected");
-            }
+    private static Player generateUser(String name) throws  AuthenticationErrorException {
+        if (Security.getUser(name) != null) throw new AuthenticationErrorException("UserAlreadyConnected");
 
         for ( Player p : Server.getInstance().getOfflinePlayers() ){
             if ( p.getNickname().equals(name)) return p;
