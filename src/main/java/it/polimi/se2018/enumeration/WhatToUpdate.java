@@ -12,5 +12,6 @@ public enum WhatToUpdate {
     PlayerStatus,
     PlayerDisconnection,
     Pass,
+    ToolCardUpdate,
     NewRound;
 }

@@ -201,12 +201,12 @@ public class CliView extends View implements Observer {
 
     public void controllerCallback(Message callbackMessage){
         if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
-        else if (callbackMessage instanceof ControllerCallbackMessage)
-            Logger.log(LoggerType.CLIENT_SIDE, ((ControllerCallbackMessage)callbackMessage).getPriority(),callbackMessage.getStringMessage());
+        else if (callbackMessage instanceof ControllerCallbackMessage) {
+            Logger.log(LoggerType.CLIENT_SIDE, ((ControllerCallbackMessage) callbackMessage).getPriority(), callbackMessage.getStringMessage());
+        }
     }
 
     private void printTable(Game game, Message msg){
-
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
         for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
@@ -287,8 +287,8 @@ public class CliView extends View implements Observer {
         switch(((Message)msg).getMessageType()){
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();
-                if(wtu.equals(WhatToUpdate.ActivePlayer)) {
-                    printTable((Game)o, (Message) msg);
+                if(wtu.equals(WhatToUpdate.ActivePlayer) || wtu.equals(WhatToUpdate.ToolCardUpdate)) {
+                    printTable((Game)o, (Message)msg);
                 }
 
                 else{

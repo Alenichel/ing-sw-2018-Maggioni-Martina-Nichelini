@@ -205,6 +205,12 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+    public synchronized void triggerUpdate(){
+        this.setChanged();
+        UpdateMessage um = new UpdateMessage(WhatToUpdate.ToolCardUpdate);
+        um.setStringMessage("ToolCard Update");
+        this.notifyObservers(um);
+    }
 }
 
 
