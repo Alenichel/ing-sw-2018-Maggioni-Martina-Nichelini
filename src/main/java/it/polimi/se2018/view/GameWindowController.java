@@ -11,17 +11,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +100,7 @@ public class GameWindowController implements Serializable {
 
     @FXML private Button useTool;
 
-
+    private static Object o;
     private GuiView gw;
     private boolean draggable = false;
     private boolean mouseOver = true;
@@ -116,6 +113,9 @@ public class GameWindowController implements Serializable {
 
     private Semaphore controllerCallbackSemaphore;
 
+    protected Pane selectedPane;
+    protected int column;
+    protected int row;
 
     private void setup(int nOfPlayers){
         labels = new ArrayList<>();
@@ -353,18 +353,27 @@ public class GameWindowController implements Serializable {
         return controllerCallbackSemaphore;
     }
 
-    protected Object draftedSetup(){
-        System.out.println("DRAFTED");
+    protected void draftedSetup(){
+
         for(Node node : gridPanes.get(0).getChildren()){
+
             Integer c = GridPane.getColumnIndex(node);
             Integer r = GridPane.getRowIndex(node);
-            System.out.println(c+" "+r);
+
             if(c != null && r != null){
                 node.setCursor(Cursor.MOVE);
+                node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent event) {
+                        //System.out.println("Clicked on x: " + c + "y: "+ r );
+                        column = GridPane.getColumnIndex((Node)event.getSource());
+                        row = GridPane.getRowIndex((Node)event.getSource());
+                    }
+                });
             }
         }
-        return new Object();
     }
+
 
     private void handlePassTurn(){
         gw.passTurn();
@@ -647,7 +656,6 @@ public class GameWindowController implements Serializable {
             Dice d = rt.getRoundTrack().get(round - 2).get(0);
 
             String path = "/dice/" + d.getColor() + "/" + d.getNumber() + ".png";
-            System.out.println(path);
             BackgroundImage myBI = new BackgroundImage(new Image(path, 55, 55, false, true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
