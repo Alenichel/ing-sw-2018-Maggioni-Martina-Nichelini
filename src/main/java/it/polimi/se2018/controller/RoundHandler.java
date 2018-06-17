@@ -121,18 +121,19 @@ public class RoundHandler implements TimerInterface {
             this.activePlayer = turnList.get(this.turnNumber);
             this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
 
-            //case if player is offline
-            if (!this.gameAssociated.getPlayers().contains(this.activePlayer)){
-                this.nextTurn();
-                return;
-            }
-
             //case if player has to skip turn due to toolcard #8
             if (activePlayer.hasToSkipNextTurn()){
                 activePlayer.setSkipNextTurn(false);
                 this.nextTurn();
                 return;
             }
+
+            //case if player is offline
+            if (!this.gameAssociated.getPlayers().contains(this.activePlayer)){
+                this.nextTurn();
+                return;
+            }
+
 
             this.workingPatternCard = this.activePlayer.getActivePatternCard();
 

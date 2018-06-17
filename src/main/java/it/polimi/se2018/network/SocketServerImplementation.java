@@ -18,6 +18,7 @@ import java.util.ConcurrentModificationException;
 import java.util.Observable;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class is the bridge between the virtual view and the rest of the network.
@@ -27,6 +28,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
     private Socket socket;
     private boolean clientConnected = true;
     private boolean clientAuthenticated;
+    private AtomicBoolean isClosing = new AtomicBoolean();
 
     private ObjectInputStream ois;
     private ObjectOutputStream oos;
@@ -116,14 +118,15 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                     try { oos.writeObject(msg);}
                     catch (ConcurrentModificationException e) {
                         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,  e.toString());
-                        sleep(100);
-                        oos.writeObject(msg);
+                        //sleep(100);
+                        //oos.writeObject(msg);
                     }
                     oos.flush();
                     oos.reset();
                 } while (msg.getMessageType() != "quit" &&  clientConnected);
-            } catch (InterruptedException | IOException e) { Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());}
-
+            } catch (InterruptedException | IOException e) {
+                if (!isClosing.get()) Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());
+            }
         }
     }
 
@@ -149,8 +152,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 oos.close();
                 socket.close();
             }
-            catch (EOFException e){
-                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +" )has been closed client side");
+            catch (EOFException e){ //endOfFIle
+                isClosing.set(true);
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +")has been closed client side");
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
                 clientConnected = false;
