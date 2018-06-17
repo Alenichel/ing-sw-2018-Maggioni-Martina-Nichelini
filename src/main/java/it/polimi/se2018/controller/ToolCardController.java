@@ -39,6 +39,7 @@ public class ToolCardController {
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
         ccm.setStringMessage("Toolcard ACK.");
         vv.controllerCallback(ccm);
+        this.gameAssociated.triggerUpdate();
     }
 
     /**
