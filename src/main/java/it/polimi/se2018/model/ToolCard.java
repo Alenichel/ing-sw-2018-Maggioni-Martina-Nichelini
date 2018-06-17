@@ -18,14 +18,14 @@ public class ToolCard extends Card implements Serializable {
     private ToolcardContent[] content;
 
     public ToolCard(ToolCardsName tcn){
-        /*if(ToolCardsName.GrozingPliers.equals(tcn)){
+        if(ToolCardsName.GrozingPliers.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.DraftedDie, ToolcardContent.Increase    };
 
             this.setName(ToolCardsName.GrozingPliers.toString());
             this.setToolCardName(ToolCardsName.GrozingPliers);
             this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
         }
-        else */if(ToolCardsName.EnglomiseBrush.equals(tcn)){
+        else if(ToolCardsName.EnglomiseBrush.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.RunBy, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd   };
 
             this.setName(ToolCardsName.EnglomiseBrush.toString());
@@ -65,12 +65,13 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GlazingHammer.toString());
             this.setToolCardName(ToolCardsName.GlazingHammer);
             this.setDescription("Reroll all dice in the drafted pool. This may only used on your second turn before drafting.");
-        }/*
+        }/**/
         else if(ToolCardsName.RunningPliers.equals(tcn)){
+            content = new ToolcardContent[]{  ToolcardContent.RunBy  };
             this.setName(ToolCardsName.RunningPliers.toString());
             this.setToolCardName(ToolCardsName.RunningPliers);
             this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round.");
-        }*/
+        }/*
         else if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
             content = new ToolcardContent[]{ToolcardContent.RunBy, ToolcardContent.DraftedDie, ToolcardContent.WindowCellEnd  };
 

@@ -1,14 +1,14 @@
 package it.polimi.se2018.enumeration;
 
 public enum ToolCardsName {
-    //GrozingPliers,
+    GrozingPliers,
     EnglomiseBrush,
     CopperFoilBurnisher,
     //Lathekin,
     //LensCutter,
     //FluxBrush,
     //GlazingHammer,
-    //RunningPliers,
+    RunningPliers,
     CorkBackedStraightedge,
     //GrindingStone,
     //FluxRemover,

@@ -24,7 +24,7 @@ public class RoundHandler implements TimerInterface {
     private GameController gameController;
     private int turnNumber = 0;
     private int actualRound;
-    private boolean moved = false;
+    protected int movableDice = 1;
     protected long timerID;
     private long moveTimer;
     private Random rand = new Random();
@@ -116,16 +116,24 @@ public class RoundHandler implements TimerInterface {
         try {
             this.turnNumber++;
             this.gameAssociated.setActualTurn(turnNumber);
-            this.moved = false;
+            this.movableDice = 1;
 
             this.activePlayer = turnList.get(this.turnNumber);
             this.gameAssociated.setActivePlayer(turnList.get(this.turnNumber));
 
-            //case if players is offline
+            //case if player has to skip turn due to toolcard #8
+            if (activePlayer.hasToSkipNextTurn()){
+                activePlayer.setSkipNextTurn(false);
+                this.nextTurn();
+                return;
+            }
+
+            //case if player is offline
             if (!this.gameAssociated.getPlayers().contains(this.activePlayer)){
                 this.nextTurn();
                 return;
             }
+
 
             this.workingPatternCard = this.activePlayer.getActivePatternCard();
 
@@ -149,7 +157,7 @@ public class RoundHandler implements TimerInterface {
 
     private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
 
-        if (this.moved){
+        if (this.movableDice <= 0){
             ControllerCallbackMessage em = new ControllerCallbackMessage("You have already taken a die", LoggerPriority.ERROR);
             ((VirtualView)observable).controllerCallback(em);
             return;
@@ -172,7 +180,7 @@ public class RoundHandler implements TimerInterface {
                 else
                     this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
-                this.moved = true;
+                this.movableDice--;
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, "Move received", LoggerPriority.NOTIFICATION);
                 ((VirtualView) observable).controllerCallback(ccm);
 
