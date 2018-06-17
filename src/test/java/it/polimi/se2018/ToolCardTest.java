@@ -29,8 +29,8 @@ public class ToolCardTest {
         Assert.assertNotEquals(g1, t.getGameReference());
 
         t.setUsed(true);
-        Assert.assertEquals(true, t.getUsed());
-        Assert.assertNotEquals(false, t.getUsed());
+        Assert.assertEquals(true, t.isUsed());
+        Assert.assertNotEquals(false, t.isUsed());
         Assert.assertTrue(t.isUsed());
     }
 }

@@ -206,12 +206,11 @@ public class CliView extends View implements Observer {
         }
     }
 
-    private void printTable(Game game, Message msg){
+    private void printTable(Game game){
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
         for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
-        String tokens[] = ((UpdateMessage)msg).toString().split(":");
-        String playerName = tokens[1];
+        String playerName = this.activePlayer.getNickname();
         System.out.println("\n");
         System.out.print("\n");
         System.out.println("***********************************************************************************");
@@ -288,7 +287,8 @@ public class CliView extends View implements Observer {
             case "UpdateMessage":
                 WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 if(wtu.equals(WhatToUpdate.ActivePlayer) || wtu.equals(WhatToUpdate.ToolCardUpdate)) {
-                    printTable((Game)o, (Message)msg);
+                    activePlayer = ((Game)o).getActivePlayer();
+                    printTable((Game)o);
                 }
 
                 else{

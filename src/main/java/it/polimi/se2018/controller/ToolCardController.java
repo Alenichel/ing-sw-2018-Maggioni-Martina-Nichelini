@@ -35,7 +35,7 @@ public class ToolCardController {
 
     private void onSuccess(VirtualView vv, ToolCardsName name){
         Player p = vv.getClient();
-        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + "successfully activate " + name.toString());
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
         ccm.setStringMessage("Toolcard ACK.");
         vv.controllerCallback(ccm);
@@ -69,28 +69,37 @@ public class ToolCardController {
      *    You must obey all other placement restrictions.
      *  - Tool Card #3 "Copper Foil Burnisher": Move any one die in your windows ignoring shade restriction.
      *    You must obey all other placement restriction.
+     *  - Tool Card #9 "Cork Backed Straightedge": After drafting, place the die in a spot that is not adjacent to another die.
+     *    You must obey all other placement restriction.
      */
     private void handleMovingDiceToolcard( ToolCardsName name, Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
 
-        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-
-        WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
         WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
-
-        if (start.isEmpty())
-            throw new ToolCardException("EmptyWindowCell");
 
         if (!end.isEmpty())
             throw new ToolCardException("NotEmptyWindowCell");
 
-        Dice d1 = start.getAssignedDice();
+        if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
+            Dice draftedDie = this.gameAssociated.getDiceOnTable().get((int)params.get(ToolcardContent.DraftedDie));
+            windowPatternCard.insertDice(draftedDie, end.getRow(), end.getColumn(), true, true, false);
+            return;
+        }
 
+
+        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
+        WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+
+        if (start.isEmpty())
+            throw new ToolCardException("EmptyWindowCell");
+
+        Dice d1 = start.getAssignedDice();
         if (name.equals(ToolCardsName.CopperFoilBurnisher))
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, false);
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
         else if(name.equals(ToolCardsName.EnglomiseBrush))
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, false);
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
         start.removeDice();
     }
 
@@ -183,30 +192,6 @@ public class ToolCardController {
         }
     }
 
-    /**
-     *  Tool Card #9 "Cork Backed Straightedge": After drafting, place the die in a spot that is not adjacent to another die.
-     *  You must obey all other placement restriction.
-     */
-    private void handleCorkBackedStraightedge(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
-
-        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        WindowCell wc = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
-        int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
-        Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
-
-        if (!wc.isEmpty())
-            throw new ToolCardException(":CORK_BACKED_STRAIGHTEDGE: this window cell is not empty");
-
-        if (wc.getNeighbourCells()!=null && wc.getDiagonalCells()!=null)
-            throw new ToolCardException(":CORK_BACKED_STRAIGHTEDGE: adjacent window cells are not empty");
-
-        try {
-            windowPatternCard.insertDice(draftedDie, wc.getRow(), wc.getColumn(), true, true, false);
-        }catch (ToolCardException | NotEmptyWindowCellException e) {
-            throw e;
-        }
-    }
 
     /**
      * Tool Card #10 "Grinding Stone": After drafting flip the die to its opposite side.
@@ -331,7 +316,7 @@ public class ToolCardController {
         ToolCardsName tcn = toolCardMessage.getToolCardName();
         switch (tcn) {
 
-            case GrozingPliers:
+            /*case GrozingPliers:
                 try {
                     handleGrozingPliers(toolCardMessage.getParameters());
                 } catch (ToolCardException e) {
@@ -339,7 +324,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable, tcn);
-                break;
+                break;*/
 
             case EnglomiseBrush:
                 try {
@@ -380,7 +365,7 @@ public class ToolCardController {
                 }
                 this.onSuccess(observable);
                 break;*/
-
+            /*
             case GlazingHammer:
                 try {
                     handleGlazingHammer(toolCardMessage.getParameters());
@@ -389,18 +374,23 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable, tcn);
-                break; /*
+                break; */
 
             case CorkBackedStraightedge:
                 try {
-                    handleCorkBackedStraightedge(toolCardMessage.getParameters());
+                    handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
-                break;
+                this.onSuccess(observable, tcn);
+                break;/*
 
+            case GrindingStone:
+                handleGrindingStone(toolCardMessage.getParameters());
+                this.onSuccess(observable, tcn);
+                break;
+            /*
             case FluxRemover:
                 try {
                     handleFluxRemover(toolCardMessage.getParameters());

@@ -18,14 +18,14 @@ public class ToolCard extends Card implements Serializable {
     private ToolcardContent[] content;
 
     public ToolCard(ToolCardsName tcn){
-        if(ToolCardsName.GrozingPliers.equals(tcn)){
+        /*if(ToolCardsName.GrozingPliers.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.DraftedDie, ToolcardContent.Increase    };
 
             this.setName(ToolCardsName.GrozingPliers.toString());
             this.setToolCardName(ToolCardsName.GrozingPliers);
             this.setDescription("After drafting increase or decrease the value of the drafted die by 1.");
         }
-        else if(ToolCardsName.EnglomiseBrush.equals(tcn)){
+        else */if(ToolCardsName.EnglomiseBrush.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.RunBy, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd   };
 
             this.setName(ToolCardsName.EnglomiseBrush.toString());
@@ -60,7 +60,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.FluxBrush.toString());
             this.setToolCardName(ToolCardsName.FluxBrush);
             this.setDescription("After drafting re roll the drafted die. If it cannot be placed, return it to the drafted pool.");
-        }*/
+        }
         else if(ToolCardsName.GlazingHammer.equals(tcn)){
             this.setName(ToolCardsName.GlazingHammer.toString());
             this.setToolCardName(ToolCardsName.GlazingHammer);
@@ -70,14 +70,14 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.RunningPliers.toString());
             this.setToolCardName(ToolCardsName.RunningPliers);
             this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round.");
-        }
+        }*/
         else if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
-            content = new ToolcardContent[]{    ToolcardContent.DraftedDie, ToolcardContent.WindowCellEnd  };
+            content = new ToolcardContent[]{ToolcardContent.RunBy, ToolcardContent.DraftedDie, ToolcardContent.WindowCellEnd  };
 
             this.setName(ToolCardsName.CorkBackedStraightedge.toString());
             this.setToolCardName(ToolCardsName.CorkBackedStraightedge);
             this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
-        }
+        }/*
         else if(ToolCardsName.GrindingStone.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.DraftedDie  };
 
