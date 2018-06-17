@@ -1,5 +1,7 @@
 package it.polimi.se2018.model;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import java.io.Serializable;
 import java.util.*;
 
@@ -7,6 +9,7 @@ public class Player extends Observable implements Serializable{
     private String nickname;
     private Boolean online;
     private Boolean inGame;
+    private Boolean skipNextTurn = false;
     private Game lastGameJoined;
     private int playerNumber;
     private WindowPatternCard activePatternCard;
@@ -25,6 +28,9 @@ public class Player extends Observable implements Serializable{
     }
     public void setOnline(Boolean status){
         this.online = status;
+    }
+    public void setSkipNextTurn(Boolean skipTurn) {
+        this.skipNextTurn = skipTurn;
     }
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
@@ -56,6 +62,7 @@ public class Player extends Observable implements Serializable{
     public Boolean getOnline(){
         return this.online;
     }
+    public Boolean hasToSkipNextTurn () {return this.skipNextTurn;}
     public Game getLastGameJoined() {
         return lastGameJoined;
     }

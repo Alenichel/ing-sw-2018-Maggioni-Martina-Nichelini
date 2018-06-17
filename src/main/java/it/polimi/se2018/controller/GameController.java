@@ -172,6 +172,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.serverController.removeGame(this.gameAssociated);
         }
 
+    protected RoundHandler getActiveRoundHandler(){
+        return roundHandler;
+    }
+
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
         WhatToUpdate wtu = message.getWhatToUpdate();

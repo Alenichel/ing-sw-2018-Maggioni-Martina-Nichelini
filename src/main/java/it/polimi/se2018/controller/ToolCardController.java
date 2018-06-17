@@ -193,6 +193,15 @@ public class ToolCardController {
     }
 
 
+    private void handleRunningPliers(Map<ToolcardContent, Object> params) throws ToolCardException {
+        Player player = Security.getUser((String)params.get(ToolcardContent.RunBy));
+        if (player.hasToSkipNextTurn()) {
+            throw new ToolCardException("ToolcardAlreadyActivated");
+        }
+        this.gameAssociated.getAssociatedGameController().getActiveRoundHandler().movableDice++;
+        player.setSkipNextTurn(true);
+    }
+
     /**
      * Tool Card #10 "Grinding Stone": After drafting flip the die to its opposite side.
      */
@@ -375,6 +384,16 @@ public class ToolCardController {
                 }
                 this.onSuccess(observable, tcn);
                 break; */
+
+            case RunningPliers:
+                try {
+                    handleRunningPliers(toolCardMessage.getParameters());
+                } catch (ToolCardException e){
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+                this.onSuccess(observable, tcn);
+                break;
 
             case CorkBackedStraightedge:
                 try {
