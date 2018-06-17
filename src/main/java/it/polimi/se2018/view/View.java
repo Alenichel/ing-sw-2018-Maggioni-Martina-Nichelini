@@ -19,6 +19,7 @@ public abstract class View extends Observable implements Serializable {
         return client;
     }
 
+
     public void setPlayer(Player player) {
         this.client = player;
     }

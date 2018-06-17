@@ -1,7 +1,7 @@
 <configuration>
     <port>5050</port>
-    <defaultMatchmakingTimer>30</defaultMatchmakingTimer>
-    <defaultMoveTimer>2</defaultMoveTimer>
+    <defaultMatchmakingTimer>1</defaultMatchmakingTimer>
+    <defaultMoveTimer>60</defaultMoveTimer>
     <requirePassword>false</requirePassword>
-    <numberOfTurn>2</numberOfTurn>
+    <numberOfTurn>10</numberOfTurn>
 </configuration>  

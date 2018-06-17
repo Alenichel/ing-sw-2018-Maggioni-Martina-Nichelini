@@ -11,14 +11,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -98,13 +101,18 @@ public class GameWindowController implements Serializable {
     @FXML private Pane roundTrack8;
     @FXML private Pane roundTrack9;
 
+    @FXML private Button useTool;
+
 
     private GuiView gw;
     private boolean draggable = false;
+    private boolean mouseOver = true;
     private List<Label> labels;
     private List<GridPane> gridPanes;
     private List<Pane> draftedDice;
     private List<Pane> roundTrack;
+    private List<ImageView> toolCards;
+    private List<ImageView> publicObjectives;
 
     private Semaphore controllerCallbackSemaphore;
 
@@ -114,6 +122,15 @@ public class GameWindowController implements Serializable {
         gridPanes = new ArrayList<>();
         draftedDice = new ArrayList<>();
         roundTrack = new ArrayList<>();
+        toolCards = new ArrayList<>();
+        publicObjectives = new ArrayList<>();
+
+        publicObjectives.add(objective1);
+        publicObjectives.add(objective2);
+        publicObjectives.add(objective3);
+        toolCards.add(tool1);
+        toolCards.add(tool2);
+        toolCards.add(tool3);
         labels.add(name0);
         labels.add(name1);
         labels.add(name2);
@@ -142,96 +159,59 @@ public class GameWindowController implements Serializable {
         roundTrack.add(roundTrack8);
         roundTrack.add(roundTrack9);
 
-        objective1.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective1.getImage());
-            }
-        });
-        objective1.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-        objective2.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective2.getImage());
-            }
-        });
-        objective2.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-        objective3.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(objective3.getImage());
-            }
-        });
-        objective3.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-        privateObjective.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                privateObjectiveZoom.setVisible(true);
-                privateObjectiveZoom.setImage(privateObjective.getImage());
-            }
-        });
-        privateObjective.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                privateObjectiveZoom.setVisible(false);
-            }
-        });
 
-        tool1.setOnMouseEntered(new EventHandler<MouseEvent>() {
+        for(ImageView imageView : publicObjectives){
+            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(mouseOver) {
+                        mouseOverPublicObjective.setVisible(true);
+                        mouseOverPublicObjective.setImage(imageView.getImage());
+                    }
+                }
+            });
+
+            imageView.setOnMouseExited(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    mouseOverPublicObjective.setVisible(false);
+                }
+            });
+        }
+
+        for(ImageView imageView : toolCards){
+            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(mouseOver) {
+                        mouseOverPublicObjective.setVisible(true);
+                        mouseOverPublicObjective.setImage(imageView.getImage());
+                    }
+                }
+            });
+
+            imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    mouseOverPublicObjective.setVisible(false);
+                }
+            });
+
+            imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    handleToolCardUse(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
+                }
+            });
+        }
+
+        useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool1.getImage());
-            }
-        });
-        tool1.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-        tool2.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool2.getImage());
-            }
-        });
-        tool2.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
-            }
-        });
-        tool3.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(true);
-                mouseOverPublicObjective.setImage(tool3.getImage());
-            }
-        });
-        tool3.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                mouseOverPublicObjective.setVisible(false);
+                mouseOver = false;
+                for (ImageView imageView : toolCards){
+                    imageView.setCursor(Cursor.HAND);
+                }
             }
         });
 
@@ -373,20 +353,36 @@ public class GameWindowController implements Serializable {
         return controllerCallbackSemaphore;
     }
 
+    protected Object draftedSetup(){
+        System.out.println("DRAFTED");
+        for(Node node : gridPanes.get(0).getChildren()){
+            Integer c = GridPane.getColumnIndex(node);
+            Integer r = GridPane.getRowIndex(node);
+            System.out.println(c+" "+r);
+            if(c != null && r != null){
+                node.setCursor(Cursor.MOVE);
+            }
+        }
+        return new Object();
+    }
 
     private void handlePassTurn(){
         gw.passTurn();
     }
+
+    private void handleToolCardUse(int n){
+        gw.useTool(n);
+    }
+
 
     private void removeResponse(){
         responeInsert.setBackground(null);
     }
 
 
-
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
-
+        mouseOver = true;
         if (game.getActualRound() == 1) setup(game.getPlayersOrder().size());
         printFavourToken(me);
         printRoundLabel(game);
@@ -398,6 +394,7 @@ public class GameWindowController implements Serializable {
         printDratfedDice(game.getDiceOnTable());
         printCurrentRound(game.getActivePlayer());
         printRoundTrack(game.getRoundTrack(), game.getActualRound());
+        togglePassTurn(game, me);
     }
 
     private void printRoundLabel(Game game){
@@ -564,12 +561,15 @@ public class GameWindowController implements Serializable {
 
         String url1 =  partOfPath+ts.get(0).getToolCardName()+endPath;
         Image image1 = new Image(url1);
+        //tool1.setId(ts.get(0).getName());
 
         String url2 =  partOfPath+ts.get(1).getToolCardName()+endPath;
         Image image2 = new Image(url2);
+        //tool2.setId(ts.get(1).getName());
 
         String url3 =  partOfPath+ts.get(2).getToolCardName()+endPath;
         Image image3 = new Image(url3);
+        //tool3.setId(ts.get(2).getName());
 
         tool1.setImage(image1);
         tool2.setImage(image2);
@@ -678,4 +678,13 @@ public class GameWindowController implements Serializable {
 
     }
 
+    private void togglePassTurn(Game game, Player me){
+        if(game.getActivePlayer().getNickname().equals(me.getNickname())){
+            passTurn.setDisable(false);
+            useTool.setDisable(false);
+        }else{
+            passTurn.setDisable(true);
+            useTool.setDisable(true);
+        }
+    }
 }

@@ -4,17 +4,17 @@ import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class GuiView extends View implements Observer {
     private transient WaitingAreaController waitingAreaController;
@@ -25,6 +25,7 @@ public class GuiView extends View implements Observer {
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
     private transient Scene sceneGame;
+    private ArrayList<ToolCard> toolCards;
 
     public void run(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -118,6 +119,29 @@ public class GuiView extends View implements Observer {
         this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
     }
 
+
+
+    private Object handleUseIO(ToolcardContent tc){
+        Object o = new Object();
+        switch (tc){
+            case DraftedDie:
+                o = gameWindowController.draftedSetup();
+
+                break;
+        }
+        return o;
+    }
+
+    protected void useTool(int toolNumber){
+        Map<ToolcardContent, Object> htc = new HashMap<>();
+
+        ToolCard t = toolCards.get(toolNumber-1);
+        if(t.getContent() != null)
+            for(ToolcardContent tc : t.getContent()){
+                htc.put(tc, this.handleUseIO(tc));
+            }
+    }
+
     @Override
     public void update(Observable o, Object message) {
 
@@ -125,6 +149,7 @@ public class GuiView extends View implements Observer {
             for(Player p : ((Game) o).getPlayers())
                 if(p.getNickname().equals(client.getNickname()))
                     client = p;
+
         }
 
         switch(((Message)message).getMessageType()){
@@ -148,6 +173,7 @@ public class GuiView extends View implements Observer {
                             gameWindowController.printTimerLeft(((Game)o).getTimerSecondsLeft());
                         }
                         else if (wtu.equals(WhatToUpdate.GameStarted)){
+                            toolCards = (ArrayList<ToolCard>)((Game)o).getToolCards();
                             printSelectPatternCard();
                             selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
                         }
