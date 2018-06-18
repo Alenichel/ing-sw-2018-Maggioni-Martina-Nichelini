@@ -21,7 +21,7 @@ public class GuiView extends View implements Observer {
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
     protected transient GameWindowController gameWindowController;
 
-    private transient Stage primaryStage;
+    protected transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
     private transient Scene sceneGame;

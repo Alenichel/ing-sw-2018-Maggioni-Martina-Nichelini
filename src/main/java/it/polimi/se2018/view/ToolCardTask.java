@@ -44,6 +44,7 @@ public class ToolCardTask extends Task<Void> {
                 continue;
             }
             if (tc.equals(ToolcardContent.Increase)){
+                gwc.increasePopUp();
                 htc.put(tc, true);
                 continue;
             }
