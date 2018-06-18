@@ -102,7 +102,7 @@ public class GuiView extends View implements Observer {
         if (msg instanceof ControllerCallbackMessage) {
             if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveAck)) {
                 gameWindowController.getControllerCallbackSemaphore().release(2);
-            } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveAck)) {
+            } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveNack)) {
                 gameWindowController.getControllerCallbackSemaphore().release(1);
             }
         }
@@ -125,7 +125,7 @@ public class GuiView extends View implements Observer {
         Object o = new Object();
         switch (tc){
             case DraftedDie:
-                o = gameWindowController.draftedSetup();
+                //o = gameWindowController.draftedSetup();
 
                 break;
         }

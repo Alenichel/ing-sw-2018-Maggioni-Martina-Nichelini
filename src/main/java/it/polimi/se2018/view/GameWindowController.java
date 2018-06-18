@@ -8,10 +8,12 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -79,7 +81,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
 
-    @FXML private Pane responeInsert;
+    @FXML protected Pane responeInsert;
 
     @FXML private Pane winnerPane;
     @FXML private ImageView winnerImage;
@@ -101,8 +103,8 @@ public class GameWindowController implements Serializable {
     @FXML private Button useTool;
 
     private static Object o;
-    private GuiView gw;
-    private boolean draggable = false;
+    protected GuiView gw;
+    protected boolean draggable = false;
     private boolean mouseOver = true;
     private List<Label> labels;
     private List<GridPane> gridPanes;
@@ -110,8 +112,8 @@ public class GameWindowController implements Serializable {
     private List<Pane> roundTrack;
     private List<ImageView> toolCards;
     private List<ImageView> publicObjectives;
-
-    private Semaphore controllerCallbackSemaphore;
+    private final GameWindowController thisController = this;
+    protected Semaphore controllerCallbackSemaphore;
 
     protected Pane selectedPane;
     protected int column;
@@ -235,7 +237,6 @@ public class GameWindowController implements Serializable {
         page.setBackground(new Background(myBI));
     }
 
-
     private void setSourceEvents(){
         for(Pane p : draftedDice){
             this.setOnDragDetection(p);
@@ -301,53 +302,12 @@ public class GameWindowController implements Serializable {
                 final Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), (ActionEvent even) -> removeResponse()));
                 controllerCallbackSemaphore = new Semaphore(2);
                 controllerCallbackSemaphore.acquireUninterruptibly(2);
-
-                Dragboard db = event.getDragboard();
-                boolean success = false;
-
-                int n = Integer.parseInt(db.getString());
-
-                BackgroundImage myBI= new BackgroundImage(db.getImage(),
-                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                gw.placeDice(n, Integer.parseInt(target.getId().split("-")[1]), Integer.parseInt(target.getId().split("-")[2]));
-
-                try {
-                    controllerCallbackSemaphore.tryAcquire(500, TimeUnit.MILLISECONDS);
-                    if (controllerCallbackSemaphore.availablePermits() == 0) {
-                        BackgroundImage x= new BackgroundImage(new Image("/x.png",55,55,false,true),
-                                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                        responeInsert.setBackground(new Background(x));
-
-                        success = false;
-                        timer.setCycleCount(Timeline.INDEFINITE);
-                        timer.play();
-                    }
-                    else if (controllerCallbackSemaphore.availablePermits() == 1){
-                        target.setBackground(new Background(myBI));
-
-                        draggable = false;
-                        BackgroundImage tick= new BackgroundImage(new Image("/tick.png",55,55,false,true),
-                                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                        responeInsert.setBackground(new Background(tick));
-
-                        success = true;
-                        timer.setCycleCount(Timeline.INDEFINITE);
-                        timer.play();
-                    }
-
-                    controllerCallbackSemaphore.release();
-                } catch (InterruptedException e){
-                    success = false;
-
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Network Error");
-                }
-
-                event.setDropCompleted(success);
-                event.consume();
+                int die = Integer.parseInt(event.getDragboard().getString());
+                DragTask dragTask = new DragTask(thisController, target, event, timer, die);
+                new Thread(dragTask).start();
             }
         });
     }
-
 
     public Semaphore getControllerCallbackSemaphore() {
         return controllerCallbackSemaphore;
@@ -621,6 +581,7 @@ public class GameWindowController implements Serializable {
 
         winnerText.setText(text);
     }
+
 
     private String toPath(WindowCell w){
         String str;

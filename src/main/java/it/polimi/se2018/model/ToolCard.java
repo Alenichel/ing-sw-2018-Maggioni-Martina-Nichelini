@@ -39,7 +39,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
         }
-        /*
+
         else if(ToolCardsName.Lathekin.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd};
 
@@ -71,14 +71,14 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.RunningPliers.toString());
             this.setToolCardName(ToolCardsName.RunningPliers);
             this.setDescription("After your first turn, immediately draft a die. Skip your next turn this round.");
-        }/*
+        }
         else if(ToolCardsName.CorkBackedStraightedge.equals(tcn)){
             content = new ToolcardContent[]{ToolcardContent.RunBy, ToolcardContent.DraftedDie, ToolcardContent.WindowCellEnd  };
 
             this.setName(ToolCardsName.CorkBackedStraightedge.toString());
             this.setToolCardName(ToolCardsName.CorkBackedStraightedge);
             this.setDescription("After drafting, place the die in a spot that is not adjacent to another die. You must obey all other placement restriction.");
-        }/*
+        }
         else if(ToolCardsName.GrindingStone.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.DraftedDie  };
 
@@ -98,7 +98,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");
-        }*/
+        }
     }
 
     public void setUsed(boolean value){
@@ -152,9 +152,9 @@ public class ToolCard extends Card implements Serializable {
         str = str.concat(this.name + "  " + (char) 27 + "[30m");
         str = str.concat("\""+ this.description + "\"");
         if(isUsed()){
-            str = str.concat(" it costs : 2 \n");
+            str = str.concat("|| Cost: 2 \n");
         }else {
-            str = str.concat(" it costs : 1 \n");
+            str = str.concat("|| Cost: 1 \n");
         }
 
         return str;
