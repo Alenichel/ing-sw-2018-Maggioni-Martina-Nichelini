@@ -39,7 +39,7 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
         }
-
+        /*
         else if(ToolCardsName.Lathekin.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd};
 
@@ -65,7 +65,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GlazingHammer.toString());
             this.setToolCardName(ToolCardsName.GlazingHammer);
             this.setDescription("Reroll all dice in the drafted pool. This may only used on your second turn before drafting.");
-        }/**/
+        }
         else if(ToolCardsName.RunningPliers.equals(tcn)){
             content = new ToolcardContent[]{  ToolcardContent.RunBy  };
             this.setName(ToolCardsName.RunningPliers.toString());
@@ -98,7 +98,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");
-        }
+        }*/
     }
 
     public void setUsed(boolean value){

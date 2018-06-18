@@ -82,11 +82,11 @@ public class ToolCardController {
         if (!end.isEmpty())
             throw new ToolCardException("NotEmptyWindowCell");
 
-        if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
+        /*if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
             Dice draftedDie = this.gameAssociated.getDiceOnTable().get((int)params.get(ToolcardContent.DraftedDie));
             windowPatternCard.insertDice(draftedDie, end.getRow(), end.getColumn(), true, true, false);
             return;
-        }
+        }*/
 
 
         int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
@@ -325,7 +325,7 @@ public class ToolCardController {
         ToolCardsName tcn = toolCardMessage.getToolCardName();
         switch (tcn) {
 
-            /*case GrozingPliers:
+            case GrozingPliers:
                 try {
                     handleGrozingPliers(toolCardMessage.getParameters());
                 } catch (ToolCardException e) {
@@ -333,7 +333,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable, tcn);
-                break;*/
+                break;
 
             case EnglomiseBrush:
                 try {
@@ -383,7 +383,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable, tcn);
-                break; */
+                break;
 
             case RunningPliers:
                 try {
