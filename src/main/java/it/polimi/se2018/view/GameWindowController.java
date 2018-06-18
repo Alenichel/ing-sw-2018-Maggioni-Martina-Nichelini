@@ -102,7 +102,7 @@ public class GameWindowController implements Serializable {
 
     @FXML private Button useTool;
 
-    private static Object o;
+    //private static Object o;
     protected GuiView gw;
     protected boolean draggable = false;
     private boolean mouseOver = true;
@@ -113,7 +113,10 @@ public class GameWindowController implements Serializable {
     private List<ImageView> toolCards;
     private List<ImageView> publicObjectives;
     private final GameWindowController thisController = this;
+
     protected Semaphore controllerCallbackSemaphore;
+    protected Semaphore toolcardSemaphore;
+    protected Object toolCardDragBoard;
 
     protected Pane selectedPane;
     protected int column;
@@ -172,7 +175,6 @@ public class GameWindowController implements Serializable {
                     }
                 }
             });
-
             imageView.setOnMouseExited(new EventHandler<MouseEvent>(){
                 @Override
                 public void handle(MouseEvent event) {
@@ -202,7 +204,9 @@ public class GameWindowController implements Serializable {
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    handleToolCardUse(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
+                    toolcardSemaphore = new Semaphore(0);
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
+                    gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
                 }
             });
         }
@@ -210,6 +214,7 @@ public class GameWindowController implements Serializable {
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Toolcard button pressed");
                 mouseOver = false;
                 for (ImageView imageView : toolCards){
                     imageView.setCursor(Cursor.HAND);
@@ -221,7 +226,7 @@ public class GameWindowController implements Serializable {
         this.setTargetEvents();
 
 
-        passTurn.setOnMouseClicked((MouseEvent e) -> handlePassTurn());
+        passTurn.setOnMouseClicked((MouseEvent e) -> gw.passTurn());
         String path;
 
         if(nOfPlayers == 4)
@@ -272,7 +277,6 @@ public class GameWindowController implements Serializable {
         });
     }
 
-
     private void setTargetEvents(){
         for(int x = 0; x<= 4; x++)
             for(int y = 0; y<=3; y++){
@@ -313,7 +317,7 @@ public class GameWindowController implements Serializable {
         return controllerCallbackSemaphore;
     }
 
-    protected void draftedSetup(){
+    protected void ToolcardWindowEffect(){
 
         for(Node node : gridPanes.get(0).getChildren()){
 
@@ -328,26 +332,33 @@ public class GameWindowController implements Serializable {
                         //System.out.println("Clicked on x: " + c + "y: "+ r );
                         column = GridPane.getColumnIndex((Node)event.getSource());
                         row = GridPane.getRowIndex((Node)event.getSource());
+                        int[] coordinate = {column, row};
+                        toolCardDragBoard = coordinate;
+                        toolcardSemaphore.release();
                     }
                 });
             }
         }
     }
 
-
-    private void handlePassTurn(){
-        gw.passTurn();
+    protected void ToolcardDraftPoolEffect(){
+        for(Node node: draftedDice){
+            Pane p = (Pane) node;
+            int index = Integer.parseInt(p.getId().substring(p.getId().length()-1));
+            node.setCursor(Cursor.MOVE);
+            node.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    toolCardDragBoard = index-1;
+                    toolcardSemaphore.release();
+                }
+            });
+        }
     }
-
-    private void handleToolCardUse(int n){
-        gw.useTool(n);
-    }
-
 
     private void removeResponse(){
         responeInsert.setBackground(null);
     }
-
 
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
@@ -414,13 +425,10 @@ public class GameWindowController implements Serializable {
                 if (p.getNickname().equals(playerName)) {
                     nowPlayer = p;
                     windowPatternCard = nowPlayer.getActivePatternCard();
-                    for (WindowCell[] windowCell : windowPatternCard.getGrid()) {
+                    for (WindowCell[] windowCell : windowPatternCard.getGrid())
                         for (WindowCell in : windowCell) {
                             String path = toPath(in);
-                            if (!path.equals("BLANK")) {
-                                printWindowCell(in, path, gridPane);
-                            }
-                        }
+                            if (!path.equals("BLANK")) printWindowCell(in, path, gridPane);
                     }
                 }
             }
@@ -530,15 +538,12 @@ public class GameWindowController implements Serializable {
 
         String url1 =  partOfPath+ts.get(0).getToolCardName()+endPath;
         Image image1 = new Image(url1);
-        //tool1.setId(ts.get(0).getName());
 
         String url2 =  partOfPath+ts.get(1).getToolCardName()+endPath;
         Image image2 = new Image(url2);
-        //tool2.setId(ts.get(1).getName());
 
         String url3 =  partOfPath+ts.get(2).getToolCardName()+endPath;
         Image image3 = new Image(url3);
-        //tool3.setId(ts.get(2).getName());
 
         tool1.setImage(image1);
         tool2.setImage(image2);

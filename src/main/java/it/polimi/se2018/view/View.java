@@ -11,6 +11,7 @@ public abstract class View extends Observable implements Serializable {
 
     protected Player client;
 
+
     public abstract void controllerCallback(Message msg);
 
     public abstract void update(Observable observable, Object message);
@@ -19,6 +20,9 @@ public abstract class View extends Observable implements Serializable {
         return client;
     }
 
+    public void mySetChanged() {
+        this.setChanged();
+    }
 
     public void setPlayer(Player player) {
         this.client = player;

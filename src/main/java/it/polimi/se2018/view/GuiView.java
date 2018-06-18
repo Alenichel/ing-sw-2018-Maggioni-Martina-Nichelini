@@ -19,7 +19,7 @@ import java.util.*;
 public class GuiView extends View implements Observer {
     private transient WaitingAreaController waitingAreaController;
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
-    private transient GameWindowController gameWindowController;
+    protected transient GameWindowController gameWindowController;
 
     private transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
@@ -133,13 +133,9 @@ public class GuiView extends View implements Observer {
     }
 
     protected void useTool(int toolNumber){
-        Map<ToolcardContent, Object> htc = new HashMap<>();
-
-        ToolCard t = toolCards.get(toolNumber-1);
-        if(t.getContent() != null)
-            for(ToolcardContent tc : t.getContent()){
-                htc.put(tc, this.handleUseIO(tc));
-            }
+        ToolCard selectedToolCard = toolCards.get(toolNumber-1);
+        ToolCardTask toolCardTask = new ToolCardTask(selectedToolCard, this, gameWindowController.toolcardSemaphore);
+        new Thread(toolCardTask).start();
     }
 
     @Override

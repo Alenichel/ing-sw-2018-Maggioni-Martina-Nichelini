@@ -20,10 +20,6 @@ public class VirtualView extends View implements Observer {
         Server.getInstance().addObserver(this);
     }
 
-    public void mySetChanged() {
-        this.setChanged();
-    }
-
     public void controllerCallback(Message callbackMessage) {
         try {
             callbackMessage.setSignedBy(this.client.getNickname());
