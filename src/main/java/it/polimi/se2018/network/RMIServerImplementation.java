@@ -72,7 +72,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
             vv.mySetChanged();
             vv.notifyObservers(new ConnectionMessage(p, false));
             clients.remove(pName);
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, ":RMIServer -> Player: " + pName +" || The RMI connection seems to have died");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "Player: " + pName +" || The RMI connection seems to have died");
         } catch (RemoteException e){
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
         }

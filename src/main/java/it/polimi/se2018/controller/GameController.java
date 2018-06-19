@@ -204,6 +204,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         else {
             observable.deleteObserver(this);
             this.gameAssociated.deleteObserver((Observer)observable);
+            this.server.deleteObserver((Observer)observable);
             this.disconnectPlayer(message.getRequester());
         }
     }

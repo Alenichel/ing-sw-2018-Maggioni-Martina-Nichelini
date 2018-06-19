@@ -7,6 +7,7 @@ import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.Semaphore;
 
 public class GuiView extends View implements Observer {
     private transient WaitingAreaController waitingAreaController;
@@ -25,7 +27,13 @@ public class GuiView extends View implements Observer {
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
     private transient Scene sceneGame;
+
     private ArrayList<ToolCard> toolCards;
+
+
+    protected transient Task<Void> toolCardTask;
+    protected transient Semaphore toolcardSemaphore;
+    protected transient Object toolCardDragBoard;
 
     public void run(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -134,7 +142,13 @@ public class GuiView extends View implements Observer {
 
     protected void useTool(int toolNumber){
         ToolCard selectedToolCard = toolCards.get(toolNumber-1);
-        ToolCardTask toolCardTask = new ToolCardTask(selectedToolCard, this, gameWindowController.toolcardSemaphore);
+
+        if (this.toolCardTask != null && this.toolCardTask.isRunning()) {
+            this.toolCardTask.cancel(true);
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Old task marked as CANCELLED.");
+        }
+
+        this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
         new Thread(toolCardTask).start();
     }
 

@@ -23,6 +23,7 @@ import javafx.scene.layout.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Semaphore;
@@ -66,6 +67,8 @@ public class GameWindowController implements Serializable {
     @FXML private ImageView dot4;
     @FXML private ImageView dot5;
     @FXML private ImageView dot6;
+    @FXML private ImageView arrowUp;
+    @FXML private ImageView arrowDown;
 
     @FXML private ImageView privateObjectiveZoom;
 
@@ -115,55 +118,33 @@ public class GameWindowController implements Serializable {
     private final GameWindowController thisController = this;
 
     protected Semaphore controllerCallbackSemaphore;
-    protected Semaphore toolcardSemaphore;
-    protected Object toolCardDragBoard;
+
 
     protected Pane selectedPane;
     protected int column;
     protected int row;
 
     private void setup(int nOfPlayers){
-        labels = new ArrayList<>();
-        gridPanes = new ArrayList<>();
-        draftedDice = new ArrayList<>();
-        roundTrack = new ArrayList<>();
-        toolCards = new ArrayList<>();
-        publicObjectives = new ArrayList<>();
+        ImageView[] objectiveArray = {objective1, objective2, objective3};
+        publicObjectives = new ArrayList<>(Arrays.asList(objectiveArray));
 
-        publicObjectives.add(objective1);
-        publicObjectives.add(objective2);
-        publicObjectives.add(objective3);
-        toolCards.add(tool1);
-        toolCards.add(tool2);
-        toolCards.add(tool3);
-        labels.add(name0);
-        labels.add(name1);
-        labels.add(name2);
-        labels.add(name3);
-        gridPanes.add(windowPattern0);
-        gridPanes.add(windowPattern1);
-        gridPanes.add(windowPattern2);
-        gridPanes.add(windowPattern3);
-        draftedDice.add(drafted1);
-        draftedDice.add(drafted2);
-        draftedDice.add(drafted3);
-        draftedDice.add(drafted4);
-        draftedDice.add(drafted5);
-        draftedDice.add(drafted6);
-        draftedDice.add(drafted7);
-        draftedDice.add(drafted8);
-        draftedDice.add(drafted9);
-        roundTrack.add(roundTrack0);
-        roundTrack.add(roundTrack1);
-        roundTrack.add(roundTrack2);
-        roundTrack.add(roundTrack3);
-        roundTrack.add(roundTrack4);
-        roundTrack.add(roundTrack5);
-        roundTrack.add(roundTrack6);
-        roundTrack.add(roundTrack7);
-        roundTrack.add(roundTrack8);
-        roundTrack.add(roundTrack9);
+        ImageView[] toolcardsArray = {tool1, tool2, tool3};
+        toolCards = new ArrayList<>(Arrays.asList(toolcardsArray));
 
+        Label[] labelsArray = {name0, name1, name2, name3};
+        labels = new ArrayList<>(Arrays.asList(labelsArray));
+
+        GridPane[] gridPanesArray = {windowPattern0, windowPattern1, windowPattern2, windowPattern3};
+        gridPanes = new ArrayList<>(Arrays.asList(gridPanesArray));
+
+        Pane[] roundTrackArray = {roundTrack0, roundTrack1, roundTrack2, roundTrack3, roundTrack4, roundTrack5, roundTrack6, roundTrack7, roundTrack8, roundTrack9 };
+        roundTrack = new ArrayList<>(Arrays.asList(roundTrackArray));
+
+        Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
+        draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
+
+        arrowUp.setVisible(false);
+        arrowDown.setVisible(false);
 
         for(ImageView imageView : publicObjectives){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -204,7 +185,7 @@ public class GameWindowController implements Serializable {
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    toolcardSemaphore = new Semaphore(0);
+                    gw.toolcardSemaphore = new Semaphore(0);
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
                     gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
                 }
@@ -317,7 +298,7 @@ public class GameWindowController implements Serializable {
         return controllerCallbackSemaphore;
     }
 
-    protected void ToolcardWindowEffect(){
+    protected void toolcardWindowEffect(){
 
         for(Node node : gridPanes.get(0).getChildren()){
 
@@ -333,15 +314,15 @@ public class GameWindowController implements Serializable {
                         column = GridPane.getColumnIndex((Node)event.getSource());
                         row = GridPane.getRowIndex((Node)event.getSource());
                         int[] coordinate = {column, row};
-                        toolCardDragBoard = coordinate;
-                        toolcardSemaphore.release();
+                        gw.toolCardDragBoard = coordinate;
+                        gw.toolcardSemaphore.release();
                     }
                 });
             }
         }
     }
 
-    protected void ToolcardDraftPoolEffect(){
+    protected void toolcardDraftPoolEffect(){
         for(Node node: draftedDice){
             Pane p = (Pane) node;
             int index = Integer.parseInt(p.getId().substring(p.getId().length()-1));
@@ -349,11 +330,18 @@ public class GameWindowController implements Serializable {
             node.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    toolCardDragBoard = index-1;
-                    toolcardSemaphore.release();
+                    gw.toolCardDragBoard = index-1;
+                    gw.toolcardSemaphore.release();
                 }
             });
         }
+    }
+
+    protected void toolcardIncreaseEffect(){
+        arrowUp.setVisible(true);
+        arrowDown.setVisible(true);
+        gw.toolCardDragBoard = true;
+        gw.toolcardSemaphore.release();
     }
 
     private void removeResponse(){
