@@ -1,10 +1,12 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -77,6 +79,7 @@ public class GameWindowController implements Serializable {
     @FXML private ImageView dot6;
     @FXML private ImageView arrowUp;
     @FXML private ImageView arrowDown;
+    @FXML private ImageView draftPoolArrow;
 
     @FXML private ImageView privateObjectiveZoom;
 
@@ -97,6 +100,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane winnerPane;
     @FXML private ImageView winnerImage;
     @FXML private Text winnerText;
+    @FXML private Text hint;
     @FXML private Button winnerEndGame;
     @FXML private Button winnerAnoterMatch;
 
@@ -113,7 +117,7 @@ public class GameWindowController implements Serializable {
 
     @FXML private Button useTool;
 
-    //private static Object o;
+    private List<Dice> draftPoolDice;
     protected GuiView gw;
     protected boolean draggable = false;
     private boolean mouseOver = true;
@@ -152,8 +156,6 @@ public class GameWindowController implements Serializable {
         Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
         draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
 
-        arrowUp.setVisible(false);
-        arrowDown.setVisible(false);
 
         for(ImageView imageView : publicObjectives){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -214,10 +216,7 @@ public class GameWindowController implements Serializable {
                         imageView.setCursor(Cursor.HAND);
                     }
                 }else{
-                    useTool.setText("Use tool card");
-                    mouseOver = true;
-                    toolInUse = false;
-                    passTurn.setDisable(false);
+                    onToolcardEnd();
                 }
             }
         });
@@ -240,12 +239,16 @@ public class GameWindowController implements Serializable {
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
         page.setBackground(new Background(myBI));
+
+        arrowUp.setImage(new Image("green_up_arrow.png"));
+        arrowDown.setImage(new Image("red_down_arrow.png"));
+        draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
     }
 
     private void setSourceEvents(){
         for(Pane p : draftedDice){
-            this.setOnDragDetection(p);
-            this.setOnDragDone(p);
+            if (p.getBackground() != null)
+                this.setOnDragDetection(p);
         }
     }
 
@@ -261,18 +264,10 @@ public class GameWindowController implements Serializable {
 
                     //put as image the background image of the dragged die
                     content.putImage(source.getBackground().getImages().get(0).getImage());
+                    source.setBackground(null);
                     db.setContent(content);
                     event.consume();
                 }
-            }
-        });
-    }
-
-    private void setOnDragDone(Pane source){
-        source.setOnDragDone(new EventHandler<DragEvent>() {
-            public void handle(DragEvent event) {
-                if (event.getTransferMode() != null) source.setBackground(null);
-                event.consume();
             }
         });
     }
@@ -317,7 +312,13 @@ public class GameWindowController implements Serializable {
         return controllerCallbackSemaphore;
     }
 
-    protected void toolcardWindowEffect(){
+    protected void toolcardWindowEffect(ToolcardContent tc){
+
+        if (tc.equals(ToolcardContent.WindowCellStart))
+            hint.setText("SELECT STARTING CELL");
+        else if (tc.equals(ToolcardContent.WindowCellEnd))
+            hint.setText("SELECT ENDING CELL");
+        hint.setDisable(false);
 
         for(Node node : gridPanes.get(0).getChildren()){
 
@@ -329,14 +330,28 @@ public class GameWindowController implements Serializable {
                 node.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent event) {
-                        //System.out.println("Clicked on x: " + c + "y: "+ r );
                         column = GridPane.getColumnIndex((Node)event.getSource());
                         row = GridPane.getRowIndex((Node)event.getSource());
-                        int[] coordinate = {column, row};
+                        int[] coordinate = {row, column};
                         gw.toolCardDragBoard = coordinate;
                         gw.toolcardSemaphore.release();
+                        toolcardCleanWindowEffect();
                     }
                 });
+            }
+        }
+    }
+
+    private void toolcardCleanWindowEffect(){
+        hint.setDisable(true);
+        hint.setVisible(false);
+
+        for (Node node: gridPanes.get(0).getChildren()){
+            Integer c = GridPane.getColumnIndex(node);
+            Integer r = GridPane.getRowIndex(node);
+            if(c != null && r != null) {
+                ((Pane) node).setCursor(Cursor.DEFAULT);
+                ((Pane) node).setOnMouseClicked(null);
             }
         }
     }
@@ -346,21 +361,67 @@ public class GameWindowController implements Serializable {
             Pane p = (Pane) node;
             int index = Integer.parseInt(p.getId().substring(p.getId().length()-1));
             node.setCursor(Cursor.MOVE);
+            draftPoolArrow.setDisable(false);
+            draftPoolArrow.setVisible(true);
+
             node.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     gw.toolCardDragBoard = index-1;
                     gw.toolcardSemaphore.release();
+                    draftPoolArrow.setVisible(false);
+                    disableToolcardDrafPoolEffect();
                 }
             });
         }
     }
 
+    private void disableToolcardDrafPoolEffect(){
+        for (Node node: draftedDice) {
+            Pane p = (Pane) node;
+            p.setOnMouseClicked(null);
+            p.setCursor(Cursor.DEFAULT);
+        }
+    }
+
     protected void toolcardIncreaseEffect(){
+        arrowUp.setDisable(false);
+        arrowDown.setDisable(false);
         arrowUp.setVisible(true);
         arrowDown.setVisible(true);
-        gw.toolCardDragBoard = true;
-        gw.toolcardSemaphore.release();
+
+        arrowUp.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = true;
+                gw.toolcardSemaphore.release();
+                toolcardCleanIncreaseEffect();
+            }
+        });
+
+        arrowDown.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = false;
+                gw.toolcardSemaphore.release();
+                toolcardCleanIncreaseEffect();
+            }
+        });
+
+    }
+
+    private void toolcardCleanIncreaseEffect(){
+        arrowUp.setVisible(false);
+        arrowDown.setVisible(false);
+        arrowUp.setOnMouseClicked(null);
+        arrowDown.setOnMouseClicked(null);
+    }
+
+    protected void onToolcardEnd(){
+        useTool.setText("Use ToolCard");
+        mouseOver = true;
+        toolInUse = false;
+        passTurn.setDisable(false);
     }
 
     private void removeResponse(){
@@ -435,7 +496,7 @@ public class GameWindowController implements Serializable {
                     for (WindowCell[] windowCell : windowPatternCard.getGrid())
                         for (WindowCell in : windowCell) {
                             String path = toPath(in);
-                            if (!path.equals("BLANK")) printWindowCell(in, path, gridPane);
+                            printWindowCell(in, path, gridPane);
                     }
                 }
             }
@@ -464,12 +525,13 @@ public class GameWindowController implements Serializable {
         toggleDraggable(activePlayer);
     }
 
-    private void printDratfedDice(List<Dice> dices){
+    private void printDratfedDice(List<Dice> dice){
         int n = 0;
+        this.draftPoolDice = dice;
         for(Pane pane: draftedDice){
             pane.setBackground(null);
         }
-        for(Dice d : dices){
+        for(Dice d : dice){
             String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
             BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -594,7 +656,6 @@ public class GameWindowController implements Serializable {
         winnerText.setText(text);
     }
 
-
     private String toPath(WindowCell w){
         String str;
         if(w.getAssignedDice() != null) {
@@ -669,25 +730,11 @@ public class GameWindowController implements Serializable {
         }
     }
 
-    protected void increasePopUp(){
-        Platform.runLater(new Runnable() {
-            @Override public void run() {
-                Popup popup = new Popup();
+    public List<Dice> getDraftPoolDice() {
+        return draftPoolDice;
+    }
 
-                Text t = new Text("ciaooooooooooo");
-
-                Button increase = new Button("Increase");
-                Button decrease = new Button("Decrease");
-                Pane pane = new Pane();
-
-                pane.getChildren().addAll(t, increase, decrease);
-
-
-                popup.getContent().addAll(t, increase, decrease);
-
-                popup.show(gw.primaryStage);
-
-            }
-        });
+    public List<Pane> getDraftedDice() {
+        return draftedDice;
     }
 }

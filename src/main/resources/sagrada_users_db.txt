@@ -2,6 +2,7 @@ start
 Alenichel:sagrada
 Valentina:sagrada
 Stendus:sagrada
+Stefano:sagrada
 Bot1:sagrada
 Bot2:sagrada
 Bot3:sagrada

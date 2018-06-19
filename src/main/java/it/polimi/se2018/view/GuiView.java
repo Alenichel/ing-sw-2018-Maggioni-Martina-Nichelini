@@ -53,7 +53,8 @@ public class GuiView extends View implements Observer {
 
             waitingAreaController = loader.getController();
         } catch (IOException e) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
     }
 
@@ -66,7 +67,8 @@ public class GuiView extends View implements Observer {
 
             gameWindowController = loader.getController();
         } catch (IOException e) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
     }
 
@@ -80,7 +82,8 @@ public class GuiView extends View implements Observer {
             scenePatternCard = new Scene(root);
             selectPatternCardWindowController = loader.getController();
         }catch (IOException e){
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
+            e.printStackTrace();
         }
 
     }
@@ -187,7 +190,7 @@ public class GuiView extends View implements Observer {
                             printSelectPatternCard();
                             selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
                         }
-                        else if(wtu.equals(WhatToUpdate.ActivePlayer)){
+                        else if(wtu.equals(WhatToUpdate.ActivePlayer) || wtu.equals(WhatToUpdate.ToolCardUpdate)){
                             printGameWindow((Game)o, client);
                         }
                         else if (wtu.equals(WhatToUpdate.Winner)){

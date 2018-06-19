@@ -8,6 +8,7 @@ import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 
 import java.util.HashMap;
@@ -31,10 +32,16 @@ public class ToolCardTask extends Task<Void> {
 
     private void handleGuiSetup (ToolcardContent tc) {
         if (tc.equals(ToolcardContent.WindowCellStart))
-            this.gwc.toolcardWindowEffect();
+            this.gwc.toolcardWindowEffect(ToolcardContent.WindowCellStart);
+
+        else if (tc.equals(ToolcardContent.WindowCellEnd))
+            this.gwc.toolcardWindowEffect(ToolcardContent.WindowCellEnd);
 
         else if (tc.equals(ToolcardContent.DraftedDie))
             this.gwc.toolcardDraftPoolEffect();
+
+        else if (tc.equals(ToolcardContent.Increase))
+            this.gwc.toolcardIncreaseEffect();
     }
 
     @Override
@@ -44,12 +51,7 @@ public class ToolCardTask extends Task<Void> {
 
         for (ToolcardContent tc : content){
             if (tc.equals(ToolcardContent.RunBy)) {
-                htc.put(tc, guiView.client);
-                continue;
-            }
-            if (tc.equals(ToolcardContent.Increase)){
-                gwc.increasePopUp();
-                htc.put(tc, true);
+                htc.put(tc, guiView.client.getNickname());
                 continue;
             }
             this.handleGuiSetup(tc);
@@ -63,6 +65,12 @@ public class ToolCardTask extends Task<Void> {
         ToolCardMessage tcm = new ToolCardMessage(toolCard.getToolCardName(), htc);
         this.guiView.mySetChanged();
         guiView.notifyObservers(tcm);
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                gwc.onToolcardEnd();
+            }
+        });
 
         return null;
     }

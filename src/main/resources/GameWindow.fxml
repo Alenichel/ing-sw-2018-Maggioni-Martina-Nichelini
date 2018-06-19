@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
@@ -39,7 +40,7 @@
             <Font size="18.0" />
          </font>
       </Label>
-      <Label fx:id="name0" layoutX="438.0" layoutY="404.0" prefHeight="23.0" prefWidth="258.0" text="Label" textFill="WHITE">
+      <Label fx:id="name0" layoutX="438.0" layoutY="404.0" prefHeight="23.0" prefWidth="133.0" text="Label" textFill="WHITE">
          <font>
             <Font size="18.0" />
          </font>
@@ -237,7 +238,7 @@
       <ImageView fx:id="dot5" fitHeight="30.0" fitWidth="30.0" layoutX="335.0" layoutY="598.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="dot6" fitHeight="30.0" fitWidth="30.0" layoutX="357.0" layoutY="634.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="privateObjectiveZoom" disable="true" fitHeight="295.0" fitWidth="243.0" layoutX="39.0" layoutY="384.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="41.0" />
-      <Button fx:id="passTurn" layoutX="758.0" layoutY="402.0" mnemonicParsing="false" text="Pass Turn" />
+      <Button fx:id="passTurn" layoutX="1008.0" layoutY="371.0" mnemonicParsing="false" text="Pass Turn" />
       <Pane fx:id="drafted1" layoutX="397.0" layoutY="343.0" prefHeight="50.0" prefWidth="50.0" />
       <Pane fx:id="drafted2" layoutX="451.0" layoutY="342.0" prefHeight="50.0" prefWidth="50.0" />
       <Pane fx:id="drafted3" layoutX="505.0" layoutY="342.0" prefHeight="50.0" prefWidth="50.0" />
@@ -251,7 +252,7 @@
       <ImageView fx:id="tool1" fitHeight="152.0" fitWidth="111.0" layoutX="877.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tool2" fitHeight="152.0" fitWidth="111.0" layoutX="1008.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="tool3" fitHeight="152.0" fitWidth="111.0" layoutX="1143.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
-      <Button fx:id="useTool" layoutX="1013.0" layoutY="371.0" mnemonicParsing="false" text="Use ToolCard" />
+      <Button fx:id="useTool" layoutX="1107.0" layoutY="371.0" mnemonicParsing="false" text="Use ToolCard" />
       <ImageView fx:id="mouseOverPublicObjective" disable="true" fitHeight="372.0" fitWidth="258.0" layoutX="957.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" />
       <Pane fx:id="winnerPane" disable="true" layoutX="247.0" layoutY="114.0" prefHeight="518.0" prefWidth="781.0" visible="false">
          <children>
@@ -271,15 +272,13 @@
                </image></ImageView>
          </children>
       </Pane>
-      <ImageView fx:id="arrowUp" fitHeight="77.0" fitWidth="80.0" layoutX="302.0" layoutY="476.0">
-         <image>
-            <Image url="@../../../../../../Desktop/green_up_arrow.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="arrowDown" fitHeight="77.0" fitWidth="76.0" layoutX="304.0" layoutY="586.0">
-         <image>
-            <Image url="@../../../../../../Desktop/red_down_arrow.png" />
-         </image>
-      </ImageView>
+      <ImageView fx:id="arrowUp" disable="true" fitHeight="86.0" fitWidth="91.0" layoutX="328.0" layoutY="468.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="arrowDown" disable="true" fitHeight="86.0" fitWidth="91.0" layoutX="328.0" layoutY="577.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="draftPoolArrow" disable="true" fitHeight="52.0" fitWidth="80.0" layoutX="294.0" layoutY="342.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <Text fx:id="hint" layoutX="584.0" layoutY="422.0" wrappingWidth="252.0">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
    </children>
 </AnchorPane>
