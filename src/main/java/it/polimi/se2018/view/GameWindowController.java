@@ -1,6 +1,7 @@
 package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.*;
+import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
@@ -15,7 +16,10 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -26,12 +30,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
+import javafx.stage.Popup;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
@@ -109,6 +117,7 @@ public class GameWindowController implements Serializable {
     protected GuiView gw;
     protected boolean draggable = false;
     private boolean mouseOver = true;
+    private boolean toolInUse = false;
     private List<Label> labels;
     private List<GridPane> gridPanes;
     private List<Pane> draftedDice;
@@ -195,10 +204,20 @@ public class GameWindowController implements Serializable {
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Toolcard button pressed");
-                mouseOver = false;
-                for (ImageView imageView : toolCards){
-                    imageView.setCursor(Cursor.HAND);
+                if(!toolInUse) {
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Toolcard button pressed");
+                    mouseOver = false;
+                    useTool.setText("Abort");
+                    passTurn.setDisable(true);
+                    toolInUse = true;
+                    for (ImageView imageView : toolCards) {
+                        imageView.setCursor(Cursor.HAND);
+                    }
+                }else{
+                    useTool.setText("Use tool card");
+                    mouseOver = true;
+                    toolInUse = false;
+                    passTurn.setDisable(false);
                 }
             }
         });
@@ -648,5 +667,27 @@ public class GameWindowController implements Serializable {
             passTurn.setDisable(true);
             useTool.setDisable(true);
         }
+    }
+
+    protected void increasePopUp(){
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                Popup popup = new Popup();
+
+                Text t = new Text("ciaooooooooooo");
+
+                Button increase = new Button("Increase");
+                Button decrease = new Button("Decrease");
+                Pane pane = new Pane();
+
+                pane.getChildren().addAll(t, increase, decrease);
+
+
+                popup.getContent().addAll(t, increase, decrease);
+
+                popup.show(gw.primaryStage);
+
+            }
+        });
     }
 }

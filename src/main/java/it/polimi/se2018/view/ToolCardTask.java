@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.enumeration.ToolCardsName;
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.Server;
@@ -34,19 +35,22 @@ public class ToolCardTask extends Task<Void> {
 
         else if (tc.equals(ToolcardContent.DraftedDie))
             this.gwc.toolcardDraftPoolEffect();
-        else if (tc.equals(ToolcardContent.Increase))
-            this.gwc.toolcardIncreaseEffect();
     }
 
     @Override
     protected Void call() throws Exception {
         ToolcardContent[] content = toolCard.getContent();
         Map<ToolcardContent, Object> htc = new HashMap<>();
-        Object toolCardDragBoard = guiView.toolCardDragBoard;
+        Object toolCardDragBoard = guiView.gameWindowController.toolCardDragBoard;
 
         for (ToolcardContent tc : content){
             if (tc.equals(ToolcardContent.RunBy)) {
                 htc.put(tc, guiView.client);
+                continue;
+            }
+            if (tc.equals(ToolcardContent.Increase)){
+                gwc.increasePopUp();
+                htc.put(tc, true);
                 continue;
             }
             this.handleGuiSetup(tc);
