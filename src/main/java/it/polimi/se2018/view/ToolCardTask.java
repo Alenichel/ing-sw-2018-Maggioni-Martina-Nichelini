@@ -41,7 +41,6 @@ public class ToolCardTask extends Task<Void> {
     protected Void call() throws Exception {
         ToolcardContent[] content = toolCard.getContent();
         Map<ToolcardContent, Object> htc = new HashMap<>();
-        Object toolCardDragBoard = guiView.gameWindowController.toolCardDragBoard;
 
         for (ToolcardContent tc : content){
             if (tc.equals(ToolcardContent.RunBy)) {
