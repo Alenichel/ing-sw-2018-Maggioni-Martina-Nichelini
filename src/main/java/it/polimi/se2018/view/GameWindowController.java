@@ -117,6 +117,10 @@ public class GameWindowController implements Serializable {
 
     @FXML private Button useTool;
 
+    @FXML private Pane mouseOverRound;
+    @FXML private GridPane gridPaneMouseOver;
+
+
     private List<Dice> draftPoolDice;
     protected GuiView gw;
     protected boolean draggable = false;
@@ -129,6 +133,7 @@ public class GameWindowController implements Serializable {
     private List<ImageView> toolCards;
     private List<ImageView> publicObjectives;
     private final GameWindowController thisController = this;
+    private RoundTrack gameRoundTrack;
 
     protected Semaphore controllerCallbackSemaphore;
 
@@ -199,6 +204,47 @@ public class GameWindowController implements Serializable {
                     gw.toolcardSemaphore = new Semaphore(0);
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
                     gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
+                }
+            });
+        }
+
+        for(Pane p : roundTrackArray){
+            p.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(p.getBackground() != null) {
+                        mouseOverRound.getChildren().clear();
+
+                        ArrayList<Dice> roundDice = gameRoundTrack.getRoundTrack().get(Integer.parseInt(p.getId().substring(p.getId().length()-1)));
+                        int n = 0;
+                        for(Dice d : roundDice){
+                            String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+
+                            BackgroundImage myBI= new BackgroundImage(new Image(path,60,60,false,true),
+                                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+                            Pane p = new Pane();
+                            p.setBackground(new Background(myBI));
+                            p.setPrefWidth(60);
+                            p.setPrefHeight(60);
+                            p.setLayoutX(n*60);
+                            mouseOverRound.getChildren().add(n, p);
+
+                            mouseOverRound.setVisible(true);
+                            mouseOverRound.setDisable(false);
+                            n++;
+                        }
+                    }
+                    ;
+                }
+            });
+
+            p.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(!toolInUse){
+                        mouseOverRound.setVisible(false);
+                    }
                 }
             });
         }
@@ -686,18 +732,21 @@ public class GameWindowController implements Serializable {
     }
 
     private void printRoundTrack(RoundTrack rt, int round){
+        gameRoundTrack = rt;
         if(round > 1) {
             Dice d = rt.getRoundTrack().get(round - 2).get(0);
 
             String path = "/dice/" + d.getColor() + "/" + d.getNumber() + ".png";
-            BackgroundImage myBI = new BackgroundImage(new Image(path, 55, 55, false, true),
+            BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
+
             roundTrack.get(round - 2).setBackground(new Background(myBI));
+            roundTrack.get(round - 2).setCursor(Cursor.HAND);
         }
-
-
     }
+
+
     @FXML
     private void quit(){
         Platform.exit();
