@@ -3,11 +3,19 @@ package it.polimi.se2018.model;
 import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.enumeration.ObjectiveCardsName;
 
+/**
+ * This class implements PublicObjectiveCard
+ */
 public class PublicObjectiveCard extends ObjectiveCard{
     private int points;
     private ObjectiveCardsName Name;
     private ScorePointStrategy scorePointStrategy;
 
+    /**
+     * Score point strategy
+     * @param ocn public objective cards' names
+     * @return the objective cards chosen
+     */
     private ScorePointStrategy nameToObjectObjective(ObjectiveCardsName ocn){
         switch (ocn.toString()){
             case "RowColorVariety" :
@@ -54,15 +62,27 @@ public class PublicObjectiveCard extends ObjectiveCard{
         }
     }
 
+    /**
+     * Public objective cars constructor
+     * @param name: public objective card name
+     */
     public PublicObjectiveCard(ObjectiveCardsName name){
         this.Name = name;
         this.scorePointStrategy = nameToObjectObjective(name);
     }
 
+    /**
+     * Score point method
+     * @param windowPatternCard: window pattern card under consideration
+     */
     public int scorePoint(WindowPatternCard windowPatternCard){
         return scorePointStrategy.scorePoint(windowPatternCard);
     }
 
+    /**
+     * Objective card's name getter
+     * @return objective card's name
+     */
     public ObjectiveCardsName getName() {
         return Name;
     }
