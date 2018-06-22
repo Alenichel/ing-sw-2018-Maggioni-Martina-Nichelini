@@ -7,6 +7,10 @@ public enum ToolcardContent {
     BagDie,
     Increase,
     Number,
+    firstWindowCellStart,
+    firstWindowCellEnd,
+    secondWindowCellStart,
+    secondWindowCellEnd,
     WindowCellStart,
     WindowCellEnd,
     WindowPattern

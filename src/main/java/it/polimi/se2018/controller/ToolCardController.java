@@ -100,40 +100,40 @@ public class ToolCardController {
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
         else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
+        else if (name.equals(ToolCardsName.Lathekin))
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
         start.removeDice();
     }
 
     /**
      * Tool Card #4 "Lathekin": Move exactly two dice, obeying all placement restrictions.
+     * The method which handles this toolcard recall handleMovingDiceToolcard twice and include an error handling resetter.
      */
     private  void handleLathekin(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
-        WindowPatternCard windowPatternCard = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
-        int[] cooStart2 = (int[]) params.get(ToolcardContent.WindowCellStart);
-        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        int[] cooEnd2 = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        WindowCell start1 = windowPatternCard.getCell(cooStart[0], cooStart[1]);
-        WindowCell start2 = windowPatternCard.getCell(cooStart[0], cooStart[1]);
-        WindowCell end1 = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
-        WindowCell end2 = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+        WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
 
-        if(start1.isEmpty() || start2.isEmpty())
-            throw new ToolCardException(":LATHEKIN: this window cell is empty");
+        Map<ToolcardContent, Object> htc1= new HashMap<>();
+        Map<ToolcardContent, Object> htc2= new HashMap<>();
 
-        if(!end1.isEmpty() || !end2.isEmpty())
-            throw new ToolCardException(":LATHEKIN: this window cell is not empty");
+        htc1.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
+        htc2.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
+        htc1.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.firstWindowCellStart));
+        htc1.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.firstWindowCellEnd));
+        htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellEnd));
+        htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
 
-
-        Dice d1 = start1.getAssignedDice();
-        Dice d2 = start2.getAssignedDice();
+        handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
         try {
-            start1.removeDice();
-            start2.removeDice();
-            windowPatternCard.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, false);
-            windowPatternCard.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, false);
-        }catch (ToolCardException | NotEmptyWindowCellException e) {
-            throw e;
+            handleMovingDiceToolcard(ToolCardsName.Lathekin, htc2);
+        } catch (ToolCardException | NotEmptyWindowCellException e){
+            int[] cooEnd = (int[]) htc1.get(ToolcardContent.WindowCellEnd);
+            WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
+            Dice d = end.getAssignedDice();
+            end.removeDice();
+            int[] cooStart = (int[]) htc1.get(ToolcardContent.WindowCellStart);
+            WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
+            windowPatternCard.insertDice(d, start.getRow(), start.getColumn(), false, false, false );
         }
     }
 
@@ -219,36 +219,35 @@ public class ToolCardController {
      */
     private void handleFluxRemover(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
-        WindowPatternCard wpc = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
+        WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
-        int bagDieIndex = (int) params.get(ToolcardContent.BagDie);
-        Dice bagDie = this.gameAssociated.getDiceOnTable().get(bagDieIndex);
+
+        Dice bagDie = this.gameAssociated.getDieForSwitch();
         int number = (int) params.get(ToolcardContent.Number);
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        WindowCell wc = wpc.getCell(cooEnd[0], cooEnd[1]);
+        WindowCell wc = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
 
-        if(!draftedDie.getLocation().equals(DiceLocation.TABLE)) {
-            throw new ToolCardException(":FLUX_REMOVER: this die can not be chosen");
-        }
-        else {
-            draftedDie.setLocation(DiceLocation.BAG);
-        }
-
-        if(!bagDie.getLocation().equals(DiceLocation.BAG)){
-            throw new ToolCardException(":FLUX_REMOVER: this die can not be chosen");
-        }
-
-        else{
-            if (number > 0 &&  number < 7) {
-                bagDie.setNumber(number);
-            }
-            else throw new ToolCardException(":FLUX_REMOVER: invalid number");
+        /*if(!draftedDie.getLocation().equals(DiceLocation.TABLE)) {
+            throw new ToolCardException("IneligibleDie");
+        }*/
 
 
-            wpc.insertDice(bagDie, wc.getRow(), wc.getColumn(), true, true, true);
 
-        }
+        /*if(!bagDie.getLocation().equals(DiceLocation.BAG)){
+            throw new ToolCardException("IneligibleDie");
+        }*/
+
+        draftedDie.setLocation(DiceLocation.BAG);
+        windowPatternCard.insertDice(bagDie, wc.getRow(), wc.getColumn(), true, true, true);
+
+        if (number > 0 &&  number < 7) {
+            bagDie.setNumber(number);
+        } else throw new ToolCardException("InvalidValue");
+
+        this.gameAssociated.getDiceBag().remove(bagDie);
+        this.gameAssociated.setDieForSwitch();
+        this.gameAssociated.getDiceOnTable().remove(draftedDie);
     }
 
     /**
@@ -355,15 +354,15 @@ public class ToolCardController {
                 this.onSuccess(observable, tcn);
                 break;
 
-            /*case Lathekin:
+            case Lathekin:
                 try {
                     handleLathekin(toolCardMessage.getParameters());
                 } catch (ToolCardException | NotEmptyWindowCellException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
-                break;
+                this.onSuccess(observable, tcn);
+                break;/*
 
             case LensCutter:
                 try {
@@ -408,8 +407,8 @@ public class ToolCardController {
             case GrindingStone:
                 handleGrindingStone(toolCardMessage.getParameters());
                 this.onSuccess(observable, tcn);
-                break;
-            /*
+                break;*/
+
             case FluxRemover:
                 try {
                     handleFluxRemover(toolCardMessage.getParameters());
@@ -417,8 +416,8 @@ public class ToolCardController {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
-                break;
+                this.onSuccess(observable, tcn);
+                break;/*
 
             case TapWheel:
                 try {

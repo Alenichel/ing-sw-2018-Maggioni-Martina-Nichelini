@@ -39,14 +39,14 @@ public class ToolCard extends Card implements Serializable {
             this.setToolCardName(ToolCardsName.CopperFoilBurnisher);
             this.setDescription("Move any one die in your windows ignoring shade restriction. You must obey all other placement restriction.");
         }
-        /*
+
         else if(ToolCardsName.Lathekin.equals(tcn)){
-            content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellEnd};
+            content = new ToolcardContent[]{    ToolcardContent.RunBy, ToolcardContent.firstWindowCellStart, ToolcardContent.firstWindowCellEnd, ToolcardContent.secondWindowCellStart, ToolcardContent.secondWindowCellEnd};
 
             this.setName(ToolCardsName.Lathekin.toString());
             this.setToolCardName(ToolCardsName.Lathekin);
             this.setDescription("Move exactly two dice, obeying all placement restrictions.");
-        }
+        }/*
         else if(ToolCardsName.LensCutter.equals(tcn)){
             content = new ToolcardContent[] {   ToolcardContent.RoundTrackDie, ToolcardContent.DraftedDie   };
 
@@ -85,14 +85,14 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GrindingStone.toString());
             this.setToolCardName(ToolCardsName.GrindingStone);
             this.setDescription("After drafting flip the die to its opposite side.");
-        }
+        }*/
         else if(ToolCardsName.FluxRemover.equals(tcn)){
-            content = new ToolcardContent[]{    ToolcardContent.DraftedDie    };
+            content = new ToolcardContent[]{   ToolcardContent.RunBy,  ToolcardContent.DraftedDie, ToolcardContent.BagDie , ToolcardContent.Number,  ToolcardContent.WindowCellEnd  };
 
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
             this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag.");
-        }
+        }/*
         else if(ToolCardsName.TapWheel.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart    };
             this.setName(ToolCardsName.TapWheel.toString());

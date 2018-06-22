@@ -19,6 +19,7 @@ public class Game extends Observable implements Serializable {
     private List<Player> players = new Vector<>();
     private List<Player> playersOrder = new Vector<>();
 
+    private Dice dieForSwitch;
     private RoundTrack roundTrack;
     private boolean isStarted;
     private boolean initiliazationComplete;
@@ -127,6 +128,15 @@ public class Game extends Observable implements Serializable {
     public synchronized void setPlayersOrder(List<Player> playersOrder) {
         this.playersOrder = playersOrder;
     }
+    public synchronized void setDieForSwitch() {
+        Random random = new Random();
+        Dice randomDie = diceBag.get(random.nextInt(diceBag.size()));
+        this.dieForSwitch = randomDie;
+    }
+
+    public synchronized Dice getDieForSwitch() {
+        return dieForSwitch;
+    }
     public synchronized List<Dice> getDiceBag() {
         return diceBag;
     }
@@ -212,6 +222,3 @@ public class Game extends Observable implements Serializable {
         this.notifyObservers(um);
     }
 }
-
-
-

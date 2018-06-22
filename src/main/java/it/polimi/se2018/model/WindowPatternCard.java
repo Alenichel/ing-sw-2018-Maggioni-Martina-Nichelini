@@ -203,6 +203,7 @@ public class WindowPatternCard extends Card implements Serializable {
      * @return True if it's a valid position, false otherwise.
      */
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
+        if (placedDice == 0) return true;
         int counterNearDice = 0;
 
         for (WindowCell wc : windowCell.getDiagonalCells())

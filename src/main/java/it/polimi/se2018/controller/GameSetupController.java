@@ -77,13 +77,15 @@ public class GameSetupController implements Serializable {
      * According to Sagrada's rules, 15 dice for each color are initialized and they are put on the diceBag.
      */
     private void diceInitializer(){
+        List<Dice> diceBag = this.associatedGame.getDiceBag();
         for (DiceColor dc : DiceColor.values()){
             for (int i = 0; i < 18; i++){
                 Dice newDice = new Dice(dc);
                 newDice.setLocation(DiceLocation.BAG);
-                this.associatedGame.getDiceBag().add(newDice);
+                diceBag.add(newDice);
             }
         }
+        this.associatedGame.setDieForSwitch();
     }
 
     private void initializePublicObject(){

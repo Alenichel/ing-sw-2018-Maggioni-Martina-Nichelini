@@ -73,12 +73,17 @@ public class RoundHandler implements TimerInterface {
 
         for (int i = 0; i < diceToExtract; i++){
             Dice d = dB.get(rand.nextInt(dB.size()));
+            if (d.equals(this.gameAssociated.getDieForSwitch()) && this.actualRound != 10){
+                i--;
+                continue;
+            }
             dB.remove(d);
             dT.add(d);
             d.setLocation(DiceLocation.TABLE);
         }
         this.gameAssociated.setDiceBag(dB);
         this.gameAssociated.setDiceOnTable(dT);
+        //bisogna considerare che lo dieToSwitch deve essere aggiunto allultimo giro nelle partite a 4 giocatoei.
     }
 
     /**

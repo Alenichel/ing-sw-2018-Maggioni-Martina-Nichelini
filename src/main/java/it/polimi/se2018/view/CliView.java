@@ -14,6 +14,7 @@ public class CliView extends View implements Observer {
 
     private transient Object lastObjectReceveid;
     private Player activePlayer = null;
+    private Game lastGameReceveid = null;
     transient Scanner sinput = new Scanner(System.in);
     private ArrayList<ToolCard> toolCards;
     private boolean gameEnd = false;
@@ -75,21 +76,43 @@ public class CliView extends View implements Observer {
             return Integer.parseInt(sinput.nextLine()) == 1;
         }
 
-        else if (tcc.equals(ToolcardContent.WindowCellStart)) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select start window cell %x %y ");
+        else if (tcc.equals(ToolcardContent.WindowCellStart) ||
+                tcc.equals(ToolcardContent.firstWindowCellStart) ||
+                tcc.equals(ToolcardContent.secondWindowCellStart)) {
+            String toLog = "Please select start window cell %x %y ";
+            if (tcc.equals(ToolcardContent.firstWindowCellStart)) toLog += "(first die)";
+            if (tcc.equals(ToolcardContent.secondWindowCellStart)) toLog += "(second die)";
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, toLog);
             String input =  sinput.nextLine();
             int xStart = Integer.parseInt(input.split(" ")[0])-1;
             int yStart = Integer.parseInt(input.split(" ")[1])-1;
             int[] cooStart = {xStart, yStart};
             return cooStart;
         }
-        else if (tcc.equals(ToolcardContent.WindowCellEnd)){
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select end window cell %x %y ");
+        else if (tcc.equals(ToolcardContent.WindowCellEnd) ||
+                tcc.equals(ToolcardContent.firstWindowCellEnd) ||
+                tcc.equals(ToolcardContent.secondWindowCellEnd)) {
+            String toLog = "Please select end window cell %x %y ";
+            if (tcc.equals(ToolcardContent.firstWindowCellEnd)) toLog += "(first die)";
+            if (tcc.equals(ToolcardContent.secondWindowCellEnd)) toLog += "(second die)";
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, toLog);
             String input =  sinput.nextLine();
             int xEnd = Integer.parseInt(input.split(" ")[0])-1;
             int yEnd = Integer.parseInt(input.split(" ")[1])-1;
             int[] cooEnd = {xEnd, yEnd};
             return cooEnd;
+        }
+        else if (tcc.equals(ToolcardContent.Number)) {
+            int value = 0;
+            while (value < 1 || value > 6) {
+                    Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Please insert a value to assign to this die: ");
+                    value = Integer.parseInt(sinput.nextLine());
+            }
+            return value;
+        }
+
+        else if (tcc.equals(ToolcardContent.BagDie)) {
+            Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "You have taken this die form the bag --->  " + lastGameReceveid.getDieForSwitch().toString());
         }
 
         return null;
@@ -169,7 +192,7 @@ public class CliView extends View implements Observer {
                             break;
                         }
                         this.handleTakeCommands(Integer.parseInt(tokens[1]), Integer.parseInt(tokens[2]), Integer.parseInt(tokens[3]));
-                    } catch (NumberFormatException e) {Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
+                    } catch (NumberFormatException e) {Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
                     break;
 
                 case "use":
@@ -179,7 +202,9 @@ public class CliView extends View implements Observer {
                             break;
                         }
                         this.handleUseCommands(Integer.parseInt(tokens[1]));
-                    } catch (NumberFormatException e) {Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");}
+                    } catch (NumberFormatException e) {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong input format, retry");
+                    }
                     break;
 
                 case "quit":
@@ -188,7 +213,7 @@ public class CliView extends View implements Observer {
                     break loop;
 
                 default:
-                    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Unrecognized command");
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Unrecognized command");
                     break;
             } //end while
         }
@@ -288,7 +313,8 @@ public class CliView extends View implements Observer {
                 WhatToUpdate wtu = ((UpdateMessage)msg).getWhatToUpdate();
                 if(wtu.equals(WhatToUpdate.ActivePlayer) || wtu.equals(WhatToUpdate.ToolCardUpdate)) {
                     activePlayer = ((Game)o).getActivePlayer();
-                    printTable((Game)o);
+                    lastGameReceveid = ((Game)o);
+                    printTable(lastGameReceveid);
                 }
 
                 else{
