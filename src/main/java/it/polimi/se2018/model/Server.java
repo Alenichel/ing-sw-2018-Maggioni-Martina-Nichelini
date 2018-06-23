@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * RMIServer class represents the server with all default params and list of active games and active players.
+ * RMIServer class represents the server with all default params and list of active games and active players
  */
 public class Server extends Observable implements Serializable {
 
@@ -36,7 +36,9 @@ public class Server extends Observable implements Serializable {
 
     private static Server instance = null;
 
-
+    /**
+     * Server constructor
+     */
     private Server(){
 
             try {
@@ -64,7 +66,7 @@ public class Server extends Observable implements Serializable {
 
 
     /**
-     * Configuration loader from xml conf file.
+     * Configuration loader from xml configuration file
      * @throws ParserConfigurationException
      * @throws IOException
      * @throws SAXException
@@ -84,21 +86,25 @@ public class Server extends Observable implements Serializable {
         }
 
     /**
-     * Default matchmaking timer getter.
-     * @return Default matchmaking timer
+     * Default matchmaking timer getter
+     * @return default matchmaking timer
      */
     public int getDefaultMatchmakingTimer(){
                 return this.defaultMatchmakingTimer;
         }
 
     /**
-     * Default move timer getter.
-     * @return defualt move timer.
+     * Default move timer getter
+     * @return default move timer
      */
     public int getDefaultMoveTimer(){
                 return this.defaultMoveTimer;
         }
 
+    /**
+     * Boolean is configuration required
+     * @return true if it's required
+     */
     public boolean isConfigurationRequired() {
         return configurationRequired;
     }
@@ -111,41 +117,73 @@ public class Server extends Observable implements Serializable {
             return this.port;
     }
 
+    /**
+     * Current game getter
+     * @return current game
+     */
     public Game getCurrentGame() {
         return currentGame;
     }
 
+    /**
+     * Number of turn getter
+     * @return number of turn
+     */
     public int getnOfTurn() {
         return nOfTurn;
     }
 
     /**
-     * Online players getter.
-     * @return List of online player.
+     * Online players getter
+     * @return list of online players
      */
     public List<Player> getOnlinePlayers() {return this.onlinePlayers;}
 
+    /**
+     * In game players getter
+     * @return list of in game players
+     */
     public List<Player> getInGamePlayers() {
         return inGamePlayers;
     }
 
+    /**
+     * Waiting players getter
+     * @return list of waiting players
+     */
     public List<Player> getWaitingPlayers() {
         return waitingPlayers;
     }
 
+    /**
+     * Active games getter
+     * @return list of active games
+     */
     public List<Game> getActiveGames() {
         return activeGames;
     }
 
+    /**
+     * Offline players getter
+     * @return list of offline players
+     */
     public List<Player> getOfflinePlayers() {
         return offlinePlayers;
     }
 
+    /**
+     * This method removes a player from the offline players and adds him to the list of online players
+     * @param player added to online players
+     */
     public void addPlayerToOnlinePlayers(Player player){
         if (offlinePlayers.contains(player)) offlinePlayers.remove(player);
         this.onlinePlayers.add(player);
     }
 
+    /**
+     * Tis method removes a player from the online players and adds him to the list of offline players
+     * @param player removed from online players
+     */
     public void removePlayerFromOnlinePlayers(Player player){
         this.onlinePlayers.remove(player);
         this.offlinePlayers.add(player);
@@ -156,20 +194,25 @@ public class Server extends Observable implements Serializable {
         this.notifyObservers(um);
     }
 
+    /**
+     * This method adds a player to the list of server active players
+     */
     public void addPlayer(List<Player> arrayList, Player player){
         arrayList.add(player);
     }
 
 
     /**
-     * Remove player from the list of server active players.
-     * @param player
+     * This method removes a player from the list of server active players
      */
     public void removePlayer (List<Player> arrayList, Player player){
         arrayList.remove(player);
     }
 
-
+    /**
+     * Current game setter
+     * @param currentGame
+     */
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;
         this.activeGames.add(currentGame);

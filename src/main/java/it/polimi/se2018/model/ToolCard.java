@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This class implements the model side of the tool cards
+ */
 public class ToolCard extends Card implements Serializable {
     private DiceColor diceColor;
     private String description;
@@ -17,6 +20,9 @@ public class ToolCard extends Card implements Serializable {
     private ToolCardsName toolCardName;
     private ToolcardContent[] content;
 
+    /**
+     * ToolCard constructor
+     */
     public ToolCard(ToolCardsName tcn){
         if(ToolCardsName.GrozingPliers.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.DraftedDie, ToolcardContent.Increase    };
@@ -101,48 +107,106 @@ public class ToolCard extends Card implements Serializable {
         }*/
     }
 
+    /**
+     * Used setter
+     * @param value true if it's used, false otherwise
+     */
     public void setUsed(boolean value){
         used = value;
     }
+
+    /**
+     * Dice color setter
+     * @param diceColor: red, purple, blue, green or yellow
+     */
     public void setDiceColor(DiceColor diceColor) {
         this.diceColor = diceColor;
     }
+
+    /**
+     * Description setter
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
+
+    /**
+     * Game reference setter
+     * @param gameReference
+     */
     public void setGameReference(Game gameReference) {
         this.gameReference = gameReference;
     }
+
+    /**
+     * Name setter
+     * @param name
+     */
     public void setName(String name){
         this.name = name;
     }
 
+    /**
+     * Tool card name setter
+     * @param toolCardName
+     */
     private void setToolCardName(ToolCardsName toolCardName) {
         this.toolCardName = toolCardName;
     }
 
+    /**
+     * Dice color getter
+     * @return dice color
+     */
     public DiceColor getDiceColor() {
         return diceColor;
     }
+
+    /**
+     * Boolean is used
+     * @return true if it's used
+     */
     public boolean isUsed() {
         return used;
     }
 
+    /**
+     * Game reference getter
+     * @return game reference
+     */
     public Game getGameReference() {
         return gameReference;
     }
 
+    /**
+     * Description getter
+     * @return description
+     */
     public String getDescription(){
         return description;
     }
+
+    /**
+     * Tool card name getter
+     * @return tool card name
+     */
     public ToolCardsName getToolCardName() {
         return toolCardName;
     }
 
+    /**
+     * Name getter
+     * @return name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Tool card content getter
+     * @return Tool card content
+     */
     public ToolcardContent[] getContent() {
         return content;
     }
