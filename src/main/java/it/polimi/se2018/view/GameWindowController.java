@@ -111,7 +111,7 @@ public class GameWindowController implements Serializable {
 
     private List<Dice> draftPoolDice;
     protected GuiView gw;
-    protected boolean draggable = false;
+    protected boolean draggable = true;
     private boolean mouseOver = true;
     private boolean toolInUse = false;
     private List<Label> labels;
@@ -189,9 +189,11 @@ public class GameWindowController implements Serializable {
             imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    gw.toolcardSemaphore = new Semaphore(0);
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
-                    gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length()-1)));
+                    if(toolInUse) {
+                        gw.toolcardSemaphore = new Semaphore(0);
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
+                        gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length() - 1)));
+                    }
                 }
             });
         }
@@ -250,6 +252,11 @@ public class GameWindowController implements Serializable {
                         imageView.setCursor(Cursor.HAND);
                     }
                 }else{
+                    hint.setVisible(false);
+                    hint.setDisable(true);
+                    draftPoolArrow.setDisable(true);
+                    draftPoolArrow.setVisible(false);
+                    passTurn.setText("Pass Turn");
                     onToolcardEnd();
                 }
             }
@@ -259,7 +266,14 @@ public class GameWindowController implements Serializable {
         this.setTargetEvents();
 
 
-        passTurn.setOnMouseClicked((MouseEvent e) -> gw.passTurn());
+        passTurn.setOnMouseClicked((MouseEvent e) -> {
+            gw.passTurn();
+            hint.setVisible(false);
+            hint.setDisable(true);
+            draftPoolArrow.setDisable(true);
+            draftPoolArrow.setVisible(false);
+        });
+
         String path;
 
         if(nOfPlayers == 4)
@@ -456,6 +470,11 @@ public class GameWindowController implements Serializable {
         mouseOver = true;
         toolInUse = false;
         passTurn.setDisable(false);
+        hint.setVisible(false);
+        hint.setDisable(true);
+        draftPoolArrow.setDisable(true);
+        draftPoolArrow.setVisible(false);
+        passTurn.setText("Pass Turn");
     }
 
     private void removeResponse(){
@@ -758,6 +777,8 @@ public class GameWindowController implements Serializable {
     }
 
     private void togglePassTurn(Game game, Player me){
+        passTurn.setText("Pass Turn");
+
         if(game.getActivePlayer().getNickname().equals(me.getNickname())){
             passTurn.setDisable(false);
             useTool.setDisable(false);
