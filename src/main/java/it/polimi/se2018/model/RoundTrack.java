@@ -24,7 +24,7 @@ public class RoundTrack implements Serializable{
      * Round track getter
      * @return roundtrack
      */
-    public List<ArrayList<Dice>> getRoundTrack() {
+    public List<ArrayList<Dice>> getTrack() {
         return roundTrack;
     }
 

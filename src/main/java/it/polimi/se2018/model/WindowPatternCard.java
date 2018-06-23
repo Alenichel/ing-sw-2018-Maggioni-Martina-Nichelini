@@ -12,6 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.awt.*;
 import java.io.*;
 import java.util.Arrays;
 import java.util.List;

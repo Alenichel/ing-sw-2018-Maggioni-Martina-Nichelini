@@ -2,26 +2,19 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.model.*;
-import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
@@ -32,16 +25,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 import java.util.concurrent.Semaphore;
-import java.util.concurrent.TimeUnit;
 
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
-import javafx.stage.Popup;
-import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
@@ -215,7 +203,7 @@ public class GameWindowController implements Serializable {
                     if(p.getBackground() != null) {
                         mouseOverRound.getChildren().clear();
 
-                        ArrayList<Dice> roundDice = gameRoundTrack.getRoundTrack().get(Integer.parseInt(p.getId().substring(p.getId().length()-1)));
+                        ArrayList<Dice> roundDice = gameRoundTrack.getTrack().get(Integer.parseInt(p.getId().substring(p.getId().length()-1)));
                         int n = 0;
                         for(Dice d : roundDice){
                             String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
@@ -734,7 +722,7 @@ public class GameWindowController implements Serializable {
     private void printRoundTrack(RoundTrack rt, int round){
         gameRoundTrack = rt;
         if(round > 1) {
-            Dice d = rt.getRoundTrack().get(round - 2).get(0);
+            Dice d = rt.getTrack().get(round - 2).get(0);
 
             String path = "/dice/" + d.getColor() + "/" + d.getNumber() + ".png";
             BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
