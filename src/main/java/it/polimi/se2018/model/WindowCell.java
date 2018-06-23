@@ -37,7 +37,7 @@ public class WindowCell implements Serializable{
     }
 
     /**
-     * Constructor for cell with number constraint.
+     * Constructor for cell with a number constraint.
      * @param row
      * @param column
      * @param numberConstraint
@@ -50,7 +50,7 @@ public class WindowCell implements Serializable{
     }
 
     /**
-     * Constructor for cell with colo constraint.
+     * Constructor for cell with a color constraint.
      * @param row
      * @param column
      * @param colorConstraint
@@ -63,80 +63,87 @@ public class WindowCell implements Serializable{
     }
 
     /**
-     * Color constraint getter.
-     * @return Color constraints
+     * Color constraint getter
+     * @return color constraint
      */
     public String getColorConstraint() {
         return colorConstraint;
     }
 
     /**
-     * Row index getter.
-     * @return row index.
+     * Row index getter
+     * @return row index
      */
     public int getRow() {
         return row;
     }
 
     /**
-     * Column index getter.
-     * @return column index.
+     * Column index getter
+     * @return column index
      */
     public int getColumn() {
         return column;
     }
 
     /**
-     * Number constraint getter.
-     * @return Number constraint.
+     * Number constraint getter
+     * @return number constraint
      */
     public int getNumberConstraint() {
         return numberConstraint;
     }
 
     /**
-     * Assigned die getter.
-     * @return Assigned die.
+     * Assigned die getter
+     * @return assigned die
      */
     public Dice getAssignedDice() {
         return assignedDice;
     }
 
     /**
-     * Neihbour cells getter.
-     * @return Array List of cells.
+     * Neighbour cells getter
+     * @return list of neighbour cells
      */
     public List<WindowCell> getNeighbourCells() {
         return neighbourCells;
     }
 
+    /**
+     * Diagonal cells getter
+     * @return list of diagonal cells
+     */
     public List<WindowCell> getDiagonalCells() { return diagonalCells; }
-
-
 
     /**
      * Assigned dice setter
      * @param assignedDice
-     * @throws NotEmptyWindowCellException Thrown if the cell is already assigned with another dice.
+     * @throws NotEmptyWindowCellException if the cell is already assigned with another dice
      */
     public void setAssignedDice(Dice assignedDice) throws NotEmptyWindowCellException{
         if (this.assignedDice == null) this.assignedDice = assignedDice;
         else throw new NotEmptyWindowCellException("Not empty");
     }
 
+    /**
+     * This method removes the assigned die from a window cell
+     */
     public void removeDice(){
         this.assignedDice = null;
     }
+
     /**
-     *
-     * @return True if the cell is non assigned with a dice.
+     * Boolean is empty
+     * @return true if the cell is not assigned with a dice
      */
     public boolean isEmpty(){
         return null == assignedDice;
     }
 
     /**
-     * Once the grid is ready, this method assign to the cell the list of neighbour cells to make controls easier.
+     * Once the grid is ready, this method assigns to the cell the list of its neighbour cells to make
+     * controls easier
      * @param grid
      */
     public void setNeighbours(WindowCell[][] grid){
@@ -154,6 +161,11 @@ public class WindowCell implements Serializable{
         }
     }
 
+    /**
+     * Once the grid is ready, this method assigns to the cell the list of its diagonals neighbour cells
+     * to make controls easier
+     * @param grid
+     */
     public void setDiagonals(WindowCell[][] grid) {
         if (!isDiagonal) {
             this.isDiagonal = true;

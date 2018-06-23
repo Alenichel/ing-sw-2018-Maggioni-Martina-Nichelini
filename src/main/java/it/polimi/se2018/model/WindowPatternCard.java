@@ -33,7 +33,7 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * Class constructor
-     * @param name
+     * @param name window pattern card name
      */
     public WindowPatternCard(WindowPatternCardsName name) {
         this.wpname = name;
@@ -63,45 +63,64 @@ public class WindowPatternCard extends Card implements Serializable {
     }
 
     /**
-     *
+     * Cell getter
      * @param row
      * @param column
-     * @return The cell specified in the grid.
+     * @return the specified cell in the grid
      */
     public WindowCell getCell(int row, int column) {
         return grid[row][column];
     }
 
     /**
-     *
+     * Grid getter
      * @return The grid
      */
     public WindowCell[][] getGrid() {
         return this.grid;
     }
 
+    /**
+     * Number of favor tokens getter
+     * @return number of favor tokens of the window pattern card
+     */
     public int getNumberOfFavorTokens() {
         return numberOfFavorTokens;
     }
 
+    /**
+     * Name getter
+     * @return name
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     * Window pattern card name getter
+     * @return window pattern card name
+     */
     public WindowPatternCardsName getWPName() {
         return wpname;
     }
 
+    /**
+     * Player getter
+     * @return player
+     */
     public Player getPlayer() {
         return player;
     }
 
+    /**
+     * Player setter
+     */
     public void setPlayer(Player player) {
         this.player = player;
     }
 
     /**
-     * This method load the user specified pattern card from an xml file.
+     * This method loads the user specified pattern card from an xml file
      * @throws ParserConfigurationException
      * @throws IOException
      * @throws SAXException
@@ -187,21 +206,28 @@ public class WindowPatternCard extends Card implements Serializable {
         }//end method
     }
 
+    /**
+     * Placed dice getter
+     * @return placed dice
+     */
     public int getPlacedDice() {
         return placedDice;
     }
 
-
+    /**
+     * This method allows the player to use a favor token
+     * @throws GameException if the player doesn't have enough tokens
+     */
     public void useToken() throws GameException {
         if (numberOfFavorTokens > 0) numberOfFavorTokens--;
         else throw new GameException("NotEnoughTokens");
     }
 
     /**
-     * This method checks if it's possibile to place the given die in the selected cell looking for near dice.
+     * This method checks if it's possible to place the given die on the selected cell looking for near dice
      * @param windowCell
      * @param dice
-     * @return True if it's a valid position, false otherwise.
+     * @return true if it's a valid position, false otherwise
      */
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
         if (placedDice == 0) return true;
@@ -222,10 +248,10 @@ public class WindowPatternCard extends Card implements Serializable {
     }
 
     /**
-     * This method checks the window cell color and number constraints.
+     * This method checks the window cell color constraint
      * @param windowCell
      * @param dice
-     * @return True if it's a valid position, false otherwise.
+     * @return true if it's a valid position, false otherwise
      */
     private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
         boolean colorConstraint;
@@ -237,6 +263,12 @@ public class WindowPatternCard extends Card implements Serializable {
         return colorConstraint;
     }
 
+    /**
+     * This method checks the window cell number constraint
+     * @param windowCell
+     * @param dice
+     * @return true if it's a valid position, false otherwise
+     */
     private boolean isValidNumberRestriction(WindowCell windowCell, Dice dice){
         boolean numberConstraint;
 
@@ -248,15 +280,15 @@ public class WindowPatternCard extends Card implements Serializable {
     }
 
     /**
-     * Inserte die in cell if position restriction and constraints are met.
-     * @param dice
-     * @param row
-     * @param column
-     * @param checkColorRestriction Set this to false if you want to ignore window cell color constraints.
-     * @param checkNumberRestriction Set this to false if you want to ignore window cell number constraints.
-     * @param checkPositionRestriction Set this to true if you want to ignore position requirements.
-     * @throws NotValidInsertion Thrown if requirements are not met.
-     * @throws NotEmptyWindowCellException Thrown if the given cell is not empty
+     * This method checks for all the restriction and if they are met, inserts a die.
+     * @param dice the die to be inserted
+     * @param row row index
+     * @param column column index
+     * @param checkColorRestriction set this to false if you want to ignore window cell color constraints
+     * @param checkNumberRestriction set this to false if you want to ignore window cell number constraints
+     * @param checkPositionRestriction set this to true if you want to ignore position requirements
+     * @throws NotValidInsertion if requirements are not met
+     * @throws NotEmptyWindowCellException thrown if the given cell is not empty
      */
     public void insertDice(Dice dice, int row, int column , boolean checkColorRestriction, boolean checkNumberRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
         boolean colorRestriction = false;

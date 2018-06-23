@@ -182,7 +182,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Score getter
-     * @ score
+     * @return score
      */
     public int getScore() {
         return score;

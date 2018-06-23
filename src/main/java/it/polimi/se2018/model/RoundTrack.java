@@ -4,9 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class implements the Round track, where all remaining dice at the end of the round are placed
+ */
 public class RoundTrack implements Serializable{
-    private List<ArrayList<Dice>> roundTrack = new ArrayList<>();
+    private List<ArrayList<Dice>> roundTrack = new ArrayList<ArrayList<Dice>>();
 
+    /**
+     * Round track constructor
+     */
     public RoundTrack(){
 
         for(int i = 0; i<=9; i++){
@@ -14,18 +20,35 @@ public class RoundTrack implements Serializable{
         }
     }
 
+    /**
+     * Round track getter
+     * @return roundtrack
+     */
     public List<ArrayList<Dice>> getTrack() {
         return roundTrack;
     }
 
+    /**
+     * Round track setter
+     */
     public void setRoundTrack(List<ArrayList<Dice>> roundTrack) {
         this.roundTrack = roundTrack;
     }
 
+    /**
+     * This method adds a die 'd' to the round track at the end of the round 'round'
+     * @param d the die
+     * @param round the round
+     */
     public void addDice(Dice d, int round){
         roundTrack.get(round).add(d);
     }
 
+    /**
+     * This method adds a list of dice 'd' to the round track at the end of the round 'round'
+     * @param d the list of dice
+     * @param round the round
+     */
     public void addDice(List<Dice> d, int round){
         for(Dice p : d){
             roundTrack.get(round).add(p);
