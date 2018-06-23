@@ -97,6 +97,7 @@ public class CliView extends View implements Observer {
             if (tcc.equals(ToolcardContent.secondWindowCellEnd)) toLog += "(second die)";
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, toLog);
             String input =  sinput.nextLine();
+            if (input.equalsIgnoreCase("null")) return null;
             int xEnd = Integer.parseInt(input.split(" ")[0])-1;
             int yEnd = Integer.parseInt(input.split(" ")[1])-1;
             int[] cooEnd = {xEnd, yEnd};
@@ -115,6 +116,28 @@ public class CliView extends View implements Observer {
             Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "You have taken this die form the bag --->  " + lastGameReceveid.getDieForSwitch().toString());
         }
 
+        else if (tcc.equals(ToolcardContent.RoundTrackDie)) {
+            Boolean success = false;
+            int xEnd = 0;
+            int yEnd = 0;
+
+            while (!success) {
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a die from the roundtrack: %turn %dieIndex");
+                String input = sinput.nextLine();
+                if (input.equalsIgnoreCase("abort")) return "abort";
+                try {
+                    xEnd = Integer.parseInt(input.split(" ")[0]) - 1;
+                    yEnd = Integer.parseInt(input.split(" ")[1]) - 1;
+                } catch (Exception e) {
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Input error, try again. Write Abort to abort.");
+                }
+                success = true;
+            }
+
+            int[] cooEnd = {xEnd, yEnd};
+            return cooEnd;
+        }
+
         return null;
     }
 
@@ -127,7 +150,9 @@ public class CliView extends View implements Observer {
 
         if (content != null) {
             for (ToolcardContent tcc : tc.getContent()) {
-                htc.put(tcc, this.handleUseIO(tcc));
+                Object returned = this.handleUseIO(tcc);
+                if (returned instanceof String && ((String) returned).equalsIgnoreCase("abort")) return;
+                htc.put(tcc, returned );
             }
         }
 

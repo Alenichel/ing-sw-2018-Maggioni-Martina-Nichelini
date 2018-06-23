@@ -181,9 +181,7 @@ public class RoundHandler implements TimerInterface {
             Dice d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
             d.setLocation(mdm.getEndingLocation()); //set the dice final location to the right type
             try {
-                if (this.gameAssociated.getActualRound() == 1 && this.workingPatternCard.getPlacedDice() == 0) this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, false);
-                else
-                    this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
+                this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, true);
                 this.gameAssociated.getDiceOnTable().remove(d);
                 this.movableDice--;
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, "Move received", LoggerPriority.NOTIFICATION);

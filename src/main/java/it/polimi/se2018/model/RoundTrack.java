@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RoundTrack implements Serializable{
-    private List<ArrayList<Dice>> roundTrack = new ArrayList<ArrayList<Dice>>();
+    private List<ArrayList<Dice>> roundTrack = new ArrayList<>();
 
     public RoundTrack(){
 
@@ -14,7 +14,7 @@ public class RoundTrack implements Serializable{
         }
     }
 
-    public List<ArrayList<Dice>> getRoundTrack() {
+    public List<ArrayList<Dice>> getTrack() {
         return roundTrack;
     }
 

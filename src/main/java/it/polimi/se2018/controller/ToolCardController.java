@@ -12,7 +12,6 @@ import it.polimi.se2018.utils.Security;
 import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -100,9 +99,9 @@ public class ToolCardController {
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
         else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
-        else if (name.equals(ToolCardsName.Lathekin))
+        /*else if (name.equals(ToolCardsName.Lathekin))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
-        start.removeDice();
+        start.removeDice();*/
     }
 
     /**
@@ -123,7 +122,7 @@ public class ToolCardController {
         htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellEnd));
         htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
 
-        handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
+        /*handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
         try {
             handleMovingDiceToolcard(ToolCardsName.Lathekin, htc2);
         } catch (ToolCardException | NotEmptyWindowCellException e){
@@ -134,32 +133,25 @@ public class ToolCardController {
             int[] cooStart = (int[]) htc1.get(ToolcardContent.WindowCellStart);
             WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
             windowPatternCard.insertDice(d, start.getRow(), start.getColumn(), false, false, false );
-        }
+        }*/
     }
 
     /**
      * Tool Card #5 "Lens Cutter": After drafted swap the drafted die with a die from the round track.
      */
-    private void handleLensCutter(Map<ToolcardContent, Object> params) throws ToolCardException {
+    private void handleLensCutter(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
+        int[] rtDieCoordinates = (int[]) params.get(ToolcardContent.RoundTrackDie);
+        int rtTurn = rtDieCoordinates[0];
+        int rtDieIndex = rtDieCoordinates[1];
+
+
+        Dice rtDie = this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).get(rtDieIndex);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
-        int rtDieIndex = (int) params.get(ToolcardContent.RoundTrackDie);
-        Dice rtDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
 
-        DiceLocation rtLocation = rtDie.getLocation(); //posizione esatta nel round track
-
-        if (!rtDie.getLocation().equals(DiceLocation.ROUNDTRACK)) {
-            throw new ToolCardException(":LENS_CUTTER: this die can not be chosen");
-        }
-
-        else {rtDie.setLocation(DiceLocation.TABLE);}
-
-
-        if (!draftedDie.getLocation().equals(DiceLocation.TABLE)) {
-            throw new ToolCardException(":LENS_CUTTER: this die can not be chosen");
-        }
-        draftedDie.setLocation(rtLocation);
+        this.gameAssociated.getDiceOnTable().set(draftedDieIndex, rtDie);
+        this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).set(rtDieIndex, draftedDie);
     }
 
     /**
@@ -171,8 +163,11 @@ public class ToolCardController {
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
 
+        if (params.get(ToolcardContent.WindowCellEnd) == null)
+            return;
+
         draftedDie.rollDice();
-        //se non può essere piazzato: draftedDie.setLocation(DiceLocation.TABLE)
+
     }
 
     /**
@@ -353,7 +348,7 @@ public class ToolCardController {
                 }
                 this.onSuccess(observable, tcn);
                 break;
-
+            /*
             case Lathekin:
                 try {
                     handleLathekin(toolCardMessage.getParameters());
@@ -362,7 +357,7 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable, tcn);
-                break;/*
+                break;
 
             case LensCutter:
                 try {
@@ -371,8 +366,8 @@ public class ToolCardController {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
-                break;*/
+                this.onSuccess(observable, tcn);
+                break;
             /*
             case GlazingHammer:
                 try {
@@ -407,7 +402,7 @@ public class ToolCardController {
             case GrindingStone:
                 handleGrindingStone(toolCardMessage.getParameters());
                 this.onSuccess(observable, tcn);
-                break;*/
+                break;
 
             case FluxRemover:
                 try {
@@ -428,6 +423,11 @@ public class ToolCardController {
                 }
                 this.onSuccess(observable);
                 break;*/
+
+            case FluxBrush:
+                this.handleFluxBrush(toolCardMessage.getParameters());
+                this.onSuccess(observable, tcn);
+                break;
 
             default: break;
         }
