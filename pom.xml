@@ -53,7 +53,7 @@
         <configuration>
           <archive>
             <manifest>
-              <mainClass>it.polimi.se2018.AppServer</mainClass>
+              <mainClass>it.polimi.se2018.AppClient</mainClass>
             </manifest>
           </archive>
         </configuration>
