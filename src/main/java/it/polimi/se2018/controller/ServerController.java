@@ -15,11 +15,17 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * This Singleton implements Server controller
+ */
 public class ServerController implements Observer, Serializable{
     private static ServerController instance = null;
     private Server server = Server.getInstance();
     private ArrayList<GameController> gameControllers;
 
+    /**
+     * Server controller singleton constructor
+     */
     public static ServerController getInstance(){
         if(instance == null){
             instance = new ServerController();
@@ -29,8 +35,8 @@ public class ServerController implements Observer, Serializable{
 
     /**
      * This method handles the operation that happens to the server after a game starts.
-     * If there are not any players in the waiting room, it simply set to null the active game.
-     * Otherwise it handles the players moving from the waiting room to the active room.
+     * If there are not any players in the waiting room, it simply sets the active game to null,
+     * otherwise it handles the players moving from the waiting room to the active room.
      */
     protected void resetGame(){
         if (this.server.getWaitingPlayers().isEmpty()) this.server.setCurrentGame(null);
@@ -48,6 +54,10 @@ public class ServerController implements Observer, Serializable{
         }
     }
 
+    /**
+     * This method removes a game from the active games
+     * @param game
+     */
     protected  void removeGame(Game game){
         this.server.getActiveGames().remove(game);
     }
@@ -55,8 +65,6 @@ public class ServerController implements Observer, Serializable{
     /**
      * This method handles the connection routine for class server. It's always called together with the same method of
      * game controller.
-     * @param observable
-     * @param message
      */
     private synchronized void connectPlayer (Observable observable, ConnectionMessage message) {
         Player player = message.getRequester();
@@ -80,7 +88,7 @@ public class ServerController implements Observer, Serializable{
     }
 
     /**
-     * Disconnect player from server
+     * This method disconnects a player from the server
      * @param player
      */
     protected synchronized void disconnectPlayer (Player player) {
@@ -89,6 +97,9 @@ public class ServerController implements Observer, Serializable{
         player.setOnline(false);
     }
 
+    /**
+     * This method handles connection message
+     */
     private synchronized void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
@@ -103,6 +114,9 @@ public class ServerController implements Observer, Serializable{
         }
     }
 
+    /**
+     * This method handles request message
+     */
     private synchronized void handleRequestMessage(Observable observable, RequestMessage rMsg){
 
         if (rMsg.getRequest().equals("ConnectedPlayers")){

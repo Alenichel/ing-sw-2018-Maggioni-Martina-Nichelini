@@ -17,8 +17,8 @@ import java.util.Observable;
 import java.util.Random;
 
 /**
- * This class handles the first phases of the game in which each players is assigned with all cards and all game elements
- * are initialized.
+ * This class handles the first phases of the game in which each player is assigned with all cards and all game elements
+ * are initialized
  */
 public class GameSetupController implements Serializable {
 
@@ -31,7 +31,8 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method initialize all windows pattern cards, before asking player which card he wants to use during this game.
+     * This method initializes all the window pattern cards before asking the player which card he wants to use during
+     * this game
      */
     private void initializePatternCard(){
         for(WindowPatternCardsName w : WindowPatternCardsName.values()){
@@ -40,8 +41,7 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method assign to each player the pool of pattern cards that will be presented to him.
-
+     * This method assigns to each player the pool of pattern cards that will be presented to him.
      */
     private void assignWindowsPatternCardsPool(){
 
@@ -59,7 +59,7 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method initialize three random toolcards.
+     * This method initializes three random tool cards.
      */
     private void initializeToolCards(){
 
@@ -73,8 +73,8 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method initialize all dice that will be used during the game.
-     * According to Sagrada's rules, 15 dice for each color are initialized and they are put on the diceBag.
+     * This method initializes all dice that will be used during the game
+     * According to Sagrada's rules, 15 dice for each color are initialized and they are put in the dice bag
      */
     private void diceInitializer(){
         List<Dice> diceBag = this.associatedGame.getDiceBag();
@@ -88,6 +88,9 @@ public class GameSetupController implements Serializable {
         this.associatedGame.setDieForSwitch();
     }
 
+    /**
+     * This method initializes three random public objective cards
+     */
     private void initializePublicObject(){
         List<PublicObjectiveCard> selectedObject = new ArrayList<>();
 
@@ -97,6 +100,9 @@ public class GameSetupController implements Serializable {
         this.associatedGame.setObjectiveCards(selectedObject);
     }
 
+    /**
+     * This method initializes a private objective card for each player
+     */
     private void initializePrivateObjectiveCards(){
 
         final int[] ints = this.rand.ints(0, DiceColor.values().length).distinct().limit(this.associatedGame.getPlayers().size()).toArray();
@@ -105,6 +111,12 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    /**
+     * This method is called later in handleSelectionMessage
+     * @param cardIndex of the window pattern card
+     * @param p player who chose the pattern card
+     * @throws GameException
+     */
     private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
 
         if (p.getActivePatternCard() == null) {
@@ -122,6 +134,9 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    /**
+     * This method handles selection message
+     */
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
         switch (message.getSelected()){
 
@@ -144,6 +159,9 @@ public class GameSetupController implements Serializable {
         }
     }
 
+    /**
+     * THis method initializes all the elements needed
+     */
     public void initialize(){
         this.diceInitializer();
         this.initializePatternCard();
