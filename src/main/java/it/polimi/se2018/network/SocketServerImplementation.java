@@ -57,6 +57,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         if (this.player != null){
             //once the player is authenticated, I put him in the setupping game.
             this.associatedVirtualView = new VirtualView(this, this.player);
+            this.player.setVv(associatedVirtualView);
             associatedVirtualView.mySetChanged();
             associatedVirtualView.notifyObservers(new ConnectionMessage(this.player, true));
 
@@ -118,8 +119,6 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                     try { oos.writeObject(msg);}
                     catch (ConcurrentModificationException e) {
                         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,  e.toString());
-                        //sleep(100);
-                        //oos.writeObject(msg);
                     }
                     oos.flush();
                     oos.reset();
@@ -154,7 +153,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
             }
             catch (EOFException e){ //endOfFIle
                 isClosing.set(true);
-                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +")has been closed client side");
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +") has been closed client side");
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
                 clientConnected = false;

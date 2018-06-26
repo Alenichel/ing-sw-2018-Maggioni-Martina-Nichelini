@@ -1,6 +1,7 @@
 package it.polimi.se2018.model;
 
 import com.sun.org.apache.xpath.internal.operations.Bool;
+import it.polimi.se2018.view.VirtualView;
 
 import java.io.Serializable;
 import java.util.*;
@@ -10,8 +11,8 @@ import java.util.*;
  */
 public class Player extends Observable implements Serializable{
     private String nickname;
-    private Boolean online;
-    private Boolean inGame;
+    private Boolean online = false;
+    private Boolean inGame = false;
     private Boolean skipNextTurn = false;
     private Game lastGameJoined;
     private int playerNumber;
@@ -19,6 +20,7 @@ public class Player extends Observable implements Serializable{
     private PrivateObjectiveCard privateObjectiveCard;
     private List<WindowPatternCard> windowPatternCardsPool;
     private int score;
+    private transient VirtualView vv;
     private HashMap<String, Integer> scores = new HashMap<>();
 
     /**
@@ -28,6 +30,10 @@ public class Player extends Observable implements Serializable{
     public Player(String nickname) {
         this.nickname = nickname;
         this.inGame = false;
+    }
+
+    public void setVv(VirtualView vv) {
+        this.vv = vv;
     }
 
     /**
@@ -186,6 +192,10 @@ public class Player extends Observable implements Serializable{
      */
     public int getScore() {
         return score;
+    }
+
+    public VirtualView getVv() {
+        return vv;
     }
 
     /**

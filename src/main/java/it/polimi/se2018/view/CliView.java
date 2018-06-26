@@ -171,13 +171,23 @@ public class CliView extends View implements Observer {
 
             if (gameEnd) {
 
-                if (Integer.parseInt(input) == 2){
+                if (Integer.parseInt(input) == 1){
+                    Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Looking for another game..");
+                    ConnectionMessage cm = new ConnectionMessage();
+                    this.setChanged();
+                    this.notifyObservers(cm);
+                    gameEnd = false;
+                    tokens[0] = "skip";
+                }
+
+                else if (Integer.parseInt(input) == 2){
                     Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Goodbye");
                     System.exit(0);
                     continue;
                 }
                 else Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nChoose: \n\t1) Search for another game\n\t2) Quit" );
             }
+
 
             switch (tokens[0]) {
 
@@ -237,11 +247,15 @@ public class CliView extends View implements Observer {
                     this.notifyObservers(new ConnectionMessage(client, false));
                     break loop;
 
+                case "skip":
+                    break;
+
                 default:
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Unrecognized command");
                     break;
             } //end while
         }
+        System.exit(0);
     }
 
     private void requestCallback(GiveMessage callbackMessage){

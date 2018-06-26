@@ -12,10 +12,16 @@ public class ConnectionMessage extends Message{
     private boolean isConnecting;
     private Game target;
 
+    public ConnectionMessage(){
+        this.messageType = "ReConnectionMessage";
+        this.requester = null;
+        this.isConnecting = true;
+    }
+
     /**
      * Constructor for class
-     * @param requester The player is connecting/disconnetting
-     * @param isConnecting True if the player is connecting, False if the player is disconneting.
+     * @param requester The player is connecting/disconnecting.
+     * @param isConnecting True if the player is connecting, False if the player is disconnecting.
      */
     public ConnectionMessage(Player requester, boolean isConnecting){
         this.messageType = "ConnectionMessage";

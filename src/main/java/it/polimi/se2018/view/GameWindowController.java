@@ -118,6 +118,7 @@ public class GameWindowController implements Serializable {
     private boolean soundOn = false;
     private boolean mouseOver = true;
     private boolean toolInUse = false;
+    private boolean setupped = false;
     private List<Label> labels;
     private List<GridPane> gridPanes;
     private List<Pane> draftedDice;
@@ -157,44 +158,7 @@ public class GameWindowController implements Serializable {
         });
     }
 
-    private void setup(int nOfPlayers){
-        ImageView[] objectiveArray = {objective1, objective2, objective3};
-        publicObjectives = new ArrayList<>(Arrays.asList(objectiveArray));
-
-        ImageView[] toolcardsArray = {tool1, tool2, tool3};
-        toolCards = new ArrayList<>(Arrays.asList(toolcardsArray));
-
-        Label[] labelsArray = {name0, name1, name2, name3};
-        labels = new ArrayList<>(Arrays.asList(labelsArray));
-
-        GridPane[] gridPanesArray = {windowPattern0, windowPattern1, windowPattern2, windowPattern3};
-        gridPanes = new ArrayList<>(Arrays.asList(gridPanesArray));
-
-        Pane[] roundTrackArray = {roundTrack0, roundTrack1, roundTrack2, roundTrack3, roundTrack4, roundTrack5, roundTrack6, roundTrack7, roundTrack8, roundTrack9 };
-        roundTrack = new ArrayList<>(Arrays.asList(roundTrackArray));
-
-        Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
-        draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
-
-
-        for(ImageView imageView : publicObjectives){
-            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent event) {
-                    if(mouseOver) {
-                        mouseOverPublicObjective.setVisible(true);
-                        mouseOverPublicObjective.setImage(imageView.getImage());
-                    }
-                }
-            });
-            imageView.setOnMouseExited(new EventHandler<MouseEvent>(){
-                @Override
-                public void handle(MouseEvent event) {
-                    mouseOverPublicObjective.setVisible(false);
-                }
-            });
-        }
-
+    private void setupToolcards(){
         for(ImageView imageView : toolCards){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
@@ -224,8 +188,30 @@ public class GameWindowController implements Serializable {
                 }
             });
         }
+    }
 
-        for(Pane p : roundTrackArray){
+    private void setupPublicObjectiveCards(){
+        for(ImageView imageView : publicObjectives){
+            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    if(mouseOver) {
+                        mouseOverPublicObjective.setVisible(true);
+                        mouseOverPublicObjective.setImage(imageView.getImage());
+                    }
+                }
+            });
+            imageView.setOnMouseExited(new EventHandler<MouseEvent>(){
+                @Override
+                public void handle(MouseEvent event) {
+                    mouseOverPublicObjective.setVisible(false);
+                }
+            });
+        }
+    }
+
+    private void setupRoundTrack(){
+        for(Pane p : roundTrack){
             p.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
@@ -265,8 +251,9 @@ public class GameWindowController implements Serializable {
                 }
             });
         }
+    }
 
-
+    private void setupButtons(){
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -289,11 +276,6 @@ public class GameWindowController implements Serializable {
                 }
             }
         });
-
-        this.setSourceEvents();
-        this.setTargetEvents();
-
-
         passTurn.setOnMouseClicked((MouseEvent e) -> {
             gw.passTurn();
             hint.setVisible(false);
@@ -301,25 +283,19 @@ public class GameWindowController implements Serializable {
             draftPoolArrow.setDisable(true);
             draftPoolArrow.setVisible(false);
         });
-
-        setBackground(nOfPlayers);
-
-        arrowUp.setImage(new Image("green_up_arrow.png"));
-        arrowDown.setImage(new Image("red_down_arrow.png"));
-        draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
     }
 
-    private String getPath(Dice d){
-         return "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
-    }
+    // DRAG & DROP SETUP
+    //------------------------------------------
 
-    private void setBackground(int nOfPlayers){
-        String path = "/backgrounds/"+nOfPlayers+"player.png";
-
-        BackgroundImage myBI= new BackgroundImage(new Image(path,1275,720,false,true),
-                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-        page.setBackground(new Background(myBI));
+    private void setTargetEvents(){
+        for(int x = 0; x<= 4; x++)
+            for(int y = 0; y<=3; y++){
+                Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
+                pane.setId("pane-"+(y+1)+"-"+(x+1));
+                this.setOnDragOver(pane);
+                this.setOnDragDropped(pane);
+            }
     }
 
     private void setSourceEvents(){
@@ -332,7 +308,7 @@ public class GameWindowController implements Serializable {
     private void setOnDragDetection(Pane source){
         source.setOnDragDetected( new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-                if(draggable) {
+                /*if(draggable) {*/
                     Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
 
@@ -342,19 +318,9 @@ public class GameWindowController implements Serializable {
                     source.setBackground(null);
                     db.setContent(content);
                     event.consume();
-                }
+                //}
             }
         });
-    }
-
-    private void setTargetEvents(){
-        for(int x = 0; x<= 4; x++)
-            for(int y = 0; y<=3; y++){
-                Pane pane = (Pane)getNodeByRowColumnIndex(y, x, windowPattern0);
-                pane.setId("pane-"+(y+1)+"-"+(x+1));
-                this.setOnDragOver(pane);
-                this.setOnDragDropped(pane);
-            }
     }
 
     private void setOnDragOver(Pane target){
@@ -381,6 +347,53 @@ public class GameWindowController implements Serializable {
                 new Thread(dragTask).start();
             }
         });
+    }
+
+    //------------------------------------------
+
+    private void setup(int nOfPlayers){
+        ImageView[] objectiveArray = {objective1, objective2, objective3};
+        publicObjectives = new ArrayList<>(Arrays.asList(objectiveArray));
+
+        ImageView[] toolcardsArray = {tool1, tool2, tool3};
+        toolCards = new ArrayList<>(Arrays.asList(toolcardsArray));
+
+        Label[] labelsArray = {name0, name1, name2, name3};
+        labels = new ArrayList<>(Arrays.asList(labelsArray));
+
+        GridPane[] gridPanesArray = {windowPattern0, windowPattern1, windowPattern2, windowPattern3};
+        gridPanes = new ArrayList<>(Arrays.asList(gridPanesArray));
+
+        Pane[] roundTrackArray = {roundTrack0, roundTrack1, roundTrack2, roundTrack3, roundTrack4, roundTrack5, roundTrack6, roundTrack7, roundTrack8, roundTrack9 };
+        roundTrack = new ArrayList<>(Arrays.asList(roundTrackArray));
+
+        Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
+        draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
+
+        //this.musicSetup();
+        this.setupToolcards();
+        this.setupPublicObjectiveCards();
+        this.setupRoundTrack();
+        this.setSourceEvents();
+        this.setTargetEvents();
+        this.setupButtons();
+        setBackground(nOfPlayers);
+        arrowUp.setImage(new Image("green_up_arrow.png"));
+        arrowDown.setImage(new Image("red_down_arrow.png"));
+        draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
+    }
+
+    private String getPath(Dice d){
+         return "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+    }
+
+    private void setBackground(int nOfPlayers){
+        String path = "/backgrounds/"+nOfPlayers+"player.png";
+
+        BackgroundImage myBI= new BackgroundImage(new Image(path,1275,720,false,true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+        page.setBackground(new Background(myBI));
     }
 
     public Semaphore getControllerCallbackSemaphore() {
@@ -537,10 +550,24 @@ public class GameWindowController implements Serializable {
         return result;
     }
 
+
+    //PRINTING SECTION
+    //------------------------------------------
+
+
+    /**
+     * This method is called each turn in order to print all windows.
+     * @param game
+     * @param me
+     * @param gw
+     */
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
         mouseOver = true;
-        if (game.getActualRound() == 1) setup(game.getPlayersOrder().size());
+        if (!this.setupped) {
+            setup(game.getPlayersOrder().size());
+            this.setupped = true;
+        }
         printFavourToken(me);
         printRoundLabel(game);
         printPlayerName(game.getPlayersOrder(), me);
@@ -553,7 +580,7 @@ public class GameWindowController implements Serializable {
         printRoundTrack(game.getRoundTrack(), game.getActualRound());
 
         togglePassTurn(game, me);
-        toggleDraggable(me);
+        toggleDraggable(game.getActivePlayer());
     }
 
     private void printRoundLabel(Game game){
@@ -791,11 +818,17 @@ public class GameWindowController implements Serializable {
         });
     }
 
+    //------------------------------------------
+
 
     private void quit(){
         Platform.exit();
         System.exit(0);
     }
+
+
+    // TOGGLE SECTION
+    //------------------------------------------
 
     private void toggleDraggable(Player currentPlayer){
         String player = windowPattern0.getId().split("-")[0];
@@ -805,9 +838,9 @@ public class GameWindowController implements Serializable {
             System.out.println("draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.OPEN_HAND);
-        }else{
+        } else{
             draggable = false;
-            System.out.println("NO draggable");
+            System.out.println("NOT draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.CLOSED_HAND);
         }
@@ -833,6 +866,9 @@ public class GameWindowController implements Serializable {
             useTool.setDisable(true);
         }
     }
+
+    // GETTER
+    //------------------------------------------
 
     public List<Dice> getDraftPoolDice() {
         return draftPoolDice;

@@ -44,21 +44,26 @@ public class ServerController implements Observer, Serializable{
             this.server.setCurrentGame(new Game());
 
             for (Player p: this.server.getWaitingPlayers()){
-                try {
-                    this.server.getCurrentGame().addPlayer(p);
-                    this.server.removePlayer(this.server.getWaitingPlayers(), p);
-                } catch (GameException e){
-                    if (e.getMessage().equals("GameIsFull")) break;
-                }
+                this.server.removePlayer(this.server.getWaitingPlayers(), p);
+                ConnectionMessage cm = new ConnectionMessage(p, true);
+                this.connectPlayer(p.getVv(), cm);
             }
         }
     }
 
     /**
-     * This method removes a game from the active games
+     * This method removes a game from the active games and handles all the associated operation.
      * @param game
      */
     protected  void removeGame(Game game){
+        for (Player p: game.getPlayers()){
+            p.setInGame(false);
+            p.setLastGameJoined(null);
+            p.getVv().deleteObservers();
+            server.removePlayer(server.getInGamePlayers(), p);
+            server.addObserver(p.getVv());
+            p.getVv().addObserver(ServerController.getInstance());
+        }
         this.server.getActiveGames().remove(game);
     }
 
@@ -67,8 +72,17 @@ public class ServerController implements Observer, Serializable{
      * game controller.
      */
     private synchronized void connectPlayer (Observable observable, ConnectionMessage message) {
-        Player player = message.getRequester();
-        server.addPlayerToOnlinePlayers(player); //add player to the list of online players
+        /*if (message.getMessageType().equals("ReConnectionMessage")) {
+            if (this.server.getCurrentGame() != null)
+                this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
+            else {
+                this.server.addPlayer(server.getWaitingPlayers(), ((VirtualView)observable).getClient());
+                this.resetGame();
+            }
+            return;
+        }*/
+        Player player = ((VirtualView)observable).getClient();
+        if (!server.getOnlinePlayers().contains(player)) server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
 
         if (player.getLastGameJoined() != null) { //case the player was previously connected to a game
@@ -92,8 +106,9 @@ public class ServerController implements Observer, Serializable{
      * @param player
      */
     protected synchronized void disconnectPlayer (Player player) {
+        server.removePlayer(server.getInGamePlayers(), player);
         server.removePlayerFromOnlinePlayers(player);
-        server.addPlayer(server.getOfflinePlayers(), player);
+        player.setVv(null);
         player.setOnline(false);
     }
 
@@ -131,12 +146,15 @@ public class ServerController implements Observer, Serializable{
 
             case "ConnectionMessage":
                handleConnectionMessage(observable, (ConnectionMessage)message);
-            break;
+               break;
 
+            case "ReConnectionMessage":
+                handleConnectionMessage(observable, (ConnectionMessage)message);
+                break;
 
             case "RequestMessage":
                 handleRequestMessage(observable, (RequestMessage)message);
-            break;
+                break;
 
             default:
                 break;

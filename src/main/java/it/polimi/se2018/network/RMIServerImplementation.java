@@ -40,6 +40,7 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         }
 
         VirtualView vv = new VirtualView(this, player);
+	    player.setVv(vv);
         Pair clientView = new Pair<>(client, vv);
         clients.put(client.getInsertedNickname(), clientView);
         vv.mySetChanged();

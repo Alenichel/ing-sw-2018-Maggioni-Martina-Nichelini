@@ -91,7 +91,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private synchronized  void disconnectPlayer(Player player){
         gameAssociated.removePlayer(player);
         player.setInGame(false);
-        this.server.removePlayer(server.getInGamePlayers(), player);
         this.serverController.disconnectPlayer(player);
 
         if (gameAssociated.getPlayers().size() == 1){
@@ -165,6 +164,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         score += pocScore;
         scoreMap.put("Public Objective Score", pocScore);
 
+        score += player.getPrivateObjectiveCard().scorePoint();
+        scoreMap.put("Private Objective Score", pocScore);
+
         int diceScore = (20 - player.getActivePatternCard().getPlacedDice());
         score -= diceScore;
         scoreMap.put("Dice Score", -diceScore);
@@ -198,9 +200,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 }
             }
         }
-
+        if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
         this.gameAssociated.setWinner(topPlayer);
-        TimerHandler.stopTimer(roundHandler.timerID);
         this.serverController.removeGame(this.gameAssociated);
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + this.gameAssociated.getName().toString() + " ended.");
         }
@@ -236,9 +237,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
                 this.gameAssociated.addObserver((Observer)observable); //subscribe the view to the game
-                this.connectPlayer(message.getRequester()); //connect the player
+                this.connectPlayer(((VirtualView)observable).getClient()); //connect the player
                 observable.addObserver(this); //subscribe gameController to the view
                 observable.deleteObserver(ServerController.getInstance()); //unsubscribe ServerController from the view
+                this.server.deleteObserver((Observer)observable); //unsiscribe view from Server.
                 String string = gameAssociated.getName().toString() + " ---> There are " + gameAssociated.getPlayers().size()  + " player connected.";
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage(string,LoggerPriority.NOTIFICATION);
                 ((View)observable).controllerCallback(ccm);
@@ -286,6 +288,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 break;
 
             case "ConnectionMessage":
+                this.handleConnectionMessage(observable, (ConnectionMessage)msg);
+                break;
+
+            case "ReConnectionMessage":
                 this.handleConnectionMessage(observable, (ConnectionMessage)msg);
                 break;
 
