@@ -176,7 +176,6 @@ public class GameWindowController implements Serializable {
         Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
         draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
 
-        //musicSetup();
 
         for(ImageView imageView : publicObjectives){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -236,7 +235,8 @@ public class GameWindowController implements Serializable {
                         ArrayList<Dice> roundDice = gameRoundTrack.getTrack().get(Integer.parseInt(p.getId().substring(p.getId().length()-1)));
                         int n = 0;
                         for(Dice d : roundDice){
-                            String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+
+                            String path = getPath(d);
 
                             BackgroundImage myBI= new BackgroundImage(new Image(path,60,60,false,true),
                                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -253,7 +253,6 @@ public class GameWindowController implements Serializable {
                             n++;
                         }
                     }
-                    ;
                 }
             });
 
@@ -266,6 +265,7 @@ public class GameWindowController implements Serializable {
                 }
             });
         }
+
 
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -302,23 +302,24 @@ public class GameWindowController implements Serializable {
             draftPoolArrow.setVisible(false);
         });
 
-        String path;
+        setBackground(nOfPlayers);
 
-        if(nOfPlayers == 4)
-            path = "/backgrounds/4player.png";
-        else if(nOfPlayers == 3)
-            path = "/backgrounds/3player.png";
-        else
-            path = "/backgrounds/2player.png";
+        arrowUp.setImage(new Image("green_up_arrow.png"));
+        arrowDown.setImage(new Image("red_down_arrow.png"));
+        draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
+    }
+
+    private String getPath(Dice d){
+         return "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+    }
+
+    private void setBackground(int nOfPlayers){
+        String path = "/backgrounds/"+nOfPlayers+"player.png";
 
         BackgroundImage myBI= new BackgroundImage(new Image(path,1275,720,false,true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
         page.setBackground(new Background(myBI));
-
-        arrowUp.setImage(new Image("green_up_arrow.png"));
-        arrowDown.setImage(new Image("red_down_arrow.png"));
-        draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
     }
 
     private void setSourceEvents(){
@@ -335,10 +336,8 @@ public class GameWindowController implements Serializable {
                     Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                     ClipboardContent content = new ClipboardContent();
 
-                    //put as content last number of the ID
                     content.putString(source.getId().substring(source.getId().length()-1));
 
-                    //put as image the background image of the dragged die
                     content.putImage(source.getBackground().getImages().get(0).getImage());
                     source.setBackground(null);
                     db.setContent(content);
@@ -394,6 +393,7 @@ public class GameWindowController implements Serializable {
             hint.setText("SELECT STARTING CELL");
         else if (tc.equals(ToolcardContent.WindowCellEnd))
             hint.setText("SELECT ENDING CELL");
+
         hint.setDisable(false);
         hint.setVisible(true);
 
@@ -484,7 +484,6 @@ public class GameWindowController implements Serializable {
                 toolcardCleanIncreaseEffect();
             }
         });
-
     }
 
     private void toolcardCleanIncreaseEffect(){
@@ -512,18 +511,17 @@ public class GameWindowController implements Serializable {
 
     private String toPath(WindowCell w){
         String str;
-        if(w.getAssignedDice() != null) {
+        if(w.getAssignedDice() != null)
             str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
-        }
-        else if(w.getColorConstraint() != null){
+
+        else if(w.getColorConstraint() != null)
             str = "/constraint/color/"+w.getColorConstraint()+".png";
-        }
-        else if(w.getNumberConstraint() != 0){
+
+        else if(w.getNumberConstraint() != 0)
             str = "/constraint/number/"+w.getNumberConstraint()+".png";
-        }
-        else{
-            str ="BLANK";
-        }
+
+        else str ="BLANK";
+
         return str;
     }
 
@@ -539,9 +537,6 @@ public class GameWindowController implements Serializable {
         return result;
     }
 
-
-    //----
-
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
         mouseOver = true;
@@ -556,12 +551,14 @@ public class GameWindowController implements Serializable {
         printDratfedDice(game.getDiceOnTable());
         printCurrentRound(game.getActivePlayer());
         printRoundTrack(game.getRoundTrack(), game.getActualRound());
+
         togglePassTurn(game, me);
+        toggleDraggable(me);
     }
 
     private void printRoundLabel(Game game){
         roundLabel.setTextFill(Color.WHITE);
-        roundLabel.setText("Round: " + String.valueOf(game.getActualRound()));
+        roundLabel.setText("Round: " + game.getActualRound());
     }
 
     protected void printTimerLeft(int t){
@@ -570,23 +567,19 @@ public class GameWindowController implements Serializable {
         int sec = t%60;
 
         if(min != 0)
-            if(min > 9)
-                clk = clk.concat(Integer.toString(min)+" : ");
-            else
-                clk = clk.concat("0"+ Integer.toString(min)+" : ");
-        else
-            clk = clk.concat("00 : ");
+            if(min > 9) clk = clk.concat(Integer.toString(min)+" : ");
 
-        if(sec>9)
-            clk = clk.concat(Integer.toString(sec));
-        else
-            clk = clk.concat("0" + Integer.toString(sec));
+        else clk = clk.concat("0"+ Integer.toString(min)+" : ");
 
-        if(t < 10)
-            timerLeft.setTextFill(Color.RED);
+            else clk = clk.concat("00 : ");
 
-        else
-            timerLeft.setTextFill(Color.BLACK);
+        if(sec>9) clk = clk.concat(Integer.toString(sec));
+
+        else clk = clk.concat("0" + Integer.toString(sec));
+
+        if(t < 10) timerLeft.setTextFill(Color.RED);
+
+        else timerLeft.setTextFill(Color.BLACK);
 
         timerLeft.setText(clk);
     }
@@ -614,8 +607,6 @@ public class GameWindowController implements Serializable {
                     }
                 }
             }
-            //serve per non riempire le pattern di nessuno
-            //if (nowPlayer.getNickname().equals("#")) return;
         }
     }
 
@@ -624,19 +615,14 @@ public class GameWindowController implements Serializable {
 
         for(GridPane g : gridPanes){
             if(g.getId().split("-")[0].equals(activePlayer.getNickname())){
-                final String cssDefault = "-fx-border-color: red;\n"
-                        + "-fx-border-width: 10;\n";
+                final String cssDefault = "-fx-border-color: red;\n" + "-fx-border-width: 10;\n";
                 g.setStyle(cssDefault);
-
-
             }else{
-                final String cssDefault = "-fx-border-color: black;\n"
-                        + "-fx-border-width: 10;\n";
+                final String cssDefault = "-fx-border-color: black;\n" + "-fx-border-width: 10;\n";
                 g.setStyle(cssDefault);
             }
             n++;
         }
-        toggleDraggable(activePlayer);
     }
 
     private void printDratfedDice(List<Dice> dice){
@@ -646,7 +632,7 @@ public class GameWindowController implements Serializable {
             pane.setBackground(null);
         }
         for(Dice d : dice){
-            String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
+            String path = getPath(d);
             BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
             Pane draftedDie = draftedDice.get(n);
@@ -678,7 +664,7 @@ public class GameWindowController implements Serializable {
     }
 
     private void printFavourToken(Player p){
-        String url =  "dot.png";
+        String url = "dot.png";
         Image image = new Image(url);
         int nToken = p.getActivePatternCard().getNumberOfFavorTokens();
         ArrayList<ImageView> iTokens = new ArrayList<>();
@@ -745,7 +731,6 @@ public class GameWindowController implements Serializable {
     }
 
     protected void printEndGame(Game game, Player client){
-        System.out.println("End controller");
         String text = "";
         winnerPane.setVisible(true);
         winnerPane.setDisable(false);
@@ -774,8 +759,8 @@ public class GameWindowController implements Serializable {
         gameRoundTrack = rt;
         if(round > 1) {
             Dice d = rt.getTrack().get(round - 2).get(0);
+            String path = getPath(d);
 
-            String path = "/dice/" + d.getColor() + "/" + d.getNumber() + ".png";
             BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
 
@@ -824,12 +809,19 @@ public class GameWindowController implements Serializable {
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.CLOSED_HAND);
         }
-
-
     }
 
     private void togglePassTurn(Game game, Player me){
         passTurn.setText("Pass Turn");
+
+        arrowDown.setDisable(true);
+        arrowDown.setVisible(false);
+        arrowUp.setDisable(true);
+        arrowUp.setVisible(false);
+        hint.setDisable(true);
+        hint.setVisible(false);
+
+        onToolcardEnd();
 
         if(game.getActivePlayer().getNickname().equals(me.getNickname())){
             passTurn.setDisable(false);
