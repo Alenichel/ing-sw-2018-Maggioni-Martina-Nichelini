@@ -802,10 +802,12 @@ public class GameWindowController implements Serializable {
 
         if(player.equals(currentPlayer.getNickname())){
             draggable = true;
+            System.out.println("draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.OPEN_HAND);
         }else{
             draggable = false;
+            System.out.println("NO draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.CLOSED_HAND);
         }
