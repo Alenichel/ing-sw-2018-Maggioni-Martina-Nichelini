@@ -100,8 +100,8 @@ public class ToolCardController {
         else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
         /*else if (name.equals(ToolCardsName.Lathekin))
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
-        start.removeDice();*/
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);*/
+        start.removeDice();
     }
 
     /**

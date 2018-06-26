@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -56,6 +58,7 @@ public class GameWindowController implements Serializable {
     @FXML private ImageView tool1;
     @FXML private ImageView tool2;
     @FXML private ImageView tool3;
+    @FXML private ImageView soundIcon;
 
     @FXML private Label timerLeft;
 
@@ -111,7 +114,8 @@ public class GameWindowController implements Serializable {
 
     private List<Dice> draftPoolDice;
     protected GuiView gw;
-    protected boolean draggable = true;
+    protected boolean draggable = false;
+    private boolean soundOn = false;
     private boolean mouseOver = true;
     private boolean toolInUse = false;
     private List<Label> labels;
@@ -129,6 +133,29 @@ public class GameWindowController implements Serializable {
     protected Pane selectedPane;
     protected int column;
     protected int row;
+
+    private void musicSetup(){
+        Media sound = new Media("http://alenichel.eu/sagrada/musichetta.mp3");
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();
+        mediaPlayer.setVolume(0);
+        soundIcon.setOpacity(0.25);
+
+        soundIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                if(soundOn) {
+                    mediaPlayer.setVolume(0);
+                    soundIcon.setOpacity(0.25);
+                    soundOn = false;
+                } else {
+                    mediaPlayer.setVolume(1);
+                    soundIcon.setOpacity(1);
+                    soundOn = true;
+                }
+            }
+        });
+    }
 
     private void setup(int nOfPlayers){
         ImageView[] objectiveArray = {objective1, objective2, objective3};
@@ -149,6 +176,7 @@ public class GameWindowController implements Serializable {
         Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
         draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
 
+        //musicSetup();
 
         for(ImageView imageView : publicObjectives){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -367,6 +395,7 @@ public class GameWindowController implements Serializable {
         else if (tc.equals(ToolcardContent.WindowCellEnd))
             hint.setText("SELECT ENDING CELL");
         hint.setDisable(false);
+        hint.setVisible(true);
 
         for(Node node : gridPanes.get(0).getChildren()){
 
@@ -480,6 +509,38 @@ public class GameWindowController implements Serializable {
     private void removeResponse(){
         responeInsert.setBackground(null);
     }
+
+    private String toPath(WindowCell w){
+        String str;
+        if(w.getAssignedDice() != null) {
+            str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
+        }
+        else if(w.getColorConstraint() != null){
+            str = "/constraint/color/"+w.getColorConstraint()+".png";
+        }
+        else if(w.getNumberConstraint() != 0){
+            str = "/constraint/number/"+w.getNumberConstraint()+".png";
+        }
+        else{
+            str ="BLANK";
+        }
+        return str;
+    }
+
+    private Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
+        Node result = null;
+        ObservableList<Node> childrens = gridPane.getChildren();
+        for (Node node : childrens) {
+            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
+                result = node;
+                break;
+            }
+        }
+        return result;
+    }
+
+
+    //----
 
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.gw = gw;
@@ -709,35 +770,6 @@ public class GameWindowController implements Serializable {
         winnerText.setText(text);
     }
 
-    private String toPath(WindowCell w){
-        String str;
-        if(w.getAssignedDice() != null) {
-            str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
-        }
-        else if(w.getColorConstraint() != null){
-            str = "/constraint/color/"+w.getColorConstraint()+".png";
-        }
-        else if(w.getNumberConstraint() != 0){
-            str = "/constraint/number/"+w.getNumberConstraint()+".png";
-        }
-        else{
-            str ="BLANK";
-        }
-        return str;
-    }
-
-    private Node getNodeByRowColumnIndex (final int row, final int column, GridPane gridPane) {
-        Node result = null;
-        ObservableList<Node> childrens = gridPane.getChildren();
-        for (Node node : childrens) {
-            if(gridPane.getRowIndex(node) == row && gridPane.getColumnIndex(node) == column) {
-                result = node;
-                break;
-            }
-        }
-        return result;
-    }
-
     private void printRoundTrack(RoundTrack rt, int round){
         gameRoundTrack = rt;
         if(round > 1) {
@@ -753,8 +785,28 @@ public class GameWindowController implements Serializable {
         }
     }
 
+    protected void printAck(){
+        Platform.runLater(new Runnable() {
+            @Override public void run() {
+                BackgroundImage tick= new BackgroundImage(new Image("/tick.png",55,55,false,true),
+                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                responeInsert.setBackground(new Background(tick));
+            }
+        });
+    }
 
-    @FXML
+    protected void printNack() {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                BackgroundImage tick = new BackgroundImage(new Image("/x.png", 55, 55, false, true),
+                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+                responeInsert.setBackground(new Background(tick));
+            }
+        });
+    }
+
+
     private void quit(){
         Platform.exit();
         System.exit(0);

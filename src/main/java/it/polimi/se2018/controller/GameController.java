@@ -170,6 +170,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.gameAssociated.setWinner(topPlayer);
         TimerHandler.stopTimer(roundHandler.timerID);
         this.serverController.removeGame(this.gameAssociated);
+        Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + this.gameAssociated.getName().toString() + " ended.");
         }
 
     protected RoundHandler getActiveRoundHandler(){
