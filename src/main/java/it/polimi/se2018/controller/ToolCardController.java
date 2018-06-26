@@ -62,7 +62,7 @@ public class ToolCardController {
     }
 
     /**
-     * This method handles the effects of the followinf described toolcards:
+     * This method handles the effects of the following described tool cards:
      *
      *  - Tool Card #2 "Englomise Brush": Move any one die in your windows ignoring the color restriction.
      *    You must obey all other placement restrictions.
@@ -100,13 +100,13 @@ public class ToolCardController {
         else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
         /*else if (name.equals(ToolCardsName.Lathekin))
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
-        start.removeDice();*/
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);*/
+        start.removeDice();
     }
 
     /**
      * Tool Card #4 "Lathekin": Move exactly two dice, obeying all placement restrictions.
-     * The method which handles this toolcard recall handleMovingDiceToolcard twice and include an error handling resetter.
+     * The method which handles this tool card recall handleMovingDiceToolcard twice and include an error handling resetter.
      */
     private  void handleLathekin(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 

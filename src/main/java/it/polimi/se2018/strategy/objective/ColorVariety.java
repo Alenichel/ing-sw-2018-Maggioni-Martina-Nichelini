@@ -9,7 +9,7 @@ import java.io.Serializable;
 import static java.lang.Integer.min;
 
 /**
- * This class implements Color Varsiety objective card which gives you points every time you have
+ * This class implements Color Variety objective card which gives you points every time you have
  * a complete set of 5 dice of different colors anywhere on your window pattern card
  */
 public class ColorVariety implements ScorePointStrategy, Serializable{

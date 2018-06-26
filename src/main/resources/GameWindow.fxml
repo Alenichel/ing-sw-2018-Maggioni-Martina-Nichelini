@@ -256,7 +256,7 @@
                      <font>
                         <Font size="18.0" />
                      </font></Text>
-                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#quit" text="Quit" />
+                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" text="Quit" />
                   <Button fx:id="winnerAnoterMatch" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" text="Play" />
                </children>
             </Pane>

@@ -58,9 +58,7 @@ public class DragTask extends Task<Void> {
         try {
             controllerCallbackSemaphore.tryAcquire(5, TimeUnit.SECONDS);
             if (controllerCallbackSemaphore.availablePermits() == 0) {
-                BackgroundImage x= new BackgroundImage(new Image("/x.png",55,55,false,true),
-                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                responeInsert.setBackground(new Background(x));
+                gwc.printNack();
                 success = false;
                 timer.setCycleCount(Timeline.INDEFINITE);
                 timer.play();
@@ -87,15 +85,7 @@ public class DragTask extends Task<Void> {
                     }
                 });
                 gwc.draggable = false;
-
-                Platform.runLater(new Runnable() {
-                    @Override public void run() {
-                        BackgroundImage tick= new BackgroundImage(new Image("/tick.png",55,55,false,true),
-                                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                        responeInsert.setBackground(new Background(tick));
-                    }
-                });
-
+                gwc.printAck();
                 success = true;
                 timer.setCycleCount(Timeline.INDEFINITE);
                 timer.play();

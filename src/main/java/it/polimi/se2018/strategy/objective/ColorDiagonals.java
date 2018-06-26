@@ -7,6 +7,10 @@ import it.polimi.se2018.model.WindowPatternCard;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * This class implements Color Diagonals objective card which gives you points every time you have
+ * diagonal dice of the same color.
+ */
 public class ColorDiagonals implements ScorePointStrategy, Serializable{
 
     private boolean compareCellsColor (WindowCell a, WindowCell b) {
