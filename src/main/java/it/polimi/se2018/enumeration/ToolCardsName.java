@@ -4,13 +4,13 @@ public enum ToolCardsName {
     GrozingPliers,
     EnglomiseBrush,
     CopperFoilBurnisher,
-    //Lathekin,
+    Lathekin,
     //LensCutter,
-    FluxBrush,
+    //FluxBrush,
     //GlazingHammer,
     //RunningPliers,
     //CorkBackedStraightedge,
     //GrindingStone,
-    //FluxRemover,
+    FluxRemover,
     //TapWheel
 }
