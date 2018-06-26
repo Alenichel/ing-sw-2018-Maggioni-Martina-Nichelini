@@ -12,6 +12,9 @@ import it.polimi.se2018.message.*;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * This class implements GameController
+ */
 public class GameController implements Observer, Serializable, TimerInterface {
     private List<WindowPatternCard> initializedPatternCards = new ArrayList<>();
 
@@ -26,6 +29,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private long matchMakingTimer;
 
 
+    /**
+     * Game controller constructor
+     * @param game
+     */
     public GameController(Game game){
         this.server = Server.getInstance();
         this.serverController = ServerController.getInstance();
@@ -38,9 +45,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
     }
 
     /**
-     * This method handles connection operation. It's always called together with the method of the same name in ServerController.
-     * With whom, it divides actions and handles operation only on it's associated model class.
-     * @param player The player to add to the game.
+     * This method handles the connection operation. It's always called together with the method of the same name in ServerController.
+     * With whom it divides actions and handles the operation only on it's associated model class.
+     * @param player to be added to the game.
      */
     protected synchronized void connectPlayer(Player player) {
 
@@ -77,6 +84,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    /**
+     * This method handles the disconnection operation
+     * @param player to be removed from the game
+     */
     private synchronized  void disconnectPlayer(Player player){
         gameAssociated.removePlayer(player);
         player.setInGame(false);
@@ -88,6 +99,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    /**
+     * This method selects 4 random window pattern cards for the player to choose
+     */
     private List<WindowPatternCard> getRandomPatternCards (){
         int selectedIndex = 0;
         List<WindowPatternCard> toReturn = new ArrayList<>();
@@ -101,6 +115,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     }
 
+    /**
+     * This method launches the game by setting the player's order, initializing GameSetupController and setting the
+     * associated game to started
+     */
     private void launchGame(){
         try {
             this.gameAssociated.setPlayersOrder(this.gameAssociated.getPlayers());
@@ -112,11 +130,17 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    /**
+     * This method is called in the RoundHandler
+     */
     protected void onNextRound(){
         this.gameAssociated.setActualRound(this.gameAssociated.getActualRound() + 1);
         roundHandler = new RoundHandler(gameAssociated);
     }
 
+    /**
+     * This method is called in GameSetupController
+     */
     protected void onInitializationComplete(){
         gameSetupController = null;
         this.gameAssociated.setInitializationComplete(true);
@@ -124,6 +148,11 @@ public class GameController implements Observer, Serializable, TimerInterface {
         this.roundHandler = new RoundHandler(gameAssociated);
     }
 
+    /**
+     * This method calculates the final score
+     * @param player whose score is being calculated
+     * @return the score
+     */
     protected int calculateScore(Player player){
         int score = 0;
         int pocScore = 0;
@@ -148,6 +177,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         return score;
     }
 
+    /**
+     * This method is called in     GameController and RoundHandler
+     */
     protected void onGameEnd(){
 
         Player topPlayer = null;
@@ -173,10 +205,17 @@ public class GameController implements Observer, Serializable, TimerInterface {
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + this.gameAssociated.getName().toString() + " ended.");
         }
 
+    /**
+     * Round handler getter
+      * @return round handler
+     */
     protected RoundHandler getActiveRoundHandler(){
         return roundHandler;
     }
 
+    /**
+     * This method handles the update message
+     */
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
         WhatToUpdate wtu = message.getWhatToUpdate();
@@ -190,6 +229,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    /**
+     * This method handles the connection message
+     */
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
             if ( message.getTarget() == null  ) {
@@ -210,6 +252,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
     }
 
+    /**
+     * This method handles the selection message
+     */
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
 
         if (message.getSelected().equals("PatternCard") && gameSetupController != null){
@@ -261,7 +306,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
     }
 
     /**
-     * This method is the one called when timer is done. It initializes all the game's related class and set the game to active.
+     * This method is the one called when the timer is done.
+     * It initializes all the game's related classes and sets the game to active
      */
     @Override
     public void timerDoneAction(){

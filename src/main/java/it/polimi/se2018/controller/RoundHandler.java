@@ -14,9 +14,9 @@ import java.util.Observable;
 import java.util.Random;
 
 /**
- * This controller class handles all the operations that happen during a round. It's not included in a complete Observer Pattern
- * but it handles the update at the same way of main GameController class trough Update method.
- * This class implements the Timer Interface since it has to handle turn timer. timerDoneAction method is called when the time ends
+ * This controller class handles all the operations that happen during a round. It's not included in a complete Observer
+ * Pattern but it handles the update at the same way of main GameController class trough Update method.
+ * This class implements the Timer Interface since it has to handle the turn timer.
  */
 public class RoundHandler implements TimerInterface {
 
@@ -33,6 +33,10 @@ public class RoundHandler implements TimerInterface {
     private Player activePlayer;
     private WindowPatternCard workingPatternCard;
 
+    /**
+     * Round handler constructor
+     * @param game
+     */
     public RoundHandler (Game game){
         this.gameAssociated = game;
         this.actualRound = this.gameAssociated.getActualRound();
@@ -61,8 +65,8 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method extract dice from Dice Bag and put them on the table. Ii's called only once for round and it is called
-     * in the constructor.
+     * This method extracts dice from the dice bag and puts them on the table.
+     * It's called in the constructor and only once for round
      */
     private void extractDice(){
         int nOfPlayers = this.gameAssociated.getPlayersOrder().size();
@@ -86,9 +90,9 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method take as input the list of players associated with the game and generate a new list containg the same
-     * players but ordered as indicated in Sagrada's rules.
-     * @return List of swaped players.
+     * This method takes as input the list of players associated with the game and generates a new list containing the
+     * same players but ordered as indicated in Sagrada's rules
+     * @return list of swapped players
      */
     private List<Player> swapPlayerList(){
         List<Player> players = this.gameAssociated.getPlayersOrder();
@@ -102,8 +106,8 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method is called by the constructor and it returns the list of players ordered by turns for this round.
-     * @return List of player
+     * This method is called by the constructor and it returns the list of players ordered by turns for this round
+     * @return list of players
      */
     private List generateTurnList(){
         List<Player> toReturn = swapPlayerList();
@@ -114,7 +118,7 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method handles all the operation that take place when a turn is over.
+     * This method handles all the operations that take place when a turn is over
      */
     private void nextTurn(){
         try {
@@ -152,6 +156,9 @@ public class RoundHandler implements TimerInterface {
         }
     }
 
+    /**
+     * This method handles update message
+     */
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
         WhatToUpdate wtu = message.getWhatToUpdate();
@@ -159,6 +166,9 @@ public class RoundHandler implements TimerInterface {
         if (wtu.equals(WhatToUpdate.Pass)) this.nextTurn();
     }
 
+    /**
+     * This method handles move dice message
+     */
     private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
 
         if (this.movableDice <= 0){
@@ -224,6 +234,9 @@ public class RoundHandler implements TimerInterface {
         }
     }
 
+    /**
+     *  This method is called when the time ends
+     */
     @Override
     public void timerDoneAction(){
         this.nextTurn();
