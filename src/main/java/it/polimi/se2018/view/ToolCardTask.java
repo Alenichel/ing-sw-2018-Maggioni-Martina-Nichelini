@@ -42,6 +42,10 @@ public class ToolCardTask extends Task<Void> {
 
         else if (tc.equals(ToolcardContent.Increase))
             this.gwc.toolcardIncreaseEffect();
+
+        else if (tc.equals(ToolcardContent.Number))
+            this.gwc.toolcardDiceSelection(this.guiView.getClient().getLastGameJoined().getDieForSwitch().getDiceColor());
+
     }
 
     @Override
@@ -54,6 +58,7 @@ public class ToolCardTask extends Task<Void> {
                 htc.put(tc, guiView.client.getNickname());
                 continue;
             }
+            else if (tc.equals(ToolcardContent.BagDie)) continue;
             this.handleGuiSetup(tc);
             if (! toolcardSemaphore.tryAcquire(Server.getInstance().getDefaultMoveTimer(), TimeUnit.SECONDS)) {
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "TIMEOUT DONE: Task stopped");

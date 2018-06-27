@@ -16,6 +16,7 @@ public class Dice implements Serializable {
     private int number;
     private String color;
     private DiceLocation location;
+    private DiceColor diceColor;
     private String unicode = "";
     public Dice(){}
 
@@ -24,6 +25,7 @@ public class Dice implements Serializable {
      * @param color which can be red, yellow, purple, blue or green
      */
     public Dice (DiceColor color){
+        this.diceColor = color;
         this.color = color.name();
         this.location = null;
         this.rollDice();
@@ -46,6 +48,10 @@ public class Dice implements Serializable {
      */
     public String getColor() {
         return this.color;
+    }
+
+    public DiceColor getDiceColor() {
+        return diceColor;
     }
 
     /**

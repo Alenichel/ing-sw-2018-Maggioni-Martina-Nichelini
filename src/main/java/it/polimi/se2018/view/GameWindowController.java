@@ -518,6 +518,20 @@ public class GameWindowController implements Serializable {
         arrowDown.setOnMouseClicked(null);
     }
 
+    protected void toolcardDiceSelection(DiceColor diceColor){
+        for(int i = 1; i <=6; i++){
+            Pane pane = selectDice.get(i-1);
+            String path = "/dice/"+diceColor+"/" + Integer.toString(i)+".png";
+            BackgroundImage myBI= new BackgroundImage(new Image(path,60,60,false,true),
+                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+            pane.setBackground(new Background(myBI));
+
+            pane.setDisable(false);
+            pane.setVisible(true);
+        }
+    }
+
     protected void onToolcardEnd(){
         useTool.setText("Use ToolCard");
         mouseOver = true;
@@ -829,22 +843,6 @@ public class GameWindowController implements Serializable {
                 responeInsert.setBackground(new Background(tick));
             }
         });
-    }
-
-    protected void printSelectionDice(DiceColor diceColor){
-        String path = "/dice/"+diceColor+"/";
-        for(int i = 1; i <=6; i++){
-            Pane pane = selectDice.get(i-1);
-            path = path.concat(Integer.toString(i)+".png");
-
-            BackgroundImage myBI= new BackgroundImage(new Image(path,60,60,false,true),
-                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-            pane.setBackground(new Background(myBI));
-
-            pane.setDisable(false);
-            pane.setVisible(true);
-        }
     }
 
     private void removeSelectionDice(){
