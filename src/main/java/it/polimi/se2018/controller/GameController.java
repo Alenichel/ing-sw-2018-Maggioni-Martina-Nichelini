@@ -90,6 +90,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
      */
     private synchronized  void disconnectPlayer(Player player){
         gameAssociated.removePlayer(player);
+        if (this.gameAssociated.getActivePlayer().equals(player)) this.roundHandler.nextTurn();
         player.setInGame(false);
         this.serverController.disconnectPlayer(player);
 
@@ -120,7 +121,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
      */
     private void launchGame(){
         try {
-            this.gameAssociated.setPlayersOrder(this.gameAssociated.getPlayers());
+            for (Player p : this.gameAssociated.getPlayers() )
+                this.gameAssociated.getPlayersOrder().add(p);
             this.gameSetupController.initialize();
             this.gameAssociated.setStarted(true);
 

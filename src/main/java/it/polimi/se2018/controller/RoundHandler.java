@@ -120,7 +120,7 @@ public class RoundHandler implements TimerInterface {
     /**
      * This method handles all the operations that take place when a turn is over
      */
-    private void nextTurn(){
+    protected void nextTurn(){
         try {
             this.turnNumber++;
             this.gameAssociated.setActualTurn(turnNumber);

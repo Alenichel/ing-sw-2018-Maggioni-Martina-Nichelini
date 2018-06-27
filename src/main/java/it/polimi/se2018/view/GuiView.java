@@ -6,14 +6,17 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -116,14 +119,19 @@ public class GuiView extends View implements Observer {
                 gameWindowController.getControllerCallbackSemaphore().release(2);
             } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveNack)) {
                 gameWindowController.getControllerCallbackSemaphore().release(1);
+
             } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.ToolCardAck)) {
-                gameWindowController.printAck();
+                final Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), (ActionEvent even) -> gameWindowController.removeResponse()));
+                timer.play();
+                gameWindowController.printAck("TOOLCARD ACK");
+
             } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.ToolcardNack)) {
-                gameWindowController.printNack();
+                final Timeline timer = new Timeline(new KeyFrame(Duration.seconds(5), (ActionEvent even) -> gameWindowController.removeResponse()));
+                timer.play();
+                gameWindowController.printNack("NACK: " + msg.getStringMessage());
             }
         }
-
-        }
+    }
 
     protected void selectedPatternCard(int n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");

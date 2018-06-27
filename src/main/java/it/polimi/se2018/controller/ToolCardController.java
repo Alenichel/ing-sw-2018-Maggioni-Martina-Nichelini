@@ -36,8 +36,9 @@ public class ToolCardController {
         return null;
     }
 
-    private void onFailure(VirtualView vv, String errorMessage){
+    private void onFailure(VirtualView vv, String errorMessage, String exceptionMessage){
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , errorMessage, LoggerPriority.NOTIFICATION);
+        ccm.setStringMessage(exceptionMessage);
         ccm.setStringMessage("Toolcard NACK.");
         vv.controllerCallback(ccm);
     }
@@ -324,12 +325,12 @@ public class ToolCardController {
 
         int nOfTokens = 0;
         if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;
-        else nOfTokens = 0;
+        else nOfTokens = 1;
 
         try {
             player.getActivePatternCard().useToken(nOfTokens);
         } catch (GameException e){
-            this.onFailure(observable, e.getMessage());
+            this.onFailure(observable, e.getMessage(), e.toString());
             return;
         }
 
@@ -340,7 +341,7 @@ public class ToolCardController {
                     handleGrozingPliers(toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | GameException e) {
-                    onFailure(observable, e.getMessage());
+                    onFailure(observable, e.getMessage(), e.toString());
                     return;
                 }
                 break;
@@ -350,7 +351,7 @@ public class ToolCardController {
                     handleMovingDiceToolcard(tcn ,toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e) {
-                    onFailure(observable, e.getMessage());
+                    onFailure(observable, e.getMessage(), e.getMessage());
                     return;
                 }
                 break;
@@ -360,7 +361,7 @@ public class ToolCardController {
                     handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
-                    onFailure(observable, e.getMessage());
+                    onFailure(observable, e.getMessage(), e.getMessage());
                     return;
                 }
                 break;
@@ -425,7 +426,7 @@ public class ToolCardController {
                     handleFluxRemover(toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
-                    onFailure(observable, e.getMessage());
+                    onFailure(observable, e.getMessage(), e.getMessage());
                     return;
                 }
                 break;
