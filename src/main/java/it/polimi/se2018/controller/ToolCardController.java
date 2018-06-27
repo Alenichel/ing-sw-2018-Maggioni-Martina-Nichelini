@@ -21,9 +21,19 @@ import java.util.Map;
 public class ToolCardController {
 
     private Game gameAssociated;
+    private ToolCard lastToolCardActivated = null;
 
     protected ToolCardController(Game gameAssociated){
         this.gameAssociated = gameAssociated;
+    }
+
+    private ToolCard retrieveToolCardFromName(ToolCardsName tcn){
+        for (ToolCard tc : gameAssociated.getToolCards())
+            if (tc.getToolCardName().equals(tcn)) {
+                lastToolCardActivated = tc;
+                return tc;
+            }
+        return null;
     }
 
     private void onFailure(VirtualView vv, String errorMessage){
@@ -32,7 +42,9 @@ public class ToolCardController {
         vv.controllerCallback(ccm);
     }
 
-    private void onSuccess(VirtualView vv, ToolCardsName name){
+    private void onSuccess(VirtualView vv, ToolCardsName name) throws GameException {
+        ToolCard toolCard = retrieveToolCardFromName(name);
+        toolCard.setUsed(true);
         Player p = vv.getClient();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
@@ -308,45 +320,49 @@ public class ToolCardController {
     protected void activateToolcard(VirtualView observable, ToolCardMessage toolCardMessage){
 
         Player player = observable.getClient();
+        ToolCardsName tcn = toolCardMessage.getToolCardName();
+
+        int nOfTokens = 0;
+        if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;
+        else nOfTokens = 0;
 
         try {
-            player.getActivePatternCard().useToken();
+            player.getActivePatternCard().useToken(nOfTokens);
         } catch (GameException e){
             this.onFailure(observable, e.getMessage());
             return;
         }
 
-        ToolCardsName tcn = toolCardMessage.getToolCardName();
         switch (tcn) {
 
             case GrozingPliers:
                 try {
                     handleGrozingPliers(toolCardMessage.getParameters());
-                } catch (ToolCardException e) {
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | GameException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
 
             case EnglomiseBrush:
                 try {
                     handleMovingDiceToolcard(tcn ,toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e) {
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
 
             case CopperFoilBurnisher:
                 try {
                     handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
             /*
             case Lathekin:

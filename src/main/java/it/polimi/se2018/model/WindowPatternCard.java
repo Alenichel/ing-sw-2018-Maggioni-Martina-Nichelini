@@ -215,10 +215,11 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method allows the player to use a favor token
+     * @param n Number of tokens to use
      * @throws GameException if the player doesn't have enough tokens
      */
-    public void useToken() throws GameException {
-        if (numberOfFavorTokens > 0) numberOfFavorTokens--;
+    public void useToken(int n) throws GameException {
+        if (numberOfFavorTokens >=  0 + n) numberOfFavorTokens -= n;
         else throw new GameException("NotEnoughTokens");
     }
 
