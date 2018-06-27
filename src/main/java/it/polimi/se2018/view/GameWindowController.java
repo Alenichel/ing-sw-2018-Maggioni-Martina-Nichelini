@@ -380,7 +380,7 @@ public class GameWindowController implements Serializable {
         draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
 
         Pane[] selectDiceArray = {selectDice1, selectDice2, selectDice3, selectDice4, selectDice5, selectDice6};
-        draftedDice = new ArrayList<>(Arrays.asList(selectDiceArray));
+        selectDice = new ArrayList<>(Arrays.asList(selectDiceArray));
 
 
 
@@ -848,7 +848,7 @@ public class GameWindowController implements Serializable {
     }
 
     private void removeSelectionDice(){
-        for(Pane p : draftedDice){
+        for(Pane p : selectDice){
             p.setVisible(false);
             p.setDisable(true);
         }
