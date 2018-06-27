@@ -422,12 +422,12 @@ public class ToolCardController {
                     return;
                 }
                 this.onSuccess(observable);
-                break;*/
+                break;
 
             case FluxBrush:
                 this.handleFluxBrush(toolCardMessage.getParameters());
                 this.onSuccess(observable, tcn);
-                break;
+                break;*/
 
             default: break;
         }
