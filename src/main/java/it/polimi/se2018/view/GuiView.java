@@ -6,6 +6,7 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXMLLoader;
@@ -115,9 +116,14 @@ public class GuiView extends View implements Observer {
                 gameWindowController.getControllerCallbackSemaphore().release(2);
             } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.MoveNack)) {
                 gameWindowController.getControllerCallbackSemaphore().release(1);
+            } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.ToolCardAck)) {
+                gameWindowController.printAck();
+            } else if (((ControllerCallbackMessage) msg).getCallbackMessageSubject() != null && ((ControllerCallbackMessage) msg).getCallbackMessageSubject().equals(CallbackMessageSubject.ToolcardNack)) {
+                gameWindowController.printNack();
             }
         }
-    }
+
+        }
 
     protected void selectedPatternCard(int n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");

@@ -529,6 +529,15 @@ public class GameWindowController implements Serializable {
 
             pane.setDisable(false);
             pane.setVisible(true);
+
+            pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    gw.toolCardDragBoard = Integer.parseInt(pane.getId().substring(pane.getId().length()-1));
+                    gw.toolcardSemaphore.release();
+                }
+            });
+
         }
     }
 
@@ -870,12 +879,10 @@ public class GameWindowController implements Serializable {
 
         if(player.equals(currentPlayer.getNickname())){
             draggable = true;
-            System.out.println("draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.OPEN_HAND);
         } else{
             draggable = false;
-            System.out.println("NOT draggable");
             for(Pane pane : draftedDice)
                 pane.setCursor(Cursor.CLOSED_HAND);
         }
@@ -883,7 +890,6 @@ public class GameWindowController implements Serializable {
 
     private void togglePassTurn(Game game, Player me){
         passTurn.setText("Pass Turn");
-
         arrowDown.setDisable(true);
         arrowDown.setVisible(false);
         arrowUp.setDisable(true);

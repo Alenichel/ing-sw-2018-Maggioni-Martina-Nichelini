@@ -419,17 +419,17 @@ public class ToolCardController {
                 handleGrindingStone(toolCardMessage.getParameters());
                 this.onSuccess(observable, tcn);
                 break;
-
+*/
             case FluxRemover:
                 try {
                     handleFluxRemover(toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
-                break;/*
-
+                break;
+/*
             case TapWheel:
                 try {
                     handleTapWheel(toolCardMessage.getParameters());
