@@ -1,5 +1,6 @@
 package it.polimi.se2018.view;
 
+import it.polimi.se2018.enumeration.DiceColor;
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
@@ -111,6 +112,13 @@ public class GameWindowController implements Serializable {
     @FXML private Pane mouseOverRound;
     @FXML private GridPane gridPaneMouseOver;
 
+    @FXML private Pane selectDice1;
+    @FXML private Pane selectDice2;
+    @FXML private Pane selectDice3;
+    @FXML private Pane selectDice4;
+    @FXML private Pane selectDice5;
+    @FXML private Pane selectDice6;
+
 
     private List<Dice> draftPoolDice;
     protected GuiView gw;
@@ -123,6 +131,7 @@ public class GameWindowController implements Serializable {
     private List<GridPane> gridPanes;
     private List<Pane> draftedDice;
     private List<Pane> roundTrack;
+    private List<Pane> selectDice;
     private List<ImageView> toolCards;
     private List<ImageView> publicObjectives;
     private final GameWindowController thisController = this;
@@ -370,6 +379,11 @@ public class GameWindowController implements Serializable {
         Pane[] draftedDiceArray = {drafted1, drafted2, drafted3, drafted4, drafted5, drafted6, drafted7, drafted8, drafted9};
         draftedDice = new ArrayList<>(Arrays.asList(draftedDiceArray));
 
+        Pane[] selectDiceArray = {selectDice1, selectDice2, selectDice3, selectDice4, selectDice5, selectDice6};
+        draftedDice = new ArrayList<>(Arrays.asList(selectDiceArray));
+
+
+
         //this.musicSetup();
         this.setupToolcards();
         this.setupPublicObjectiveCards();
@@ -514,6 +528,7 @@ public class GameWindowController implements Serializable {
         draftPoolArrow.setDisable(true);
         draftPoolArrow.setVisible(false);
         passTurn.setText("Pass Turn");
+        removeSelectionDice();
     }
 
     private void removeResponse(){
@@ -816,6 +831,30 @@ public class GameWindowController implements Serializable {
         });
     }
 
+    protected void printSelectionDice(DiceColor diceColor){
+        String path = "/dice/"+diceColor+"/";
+        for(int i = 1; i <=6; i++){
+            Pane pane = selectDice.get(i-1);
+            path = path.concat(Integer.toString(i)+".png");
+
+            BackgroundImage myBI= new BackgroundImage(new Image(path,60,60,false,true),
+                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+            pane.setBackground(new Background(myBI));
+
+            pane.setDisable(false);
+            pane.setVisible(true);
+        }
+    }
+
+    private void removeSelectionDice(){
+        for(Pane p : draftedDice){
+            p.setVisible(false);
+            p.setDisable(true);
+        }
+    }
+
+
     //------------------------------------------
 
 
@@ -853,6 +892,7 @@ public class GameWindowController implements Serializable {
         arrowUp.setVisible(false);
         hint.setDisable(true);
         hint.setVisible(false);
+
 
         onToolcardEnd();
 
