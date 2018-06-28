@@ -32,15 +32,8 @@ public class Security {
         return new Player(name);
     }
 
-    /**
-     * This method look for user configuration file and check if username and password (if required) are right. In that case
-     * it returns the instance of the authenticated player. Otherwise it returns null.
-     * @param name
-     * @param password
-     * @return
-     * @throws AuthenticationErrorException
-     */
-    public static Player authenticateUser(String name, String password) throws AuthenticationErrorException {
+
+    private static Player authenticateFromDb(String name, String password) throws AuthenticationErrorException {
         String DB_PATH = "/sagrada_users_db.txt";
         InputStream dbResource = Security.class.getResourceAsStream(DB_PATH);
 
@@ -51,12 +44,8 @@ public class Security {
                 String[] userInfo = nextLine.split(":");
                 if (userInfo[0].equals(name)) {
                     try {
-                        if (Server.getInstance().isConfigurationRequired()) {
-                            if (userInfo[1].equals(password)) {
-                                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "user " + name + " has been authenticated");
-                                return generateUser(name);
-                            }
-                        } else {
+                        if (userInfo[1].equals(password)) {
+                            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "user " + name + " has been authenticated");
                             return generateUser(name);
                         }
                     } catch (AuthenticationErrorException e) {
@@ -65,9 +54,25 @@ public class Security {
                 }
             }
             throw new AuthenticationErrorException("UserNotFound");
-        } catch (IOException e){
+
+
+        } catch (IOException e) {
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
             return null;
         }
+    }
+
+    /**
+     * This method look for user configuration file and check if username and password (if required) are right. In that case
+     * it returns the instance of the authenticated player. Otherwise it returns null.
+     * @param name
+     * @param password
+     * @return
+     * @throws AuthenticationErrorException
+     */
+    public static Player authenticateUser(String name, String password) throws AuthenticationErrorException {
+
+        if (Server.getInstance().isConfigurationRequired()) return authenticateFromDb(name, password);
+        else return generateUser(name);
     }
 }

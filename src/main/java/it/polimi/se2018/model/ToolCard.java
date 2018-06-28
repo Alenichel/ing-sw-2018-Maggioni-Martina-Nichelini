@@ -52,7 +52,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.Lathekin.toString());
             this.setToolCardName(ToolCardsName.Lathekin);
             this.setDescription("Move exactly two dice, obeying all placement restrictions.");
-        }/*
+        }
         else if(ToolCardsName.LensCutter.equals(tcn)){
             content = new ToolcardContent[] {   ToolcardContent.RoundTrackDie, ToolcardContent.DraftedDie   };
 
@@ -91,7 +91,7 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.GrindingStone.toString());
             this.setToolCardName(ToolCardsName.GrindingStone);
             this.setDescription("After drafting flip the die to its opposite side.");
-        }*/
+        }
         else if(ToolCardsName.FluxRemover.equals(tcn)){
             content = new ToolcardContent[]{   ToolcardContent.RunBy,  ToolcardContent.DraftedDie, ToolcardContent.BagDie , ToolcardContent.Number,  ToolcardContent.WindowCellEnd  };
 

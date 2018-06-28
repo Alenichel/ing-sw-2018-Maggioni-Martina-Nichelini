@@ -164,6 +164,25 @@ public class ObjectivesTest {
     }
 
     @Test
+    public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
+
+        Dice d1 = new Dice(DiceColor.purple);
+        Dice d2 = new Dice(DiceColor.yellow);
+
+        wpc.insertDice(d1, 0, 0, false,false,false);
+        wpc.insertDice(d1, 1, 1, false,false,false);
+        wpc.insertDice(d1, 0, 2, false,false,false);
+        wpc.insertDice(d1, 1, 3, false,false,false);
+
+        wpc.insertDice(d2, 3, 0, false,false,false);
+        wpc.insertDice(d2, 2, 1, false,false,false);
+
+        ScorePointStrategy sps = new ColorDiagonals();
+        Assert.assertEquals(6, sps.scorePoint(wpc));
+    }
+
+    @Test
     public void testEmptyGrid(){
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);

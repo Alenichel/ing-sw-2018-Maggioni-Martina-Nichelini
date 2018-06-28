@@ -36,9 +36,9 @@ public class ToolCardController {
         return null;
     }
 
-    private void onFailure(VirtualView vv, String errorMessage, String exceptionMessage){
+    private void onFailure(VirtualView vv, String errorMessage){
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , errorMessage, LoggerPriority.NOTIFICATION);
-        ccm.setStringMessage(exceptionMessage);
+        ccm.setStringMessage(errorMessage);
         ccm.setStringMessage("Toolcard NACK.");
         vv.controllerCallback(ccm);
     }
@@ -94,11 +94,11 @@ public class ToolCardController {
         if (!end.isEmpty())
             throw new ToolCardException("NotEmptyWindowCell");
 
-        /*if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
+        if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
             Dice draftedDie = this.gameAssociated.getDiceOnTable().get((int)params.get(ToolcardContent.DraftedDie));
             windowPatternCard.insertDice(draftedDie, end.getRow(), end.getColumn(), true, true, false);
             return;
-        }*/
+        }
 
 
         int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
@@ -112,8 +112,8 @@ public class ToolCardController {
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
         else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
-        /*else if (name.equals(ToolCardsName.Lathekin))
-            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);*/
+        else if (name.equals(ToolCardsName.Lathekin))
+            windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
         start.removeDice();
     }
 
@@ -236,16 +236,6 @@ public class ToolCardController {
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
         WindowCell wc = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
 
-        /*if(!draftedDie.getLocation().equals(DiceLocation.TABLE)) {
-            throw new ToolCardException("IneligibleDie");
-        }*/
-
-
-
-        /*if(!bagDie.getLocation().equals(DiceLocation.BAG)){
-            throw new ToolCardException("IneligibleDie");
-        }*/
-
         draftedDie.setLocation(DiceLocation.BAG);
         windowPatternCard.insertDice(bagDie, wc.getRow(), wc.getColumn(), true, true, true);
 
@@ -330,7 +320,7 @@ public class ToolCardController {
         try {
             player.getActivePatternCard().useToken(nOfTokens);
         } catch (GameException e){
-            this.onFailure(observable, e.getMessage(), e.toString());
+            this.onFailure(observable, e.getMessage());
             return;
         }
 
@@ -341,7 +331,7 @@ public class ToolCardController {
                     handleGrozingPliers(toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | GameException e) {
-                    onFailure(observable, e.getMessage(), e.toString());
+                    onFailure(observable, e.getMessage());
                     return;
                 }
                 break;
@@ -351,7 +341,7 @@ public class ToolCardController {
                     handleMovingDiceToolcard(tcn ,toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e) {
-                    onFailure(observable, e.getMessage(), e.getMessage());
+                    onFailure(observable, e.getMessage());
                     return;
                 }
                 break;
@@ -361,11 +351,11 @@ public class ToolCardController {
                     handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
-                    onFailure(observable, e.getMessage(), e.getMessage());
+                    onFailure(observable, e.getMessage());
                     return;
                 }
                 break;
-            /*
+
             case Lathekin:
                 try {
                     handleLathekin(toolCardMessage.getParameters());
@@ -373,78 +363,91 @@ public class ToolCardController {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
+
                 break;
 
             case LensCutter:
                 try {
                     handleLensCutter(toolCardMessage.getParameters());
-                } catch (ToolCardException e) {
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
-            /*
+
             case GlazingHammer:
                 try {
+                    this.onSuccess(observable, tcn);
                     handleGlazingHammer(toolCardMessage.getParameters());
-                } catch (ToolCardException e) {
+                } catch (ToolCardException | GameException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
 
             case RunningPliers:
                 try {
                     handleRunningPliers(toolCardMessage.getParameters());
-                } catch (ToolCardException e){
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | GameException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
                 break;
 
             case CorkBackedStraightedge:
                 try {
                     handleMovingDiceToolcard(tcn,toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable, tcn);
-                break;/*
+                break;
 
             case GrindingStone:
-                handleGrindingStone(toolCardMessage.getParameters());
-                this.onSuccess(observable, tcn);
+                try {
+                    handleGrindingStone(toolCardMessage.getParameters());
+                    this.onSuccess(observable, tcn);
+                } catch (GameException e){
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
                 break;
-*/
+
             case FluxRemover:
                 try {
                     handleFluxRemover(toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
-                    onFailure(observable, e.getMessage(), e.getMessage());
-                    return;
-                }
-                break;
-/*
-            case TapWheel:
-                try {
-                    handleTapWheel(toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
-                this.onSuccess(observable);
+                break;
+
+            case TapWheel:
+                try {
+                    handleTapWheel(toolCardMessage.getParameters());
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+
                 break;
 
             case FluxBrush:
-                this.handleFluxBrush(toolCardMessage.getParameters());
-                this.onSuccess(observable, tcn);
-                break;*/
+                try {
+                    this.handleFluxBrush(toolCardMessage.getParameters());
+                    this.onSuccess(observable, tcn);
+                } catch (GameException e) {
+                    onFailure(observable, e.getMessage());
+                    return;
+                }
+
+
+                break;
 
             default: break;
         }

@@ -196,10 +196,5 @@ public class WindowCell implements Serializable{
                 Objects.equals(diagonalCells, that.diagonalCells);
     }
 
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(row, column, colorConstraint, numberConstraint, assignedDice, neighbourCells, neighbourhoodAssigned, diagonalCells, isDiagonal);
-    }
 }
 
