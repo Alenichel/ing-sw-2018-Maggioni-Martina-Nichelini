@@ -164,7 +164,9 @@ public class GuiView extends View implements Observer {
             this.toolCardTask.cancel(true);
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Old task marked as CANCELLED.");
         }
-
+        if(selectedToolCard.getToolCardName().equals(ToolCardsName.LensCutter)){
+            gameWindowController.lensCutterInUse = true;
+        }
         this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
         new Thread(toolCardTask).start();
     }

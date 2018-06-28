@@ -126,6 +126,7 @@ public class GameWindowController implements Serializable {
     private boolean mouseOver = true;
     private boolean toolInUse = false;
     private boolean setupped = false;
+    protected boolean lensCutterInUse = false;
     private List<Label> labels;
     private List<GridPane> gridPanes;
     private List<Pane> draftedDice;
@@ -219,14 +220,15 @@ public class GameWindowController implements Serializable {
     }
 
     private void setupRoundTrack(){
+        int round = 1;
         for(Pane p : roundTrack){
             p.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
                     if(p.getBackground() != null) {
                         mouseOverRound.getChildren().clear();
-
-                        ArrayList<Dice> roundDice = gameRoundTrack.getTrack().get(Integer.parseInt(p.getId().substring(p.getId().length()-1)));
+                        int round = Integer.parseInt(p.getId().substring(p.getId().length()-1));
+                        ArrayList<Dice> roundDice = gameRoundTrack.getTrack().get(round);
                         int n = 0;
                         for(Dice d : roundDice){
 
@@ -240,11 +242,13 @@ public class GameWindowController implements Serializable {
                             p.setPrefWidth(60);
                             p.setPrefHeight(60);
                             p.setLayoutX(n*60);
-                            mouseOverRound.getChildren().add(n, p);
+                            p.setId("RoundDie-"+n);
 
+                            mouseOverRound.getChildren().add(n, p);
                             mouseOverRound.setVisible(true);
                             mouseOverRound.setDisable(false);
                             n++;
+                            handleClickOnRoundDice(round);
                         }
                     }
                 }
@@ -253,13 +257,28 @@ public class GameWindowController implements Serializable {
             p.setOnMouseExited(new EventHandler<MouseEvent>() {
                 @Override
                 public void handle(MouseEvent event) {
-                    if(!toolInUse){
+                    if(!lensCutterInUse)
                         mouseOverRound.setVisible(false);
-                    }
+                }
+            });
+        }
+        round++;
+    }
+
+    private void handleClickOnRoundDice(int round){
+        for(Node p : mouseOverRound.getChildren()){
+            p.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    int nDie = Integer.parseInt(p.getId().split("-")[1]);
+                    int[] die = {round, nDie};
+                    gw.toolCardDragBoard = die;
+                    gw.toolcardSemaphore.release();
                 }
             });
         }
     }
+
 
     private void setupButtons(){
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -540,6 +559,14 @@ public class GameWindowController implements Serializable {
         }
     }
 
+    protected void toolcardRoundTrackDie(){
+        hint.setVisible(true);
+        hint.setDisable(false);
+        hint.setText("Select a die in the roundtrack");
+
+    }
+
+
     protected void onToolcardEnd(){
         useTool.setText("Use ToolCard");
         mouseOver = true;
@@ -551,6 +578,8 @@ public class GameWindowController implements Serializable {
         draftPoolArrow.setVisible(false);
         passTurn.setText("Pass Turn");
         removeSelectionDice();
+        mouseOverRound.setVisible(false);
+        lensCutterInUse = false;
     }
 
     private void removeSelectionDice(){
@@ -916,7 +945,7 @@ public class GameWindowController implements Serializable {
         arrowUp.setVisible(false);
         hint.setDisable(true);
         hint.setVisible(false);
-
+        lensCutterInUse = false;
 
         onToolcardEnd();
 

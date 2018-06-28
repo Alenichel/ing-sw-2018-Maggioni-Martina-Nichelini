@@ -46,6 +46,9 @@ public class ToolCardTask extends Task<Void> {
         else if (tc.equals(ToolcardContent.Number))
             this.gwc.toolcardDiceSelection(this.guiView.getClient().getLastGameJoined().getDieForSwitch().getDiceColor());
 
+        else if (tc.equals(ToolcardContent.RoundTrackDie))
+            this.gwc.toolcardRoundTrackDie();
+
     }
 
     @Override

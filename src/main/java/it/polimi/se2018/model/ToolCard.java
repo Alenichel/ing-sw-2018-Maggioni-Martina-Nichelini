@@ -54,7 +54,7 @@ public class ToolCard extends Card implements Serializable {
             this.setDescription("Move exactly two dice, obeying all placement restrictions.");
         }
         else if(ToolCardsName.LensCutter.equals(tcn)){
-            content = new ToolcardContent[] {   ToolcardContent.RoundTrackDie, ToolcardContent.DraftedDie   };
+            content = new ToolcardContent[] {    ToolcardContent.DraftedDie, ToolcardContent.RoundTrackDie   };
 
             this.setName(ToolCardsName.LensCutter.toString());
             this.setToolCardName(ToolCardsName.LensCutter);
@@ -98,13 +98,13 @@ public class ToolCard extends Card implements Serializable {
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
             this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag.");
-        }/*
+        }
         else if(ToolCardsName.TapWheel.equals(tcn)){
             content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart    };
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");
-        }*/
+        }
     }
 
     /**
