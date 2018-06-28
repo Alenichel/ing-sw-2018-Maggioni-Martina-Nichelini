@@ -615,6 +615,7 @@ public class GameWindowController implements Serializable {
         printCurrentRound(game.getActivePlayer());
         togglePassTurn(game, me);
         toggleDraggable(game.getActivePlayer());
+        printRoundTrack(game.getRoundTrack(), game.getActualRound());
         this.setSourceEvents();
         this.setTargetEvents();
     }
