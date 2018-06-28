@@ -335,7 +335,7 @@ public class GameWindowController implements Serializable {
     private void setOnDragDetection(Pane source){
         source.setOnDragDetected( new EventHandler<MouseEvent>() {
             public void handle(MouseEvent event) {
-                /*if(draggable) {*/
+                if(draggable) {
                 Dragboard db = source.startDragAndDrop(TransferMode.MOVE);
                 ClipboardContent content = new ClipboardContent();
 
@@ -345,7 +345,7 @@ public class GameWindowController implements Serializable {
                 source.setBackground(null);
                 db.setContent(content);
                 event.consume();
-                //}
+                }
             }
         });
     }
