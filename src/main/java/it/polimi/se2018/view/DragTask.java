@@ -35,7 +35,7 @@ public class DragTask extends Task<Void> {
     public DragTask(GameWindowController gwc, Pane target,  DragEvent event, Timeline timer, int die){
         this.gwc = gwc;
         this.target = target;
-        this.responeInsert = gwc.responeInsert;
+        this.responeInsert = gwc.responseInsert;
         this.event = event;
         this.gw = gwc.gw;
         this.controllerCallbackSemaphore = gwc.controllerCallbackSemaphore;
@@ -58,7 +58,7 @@ public class DragTask extends Task<Void> {
         try {
             controllerCallbackSemaphore.tryAcquire(5, TimeUnit.SECONDS);
             if (controllerCallbackSemaphore.availablePermits() == 0) {
-                gwc.printNack();
+                gwc.printNack("INCORRECT INSERTION");
                 success = false;
                 timer.setCycleCount(Timeline.INDEFINITE);
                 timer.play();
@@ -85,7 +85,7 @@ public class DragTask extends Task<Void> {
                     }
                 });
                 gwc.draggable = false;
-                gwc.printAck();
+                gwc.printAck("CORRECT INSERTION");
                 success = true;
                 timer.setCycleCount(Timeline.INDEFINITE);
                 timer.play();

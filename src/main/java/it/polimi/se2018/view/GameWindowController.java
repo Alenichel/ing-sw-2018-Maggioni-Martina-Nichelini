@@ -59,7 +59,6 @@ public class GameWindowController implements Serializable {
     @FXML private ImageView tool1;
     @FXML private ImageView tool2;
     @FXML private ImageView tool3;
-    @FXML private ImageView soundIcon;
 
     @FXML private Label timerLeft;
 
@@ -87,7 +86,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
 
-    @FXML protected Pane responeInsert;
+    @FXML protected Pane responseInsert;
 
     @FXML private Pane winnerPane;
     @FXML private ImageView winnerImage;
@@ -149,9 +148,9 @@ public class GameWindowController implements Serializable {
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
         mediaPlayer.play();
         mediaPlayer.setVolume(0);
-        soundIcon.setOpacity(0.25);
+        //soundIcon.setOpacity(0.25);
 
-        soundIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        /*soundIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
                 if(soundOn) {
@@ -164,7 +163,7 @@ public class GameWindowController implements Serializable {
                     soundOn = true;
                 }
             }
-        });
+        });*/
     }
 
     private void setupToolcards(){
@@ -554,9 +553,13 @@ public class GameWindowController implements Serializable {
         removeSelectionDice();
     }
 
-    private void removeResponse(){
-        responeInsert.setBackground(null);
+    private void removeSelectionDice(){
+        for(Pane p : selectDice){
+            p.setVisible(false);
+            p.setDisable(true);
+        }
     }
+
 
     private String toPath(WindowCell w){
         String str;
@@ -730,16 +733,23 @@ public class GameWindowController implements Serializable {
     private void printFavourToken(Player p){
         String url = "dot.png";
         Image image = new Image(url);
+
+        ImageView[] tokensArray = { dot1, dot2, dot3, dot4, dot5, dot6 };
+        List<ImageView> tokens = new ArrayList<>(Arrays.asList(tokensArray));
         int nToken = p.getActivePatternCard().getNumberOfFavorTokens();
-        ArrayList<ImageView> iTokens = new ArrayList<>();
-        iTokens.add(dot1);
-        iTokens.add(dot2);
-        iTokens.add(dot3);
-        iTokens.add(dot4);
-        iTokens.add(dot5);
-        iTokens.add(dot6);
-        for(int i = 1; i <= nToken; i++){
-            iTokens.get(i-1).setImage(image);
+
+        for(int i = 1; i <= 6; i++){
+            ImageView token = tokens.get(i - 1);
+            if (i <= nToken) {
+                token.setImage(image);
+                token.setVisible(true);
+                token.setDisable(false);
+            }
+
+            else {
+                token.setVisible(false);
+                token.setDisable(true);
+            }
         }
 
     }
@@ -834,32 +844,41 @@ public class GameWindowController implements Serializable {
         }
     }
 
-    protected void printAck(){
+    protected void printAck(String message){
         Platform.runLater(new Runnable() {
             @Override public void run() {
+                if (message != null) {
+                    hint.setText(message);
+                    hint.setDisable(false);
+                    hint.setVisible(true);
+                }
                 BackgroundImage tick= new BackgroundImage(new Image("/tick.png",55,55,false,true),
                         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                responeInsert.setBackground(new Background(tick));
+                responseInsert.setBackground(new Background(tick));
             }
         });
     }
 
-    protected void printNack() {
+    protected void printNack(String message) {
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
+                if (message != null) {
+                    hint.setText(message);
+                    hint.setDisable(false);
+                    hint.setVisible(true);
+                }
                 BackgroundImage tick = new BackgroundImage(new Image("/x.png", 55, 55, false, true),
                         BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-                responeInsert.setBackground(new Background(tick));
+                responseInsert.setBackground(new Background(tick));
             }
         });
     }
 
-    private void removeSelectionDice(){
-        for(Pane p : selectDice){
-            p.setVisible(false);
-            p.setDisable(true);
-        }
+    protected void removeResponse(){
+        responseInsert.setBackground(null);
+        hint.setDisable(true);
+        hint.setVisible(false);
     }
 
 

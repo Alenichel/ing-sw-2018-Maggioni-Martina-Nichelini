@@ -59,7 +59,7 @@ public class ToolCardTask extends Task<Void> {
                 continue;
             }
             else if (tc.equals(ToolcardContent.BagDie)) continue;
-            this.handleGuiSetup(tc);
+             this.handleGuiSetup(tc);
             if (! toolcardSemaphore.tryAcquire(Server.getInstance().getDefaultMoveTimer(), TimeUnit.SECONDS)) {
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "TIMEOUT DONE: Task stopped");
                 return null;

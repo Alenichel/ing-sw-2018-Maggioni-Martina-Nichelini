@@ -248,7 +248,7 @@ public class CliView extends View implements Observer {
     private void printTable(Game game){
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
-        for(Player p : game.getPlayers()) wpcs.add(p.getActivePatternCard());
+        for(Player p : game.getPlayersOrder()) wpcs.add(p.getActivePatternCard());
         String playerName = this.activePlayer.getNickname();
         System.out.println("\n");
         System.out.print("\n");
