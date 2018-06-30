@@ -17,6 +17,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.*;
@@ -118,6 +119,7 @@ public class GameWindowController implements Serializable {
     @FXML private Pane selectDice5;
     @FXML private Pane selectDice6;
 
+    @FXML private ImageView bag;
 
     private List<Dice> draftPoolDice;
     protected GuiView gw;
@@ -193,6 +195,7 @@ public class GameWindowController implements Serializable {
                         gw.toolcardSemaphore = new Semaphore(0);
                         Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Semaphor initialized");
                         gw.useTool(Integer.parseInt(imageView.getId().substring(imageView.getId().length() - 1)));
+                        imageView.setEffect(new DropShadow(20, Color.BLACK));
                     }
                 }
             });
@@ -342,7 +345,7 @@ public class GameWindowController implements Serializable {
                 content.putString(source.getId().substring(source.getId().length()-1));
 
                 content.putImage(source.getBackground().getImages().get(0).getImage());
-                source.setBackground(null);
+                //source.setBackground(null);
                 db.setContent(content);
                 event.consume();
                 }
@@ -370,6 +373,11 @@ public class GameWindowController implements Serializable {
                 controllerCallbackSemaphore = new Semaphore(2);
                 controllerCallbackSemaphore.acquireUninterruptibly(2);
                 int die = Integer.parseInt(event.getDragboard().getString());
+                for(Pane pane : draftedDice){
+                    if(Integer.parseInt(pane.getId().substring(pane.getId().length()-1)) == die){
+                        pane.setBackground(null);
+                    }
+                }
                 DragTask dragTask = new DragTask(thisController, target, event, timer, die);
                 new Thread(dragTask).start();
             }
@@ -411,6 +419,7 @@ public class GameWindowController implements Serializable {
         arrowUp.setImage(new Image("green_up_arrow.png"));
         arrowDown.setImage(new Image("red_down_arrow.png"));
         draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
+        bag.setImage(new Image("dice-bag.png"));
     }
 
     private String getPath(Dice d){
@@ -580,6 +589,8 @@ public class GameWindowController implements Serializable {
         removeSelectionDice();
         mouseOverRound.setVisible(false);
         lensCutterInUse = false;
+        for(ImageView imageView : toolCards)
+            imageView.setEffect(null);
     }
 
     private void removeSelectionDice(){
