@@ -45,6 +45,9 @@ public class ToolCardController {
 
     private void onSuccess(VirtualView vv, ToolCardsName name) throws GameException {
         ToolCard toolCard = retrieveToolCardFromName(name);
+        Player player = vv.getClient();
+        player.getActivePatternCard().useToken( (toolCard.isUsed()) ? 2 : 1 );
+
         toolCard.setUsed(true);
         Player p = vv.getClient();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
@@ -135,7 +138,7 @@ public class ToolCardController {
         htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellEnd));
         htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
 
-        /*handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
+        handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
         try {
             handleMovingDiceToolcard(ToolCardsName.Lathekin, htc2);
         } catch (ToolCardException | NotEmptyWindowCellException e){
@@ -146,7 +149,7 @@ public class ToolCardController {
             int[] cooStart = (int[]) htc1.get(ToolcardContent.WindowCellStart);
             WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
             windowPatternCard.insertDice(d, start.getRow(), start.getColumn(), false, false, false );
-        }*/
+        }
     }
 
     /**
@@ -317,11 +320,8 @@ public class ToolCardController {
         if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;
         else nOfTokens = 1;
 
-        try {
-            player.getActivePatternCard().useToken(nOfTokens);
-        } catch (GameException e){
-            this.onFailure(observable, e.getMessage());
-            return;
+        if (player.getActivePatternCard().getNumberOfFavorTokens() < nOfTokens) {
+            this.onFailure(observable, "NotEnoughTokens");
         }
 
         switch (tcn) {

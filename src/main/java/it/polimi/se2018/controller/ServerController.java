@@ -56,9 +56,12 @@ public class ServerController implements Observer, Serializable{
      * @param game
      */
     protected  void removeGame(Game game){
+
+        for (Player p: game.getPlayersOrder())
+            p.setLastGameJoined(null);
+
         for (Player p: game.getPlayers()){
             p.setInGame(false);
-            p.setLastGameJoined(null);
             p.getVv().deleteObservers();
             server.removePlayer(server.getInGamePlayers(), p);
             server.addObserver(p.getVv());

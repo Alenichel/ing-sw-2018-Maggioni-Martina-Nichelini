@@ -19,6 +19,16 @@ public class CliView extends View implements Observer {
     private ArrayList<ToolCard> toolCards;
     private boolean gameEnd = false;
 
+    private void handleHelpCommand(){
+        String help = "\n******* Help Command *******\n" +
+                "- Select %i: select the pattern card with the %i index.\n" +
+                "- Take %dieIndex %destinationX %destinationY: take the die with dieIndex and place it to the cell with the given coordinates.\n" +
+                "- Use %toolcardIndex: activate the toolcard with the selected index.\n" +
+                "- Pass: pass turn.\n" +
+                "- Quit: exit game and kill client." ;
+        Logger.log(LoggerType.CLIENT_SIDE, NORMAL, help);
+    }
+
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
         this.setChanged();
@@ -217,13 +227,16 @@ public class CliView extends View implements Observer {
                     }
                     break;
 
-                case "quit":
-                    this.setChanged();
-                    this.notifyObservers(new ConnectionMessage(client, false));
-                    break loop;
+                case "help":
+                    this.handleHelpCommand();
+                    break;
 
                 case "skip":
                     break;
+
+                case "quit":
+                    this.setChanged();
+                    break loop;
 
                 default:
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Unrecognized command");
@@ -248,23 +261,30 @@ public class CliView extends View implements Observer {
     private void printTable(Game game){
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
-        for(Player p : game.getPlayersOrder()) wpcs.add(p.getActivePatternCard());
+        for(Player p : game.getPlayersOrder()) {
+            WindowPatternCard toAdd = p.getActivePatternCard();
+            if ( toAdd != null) wpcs.add(p.getActivePatternCard());
+        }
         String playerName = this.activePlayer.getNickname();
         System.out.println("\n");
         System.out.print("\n");
         System.out.println("***********************************************************************************");
         System.out.println("---------> OBJECTIVE <---------");
         for (ObjectiveCard oc : game.getObjectiveCards())
-            System.out.println(oc);
+            System.out.println(oc + "\n");
 
         System.out.println("\n***********************************************************************************");
         System.out.println("---------> TOOLCARDS <---------");
-        for (ToolCard tc : game.getToolCards())
+        int n = 1;
+        for (ToolCard tc : game.getToolCards()) {
+            System.out.print(n + ") ");
             System.out.println(tc);
+            n++;
+        }
         System.out.println("***********************************************************************************");
 
         System.out.println(rT.toString());
-        ConsoleUtils.multiplePrint((ArrayList)wpcs, client);
+        if (wpcs != null && wpcs.size() != 0) ConsoleUtils.multiplePrint((ArrayList)wpcs, client);
 
         int i = 1;
         for (Dice d : game.getDiceOnTable()) {

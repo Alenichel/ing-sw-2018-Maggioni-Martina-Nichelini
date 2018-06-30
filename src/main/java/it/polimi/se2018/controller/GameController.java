@@ -189,10 +189,19 @@ public class GameController implements Observer, Serializable, TimerInterface {
         Player topPlayer = null;
         int topScore = -100;
 
+        //clean player from game setup references.
+        for (Player p : gameAssociated.getPlayersOrder()) {
+            p.setActivePatternCard(null);
+           // p.assignObjectiveCard(null);
+        }
+
+        // case when game ends with only a connected player.
         if (gameAssociated.getPlayers().size() == 1){
             topPlayer = gameAssociated.getPlayers().get(0);
         }
 
+
+        // otherwise calculate score
         else {
             for (Player p : this.gameAssociated.getPlayers()) {
                 int playerScore = calculateScore(p);
@@ -202,6 +211,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 }
             }
         }
+
         if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
         this.gameAssociated.setWinner(topPlayer);
         this.serverController.removeGame(this.gameAssociated);

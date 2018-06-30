@@ -3,6 +3,7 @@ package it.polimi.se2018.network;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
+import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
@@ -152,6 +153,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 socket.close();
             }
             catch (EOFException e){ //endOfFIle
+                Server server = Server.getInstance();
                 isClosing.set(true);
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +") has been closed client side");
                 associatedVirtualView.mySetChanged();
@@ -160,6 +162,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 return;
             }
             catch (SocketException e){
+                Server server = Server.getInstance();
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "VVNB_LISTENER: " + e.toString());
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
