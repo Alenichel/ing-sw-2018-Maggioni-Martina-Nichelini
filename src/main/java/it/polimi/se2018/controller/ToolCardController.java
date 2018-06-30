@@ -113,7 +113,7 @@ public class ToolCardController {
         Dice d1 = start.getAssignedDice();
         if (name.equals(ToolCardsName.CopperFoilBurnisher))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
-        else if(name.equals(ToolCardsName.EnglomiseBrush))
+        else if(name.equals(ToolCardsName.EnglomiseBrush) || name.equals(ToolCardsName.TapWheel))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
         else if (name.equals(ToolCardsName.Lathekin))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
@@ -124,23 +124,46 @@ public class ToolCardController {
      * Tool Card #4 "Lathekin": Move exactly two dice, obeying all placement restrictions.
      * The method which handles this tool card recall handleMovingDiceToolcard twice and include an error handling resetter.
      */
-    private  void handleLathekin(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
+    private  void handleDoubleMovingDiceToolcard(ToolCardsName name, Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException {
 
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
 
         Map<ToolcardContent, Object> htc1= new HashMap<>();
-        Map<ToolcardContent, Object> htc2= new HashMap<>();
-
         htc1.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
-        htc2.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
         htc1.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.firstWindowCellStart));
         htc1.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.firstWindowCellEnd));
-        htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellEnd));
-        htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
+        int[] firstDieCoordinate = (int[]) htc1.get(ToolcardContent.WindowCellStart);
+        DiceColor firstDieColor = (windowPatternCard.getCell(firstDieCoordinate[0], firstDieCoordinate[1])).getAssignedDice().getDiceColor();
 
-        handleMovingDiceToolcard(ToolCardsName.Lathekin, htc1);
+        Map<ToolcardContent, Object> htc2 = null;
+        DiceColor secondDieColor = null;
+        //define a second hashmap toolcard content only if you are dealing with Lathekin or with TapWheel with double movement.
+        if ( (name.equals(ToolCardsName.Lathekin)) || ( name.equals(ToolCardsName.TapWheel) && (int)params.get(ToolcardContent.Amount) == 2) ) {
+            htc2 = new HashMap<>();
+            htc2.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
+            htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellStart));
+            htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
+            int[] secondDieCoordinate = (int[]) htc2.get(ToolcardContent.WindowCellStart);
+            secondDieColor = (windowPatternCard.getCell(secondDieCoordinate[0], secondDieCoordinate[1])).getAssignedDice().getDiceColor();
+        }
+
+        RoundTrack rt = this.gameAssociated.getRoundTrack();
+
+        //handle TapWheel condition. The moved dice has to have the same color of a die from the roundtrak.
+        if ( name.equals(ToolCardsName.TapWheel) &&
+                (!(rt.getColorSet().contains(firstDieColor))  ||
+                        !(secondDieColor != null && rt.getColorSet().contains(secondDieColor)))){
+            throw new ToolCardException("Roundtrack does not contain a die with the same color");
+        }
+
+
+        handleMovingDiceToolcard(name, htc1);
+
+
         try {
-            handleMovingDiceToolcard(ToolCardsName.Lathekin, htc2);
+            if (htc2 != null) handleMovingDiceToolcard(name, htc2);
+
+            // in case an exception is raised during the placement of the second die, the starting situation has to be restored.
         } catch (ToolCardException | NotEmptyWindowCellException e){
             int[] cooEnd = (int[]) htc1.get(ToolcardContent.WindowCellEnd);
             WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
@@ -251,66 +274,6 @@ public class ToolCardController {
         this.gameAssociated.getDiceOnTable().remove(draftedDie);
     }
 
-    /**
-     * Tool Card #12 "Tap Wheel": Move up to two dice of the same color that match the color of a die in the round track.
-     * You must obey all the placement restriction.
-     */
-    private void handleTapWheel(Map<ToolcardContent, Object> params) throws ToolCardException, NotEmptyWindowCellException{
-
-        int number = (int) params.get(ToolcardContent.Number);
-        WindowPatternCard wpc = (WindowPatternCard) params.get(ToolcardContent.WindowPattern);
-        int[] cooStart = (int[]) params.get(ToolcardContent.WindowCellStart);
-        int[] cooStart2 = (int[]) params.get(ToolcardContent.WindowCellStart);
-        int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        int[] cooEnd2 = (int[]) params.get(ToolcardContent.WindowCellEnd);
-        WindowCell start1 = wpc.getCell(cooStart[0], cooStart[1]);
-        WindowCell start2 = wpc.getCell(cooStart[0], cooStart[1]);
-        WindowCell end1 = wpc.getCell(cooEnd[0], cooEnd[1]);
-        WindowCell end2 = wpc.getCell(cooEnd[0], cooEnd[1]);
-
-        if (number != 1 || number != 2)
-            throw new ToolCardException(":TAP_WHEEL: you can move up to 2 dice");
-
-        if(start1.isEmpty() || start2.isEmpty())
-            throw new ToolCardException(":TAP_WHEEL: this window cell is empty");
-
-        if(!end1.isEmpty() || !end2.isEmpty())
-            throw new ToolCardException(":TAP_WHEEL: this window cell is not empty");
-
-        Dice d1 = start1.getAssignedDice();
-        Dice d2 = start2.getAssignedDice();
-
-        //controllare che d1 sia dello stesso colore di un dado del RoundTrack
-
-        if (number == 1) {
-            try {
-                start1.removeDice();
-                wpc.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, true);
-            }catch (ToolCardException | NotEmptyWindowCellException e) {
-                throw e;
-            }
-
-            start1.removeDice();
-        }
-
-        //controllare che d1 e d2 siano dello stesso colore di un dado del RoundTrack
-
-        if (number == 2) {
-            try {
-                start1.removeDice();
-                start2.removeDice();
-                wpc.insertDice(d1, end1.getRow(), end1.getColumn(), true, true, false);
-                wpc.insertDice(d2, end2.getRow(), end2.getColumn(), true, true, false);
-            }catch (ToolCardException | NotEmptyWindowCellException e) {
-                throw e;
-            }
-
-            start1.removeDice();
-            start2.removeDice();
-        }
-
-    }
-
     protected void activateToolcard(VirtualView observable, ToolCardMessage toolCardMessage){
 
         Player player = observable.getClient();
@@ -358,8 +321,9 @@ public class ToolCardController {
 
             case Lathekin:
                 try {
-                    handleLathekin(toolCardMessage.getParameters());
-                } catch (ToolCardException | NotEmptyWindowCellException e){
+                    handleDoubleMovingDiceToolcard(ToolCardsName.Lathekin,toolCardMessage.getParameters());
+                    this.onSuccess(observable, tcn);
+                } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
                     onFailure(observable, e.getMessage());
                     return;
                 }
@@ -428,7 +392,7 @@ public class ToolCardController {
 
             case TapWheel:
                 try {
-                    handleTapWheel(toolCardMessage.getParameters());
+                    handleDoubleMovingDiceToolcard( ToolCardsName.TapWheel ,toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
                 } catch (ToolCardException | NotEmptyWindowCellException | GameException e){
                     onFailure(observable, e.getMessage());

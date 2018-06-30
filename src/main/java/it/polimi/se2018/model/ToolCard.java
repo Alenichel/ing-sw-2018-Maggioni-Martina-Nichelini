@@ -100,7 +100,7 @@ public class ToolCard extends Card implements Serializable {
             this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag.");
         }
         else if(ToolCardsName.TapWheel.equals(tcn)){
-            content = new ToolcardContent[]{    ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart, ToolcardContent.WindowCellStart    };
+            content = new ToolcardContent[]{  ToolcardContent.RunBy, ToolcardContent.Amount, ToolcardContent.firstWindowCellStart, ToolcardContent.firstWindowCellEnd, ToolcardContent.secondWindowCellStart, ToolcardContent.secondWindowCellEnd};
             this.setName(ToolCardsName.TapWheel.toString());
             this.setToolCardName(ToolCardsName.TapWheel);
             this.setDescription("Move up to two dice of the same color that match the color of a die in the round track. You must obey all the placement restriction.");

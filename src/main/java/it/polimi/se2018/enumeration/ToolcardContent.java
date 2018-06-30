@@ -13,5 +13,6 @@ public enum ToolcardContent {
     secondWindowCellEnd,
     WindowCellStart,
     WindowCellEnd,
-    WindowPattern
+    WindowPattern,
+    Amount,
 }

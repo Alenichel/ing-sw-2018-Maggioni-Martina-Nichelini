@@ -73,7 +73,7 @@ public class CliView extends View implements Observer {
         this.notifyObservers(mdm);
     }
 
-    private Object handleUseIO(ToolcardContent tcc){
+    private Object handleUseIO(ToolcardContent tcc, boolean amountDependentToolcard, int iteration){
         if (tcc.equals(ToolcardContent.RunBy)) return this.client.getNickname();
 
         else if (tcc.equals(ToolcardContent.DraftedDie)) {
@@ -88,7 +88,8 @@ public class CliView extends View implements Observer {
 
         else if (tcc.equals(ToolcardContent.WindowCellStart) ||
                 tcc.equals(ToolcardContent.firstWindowCellStart) ||
-                tcc.equals(ToolcardContent.secondWindowCellStart)) {
+                (tcc.equals(ToolcardContent.secondWindowCellStart) && !amountDependentToolcard ) ||
+                (tcc.equals(ToolcardContent.secondWindowCellStart) && iteration == 2 )) {
             String toLog = "Please select start window cell %x %y ";
             if (tcc.equals(ToolcardContent.firstWindowCellStart)) toLog += "(first die)";
             if (tcc.equals(ToolcardContent.secondWindowCellStart)) toLog += "(second die)";
@@ -101,7 +102,8 @@ public class CliView extends View implements Observer {
         }
         else if (tcc.equals(ToolcardContent.WindowCellEnd) ||
                 tcc.equals(ToolcardContent.firstWindowCellEnd) ||
-                tcc.equals(ToolcardContent.secondWindowCellEnd)) {
+                (tcc.equals(ToolcardContent.secondWindowCellEnd) && !amountDependentToolcard) ||
+                (tcc.equals(ToolcardContent.secondWindowCellEnd) && iteration == 2 )) {
             String toLog = "Please select end window cell %x %y ";
             if (tcc.equals(ToolcardContent.firstWindowCellEnd)) toLog += "(first die)";
             if (tcc.equals(ToolcardContent.secondWindowCellEnd)) toLog += "(second die)";
@@ -125,19 +127,34 @@ public class CliView extends View implements Observer {
             Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "You have taken this die form the bag --->  " + lastGameReceveid.getDieForSwitch().toString());
         }
 
+        else if(tcc.equals(ToolcardContent.Amount)){
+            int amount = 0;
+            while ( amount != 1 && amount != 2) {
+                Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Please, insert the number of dice to move (1 or 2): ");
+                amount = Integer.parseInt(sinput.nextLine());
+            }
+            return amount;
+        }
+
         return null;
     }
 
     private void handleUseCommands(int n){
         ToolCard tc = toolCards.get(n-1);
         ToolCardsName tcn = tc.getToolCardName();
+        boolean amountDepedentToolcard = false;
+        int iteration = 0;
 
         Map<ToolcardContent, Object> htc= new HashMap<>();
         ToolcardContent content[] = tc.getContent();
 
         if (content != null) {
             for (ToolcardContent tcc : tc.getContent()) {
-                htc.put(tcc, this.handleUseIO(tcc));
+                htc.put(tcc, this.handleUseIO(tcc, amountDepedentToolcard, iteration));
+                if (tcc.equals(ToolcardContent.Amount) ) {
+                    amountDepedentToolcard = true;
+                    iteration =  (int) htc.get(ToolcardContent.Amount);
+                }
             }
         }
 

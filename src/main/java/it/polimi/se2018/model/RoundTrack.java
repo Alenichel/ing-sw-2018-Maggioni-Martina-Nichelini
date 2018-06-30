@@ -1,14 +1,19 @@
 package it.polimi.se2018.model;
 
+import it.polimi.se2018.enumeration.DiceColor;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This class implements the Round track, where all remaining dice at the end of the round are placed
  */
 public class RoundTrack implements Serializable{
     private List<ArrayList<Dice>> roundTrack = new ArrayList<ArrayList<Dice>>();
+    private Set<DiceColor> colorSet = new HashSet<>();
 
     /**
      * Round track constructor
@@ -52,7 +57,12 @@ public class RoundTrack implements Serializable{
     public void addDice(List<Dice> d, int round){
         for(Dice p : d){
             roundTrack.get(round).add(p);
+            colorSet.add(p.getDiceColor());
         }
+    }
+
+    public Set<DiceColor> getColorSet() {
+        return colorSet;
     }
 
     @Override
