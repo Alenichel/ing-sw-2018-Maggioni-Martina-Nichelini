@@ -31,10 +31,10 @@ public class ToolCardTask extends Task<Void> {
     }
 
     private void handleGuiSetup (ToolcardContent tc) {
-        if (tc.equals(ToolcardContent.WindowCellStart))
+        if (tc.equals(ToolcardContent.WindowCellStart) || tc.equals(ToolcardContent.firstWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellStart))
             this.gwc.toolcardWindowEffect(ToolcardContent.WindowCellStart);
 
-        else if (tc.equals(ToolcardContent.WindowCellEnd))
+        else if (tc.equals(ToolcardContent.WindowCellEnd) || tc.equals(ToolcardContent.firstWindowCellEnd) || tc.equals(ToolcardContent.secondWindowCellEnd))
             this.gwc.toolcardWindowEffect(ToolcardContent.WindowCellEnd);
 
         else if (tc.equals(ToolcardContent.DraftedDie))
@@ -49,6 +49,9 @@ public class ToolCardTask extends Task<Void> {
         else if (tc.equals(ToolcardContent.RoundTrackDie))
             this.gwc.toolcardRoundTrackDie();
 
+        else if(tc.equals(ToolcardContent.Amount)){
+            this.gwc.toolCardAmount();
+        }
     }
 
     @Override

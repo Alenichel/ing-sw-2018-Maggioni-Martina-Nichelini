@@ -27,7 +27,7 @@ public class GuiView extends View implements Observer {
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
     protected transient GameWindowController gameWindowController;
 
-    protected transient Stage primaryStage;
+    private transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
     private transient Scene sceneGame;
@@ -35,7 +35,7 @@ public class GuiView extends View implements Observer {
     private ArrayList<ToolCard> toolCards;
 
 
-    protected transient Task<Void> toolCardTask;
+    private transient Task<Void> toolCardTask;
     protected transient Semaphore toolcardSemaphore;
     protected transient Object toolCardDragBoard;
 
@@ -48,7 +48,7 @@ public class GuiView extends View implements Observer {
         printWaintingArea();
     }
 
-    public void setupWaintingArea(){
+    private void setupWaintingArea(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
         try {
             Parent root = loader.load();
@@ -62,7 +62,7 @@ public class GuiView extends View implements Observer {
         }
     }
 
-    public void setupGameWindow(){
+    private void setupGameWindow(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameWindow.fxml"));
         try {
             Parent root = loader.load();
@@ -76,7 +76,7 @@ public class GuiView extends View implements Observer {
         }
     }
 
-    public void setupSelectPatternCard(){
+    private void setupSelectPatternCard(){
         Parent root;
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/SelectPatternCardWindow.fxml"));
         try {
@@ -94,17 +94,17 @@ public class GuiView extends View implements Observer {
 
 
 
-    public void printWaintingArea(){
+    private void printWaintingArea(){
         primaryStage.setScene(sceneWaintingRoom);
         primaryStage.show();
     }
 
-    public void printSelectPatternCard(){
+    private void printSelectPatternCard(){
         primaryStage.setScene(scenePatternCard);
         primaryStage.show();
     }
 
-    public void printGameWindow(Game game, Player player){
+    private void printGameWindow(Game game, Player player){
         gameWindowController.printGameWindow(game, player, this);
         primaryStage.setScene(sceneGame);
         primaryStage.show();
@@ -145,18 +145,6 @@ public class GuiView extends View implements Observer {
     }
 
 
-
-    private Object handleUseIO(ToolcardContent tc){
-        Object o = new Object();
-        switch (tc){
-            case DraftedDie:
-                //o = gameWindowController.draftedSetup();
-
-                break;
-        }
-        return o;
-    }
-
     protected void useTool(int toolNumber){
         ToolCard selectedToolCard = toolCards.get(toolNumber-1);
 
@@ -165,6 +153,7 @@ public class GuiView extends View implements Observer {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "Old task marked as CANCELLED.");
         }
         if(selectedToolCard.getToolCardName().equals(ToolCardsName.LensCutter)){
+            //If LensCutter ToolCards is in use lock the mouseOver Pane
             gameWindowController.lensCutterInUse = true;
         }
         this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
@@ -217,9 +206,5 @@ public class GuiView extends View implements Observer {
             break;
             default: break;
         }
-    }
-
-    private void onGameStarted(GameNames name) {
-        waitingAreaController.printGameName(name);
     }
 }

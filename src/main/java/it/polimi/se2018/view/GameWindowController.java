@@ -575,6 +575,52 @@ public class GameWindowController implements Serializable {
 
     }
 
+    protected void toolCardAmount(){
+        hint.setVisible(true);
+        hint.setText("Please, click the number of dice to move");
+
+        String path_1 = "/constraint/number/1.png";
+        String path_2 = "/constraint/number/2.png";
+
+        BackgroundImage myBI= new BackgroundImage(new Image(path_1,60,60,false,true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        Pane pane = selectDice.get(0);
+        pane.setBackground(new Background(myBI));
+        pane.setDisable(false);
+        pane.setVisible(true);
+
+        myBI= new BackgroundImage(new Image(path_2,60,60,false,true),
+                BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+        Pane pane2 = selectDice.get(1);
+        pane2.setBackground(new Background(myBI));
+        pane2.setDisable(false);
+        pane2.setVisible(true);
+
+        pane.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = 1;
+                gw.toolcardSemaphore.release();
+                hint.setVisible(false);
+                hint.setDisable(true);
+                pane.setVisible(false);
+                pane2.setVisible(false);
+            }
+        });
+
+        pane2.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = 2;
+                gw.toolcardSemaphore.release();
+                hint.setVisible(false);
+                hint.setDisable(true);
+                pane.setVisible(false);
+                pane2.setVisible(false);
+            }
+        });
+    }
+
 
     protected void onToolcardEnd(){
         useTool.setText("Use ToolCard");
