@@ -239,7 +239,9 @@ public class WindowPatternCard extends Card implements Serializable {
         for (WindowCell wc: windowCell.getNeighbourCells()){
             if (wc.getAssignedDice() != null) {
                 counterNearDice++;
-                if (wc.getAssignedDice().getNumber() == dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()))
+                Dice assignedDice = wc.getAssignedDice();
+                if ( ! dice.equals(assignedDice) && (
+                    assignedDice.getNumber() == dice.getNumber() || assignedDice.getColor().equals(dice.getColor())))
                     return false;
             }
         }

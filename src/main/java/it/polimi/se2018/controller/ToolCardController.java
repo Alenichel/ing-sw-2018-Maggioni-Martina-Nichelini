@@ -113,9 +113,9 @@ public class ToolCardController {
         Dice d1 = start.getAssignedDice();
         if (name.equals(ToolCardsName.CopperFoilBurnisher))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
-        else if(name.equals(ToolCardsName.EnglomiseBrush) || name.equals(ToolCardsName.TapWheel))
+        else if(name.equals(ToolCardsName.EnglomiseBrush))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
-        else if (name.equals(ToolCardsName.Lathekin))
+        else if (name.equals(ToolCardsName.Lathekin) || name.equals(ToolCardsName.TapWheel) )
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
         start.removeDice();
     }
@@ -151,8 +151,8 @@ public class ToolCardController {
 
         //handle TapWheel condition. The moved dice has to have the same color of a die from the roundtrak.
         if ( name.equals(ToolCardsName.TapWheel) &&
-                (!(rt.getColorSet().contains(firstDieColor))  ||
-                        !(secondDieColor != null && rt.getColorSet().contains(secondDieColor)))){
+                ((!(rt.getColorSet().contains(firstDieColor))) ||
+                    ((secondDieColor != null && !(rt.getColorSet().contains(secondDieColor)))))){
             throw new ToolCardException("Roundtrack does not contain a die with the same color");
         }
 
