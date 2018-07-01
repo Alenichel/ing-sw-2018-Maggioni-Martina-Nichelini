@@ -27,7 +27,7 @@ public class RoundTrack implements Serializable{
 
     /**
      * Round track getter
-     * @return roundtrack
+     * @return round track
      */
     public List<ArrayList<Dice>> getTrack() {
         return roundTrack;
@@ -35,6 +35,7 @@ public class RoundTrack implements Serializable{
 
     /**
      * Round track setter
+     * @param roundTrack list of dice on the round track
      */
     public void setRoundTrack(List<ArrayList<Dice>> roundTrack) {
         this.roundTrack = roundTrack;
@@ -61,10 +62,18 @@ public class RoundTrack implements Serializable{
         }
     }
 
+    /**
+     * Color set getter
+     * @return color set
+     */
     public Set<DiceColor> getColorSet() {
         return colorSet;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString() {
         String str = "";

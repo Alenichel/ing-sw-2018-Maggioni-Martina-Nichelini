@@ -26,8 +26,8 @@ public class WindowCell implements Serializable{
 
     /**
      * Constructor for cell without constraints.
-     * @param row
-     * @param column
+     * @param row number of the row
+     * @param column number of the column
      */
     public WindowCell(int row, int column){
         this.row = row;
@@ -38,9 +38,9 @@ public class WindowCell implements Serializable{
 
     /**
      * Constructor for cell with a number constraint.
-     * @param row
-     * @param column
-     * @param numberConstraint
+     * @param row number of the row
+     * @param column number of the column
+     * @param numberConstraint number constraint
      */
     public WindowCell(int row, int column, int numberConstraint) {
         this.row = row;
@@ -51,9 +51,9 @@ public class WindowCell implements Serializable{
 
     /**
      * Constructor for cell with a color constraint.
-     * @param row
-     * @param column
-     * @param colorConstraint
+     * @param row number of the row
+     * @param column number of the column
+     * @param colorConstraint color constraint
      */
     public WindowCell(int row, int column, String colorConstraint){
         this.row = row;
@@ -118,7 +118,7 @@ public class WindowCell implements Serializable{
 
     /**
      * Assigned dice setter
-     * @param assignedDice
+     * @param assignedDice assigned die
      * @throws NotEmptyWindowCellException if the cell is already assigned with another dice
      */
     public void setAssignedDice(Dice assignedDice) throws NotEmptyWindowCellException{
@@ -144,7 +144,7 @@ public class WindowCell implements Serializable{
     /**
      * Once the grid is ready, this method assigns to the cell the list of its neighbour cells to make
      * controls easier
-     * @param grid
+     * @param grid grid of window cells
      */
     public void setNeighbours(WindowCell[][] grid){
         //this method has to be executed only once
@@ -164,7 +164,7 @@ public class WindowCell implements Serializable{
     /**
      * Once the grid is ready, this method assigns to the cell the list of its diagonals neighbour cells
      * to make controls easier
-     * @param grid
+     * @param grid grid of window cells
      */
     public void setDiagonals(WindowCell[][] grid) {
         if (!isDiagonal) {
@@ -180,6 +180,11 @@ public class WindowCell implements Serializable{
         }
     }
 
+    /**
+     * Equals method
+     * @param o object to be compared
+     * @return true if the condition is respected
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

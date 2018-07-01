@@ -87,6 +87,10 @@ public class PublicObjectiveCard extends ObjectiveCard{
         return Name;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString() {
         return this.Name.toString() + ": " + this.description + "|| Point: " + this.points;

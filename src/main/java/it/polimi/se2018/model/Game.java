@@ -49,6 +49,7 @@ public class Game extends Observable implements Serializable {
         Random random = new Random();
         name = GameNames.values()[random.nextInt(GameNames.values().length)];
     }
+
     /**
      * Boolean isStarted
      * @return true if the game is started, false otherwise
@@ -64,7 +65,6 @@ public class Game extends Observable implements Serializable {
     public synchronized GameController getAssociatedGameController() {
         return associatedGameController;
     }
-
 
     /**
      * Dice bag setter
@@ -124,6 +124,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Game started setter
+     * @param started true if the game has started, false otherwise
      * @throws GameException if the game has already started
      */
     public synchronized void setStarted(boolean started) throws GameException {
@@ -171,13 +172,13 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Active player setter
-     * @param turn: the new active turn index.
+     * @param turn: the new active turn index
      */
     public synchronized void setActualTurn (int turn) { this.actualTurn = turn;}
 
     /**
      * Actual round setter
-     * @param actualRound: current round.
+     * @param actualRound: current round
      */
     public synchronized void setActualRound(int actualRound) {
         this.actualRound = actualRound;
@@ -208,7 +209,7 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Die for switch setter: sets a random die from the dice bag
+     * Die for switch setter: it sets a random die from the dice bag
      */
     public synchronized void setDieForSwitch() {
         Random random = new Random();
@@ -247,6 +248,7 @@ public class Game extends Observable implements Serializable {
     public synchronized boolean isInitiliazationComplete() {
         return initiliazationComplete;
     }
+
     /**
      * Timer getter
      * @return timer seconds left
@@ -264,8 +266,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Game name getter
-     * @return game name (ANewHope, TheBattleOfTheHeroes, TheRideOfRohirrim, TheHelmDitchBattle, MountDoomBattle or IdesOfMarch)
+     * Winner getter
+     * @return player who won the game
      */
     public synchronized Player getWinner() {
         return winner;
@@ -342,6 +344,7 @@ public class Game extends Observable implements Serializable {
     public synchronized int getActualRound() {
         return actualRound;
     }
+
     /**
      * Current turn getter
      * @return current turn
@@ -350,6 +353,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * This method adds a player to the game or re-adds a player to his last joined game
+     * @param player mentioned above
      * @throws GameException when the game already has 4 players or when the game is started
      */
     public synchronized void addPlayer(Player player) throws GameException{
@@ -378,7 +382,8 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * This method removes a player from the game he was in.
+     * This method removes a player from the game he was in
+     * @param player mentioned above
      */
     public synchronized void removePlayer(Player player){
         this.players.remove(player);

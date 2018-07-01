@@ -21,7 +21,7 @@ public class PrivateShadesOfColor {
 
     /**
      * This method verifies if the die on the window cell a has the same color as "type"
-     * @param a
+     * @param a window cell
      * @return true if the condition is respected
      */
     private boolean isColor(WindowCell a) {
