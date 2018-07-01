@@ -16,7 +16,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is red
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isRed(WindowCell a) {
@@ -29,7 +29,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is yellow
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isYellow(WindowCell a) {
@@ -42,7 +42,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is blue
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isBlue(WindowCell a) {
@@ -55,7 +55,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is green
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isGreen(WindowCell a) {
@@ -68,7 +68,7 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method verifies if the die on the window cell a is purple
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isPurple(WindowCell a) {
@@ -81,11 +81,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
     /**
      * This method finds out which of the five integers given is the minimum
-     * @param a
-     * @param b
-     * @param c
-     * @param d
-     * @param e
+     * @param a int
+     * @param b int
+     * @param c int
+     * @param d int
+     * @param e int
      * @return minimum
      */
     private int fiveMin(int a, int b, int c, int d, int e) {

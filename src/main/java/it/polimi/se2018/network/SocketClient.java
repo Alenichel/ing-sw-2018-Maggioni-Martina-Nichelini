@@ -1,6 +1,7 @@
 package it.polimi.se2018.network;
 
 import it.polimi.se2018.enumeration.WhatToUpdate;
+import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
@@ -30,7 +31,7 @@ public class SocketClient implements Observer {
 
     private View associatedView;
 
-    public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) {
+    public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) throws AuthenticationErrorException, IOException, ClassNotFoundException {
         try {
             this.keepAlive = true;
             this.associatedView = associatedView;
@@ -47,13 +48,11 @@ public class SocketClient implements Observer {
             if (rcv instanceof HandshakeConnectionMessage)
                 associatedView.setPlayer(((HandshakeConnectionMessage)rcv).getPlayer());
             else {
-                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,rcv.toString());
-                System.exit(1);
+                throw new AuthenticationErrorException(rcv.toString());
             }
 
         } catch (IOException | ClassNotFoundException e) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
-            System.exit(1);
+            throw e;
         }
 
         Listener listener = new Listener();

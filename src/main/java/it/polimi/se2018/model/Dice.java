@@ -80,7 +80,7 @@ public class Dice implements Serializable {
 
     /**
      * Location setter
-     * @param location (bag, table, roundtrack or windowcell)
+     * @param location (bag, table, round track or window cell)
      */
     public void setLocation(DiceLocation location) {
         this.location = location;
@@ -94,6 +94,11 @@ public class Dice implements Serializable {
         this.number =rand.nextInt(6)+1;
     }
 
+    /**
+     * This method translates the color and the number of the die to unicode
+     * @param color of the die
+     * @param n value on the die
+     */
     private void toUnicode(String color, int n){
         ConsoleUtils consoleUtils = new ConsoleUtils();
         this.unicode = "";
@@ -102,10 +107,20 @@ public class Dice implements Serializable {
         this.unicode = this.unicode.concat((char) 27 + "[30m");
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     public String toString(){
         this.toUnicode(this.color, this.number);
         return this.unicode;
     }
+
+    /**
+     * Equals method
+     * @param o object to be compared
+     * @return true if the condition is respected
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -116,6 +131,10 @@ public class Dice implements Serializable {
                 Objects.equals(location, dice.location);
     }
 
+    /**
+     * This method provides the hash code of an object
+     * @return hash code
+     */
     @Override
     public int hashCode() {
         return Objects.hash(number, color, location);

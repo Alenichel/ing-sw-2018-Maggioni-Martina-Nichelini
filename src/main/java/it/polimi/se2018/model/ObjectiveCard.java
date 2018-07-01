@@ -30,6 +30,10 @@ public class ObjectiveCard extends Card {
         return 0;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString() {
         return this.getClass().toString();

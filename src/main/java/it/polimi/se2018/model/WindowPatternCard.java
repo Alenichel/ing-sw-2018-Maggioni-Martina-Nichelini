@@ -63,8 +63,8 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * Cell getter
-     * @param row
-     * @param column
+     * @param row number of the row
+     * @param column number of the column
      * @return the specified cell in the grid
      */
     public WindowCell getCell(int row, int column) {
@@ -120,9 +120,6 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method loads the user specified pattern card from an xml file
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
         InputStream xmlResource = getClass().getResourceAsStream("/patternCards" + "/" + this.name + ".xml");
@@ -225,8 +222,8 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method checks if it's possible to place the given die on the selected cell looking for near dice
-     * @param windowCell
-     * @param dice
+     * @param windowCell window cell mentioned above
+     * @param dice given die mentioned above
      * @return true if it's a valid position, false otherwise
      */
     private boolean isValidPosition( WindowCell windowCell, Dice dice){
@@ -239,7 +236,9 @@ public class WindowPatternCard extends Card implements Serializable {
         for (WindowCell wc: windowCell.getNeighbourCells()){
             if (wc.getAssignedDice() != null) {
                 counterNearDice++;
-                if (wc.getAssignedDice().getNumber() == dice.getNumber() || wc.getAssignedDice().getColor().equals(dice.getColor()))
+                Dice assignedDice = wc.getAssignedDice();
+                if ( ! dice.equals(assignedDice) && (
+                    assignedDice.getNumber() == dice.getNumber() || assignedDice.getColor().equals(dice.getColor())))
                     return false;
             }
         }
@@ -249,8 +248,8 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method checks the window cell color constraint
-     * @param windowCell
-     * @param dice
+     * @param windowCell window cell
+     * @param dice die
      * @return true if it's a valid position, false otherwise
      */
     private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
@@ -265,8 +264,8 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method checks the window cell number constraint
-     * @param windowCell
-     * @param dice
+     * @param windowCell window cell
+     * @param dice die
      * @return true if it's a valid position, false otherwise
      */
     private boolean isValidNumberRestriction(WindowCell windowCell, Dice dice){
@@ -311,6 +310,10 @@ public class WindowPatternCard extends Card implements Serializable {
         else throw new NotValidInsertion("Not valid position");
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString() {
         String string ="";
@@ -379,6 +382,11 @@ public class WindowPatternCard extends Card implements Serializable {
         return string;
     }
 
+    /**
+     * This method translates the string containing a color in unicode color
+     * @param color string
+     * @return unicode
+     */
     private String toUnicodeColor(String color){
         switch (color.toLowerCase()){
             case "red":         return (char) 27 + "[31m";

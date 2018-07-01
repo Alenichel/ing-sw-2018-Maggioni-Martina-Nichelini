@@ -52,7 +52,7 @@ public class Server extends Observable implements Serializable {
 
     /**
      * getInstance method compliant with Singletone Pattern
-     * @return
+     * @return instance
      */
     public static Server getInstance(){
             if(instance == null){
@@ -64,9 +64,6 @@ public class Server extends Observable implements Serializable {
 
     /**
      * Configuration loader from xml configuration file
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
      */
     private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
             InputStream xmlResource = getClass().getResourceAsStream("/sagrada_server_conf.xml");
@@ -107,8 +104,8 @@ public class Server extends Observable implements Serializable {
     }
 
     /**
-     * RMIServer port getter.
-     * @return server port.
+     * RMIServer port getter
+     * @return server port
      */
     public int getServerPort() {
             return this.port;
@@ -178,7 +175,7 @@ public class Server extends Observable implements Serializable {
     }
 
     /**
-     * Tis method removes a player from the online players and adds him to the list of offline players
+     * This method removes a player from the online players and adds him to the list of offline players
      * @param player removed from online players
      */
     public void removePlayerFromOnlinePlayers(Player player){
@@ -193,6 +190,8 @@ public class Server extends Observable implements Serializable {
 
     /**
      * This method adds a player to the list of server active players
+     * @param arrayList of active players
+     * @param player to be added
      */
     public void addPlayer(List<Player> arrayList, Player player){
         arrayList.add(player);
@@ -201,6 +200,8 @@ public class Server extends Observable implements Serializable {
 
     /**
      * This method removes a player from the list of server active players
+     * @param arrayList of active players
+     * @param player to be removed
      */
     public void removePlayer (List<Player> arrayList, Player player){
         arrayList.remove(player);
@@ -208,7 +209,7 @@ public class Server extends Observable implements Serializable {
 
     /**
      * Current game setter
-     * @param currentGame
+     * @param currentGame current game
      */
     public void setCurrentGame(Game currentGame) {
         this.currentGame = currentGame;

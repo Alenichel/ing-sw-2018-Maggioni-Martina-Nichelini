@@ -16,7 +16,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 1
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isOne(WindowCell a) {
@@ -29,7 +29,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 2
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isTwo(WindowCell a) {
@@ -42,7 +42,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 3
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isThree(WindowCell a) {
@@ -55,7 +55,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 4
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isFour(WindowCell a) {
@@ -68,7 +68,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 5
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isFive(WindowCell a) {
@@ -81,7 +81,7 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method verifies if the value of the die on the window cell a is 6
-     * @param a
+     * @param a window cell mentioned above
      * @return true if the condition in respected
      */
     private boolean isSix(WindowCell a) {
@@ -94,12 +94,12 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
     /**
      * This method finds out which of the six integers given is the minimum
-     * @param a
-     * @param b
-     * @param c
-     * @param d
-     * @param e
-     * @param f
+     * @param a int
+     * @param b int
+     * @param c int
+     * @param d int
+     * @param e int
+     * @param f int
      * @return minimum
      */
     private int sixMin(int a, int b, int c, int d, int e, int f) {

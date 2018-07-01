@@ -22,6 +22,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * ToolCard constructor
+     * @param tcn tool cards name
      */
     public ToolCard(ToolCardsName tcn){
         if(ToolCardsName.GrozingPliers.equals(tcn)){
@@ -125,7 +126,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * Description setter
-     * @param description
+     * @param description of the tool card
      */
     public void setDescription(String description) {
         this.description = description;
@@ -133,7 +134,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * Game reference setter
-     * @param gameReference
+     * @param gameReference reference to the game
      */
     public void setGameReference(Game gameReference) {
         this.gameReference = gameReference;
@@ -141,7 +142,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * Name setter
-     * @param name
+     * @param name name
      */
     public void setName(String name){
         this.name = name;
@@ -149,7 +150,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * Tool card name setter
-     * @param toolCardName
+     * @param toolCardName tool card name
      */
     private void setToolCardName(ToolCardsName toolCardName) {
         this.toolCardName = toolCardName;
@@ -211,6 +212,10 @@ public class ToolCard extends Card implements Serializable {
         return content;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     public String toString(){
         String str ="";
         str = str.concat(this.name + "  " + (char) 27 + "[30m");

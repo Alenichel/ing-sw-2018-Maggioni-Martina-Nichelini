@@ -25,6 +25,7 @@ public class ServerController implements Observer, Serializable{
 
     /**
      * Server controller singleton constructor
+     * @return instance
      */
     public static ServerController getInstance(){
         if(instance == null){
@@ -52,12 +53,12 @@ public class ServerController implements Observer, Serializable{
     }
 
     /**
-     * This method removes a game from the active games and handles all the associated operation.
-     * @param game
+     * This method removes a game from the active games and handles all the associated operations
+     * @param game: game to be removed
      */
     protected  void removeGame(Game game){
 
-        //action to perform on allPlayer who joined the game.
+        //action to perform on all the players who joined the game.
         for (Player p: game.getPlayersOrder()) {
             p.setLastGameJoined(null);
             p.setScore(0);
@@ -77,6 +78,8 @@ public class ServerController implements Observer, Serializable{
     /**
      * This method handles the connection routine for class server. It's always called together with the same method of
      * game controller.
+     * @param observable Observable
+     * @param message ConnectionMessage
      */
     private synchronized void connectPlayer (Observable observable, ConnectionMessage message) {
         /*if (message.getMessageType().equals("ReConnectionMessage")) {
@@ -110,7 +113,7 @@ public class ServerController implements Observer, Serializable{
 
     /**
      * This method disconnects a player from the server
-     * @param player
+     * @param player to be disconnected
      */
     protected synchronized void disconnectPlayer (Player player) {
         server.removePlayer(server.getInGamePlayers(), player);
@@ -120,7 +123,9 @@ public class ServerController implements Observer, Serializable{
     }
 
     /**
-     * This method handles connection message
+     * This method handles the connection message
+     * @param observable Observable
+     * @param message ConnectionMessage
      */
     private synchronized void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
@@ -137,7 +142,9 @@ public class ServerController implements Observer, Serializable{
     }
 
     /**
-     * This method handles request message
+     * This method handles the request message
+     * @param observable Observable
+     * @param rMsg RequestMessage
      */
     private synchronized void handleRequestMessage(Observable observable, RequestMessage rMsg){
 
