@@ -168,6 +168,7 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+
     /**
      * Active player setter
      * @param turn: the new active turn index.
@@ -206,12 +207,19 @@ public class Game extends Observable implements Serializable {
         this.playersOrder = playersOrder;
     }
 
+    /**
+     * Die for switch setter: sets a random die from the dice bag
+     */
     public synchronized void setDieForSwitch() {
         Random random = new Random();
         Dice randomDie = diceBag.get(random.nextInt(diceBag.size()));
         this.dieForSwitch = randomDie;
     }
 
+    /**
+     * Die for switch getter
+     * @return die for switch
+     */
     public synchronized Dice getDieForSwitch() {
         return dieForSwitch;
     }

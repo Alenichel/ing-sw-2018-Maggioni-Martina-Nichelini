@@ -12,10 +12,16 @@ import java.util.Set;
 
 /**
  * This class implements Color Diagonals objective card which gives you points every time you have
- * diagonal of dice of the same color.
+ * diagonals of dice of the same color.
  */
 public class ColorDiagonals implements ScorePointStrategy, Serializable {
 
+    /**
+     * This method checks if two cells, a and b, contain a die of the same color
+     * @param a first cell
+     * @param b second cell
+     * @return true if the condition in respected
+     */
     private boolean compareCellsColor(WindowCell a, WindowCell b) {
         if (a == null || b == null) return false;
         if (a.getAssignedDice() == null || b.getAssignedDice() == null) return false;
@@ -27,16 +33,18 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
 
     }
 
+    /**
+     * This method first searches for adjacent cells containing dice of the same color. If there are not it
+     * returns the depth of the "tree"
+     */
     private int exploreDiagonal(int cellScore, WindowCell[][] grid, WindowCell cell) {
         int sum = 0;
         ArrayList<WindowCell> equalsAdiacent = new ArrayList<>();
 
-        //Controllo se ci sono delle celle adiacenti con un dado dello stesso colore di quello della cella passata
         for (WindowCell wc : cell.getDiagonalCells()) {
             if (compareCellsColor(wc, cell)) equalsAdiacent.add(wc);
         }
 
-        //se non ce ne sono, ritorno la profondità "dell'albero"
         if (equalsAdiacent.size() == 0) return cellScore;
         else {
             for (WindowCell wc : equalsAdiacent) {
@@ -47,6 +55,11 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
         return sum;
     }
 
+    /**
+     * This methods calculates the score depending on the number of diagonals containing dice of the same color
+     * @param windowPatternCard window pattern card under consideration
+     * @return points scored with this card
+     */
     @Override
     public int scorePoint(WindowPatternCard windowPatternCard) {
 

@@ -32,6 +32,10 @@ public class Player extends Observable implements Serializable{
         this.inGame = false;
     }
 
+    /**
+     * Virtual view setter
+     * @param vv virtual view
+     */
     public void setVv(VirtualView vv) {
         this.vv = vv;
     }
@@ -194,6 +198,10 @@ public class Player extends Observable implements Serializable{
         return score;
     }
 
+    /**
+     * Virtual view getter
+     * @return virtual view
+     */
     public VirtualView getVv() {
         return vv;
     }
