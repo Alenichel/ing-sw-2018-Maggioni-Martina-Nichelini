@@ -20,12 +20,16 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
     /**
      * Private objective card constructor
-     * @param diceColor
+     * @param diceColor: red, blue, yellow, green or purple
      */
     public PrivateObjectiveCard(DiceColor diceColor){
         this.color = diceColor;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString() {
         ConsoleUtils c = new ConsoleUtils();

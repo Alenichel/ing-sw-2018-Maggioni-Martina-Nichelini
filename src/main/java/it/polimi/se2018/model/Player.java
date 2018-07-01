@@ -42,6 +42,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * This method sets a player in a game if "inGame" is true
+     * @param inGame boolean mentioned above
      */
     public void setInGame(Boolean inGame) {
         this.inGame = inGame;
@@ -49,6 +50,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * This method sets a player online if "status" is true
+     * @param status boolean mentioned above
      */
     public void setOnline(Boolean status){
         this.online = status;
@@ -56,7 +58,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * This method makes the player skip a turn if "skipTurn" is true
-     * @param skipTurn
+     * @param skipTurn boolean mentioned above
      */
     public void setSkipNextTurn(Boolean skipTurn) {
         this.skipNextTurn = skipTurn;
@@ -72,6 +74,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Player number setter
+     * @param number: player number
      */
     public void setPlayerNumber(int number){
         this.playerNumber = number;
@@ -113,6 +116,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Score setter
+     * @param score: player's score
      */
     public void setScore(int score) {
         this.score = score;
@@ -144,7 +148,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Last game joined getter
-     * @return las game joined
+     * @return last game joined
      */
     public Game getLastGameJoined() {
         return lastGameJoined;
@@ -214,11 +218,20 @@ public class Player extends Observable implements Serializable{
         return scores;
     }
 
+    /**
+     * To string method
+     * @return string
+     */
     @Override
     public String toString(){
         return this.nickname;
     }
 
+    /**
+     * Equals method
+     * @param o object to be compared
+     * @return true if the condition is respected
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -233,6 +246,10 @@ public class Player extends Observable implements Serializable{
                 Objects.equals(privateObjectiveCard, player.privateObjectiveCard);
     }
 
+    /**
+     * This method provides the hash code of an object
+     * @return hash code
+     */
     @Override
     public int hashCode() {
 
