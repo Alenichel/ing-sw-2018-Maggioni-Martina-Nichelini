@@ -84,7 +84,7 @@ public class DragTask extends Task<Void> {
                         target.setBackground(new Background(myBI));
                     }
                 });
-                gwc.draggable = false;
+                //gwc.draggable = false;
                 gwc.printAck("CORRECT INSERTION");
                 success = true;
                 timer.setCycleCount(Timeline.INDEFINITE);

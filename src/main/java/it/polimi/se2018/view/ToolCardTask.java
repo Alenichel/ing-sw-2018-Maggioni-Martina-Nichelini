@@ -56,6 +56,7 @@ public class ToolCardTask extends Task<Void> {
 
     @Override
     protected Void call() throws Exception {
+        int amount = 0;
         ToolcardContent[] content = toolCard.getContent();
         Map<ToolcardContent, Object> htc = new HashMap<>();
 
@@ -65,11 +66,20 @@ public class ToolCardTask extends Task<Void> {
                 continue;
             }
             else if (tc.equals(ToolcardContent.BagDie)) continue;
-             this.handleGuiSetup(tc);
+
+            else if(( tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1) continue;
+
+            this.handleGuiSetup(tc);
+
             if (! toolcardSemaphore.tryAcquire(Server.getInstance().getDefaultMoveTimer(), TimeUnit.SECONDS)) {
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "TIMEOUT DONE: Task stopped");
                 return null;
             }
+
+            if(tc.equals(ToolcardContent.Amount)){
+                amount = (int)guiView.toolCardDragBoard;
+            }
+
             htc.put(tc, guiView.toolCardDragBoard);
         }
 
