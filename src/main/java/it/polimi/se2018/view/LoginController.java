@@ -2,18 +2,15 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.RMIClient;
+import it.polimi.se2018.network.RMIClientImplementation;
 import it.polimi.se2018.network.SocketClient;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-
 import java.io.Serializable;
-import java.util.ResourceBundle;
-import javafx.scene.image.Image;
+import java.rmi.RemoteException;
 public class LoginController implements Serializable{
 
     @FXML private Button button;
@@ -68,15 +65,29 @@ public class LoginController implements Serializable{
             logInPassword = null;
         }
 
-        if(methodConnection.equals("RMI")){
-            //RMI CONNECTION
-            rmiClient = new RMIClient();
-            gw.addObserver(rmiClient.run(gw, serverURL, logInUsernme, logInPassword));
-        }else if(methodConnection.equals("socket")){
-            //SOCKET CONNECTION
-            sc = new SocketClient(serverURL, Integer.parseInt(serverPort), logInUsernme, logInPassword, gw);
-            gw.addObserver(sc);
+        try {
+            if (methodConnection.equals("RMI")) {
+                //RMI CONNECTION
+                rmiClient = new RMIClient();
+                RMIClientImplementation rmiCI = rmiClient.run(gw, serverURL, logInUsernme, logInPassword);
+                if (rmiCI == null) throw new RemoteException("Connection to RMI server was unsuccessful");
+                else gw.addObserver(rmiCI);
+
+            } else if (methodConnection.equals("socket")) {
+                //SOCKET CONNECTION
+                sc = new SocketClient(serverURL, Integer.parseInt(serverPort), logInUsernme, logInPassword, gw);
+                gw.addObserver(sc);
+            }
+
+            gw.run((Stage)button.getScene().getWindow());
         }
-        gw.run((Stage)button.getScene().getWindow());
+        catch (Exception e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Login Error");
+            alert.setHeaderText("There was an error during login\n" + e.toString());
+            alert.setContentText("Please close this window and try again.");
+
+            alert.showAndWait();
+        }
     }
 }

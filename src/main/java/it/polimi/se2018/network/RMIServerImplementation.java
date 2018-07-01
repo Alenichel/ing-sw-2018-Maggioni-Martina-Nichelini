@@ -33,10 +33,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
 	    try {
             player = Security.authenticateUser(client.getInsertedNickname(), client.getInsertedPassword());
             client.setPlayer(player);
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "(RMI) RMIClient " + client.getInsertedNickname() + " connected!");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "(RMI) RMIClient \"" + client.getInsertedNickname() + "\" connected!");
         } catch (AuthenticationErrorException e) {
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, "Login error: connection aborted");
-            return;
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "Login error: connection aborted");
+            throw new RemoteException();
         }
 
         VirtualView vv = new VirtualView(this, player);

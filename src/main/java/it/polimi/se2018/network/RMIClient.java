@@ -20,11 +20,17 @@ public class RMIClient {
 			server = (ServerInterface)Naming.lookup("//" + serverURL + "/SagradaServer");
 			client = new RMIClientImplementation(view, nickname, password, server);
 			ClientInterface remoteRef = (ClientInterface) UnicastRemoteObject.exportObject(client, 0);
-			server.addClient(remoteRef);
+
+			try {
+				server.addClient(remoteRef);
+			} catch (Exception e) {
+				return null;
+			}
 
 			Ping pinger = new Ping(server);
 			pinger.start();
             return client;
+
 		} catch (MalformedURLException e) {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Not found URL");
 		} catch (RemoteException e) {
