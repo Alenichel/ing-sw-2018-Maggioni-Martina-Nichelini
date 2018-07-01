@@ -31,7 +31,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * Game controller constructor
-     * @param game
+     * @param game: associated game
      */
     public GameController(Game game){
         this.server = Server.getInstance();
@@ -101,6 +101,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * This method selects 4 random window pattern cards for the player to choose
+     * @return window pattern cards
      */
     private List<WindowPatternCard> getRandomPatternCards (){
         int selectedIndex = 0;
@@ -220,7 +221,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * Round handler getter
-      * @return round handler
+     * @return round handler
      */
     protected RoundHandler getActiveRoundHandler(){
         return roundHandler;
@@ -228,6 +229,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * This method handles the update message
+     * @param observable Observable
+     * @param message UpdateMessage
      */
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
@@ -244,6 +247,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * This method handles the connection message
+     * @param observable Observable
+     * @param message ConnectionMessage
      */
     private void handleConnectionMessage(Observable observable, ConnectionMessage message){
         if (message.isConnecting()){
@@ -268,6 +273,8 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * This method handles the selection message
+     * @param observable Observable
+     * @param message SelectionMessage
      */
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
 

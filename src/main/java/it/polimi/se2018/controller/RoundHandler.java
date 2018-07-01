@@ -35,7 +35,7 @@ public class RoundHandler implements TimerInterface {
 
     /**
      * Round handler constructor
-     * @param game
+     * @param game: associated game
      */
     public RoundHandler (Game game){
         this.gameAssociated = game;
@@ -157,7 +157,9 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method handles update message
+     * This method handles the update message
+     * @param observable Observable
+     * @param message UpdateMessage
      */
     private void handleUpdateMessage(Observable observable, UpdateMessage message){
 
@@ -167,7 +169,9 @@ public class RoundHandler implements TimerInterface {
     }
 
     /**
-     * This method handles move dice message
+     * This method handles the move dice message
+     * @param observable Observable
+     * @param mdm MoveDiceMessage
      */
     private synchronized void handleMoveDiceMessage(Observable observable, MoveDiceMessage mdm) {
 
