@@ -8,7 +8,7 @@ import it.polimi.se2018.enumeration.DiceColor;
  */
 public class PrivateObjectiveCard extends ObjectiveCard {
 
-    DiceColor color;
+    private DiceColor color;
 
     /**
      * Color getter

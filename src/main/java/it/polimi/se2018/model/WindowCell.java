@@ -180,21 +180,5 @@ public class WindowCell implements Serializable{
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        WindowCell that = (WindowCell) o;
-        return row == that.row &&
-                column == that.column &&
-                numberConstraint == that.numberConstraint &&
-                neighbourhoodAssigned == that.neighbourhoodAssigned &&
-                isDiagonal == that.isDiagonal &&
-                Objects.equals(colorConstraint, that.colorConstraint) &&
-                Objects.equals(assignedDice, that.assignedDice) &&
-                Objects.equals(neighbourCells, that.neighbourCells) &&
-                Objects.equals(diagonalCells, that.diagonalCells);
-    }
-
 }
 

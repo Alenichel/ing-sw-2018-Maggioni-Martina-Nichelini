@@ -23,9 +23,6 @@ public class Server extends Observable implements Serializable {
     private boolean configurationRequired;
     private int nOfTurn;
 
-    private static final String HOME_PATH = System.getProperty("user.home");
-    private static final String CONFIGURATION_FILENAME = "/sagrada_server_conf.xml";
-
     private List<Player> onlinePlayers = new Vector<>();
     private List<Player> offlinePlayers = new Vector<>();
     private List<Player> inGamePlayers = new Vector<>();
