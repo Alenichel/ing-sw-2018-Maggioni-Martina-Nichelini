@@ -1,6 +1,7 @@
 package it.polimi.se2018;
 
 
+import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.network.RMIClient;
 import it.polimi.se2018.network.SocketClient;
@@ -23,41 +24,47 @@ public class AppClient extends Application{
         Scanner inputInit = new Scanner(System.in);
         boolean cli;
 
-        System.out.print("[*] Insert: \n\t1 for Cli\n\t2 for Gui\n");
-        int chosen = inputInit.nextInt();
+        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Insert: \n\t1 for Cli\n\t2 for Gui");
+        int chosen = Integer.parseInt(inputInit.nextLine());
         if(chosen == 1) cli = true;
         else cli = false;
 
-        Scanner sinput = new Scanner(System.in);
 
         if(cli) {
             int network = 0;
             while (network != 1 && network != 2) {
-                System.out.print("[*] Insert: \n\t1 for Socket\n\t2 for RMI\n");
-                network = inputInit.nextInt();
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Insert: \n\t1 for Socket\n\t2 for RMI");
+                network = Integer.parseInt(inputInit.nextLine());
             }
 
-            System.out.print("[*] Please insert your username: ");
-            String input = sinput.nextLine();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Please, insert server URL or leave blank for localhost:\n");
+            String serverURL = inputInit.nextLine();
+            if (serverURL.equalsIgnoreCase("")) serverURL = "localhost";
 
-            String nickname = input.toString();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Please, insert server PORT or leave blank for the default port:\n");
+            String serverPORT = inputInit.nextLine();
+            if (serverPORT.equalsIgnoreCase("")) serverPORT = "9091";
+
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Please insert your username: ");
+            String nickname = inputInit.nextLine();
+
 
             String pass = "";
             if (Server.getInstance().isConfigurationRequired()) {
-                System.out.print("\n[*] Please insert your password: ");
-                pass = sinput.nextLine();
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"\n[*] Please insert your password: ");
+                pass = inputInit.nextLine();
             }
 
             CliView cw = new CliView();
 
             if (network == 1) {
-                SocketClient sc = new SocketClient("localhost", 9091, nickname, pass, cw);
+                SocketClient sc = new SocketClient(serverURL, Integer.parseInt(serverPORT), nickname, pass, cw);
                 cw.addObserver(sc);
             }
 
             if (network == 2) {
                 RMIClient rmiClient = new RMIClient();
-                cw.addObserver(rmiClient.run(cw, "localhost", nickname, pass));
+                cw.addObserver(rmiClient.run(cw, serverURL, nickname, pass));
             }
             cw.run();
 
