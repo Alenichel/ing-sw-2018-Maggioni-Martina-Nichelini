@@ -115,7 +115,7 @@ public class GameSetupController implements Serializable {
      * This method is called later in handleSelectionMessage
      * @param cardIndex of the window pattern card
      * @param p player who chose the pattern card
-     * @throws GameException
+     * @throws GameException if the selected pattern card has already been chosen
      */
     private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
 
@@ -135,7 +135,9 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method handles selection message
+     * This method handles the selection message
+     * @param observable Observable
+     * @param message SelectionMessage
      */
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
         switch (message.getSelected()){
