@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.DiceColor;
 import it.polimi.se2018.enumeration.ToolcardContent;
+import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
@@ -687,6 +688,8 @@ public class GameWindowController implements Serializable {
      * @param gw
      */
     protected void printGameWindow(Game game, Player me, GuiView gw) {
+        this.winnerPane.setVisible(false);
+        this.winnerPane.setDisable(true);
         this.gw = gw;
         mouseOver = true;
         if (!this.setupped) {
@@ -971,11 +974,21 @@ public class GameWindowController implements Serializable {
     //------------------------------------------
 
 
+    // ---- GAME END ----
+    @FXML
     private void quit(){
         Platform.exit();
         System.exit(0);
     }
 
+    @FXML
+    private void searchNewGame(){
+        this.gw.searchAnotherGame();
+        this.gw.setupWaintingArea();
+        this.gw.printWaintingArea();
+    }
+
+    // ---- GAME END ----
 
     // TOGGLE SECTION
     //------------------------------------------

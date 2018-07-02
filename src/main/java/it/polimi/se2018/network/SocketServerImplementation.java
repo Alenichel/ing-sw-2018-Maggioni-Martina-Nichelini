@@ -105,7 +105,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         try {
             queue.put(suc);
         } catch (InterruptedException e){
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, e.toString());
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "SSI: "+e.toString());
             Thread.currentThread().interrupt();
         }
     }
