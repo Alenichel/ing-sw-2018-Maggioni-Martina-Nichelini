@@ -111,6 +111,17 @@ public class ToolCardController {
             throw new ToolCardException("EmptyWindowCell");
 
         Dice d1 = start.getAssignedDice();
+
+
+        //in case this method is called by TapWheel, it's needed to check another condition
+        if (name.equals(ToolCardsName.TapWheel)) {
+            RoundTrack rt = this.gameAssociated.getRoundTrack();
+            DiceColor dieColor = d1.getDiceColor();
+            if (!(rt.getColorSet().contains(dieColor)))
+                throw new ToolCardException("Roundtrack does not contain a die with the same color");
+            }
+
+
         if (name.equals(ToolCardsName.CopperFoilBurnisher))
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, false, true);
         else if(name.equals(ToolCardsName.EnglomiseBrush))
@@ -132,33 +143,17 @@ public class ToolCardController {
         htc1.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
         htc1.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.firstWindowCellStart));
         htc1.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.firstWindowCellEnd));
-        int[] firstDieCoordinate = (int[]) htc1.get(ToolcardContent.WindowCellStart);
-        DiceColor firstDieColor = (windowPatternCard.getCell(firstDieCoordinate[0], firstDieCoordinate[1])).getAssignedDice().getDiceColor();
 
         Map<ToolcardContent, Object> htc2 = null;
-        DiceColor secondDieColor = null;
         //define a second hashmap toolcard content only if you are dealing with Lathekin or with TapWheel with double movement.
         if ( (name.equals(ToolCardsName.Lathekin)) || ( name.equals(ToolCardsName.TapWheel) && (int)params.get(ToolcardContent.Amount) == 2) ) {
             htc2 = new HashMap<>();
             htc2.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
             htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellStart));
             htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
-            int[] secondDieCoordinate = (int[]) htc2.get(ToolcardContent.WindowCellStart);
-            secondDieColor = (windowPatternCard.getCell(secondDieCoordinate[0], secondDieCoordinate[1])).getAssignedDice().getDiceColor();
         }
-
-        RoundTrack rt = this.gameAssociated.getRoundTrack();
-
-        //handle TapWheel condition. The moved dice has to have the same color of a die from the roundtrak.
-        if ( name.equals(ToolCardsName.TapWheel) &&
-                ((!(rt.getColorSet().contains(firstDieColor))) ||
-                    ((secondDieColor != null && !(rt.getColorSet().contains(secondDieColor)))))){
-            throw new ToolCardException("Roundtrack does not contain a die with the same color");
-        }
-
 
         handleMovingDiceToolcard(name, htc1);
-
 
         try {
             if (htc2 != null) handleMovingDiceToolcard(name, htc2);
@@ -172,6 +167,7 @@ public class ToolCardController {
             int[] cooStart = (int[]) htc1.get(ToolcardContent.WindowCellStart);
             WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
             windowPatternCard.insertDice(d, start.getRow(), start.getColumn(), false, false, false );
+            throw e;
         }
     }
 

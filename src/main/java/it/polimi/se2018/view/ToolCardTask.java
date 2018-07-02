@@ -60,27 +60,29 @@ public class ToolCardTask extends Task<Void> {
         ToolcardContent[] content = toolCard.getContent();
         Map<ToolcardContent, Object> htc = new HashMap<>();
 
-        for (ToolcardContent tc : content){
-            if (tc.equals(ToolcardContent.RunBy)) {
-                htc.put(tc, guiView.client.getNickname());
-                continue;
+        if (content != null) {
+            for (ToolcardContent tc : content) {
+                if (tc.equals(ToolcardContent.RunBy)) {
+                    htc.put(tc, guiView.client.getNickname());
+                    continue;
+                } else if (tc.equals(ToolcardContent.BagDie)) continue;
+
+                else if ((tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1)
+                    continue;
+
+                this.handleGuiSetup(tc);
+
+                if (!toolcardSemaphore.tryAcquire(Server.getInstance().getDefaultMoveTimer(), TimeUnit.SECONDS)) {
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "TIMEOUT DONE: Task stopped");
+                    return null;
+                }
+
+                if (tc.equals(ToolcardContent.Amount)) {
+                    amount = (int) guiView.toolCardDragBoard;
+                }
+
+                htc.put(tc, guiView.toolCardDragBoard);
             }
-            else if (tc.equals(ToolcardContent.BagDie)) continue;
-
-            else if(( tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1) continue;
-
-            this.handleGuiSetup(tc);
-
-            if (! toolcardSemaphore.tryAcquire(Server.getInstance().getDefaultMoveTimer(), TimeUnit.SECONDS)) {
-                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.WARNING, "TIMEOUT DONE: Task stopped");
-                return null;
-            }
-
-            if(tc.equals(ToolcardContent.Amount)){
-                amount = (int)guiView.toolCardDragBoard;
-            }
-
-            htc.put(tc, guiView.toolCardDragBoard);
         }
 
         ToolCardMessage tcm = new ToolCardMessage(toolCard.getToolCardName(), htc);

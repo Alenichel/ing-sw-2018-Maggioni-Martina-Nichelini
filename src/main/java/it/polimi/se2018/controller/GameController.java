@@ -12,6 +12,8 @@ import it.polimi.se2018.message.*;
 import java.io.Serializable;
 import java.util.*;
 
+import static java.lang.Thread.sleep;
+
 /**
  * This class implements GameController
  */
@@ -196,7 +198,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
             topPlayer = gameAssociated.getPlayers().get(0);
         }
 
-
         // otherwise calculate score
         else {
             for (Player p : this.gameAssociated.getPlayers()) {
@@ -216,9 +217,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
             // p.assignObjectiveCard(null);
         }
 
-        if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
+
         this.gameAssociated.setWinner(topPlayer);
         this.serverController.removeGame(this.gameAssociated);
+        if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + this.gameAssociated.getName().toString() + " ended.");
         }
 
