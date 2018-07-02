@@ -21,11 +21,11 @@ public class CliView extends View implements Observer {
 
     private void handleHelpCommand(){
         String help = "\n******* Help Command *******\n" +
-                "- Select %i: select the pattern card with the %i index.\n" +
-                "- Take %dieIndex %destinationX %destinationY: take the die with dieIndex and place it to the cell with the given coordinates.\n" +
-                "- Use %toolcardIndex: activate the toolcard with the selected index.\n" +
-                "- Pass: pass turn.\n" +
-                "- Quit: exit game and kill client." ;
+                "- select %i: select the pattern card with the %i index.\n" +
+                "- take %dieIndex %destinationX %destinationY: take the die with dieIndex and place it to the cell with the given coordinates.\n" +
+                "- use %toolcardIndex: activate the toolcard with the selected index.\n" +
+                "- pass: pass turn.\n" +
+                "- quit: exit game and kill client." ;
         Logger.log(LoggerType.CLIENT_SIDE, NORMAL, help);
     }
 

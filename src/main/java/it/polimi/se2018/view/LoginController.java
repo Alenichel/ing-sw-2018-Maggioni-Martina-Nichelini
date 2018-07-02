@@ -42,7 +42,6 @@ public class LoginController implements Serializable{
                     if (methodConnection.equals("RMI")) port.setText("1099");
                     else port.setText("9091");
                     button.setDisable(false);
-                    System.out.println(group.getSelectedToggle().getUserData().toString());
                 }
             }
         });
