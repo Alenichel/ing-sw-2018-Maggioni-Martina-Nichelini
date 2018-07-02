@@ -28,7 +28,7 @@ public class SelectPatternCardWindowController implements Serializable {
     @FXML private transient ImageView window2;
     @FXML private transient ImageView window3;
     @FXML private transient ImageView window4;
-    @FXML private transient Pane hadledPane;
+    @FXML protected transient Pane hadledPane;
 
 
     protected void printPool(Stage primaryStage, Player player, GuiView gw){
@@ -40,6 +40,8 @@ public class SelectPatternCardWindowController implements Serializable {
         imageViews.add(window2);
         imageViews.add(window3);
         imageViews.add(window4);
+
+        hadledPane.setVisible(false);
 
         ArrayList<Image> images = new ArrayList<>();
 

@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Semaphore;
 
+import static it.polimi.se2018.enumeration.LoggerPriority.NORMAL;
+
 public class GuiView extends View implements Observer {
     private transient WaitingAreaController waitingAreaController;
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
@@ -48,7 +50,7 @@ public class GuiView extends View implements Observer {
         printWaintingArea();
     }
 
-    private void setupWaintingArea(){
+    protected void setupWaintingArea(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
         try {
             Parent root = loader.load();
@@ -94,7 +96,7 @@ public class GuiView extends View implements Observer {
 
 
 
-    private void printWaintingArea(){
+    protected void printWaintingArea(){
         primaryStage.setScene(sceneWaintingRoom);
         primaryStage.show();
     }
@@ -158,6 +160,13 @@ public class GuiView extends View implements Observer {
         }
         this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
         new Thread(toolCardTask).start();
+    }
+
+    protected void searchAnotherGame(){
+        Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Looking for another game..");
+        ConnectionMessage cm = new ConnectionMessage();
+        this.setChanged();
+        this.notifyObservers(cm);
     }
 
     @Override
