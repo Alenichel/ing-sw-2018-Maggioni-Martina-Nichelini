@@ -190,11 +190,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
         Player topPlayer = null;
         int topScore = -100;
 
-        //clean player from game setup references.
-        for (Player p : gameAssociated.getPlayersOrder()) {
-            p.setActivePatternCard(null);
-           // p.assignObjectiveCard(null);
-        }
 
         // case when game ends with only a connected player.
         if (gameAssociated.getPlayers().size() == 1){
@@ -211,6 +206,14 @@ public class GameController implements Observer, Serializable, TimerInterface {
                     topPlayer = p;
                 }
             }
+        }
+
+        //clean player from game setup references.
+        for (Player p : gameAssociated.getPlayersOrder()) {
+            p.setActivePatternCard(null);
+            p.setSkipNextTurn(false);
+            p.setScore(0);
+            // p.assignObjectiveCard(null);
         }
 
         if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
