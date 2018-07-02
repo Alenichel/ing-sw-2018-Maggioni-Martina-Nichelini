@@ -257,8 +257,8 @@
                      <font>
                         <Font size="18.0" />
                      </font></Text>
-                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" text="Quit" />
-                  <Button fx:id="winnerAnoterMatch" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" text="Play" />
+                  <Button fx:id="winnerEndGame" onMouseClicked="#quit" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" text="Quit" />
+                  <Button fx:id="winnerAnoterMatch" onMouseClicked="#searchNewGame" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" text="Play" />
                </children>
             </Pane>
             <ImageView fx:id="winnerImage" fitHeight="150.0" fitWidth="737.0" layoutX="24.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
