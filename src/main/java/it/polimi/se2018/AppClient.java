@@ -24,15 +24,20 @@ public class AppClient extends Application{
     public static void main(String[] args) {
         Logger.setSide(LoggerType.CLIENT_SIDE, false);
         Scanner inputInit = new Scanner(System.in);
-        boolean cli;
 
-        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL,"[*] Insert: \n\t1 for Cli\n\t2 for Gui");
-        int chosen = Integer.parseInt(inputInit.nextLine());
-        if(chosen == 1) cli = true;
-        else cli = false;
+        int cli = 0;
+
+        while (cli != 1 && cli != 2){
+            try {
+                Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Insert: \n\t1 for Cli\n\t2 for Gui");
+                cli = Integer.parseInt(inputInit.nextLine());
+            } catch (NumberFormatException e){
+                cli = 0;
+            }
+        }
 
 
-        if(cli) {
+        if(cli == 1) {
             int network = 0;
             String serverURL = null;
             String serverPORT = null;
@@ -41,8 +46,12 @@ public class AppClient extends Application{
             while (true) {
 
                 while (network != 1 && network != 2) {
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Insert: \n\t1 for Socket\n\t2 for RMI");
-                    network = Integer.parseInt(inputInit.nextLine());
+                    try {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Insert: \n\t1 for Socket\n\t2 for RMI");
+                        network = Integer.parseInt(inputInit.nextLine());
+                    } catch (NumberFormatException e) {
+                        cli = 0;
+                    }
                 }
 
                 if (serverURL == null) {
@@ -54,7 +63,7 @@ public class AppClient extends Application{
                 if (serverPORT == null ) {
                     Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please, insert server PORT or leave blank for the default port:");
                     serverPORT = inputInit.nextLine();
-                    if (serverPORT.equalsIgnoreCase("")) serverPORT = "9091";
+                    if (serverPORT.equalsIgnoreCase("")) serverPORT = String.valueOf(Server.getInstance().getServerPort());
                 }
 
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please insert your username: ");

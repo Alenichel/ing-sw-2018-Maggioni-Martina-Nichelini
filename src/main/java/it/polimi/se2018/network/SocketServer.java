@@ -1,5 +1,7 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.model.Server;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -14,7 +16,7 @@ public class SocketServer extends Thread {
     @Override
     public void run() {
         try {
-            ssocket = new ServerSocket(9091);
+            ssocket = new ServerSocket(Server.getInstance().getServerPort());
             System.out.println("Listening");
             while (true) {
                 Socket socket = this.ssocket.accept();

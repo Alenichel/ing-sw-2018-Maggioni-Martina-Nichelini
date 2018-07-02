@@ -21,10 +21,12 @@ import java.util.Map;
 public class ToolCardController {
 
     private Game gameAssociated;
+    private GameController gameController;
     private ToolCard lastToolCardActivated = null;
 
     protected ToolCardController(Game gameAssociated){
         this.gameAssociated = gameAssociated;
+        this.gameController = gameAssociated.getAssociatedGameController();
     }
 
     private ToolCard retrieveToolCardFromName(ToolCardsName tcn){
@@ -47,8 +49,8 @@ public class ToolCardController {
         ToolCard toolCard = retrieveToolCardFromName(name);
         Player player = vv.getClient();
         player.getActivePatternCard().useToken( (toolCard.isUsed()) ? 2 : 1 );
-
         toolCard.setUsed(true);
+        gameController.getActiveRoundHandler().toolcardActivated = true;
         Player p = vv.getClient();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
@@ -128,6 +130,7 @@ public class ToolCardController {
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), false, true, true);
         else if (name.equals(ToolCardsName.Lathekin) || name.equals(ToolCardsName.TapWheel) )
             windowPatternCard.insertDice(d1, end.getRow(), end.getColumn(), true, true, true);
+        windowPatternCard.decreasePlacedDice();
         start.removeDice();
     }
 
@@ -280,7 +283,13 @@ public class ToolCardController {
         else nOfTokens = 1;
 
         if (player.getActivePatternCard().getNumberOfFavorTokens() < nOfTokens) {
-            this.onFailure(observable, "NotEnoughTokens");
+            this.onFailure(observable, "Not Enough Tokens");
+            return;
+        }
+
+        if (gameController.getActiveRoundHandler().toolcardActivated == true){
+            this.onFailure(observable, "ToolCard already activated");
+            return;
         }
 
         switch (tcn) {

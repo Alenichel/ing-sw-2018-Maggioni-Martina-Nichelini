@@ -311,6 +311,13 @@ public class WindowPatternCard extends Card implements Serializable {
     }
 
     /**
+     * This method decrease the number of placed dice.
+     */
+    public void decreasePlacedDice(){
+        this.placedDice--;
+    }
+
+    /**
      * To string method
      * @return string
      */

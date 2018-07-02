@@ -92,11 +92,13 @@ public class GameController implements Observer, Serializable, TimerInterface {
      */
     private synchronized  void disconnectPlayer(Player player){
         gameAssociated.removePlayer(player);
-        if (this.gameAssociated.getActivePlayer().equals(player)) this.roundHandler.nextTurn();
+
+        if (gameAssociated.isStarted())
+            if (this.gameAssociated.getActivePlayer().equals(player)) this.roundHandler.nextTurn();
         player.setInGame(false);
         this.serverController.disconnectPlayer(player);
 
-        if (gameAssociated.getPlayers().size() == 1){
+        if (gameAssociated.getPlayers().size() == 1 && gameAssociated.isStarted()){
             onGameEnd();
         }
     }
@@ -122,14 +124,20 @@ public class GameController implements Observer, Serializable, TimerInterface {
      * This method launches the game by setting the player's order, initializing GameSetupController and setting the
      * associated game to started
      */
-    private void launchGame(){
-        try {
-            for (Player p : this.gameAssociated.getPlayers() )
-                this.gameAssociated.getPlayersOrder().add(p);
-            this.gameSetupController.initialize();
-            this.gameAssociated.setStarted(true);
+    private void launchGame() {
 
-        }catch (GameException e){
+        try {
+            if (this.gameAssociated.getPlayers().size() < 2) {
+                this.gameAssociated.setStarted(false);
+            }
+            else {
+                for (Player p : this.gameAssociated.getPlayers())
+                    this.gameAssociated.getPlayersOrder().add(p);
+                this.gameSetupController.initialize();
+                this.gameAssociated.setStarted(true);
+                serverController.resetGame();
+            }
+        } catch (GameException e) {
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
         }
     }
@@ -157,7 +165,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
      * @param player whose score is being calculated
      * @return the score
      */
-    protected int calculateScore(Player player){
+    private int calculateScore(Player player){
         int score = 0;
         int pocScore = 0;
 
@@ -185,6 +193,25 @@ public class GameController implements Observer, Serializable, TimerInterface {
     }
 
     /**
+     * This method handles ties score as specified in Sagrada Rules.
+     * @param p1 First player to compare.
+     * @param p2 Second player to compare.
+     * @return The player to be declared winner.
+     */
+    private Player tiesHandling(Player p1, Player p2){
+        if (p1.getScores().get("Private Objective Score") > p2.getScores().get("Private Objective Score"))
+            return p1;
+        else if (p1.getScores().get("Private Objective Score") < p2.getScores().get("Private Objective Score"))
+            return p2;
+        else {
+            if (p1.getActivePatternCard().getNumberOfFavorTokens() > p2.getActivePatternCard().getNumberOfFavorTokens())
+                return p1;
+            else
+                return p2;
+        }
+    }
+
+    /**
      * This method is called in     GameController and RoundHandler
      */
     protected void onGameEnd(){
@@ -205,6 +232,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 if (playerScore > topScore) {
                     topScore = playerScore;
                     topPlayer = p;
+                }
+
+                else if (playerScore == topScore){
+                    topPlayer = tiesHandling(topPlayer, p);
                 }
             }
         }
@@ -343,6 +374,5 @@ public class GameController implements Observer, Serializable, TimerInterface {
     public void timerDoneAction(){
         this.launchGame();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game started");
-        serverController.resetGame();
     }
 }

@@ -40,7 +40,7 @@ public class LoginController implements Serializable{
                 if (group.getSelectedToggle() != null) {
                     methodConnection = group.getSelectedToggle().getUserData().toString();
                     if (methodConnection.equals("RMI")) port.setText("1099");
-                    else port.setText("9091");
+                    else port.setText(String.valueOf(Server.getInstance().getServerPort()));
                     button.setDisable(false);
                 }
             }

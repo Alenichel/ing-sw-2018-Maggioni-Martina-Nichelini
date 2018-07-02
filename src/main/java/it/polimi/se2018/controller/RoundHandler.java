@@ -28,6 +28,7 @@ public class RoundHandler implements TimerInterface {
     protected long timerID;
     private long moveTimer;
     private Random rand = new Random();
+    protected boolean toolcardActivated = false;
 
     private final List<Player> turnList;
     private Player activePlayer;
@@ -123,6 +124,7 @@ public class RoundHandler implements TimerInterface {
     protected void nextTurn(){
         try {
             this.turnNumber++;
+            toolcardActivated = false;
             this.gameAssociated.setActualTurn(turnNumber);
             this.movableDice = 1;
 

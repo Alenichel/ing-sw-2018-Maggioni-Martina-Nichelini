@@ -129,21 +129,20 @@ public class Game extends Observable implements Serializable {
      */
     public synchronized void setStarted(boolean started) throws GameException {
         if (this.isStarted) throw new GameException("Game already started");
-        else {
-            if (this.players.size() > 1) {
-                this.isStarted = started;
-                UpdateMessage um = new UpdateMessage(WhatToUpdate.GameStarted);
-                um.setStringMessage("Game started");
-                this.setChanged();
-                this.notifyObservers(um);
-            }
-            else{
-                UpdateMessage um = new UpdateMessage(WhatToUpdate.Timer);
-                um.setStringMessage("Timer done but not enough players connected");
-                this.setChanged();
-                this.notifyObservers(um);
-            }
+
+        if (started){
+            this.isStarted = started;
+            UpdateMessage um = new UpdateMessage(WhatToUpdate.GameStarted);
+            um.setStringMessage("Game started");
+            this.setChanged();
+            this.notifyObservers(um);
         }
+        else{
+            UpdateMessage um = new UpdateMessage(WhatToUpdate.Timer);
+            um.setStringMessage("Timer done but not enough players connected");
+            this.setChanged();
+            this.notifyObservers(um);
+            }
     }
 
     /**
