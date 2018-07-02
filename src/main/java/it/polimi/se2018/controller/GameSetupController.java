@@ -64,15 +64,10 @@ public class GameSetupController implements Serializable {
     private void initializeToolCards(){
 
         List<ToolCard> selectedToolcards= new ArrayList<>();
-        /*
+
         final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
-            selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));*/
-
-
-        selectedToolcards.add(new ToolCard(ToolCardsName.TapWheel));
-        selectedToolcards.add( new ToolCard(ToolCardsName.GlazingHammer));
-        selectedToolcards.add( new ToolCard(ToolCardsName.EnglomiseBrush ));
+            selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));
 
         this.associatedGame.setToolCards(selectedToolcards);
 
@@ -121,7 +116,7 @@ public class GameSetupController implements Serializable {
      * This method is called later in handleSelectionMessage
      * @param cardIndex of the window pattern card
      * @param p player who chose the pattern card
-     * @throws GameException if the selected pattern card has already been chosen
+     * @throws GameException
      */
     private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
 
@@ -141,9 +136,7 @@ public class GameSetupController implements Serializable {
     }
 
     /**
-     * This method handles the selection message
-     * @param observable Observable
-     * @param message SelectionMessage
+     * This method handles selection message
      */
     private void handleSelectionMessage(Observable observable, SelectionMessage message){
         switch (message.getSelected()){
