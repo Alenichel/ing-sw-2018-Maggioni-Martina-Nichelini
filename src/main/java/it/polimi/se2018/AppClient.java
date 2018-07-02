@@ -46,13 +46,13 @@ public class AppClient extends Application{
                 }
 
                 if (serverURL == null) {
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please, insert server URL or leave blank for localhost:\n");
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please, insert server URL or leave blank for localhost:");
                     serverURL = inputInit.nextLine();
                     if (serverURL.equalsIgnoreCase("")) serverURL = "localhost";
                 }
 
                 if (serverPORT == null ) {
-                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please, insert server PORT or leave blank for the default port:\n");
+                    Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "[*] Please, insert server PORT or leave blank for the default port:");
                     serverPORT = inputInit.nextLine();
                     if (serverPORT.equalsIgnoreCase("")) serverPORT = "9091";
                 }
