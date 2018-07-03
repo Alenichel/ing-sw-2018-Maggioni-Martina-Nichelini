@@ -124,7 +124,7 @@ public class RoundHandler implements TimerInterface {
     protected void nextTurn(){
         try {
             this.turnNumber++;
-            toolcardActivated = false;
+            //toolcardActivated = false;
             this.gameAssociated.setActualTurn(turnNumber);
             this.movableDice = 1;
 

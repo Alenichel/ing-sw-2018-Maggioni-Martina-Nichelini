@@ -50,7 +50,7 @@ public class ToolCardController {
         Player player = vv.getClient();
         player.getActivePatternCard().useToken( (toolCard.isUsed()) ? 2 : 1 );
         toolCard.setUsed(true);
-        gameController.getActiveRoundHandler().toolcardActivated = true;
+        //gameController.getActiveRoundHandler().toolcardActivated = true;
         Player p = vv.getClient();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
@@ -286,11 +286,11 @@ public class ToolCardController {
             this.onFailure(observable, "Not Enough Tokens");
             return;
         }
-
-        if (gameController.getActiveRoundHandler().toolcardActivated == true){
+        /*
+        if (gameController.getActiveRoundHandler().toolcardActivated){
             this.onFailure(observable, "ToolCard already activated");
             return;
-        }
+        }*/
 
         switch (tcn) {
 
