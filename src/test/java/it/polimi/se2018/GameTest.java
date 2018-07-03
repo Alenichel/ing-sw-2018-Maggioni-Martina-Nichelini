@@ -9,6 +9,9 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+/**
+ * Tests for Game's class
+ */
 public class GameTest {
 
     @Test
@@ -68,26 +71,38 @@ public class GameTest {
 
         Game game = new Game();
         System.out.println(game.getName());
-        Assert.assertEquals(0, game.getActualRound());
-        Assert.assertEquals(null, game.getActivePlayer());
 
+        //actual round getter test
+        Assert.assertEquals(0, game.getActualRound());
         game.setActualRound(5);
         Assert.assertEquals(5, game.getActualRound());
+        Assert.assertNotEquals(4, game.getActualRound());
+
+        //active player getter test
+        Assert.assertEquals(null, game.getActivePlayer());
         game.setActivePlayer(player1);
         Assert.assertEquals(player1, game.getActivePlayer());
+        Assert.assertNotEquals(player2, game.getActivePlayer());
 
-        //getPlayers test
+        //initialization complete getter
         game.setInitializationComplete(true);
         Assert.assertEquals(true, game.isInitiliazationComplete());
 
+        //players getter test
         game.getPlayers().addAll(players);
         Assert.assertEquals(players, game.getPlayers());
         Assert.assertNotEquals(wrongPlayer, game.getPlayers());
+
+        //remove player test
         players.remove(player1);
         game.removePlayer(player1);
         Assert.assertEquals(players, game.getPlayers());
+
+        //timer seconds left getter test
         game.setTimerSecondLeft(30);
         Assert.assertEquals(30, game.getTimerSecondsLeft());
+
+        //winner getter test
         game.setWinner(player2);
         Assert.assertEquals(player2, game.getWinner());
 
@@ -101,26 +116,26 @@ public class GameTest {
         dice.add(die5);
         dice.add(die6);
 
-        //getDiceBag test
+        //Dice bag getter test
         wrongDice = (ArrayList<Dice>) dice.clone();
         game.setDiceBag(dice);
         Assert.assertEquals(dice, game.getDiceBag());
 
-        //getDiceOnTable test
+        //Dice on table getter test
         game.setDiceOnTable(wrongDice);
         Assert.assertEquals(wrongDice, game.getDiceOnTable());
 
-        //getObjectiveCards test
+        //objective cards getter test
         game.setObjectiveCards(objectives);
         Assert.assertEquals(objectives, game.getObjectiveCards());
         Assert.assertNotEquals(tc, game.getObjectiveCards());
 
-        //getToolCards test
+        //Tool card getter test
         game.setToolCards(tc);
         Assert.assertEquals(tc, game.getToolCards());
         Assert.assertNotEquals(objectives, game.getToolCards());
 
-        //getPatternCards test
+        //Pattern cards getter test
         game.setPatternCards(wpc);
         Assert.assertEquals(wpc, game.getPatternCards());
         Assert.assertNotEquals(tc, game.getPatternCards());
