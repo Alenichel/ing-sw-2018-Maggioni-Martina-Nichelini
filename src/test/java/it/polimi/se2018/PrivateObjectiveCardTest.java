@@ -10,6 +10,8 @@ public class PrivateObjectiveCardTest {
     @Test
     public void testGetter(){
         PrivateObjectiveCard poc = new PrivateObjectiveCard(DiceColor.red);
+
+        // test for color getter
         Assert.assertEquals(DiceColor.red, poc.getColor());
         System.out.println(poc);
     }

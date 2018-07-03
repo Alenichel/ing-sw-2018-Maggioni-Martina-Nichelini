@@ -12,9 +12,13 @@ import it.polimi.se2018.enumeration.WindowPatternCardsName;
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * Tests for private and public objective cards
+ */
 public class ObjectivesTest {
 
     @Test
+    // test for Column Shade Variety and Column Color Variety objective cards
     public void testColumnVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -40,9 +44,11 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);
         Assert.assertEquals(10, sps.scorePoint(wpc));
+        Assert.assertNotEquals(9, sps.scorePoint(wpc));
     }
 
     @Test
+    // test for Row Color Variety and Row Shade Variety objective cards
     public void testRowVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -72,10 +78,11 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new RowVariety(VarietyType.COLOR);
         Assert.assertEquals(12, sps.scorePoint(wpc));
-
+        Assert.assertNotEquals(10, sps.scorePoint(wpc));
     }
 
     @Test
+    // test for Color Variety objective card
     public void testColorVariety() throws  NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -96,10 +103,11 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new ColorVariety();
         Assert.assertEquals(4,sps.scorePoint(wpc));
-
+        Assert.assertNotEquals(3,sps.scorePoint(wpc));
     }
 
     @Test
+    // test for Shade Variety objective card
     public void testShadeVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -119,11 +127,14 @@ public class ObjectivesTest {
 
         wpc.insertDice(d1, 3,4, false,false,false);
         wpc.insertDice(d1, 2,1,false,false,false);
+
         ScorePointStrategy sps = new ShadeVariety();
         Assert.assertEquals(5,sps.scorePoint(wpc));
+        Assert.assertNotEquals(4,sps.scorePoint(wpc));
     }
 
     @Test
+    // test for Light Shades, Medium Shades and Dark Shades objective cards
     public void testShades() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -141,9 +152,11 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new Shades("medium");
         Assert.assertEquals(4,sps.scorePoint(wpc));
+        Assert.assertNotEquals(6,sps.scorePoint(wpc));
     }
 
     @Test
+    // test for private objective cards
     public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -161,9 +174,11 @@ public class ObjectivesTest {
 
         PrivateShadesOfColor sp = new PrivateShadesOfColor(DiceColor.blue);
         Assert.assertEquals(3, sp.scorePoint(wpc));
+        Assert.assertNotEquals(7, sp.scorePoint(wpc));
     }
 
     @Test
+    // test for color diagonals objective card
     public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
@@ -180,6 +195,7 @@ public class ObjectivesTest {
 
         ScorePointStrategy sps = new ColorDiagonals();
         Assert.assertEquals(6, sps.scorePoint(wpc));
+        Assert.assertNotEquals(5, sps.scorePoint(wpc));
     }
 
     @Test
@@ -187,7 +203,10 @@ public class ObjectivesTest {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
         ScorePointStrategy sps = new ColumnVariety(VarietyType.COLOR);
         ScorePointStrategy sps2 = new ColorVariety();
+
         Assert.assertEquals(0, sps.scorePoint(wpc));
+        Assert.assertNotEquals(1, sps.scorePoint(wpc));
         Assert.assertEquals(0, sps2.scorePoint(wpc));
+        Assert.assertNotEquals(1, sps2.scorePoint(wpc));
     }
 }
