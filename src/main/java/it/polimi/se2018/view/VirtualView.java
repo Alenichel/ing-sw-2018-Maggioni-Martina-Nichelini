@@ -11,7 +11,8 @@ import java.util.Observer;
 
 public class VirtualView extends View implements Observer {
 
-    private ServerInterface virtualClient;
+    private ServerInterface virtualClient = null;
+    private View concreteView = null;
 
     public VirtualView(ServerInterface virtualClient, Player player) {
         this.virtualClient = virtualClient;
@@ -20,21 +21,31 @@ public class VirtualView extends View implements Observer {
         Server.getInstance().addObserver(this);
     }
 
+    public VirtualView(View concreteView, Player player){
+        this.concreteView = concreteView;
+        this.client = player;
+        this.addObserver(ServerController.getInstance());
+        Server.getInstance().addObserver(this);
+    }
+
+
     public void controllerCallback(Message callbackMessage) {
         try {
             callbackMessage.setSignedBy(this.client.getNickname());
-            virtualClient.controllerCallback(callbackMessage);
+            if (virtualClient != null) virtualClient.controllerCallback(callbackMessage);
+            else if (concreteView != null) concreteView.controllerCallback(callbackMessage);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
     public void update(Observable o, Object msg) {
         try {
             ((Message)msg).setSignedBy(this.client.getNickname());
-            virtualClient.update(o, msg);
+            if (virtualClient != null) virtualClient.update(o, msg);
+            else if (concreteView != null) concreteView.update(o, msg);
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 }

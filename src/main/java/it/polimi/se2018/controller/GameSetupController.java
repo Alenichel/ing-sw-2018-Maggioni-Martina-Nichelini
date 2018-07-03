@@ -56,6 +56,9 @@ public class GameSetupController implements Serializable {
             }
             p.setWindowPatternCardsPool(patternCardsPool);
         }
+
+
+
     }
 
     /**

@@ -93,14 +93,16 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private synchronized  void disconnectPlayer(Player player){
         gameAssociated.removePlayer(player);
 
-        if (gameAssociated.isStarted())
-            if (this.gameAssociated.getActivePlayer().equals(player)) this.roundHandler.nextTurn();
         player.setInGame(false);
         this.serverController.disconnectPlayer(player);
 
         if (gameAssociated.getPlayers().size() == 1 && gameAssociated.isStarted()){
             onGameEnd();
+            return;
         }
+
+        if (gameAssociated.isStarted())
+            if (this.gameAssociated.getActivePlayer().equals(player)) this.roundHandler.nextTurn();
     }
 
     /**
@@ -322,7 +324,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     }
 
     @Override
-    public void update(Observable observable, Object msg){
+    public synchronized void update(Observable observable, Object msg){
 
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, ":GAME_CONTROLLER( " + this.gameAssociated.getName().toString() + " ): Receveid -> " + ((Message)msg).getMessageType() );
 

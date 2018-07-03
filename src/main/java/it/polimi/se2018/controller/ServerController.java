@@ -82,15 +82,7 @@ public class ServerController implements Observer, Serializable{
      * @param message ConnectionMessage
      */
     private synchronized void connectPlayer (Observable observable, ConnectionMessage message) {
-        /*if (message.getMessageType().equals("ReConnectionMessage")) {
-            if (this.server.getCurrentGame() != null)
-                this.server.getCurrentGame().getAssociatedGameController().update(observable, message);
-            else {
-                this.server.addPlayer(server.getWaitingPlayers(), ((VirtualView)observable).getClient());
-                this.resetGame();
-            }
-            return;
-        }*/
+
         Player player = ((VirtualView)observable).getClient();
         if (!server.getOnlinePlayers().contains(player)) server.addPlayerToOnlinePlayers(player); //add player to the list of online players
         player.setOnline(true); //set player status to online
@@ -153,7 +145,7 @@ public class ServerController implements Observer, Serializable{
         }
     }
 
-    public void update (Observable observable, Object message){
+    public synchronized void update (Observable observable, Object message){
 
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, ":SERVER_CONTROLLER: Received -> " + ((Message) message).getMessageType());
         switch(((Message)message).getMessageType()){

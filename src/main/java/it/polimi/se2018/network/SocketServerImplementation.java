@@ -1,5 +1,6 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
@@ -105,7 +106,8 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         try {
             queue.put(suc);
         } catch (InterruptedException e){
-            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "SSI: "+e.toString());
+            if (! (msg instanceof UpdateMessage && ((UpdateMessage)msg).getWhatToUpdate().equals(WhatToUpdate.TimeLeft) ))
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "SSI: "+e.toString());
             Thread.currentThread().interrupt();
         }
     }
