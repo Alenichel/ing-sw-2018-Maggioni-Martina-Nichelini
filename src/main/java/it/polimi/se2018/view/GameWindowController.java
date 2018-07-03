@@ -88,6 +88,8 @@ public class GameWindowController implements Serializable {
     @FXML private Pane drafted8;
     @FXML private Pane drafted9;
 
+    @FXML protected Pane draftedSelection;
+
     @FXML protected Pane responseInsert;
 
     @FXML private Pane winnerPane;
@@ -385,6 +387,16 @@ public class GameWindowController implements Serializable {
         });
     }
 
+    private void setMouseClickOnDraftSelection(){
+        draftedSelection.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = null;
+                gw.toolcardSemaphore.release();
+            }
+        });
+    }
+
     //------------------------------------------
 
     private void setup(int nOfPlayers){
@@ -410,10 +422,11 @@ public class GameWindowController implements Serializable {
         selectDice = new ArrayList<>(Arrays.asList(selectDiceArray));
 
 
-
         //this.musicSetup();
+
         this.setupToolcards();
         this.setupPublicObjectiveCards();
+        this.setMouseClickOnDraftSelection();
         this.setupRoundTrack();
         this.setupButtons();
         setBackground(nOfPlayers);
@@ -636,6 +649,11 @@ public class GameWindowController implements Serializable {
         removeSelectionDice();
         mouseOverRound.setVisible(false);
         lensCutterInUse = false;
+
+        this.draftedSelection.setVisible(true);
+        this.draftedSelection.setDisable(false);
+        this.draftedSelection.setEffect(new DropShadow(20, Color.BLACK));
+
         for(ImageView imageView : toolCards)
             imageView.setEffect(null);
     }

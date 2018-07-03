@@ -3,6 +3,7 @@ package it.polimi.se2018.controller;
 import it.polimi.se2018.enumeration.*;
 import it.polimi.se2018.exception.GameException;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
+import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.exception.ToolCardException;
 import it.polimi.se2018.message.ControllerCallbackMessage;
 import it.polimi.se2018.message.ToolCardMessage;
@@ -196,17 +197,22 @@ public class ToolCardController {
      * Tool Card #6 "Flux Brush": After drafting re roll the drafted die. If it cannot be placed,
      * return it to the drafted pool.
      */
-    private void handleFluxBrush(Map<ToolcardContent, Object> params) {
+    private void handleFluxBrush(Map<ToolcardContent, Object> params) throws NotValidInsertion, NotEmptyWindowCellException{
 
+        WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
-
-        if (params.get(ToolcardContent.WindowCellEnd) == null)
-            return;
+        int[] cooEnd= (int[])params.get(ToolcardContent.WindowCellEnd);
 
         draftedDie.rollDice();
 
+        if (params.get(ToolcardContent.WindowCellEnd) == null) {
+            return;
+        } else {
+            windowPatternCard.insertDice(draftedDie, cooEnd[0], cooEnd[1], true, true, true);
+        }
     }
+
 
     /**
      * Tool Card #7 "Glazing Hammer": Re roll all dice in the drafted pool.
@@ -410,7 +416,7 @@ public class ToolCardController {
                 try {
                     this.handleFluxBrush(toolCardMessage.getParameters());
                     this.onSuccess(observable, tcn);
-                } catch (GameException e) {
+                } catch (GameException | NotValidInsertion | NotEmptyWindowCellException e) {
                     onFailure(observable, e.getMessage());
                     return;
                 }

@@ -14,7 +14,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -158,6 +160,15 @@ public class GuiView extends View implements Observer {
             //If LensCutter ToolCards is in use lock the mouseOver Pane
             gameWindowController.lensCutterInUse = true;
         }
+
+        if(selectedToolCard.getToolCardName().equals(ToolCardsName.FluxRemover) || selectedToolCard.getToolCardName().equals(ToolCardsName.FluxBrush)){
+            gameWindowController.draftedSelection.setVisible(true);
+            gameWindowController.draftedSelection.setDisable(false);
+
+            gameWindowController.draftedSelection.setEffect(new DropShadow(20, Color.BLACK));
+        }
+
+
         this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
         new Thread(toolCardTask).start();
     }

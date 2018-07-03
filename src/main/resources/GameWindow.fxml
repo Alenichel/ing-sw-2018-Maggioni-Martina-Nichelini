@@ -257,8 +257,8 @@
                      <font>
                         <Font size="18.0" />
                      </font></Text>
-                  <Button fx:id="winnerEndGame" onMouseClicked="#quit" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" text="Quit" />
-                  <Button fx:id="winnerAnoterMatch" onMouseClicked="#searchNewGame" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" text="Play" />
+                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#quit" text="Quit" />
+                  <Button fx:id="winnerAnoterMatch" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#searchNewGame" text="Play" />
                </children>
             </Pane>
             <ImageView fx:id="winnerImage" fitHeight="150.0" fitWidth="737.0" layoutX="24.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
@@ -301,5 +301,6 @@
       <Pane fx:id="selectDice4" disable="true" layoutX="269.0" layoutY="534.0" prefHeight="52.0" prefWidth="50.0" visible="false" />
       <Pane fx:id="selectDice5" disable="true" layoutX="269.0" layoutY="591.0" prefHeight="52.0" prefWidth="50.0" visible="false" />
       <Pane fx:id="selectDice6" disable="true" layoutX="269.0" layoutY="649.0" prefHeight="52.0" prefWidth="50.0" visible="false" />
+      <Pane fx:id="draftedSelection" disable="true" layoutX="900.0" layoutY="342.0" prefHeight="50.0" prefWidth="50.0" visible="false" />
    </children>
 </AnchorPane>
