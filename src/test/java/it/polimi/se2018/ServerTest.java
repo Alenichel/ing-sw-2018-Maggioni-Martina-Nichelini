@@ -25,8 +25,8 @@ public class ServerTest {
 
         //add player from online players test
         server.addPlayerToOnlinePlayers(p);
-        Assert.assertEquals(1, server.getOnlinePlayers().size());
-        Assert.assertNotEquals(3, server.getOnlinePlayers().size());
+        Assert.assertEquals(3, server.getOnlinePlayers().size());
+        Assert.assertNotEquals(5, server.getOnlinePlayers().size());
 
         //remove player from online players test
         server.removePlayerFromOnlinePlayers(p);
