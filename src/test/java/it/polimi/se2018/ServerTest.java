@@ -6,7 +6,9 @@ import org.junit.Assert;
 import org.junit.Test;
 import java.util.ArrayList;
 
-
+/**
+ * Tests for Server's class
+ */
 public class ServerTest {
 
     @Test
@@ -15,20 +17,15 @@ public class ServerTest {
 
         Player p = new Player("Player");
 
-
-        server.getCurrentGame();
-        server.getActiveGames();
-        server.getDefaultMatchmakingTimer();
-        server.getWaitingPlayers();
+        //add player from online players test
         server.addPlayerToOnlinePlayers(p);
-        server.isConfigurationRequired();
-        server.getOfflinePlayers();
+        Assert.assertEquals(1, server.getOnlinePlayers().size());
+        Assert.assertNotEquals(3, server.getOnlinePlayers().size());
 
-        //Assert.assertEquals(2, server.getOnlinePlayers().size());
-
+        //remove player from online players test
         server.removePlayerFromOnlinePlayers(p);
-        Assert.assertTrue(!server.getOnlinePlayers().contains(p)); //check the player is not anymore listed in online players.
-        Assert.assertTrue(server.getOfflinePlayers().contains(p)); //check the player is now listed in offline players
+        Assert.assertTrue(!server.getOnlinePlayers().contains(p));
+        Assert.assertTrue(server.getOfflinePlayers().contains(p));
 
     }
 

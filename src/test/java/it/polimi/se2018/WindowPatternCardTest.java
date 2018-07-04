@@ -11,9 +11,13 @@ import org.junit.Test;
 
 import static org.junit.Assert.fail;
 
+/**
+ * Tests for window pattern cards
+ */
 public class WindowPatternCardTest {
 
     @Test
+    //valid insertion test
     public void testValidInsertion() throws NotValidInsertion, NotEmptyWindowCellException{
         Dice d = new Dice(DiceColor.green);
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
@@ -24,6 +28,7 @@ public class WindowPatternCardTest {
     }
 
     @Test
+    //constraint violation test
     public void testConstraintViolation() throws NotEmptyWindowCellException{
         Dice d = new Dice(DiceColor.green);
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
@@ -38,6 +43,7 @@ public class WindowPatternCardTest {
     }
 
     @Test
+    //position violation test
     public void testPositionViolation() throws NotEmptyWindowCellException{
         Dice d = new Dice(DiceColor.green);
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
