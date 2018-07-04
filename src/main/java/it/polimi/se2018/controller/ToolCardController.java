@@ -232,6 +232,9 @@ public class ToolCardController {
     }
 
 
+    /**
+     * Tool Card #5: After your first turn, immediately draft a die. Skip your next turn this round.
+     */
     private void handleRunningPliers(Map<ToolcardContent, Object> params) throws ToolCardException {
         Player player = Security.getUser((String)params.get(ToolcardContent.RunBy));
         if (player.hasToSkipNextTurn()) {
