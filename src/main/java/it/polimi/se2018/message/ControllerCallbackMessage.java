@@ -14,10 +14,10 @@ public class ControllerCallbackMessage extends Message{
         this.priority = priority;
     }
 
-    public ControllerCallbackMessage(CallbackMessageSubject callback, String strigMessage, LoggerPriority priority){
+    public ControllerCallbackMessage(CallbackMessageSubject callback, String stringMessage, LoggerPriority priority){
         this.messageType = "ControllerCallbackMessage";
         this.callbackMessageSubject = callback;
-        this.stringMessage = strigMessage;
+        this.stringMessage = stringMessage;
         this.priority = priority;
     }
 

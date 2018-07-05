@@ -1,7 +1,5 @@
 package it.polimi.se2018.message;
 
-import it.polimi.se2018.model.Player;
-
 import java.io.Serializable;
 
 public abstract class Message implements Serializable {

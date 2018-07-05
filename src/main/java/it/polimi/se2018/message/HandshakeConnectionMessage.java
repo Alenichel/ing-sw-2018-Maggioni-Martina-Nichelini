@@ -2,10 +2,6 @@ package it.polimi.se2018.message;
 
 import it.polimi.se2018.model.Player;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public class HandshakeConnectionMessage extends Message {
 
     private String username;

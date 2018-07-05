@@ -4,7 +4,7 @@ import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 
 /**
- * Message class for connecting/disconneting action
+ * Message class for connecting/disconneting action. It also handles reconnection after a game ends.
  */
 public class ConnectionMessage extends Message{
 
@@ -12,6 +12,9 @@ public class ConnectionMessage extends Message{
     private boolean isConnecting;
     private Game target;
 
+    /**
+     * Constructor for reconnection message.
+     */
     public ConnectionMessage(){
         this.messageType = "ReConnectionMessage";
         this.requester = null;

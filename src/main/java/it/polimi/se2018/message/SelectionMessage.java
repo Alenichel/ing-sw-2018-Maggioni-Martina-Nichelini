@@ -14,7 +14,6 @@ public class SelectionMessage extends Message{
         this.fromWhom =  player;
     }
 
-    //aggiunto per mandare da cliview al server il messaggio di scelta della patternCard
     public SelectionMessage(Object item, Player player, String selected){
         this.chosenItem = item;
         this.messageType = "SelectionMessage";

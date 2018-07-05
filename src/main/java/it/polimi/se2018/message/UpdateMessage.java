@@ -6,12 +6,10 @@ public class UpdateMessage extends Message {
 
     private WhatToUpdate whatToUpdate;
 
-
     public UpdateMessage(WhatToUpdate whatToUpdate){
         this.whatToUpdate = whatToUpdate;
         this.messageType = "UpdateMessage";
     }
-
 
     public WhatToUpdate getWhatToUpdate() {
         return whatToUpdate;
