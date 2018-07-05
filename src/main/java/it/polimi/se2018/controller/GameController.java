@@ -214,7 +214,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     }
 
     /**
-     * This method is called in     GameController and RoundHandler
+     * This method is called in GameController and RoundHandler
      */
     protected void onGameEnd(){
 
