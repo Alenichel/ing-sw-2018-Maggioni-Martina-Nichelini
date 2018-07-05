@@ -1,11 +1,14 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.controller.ServerController;
+import it.polimi.se2018.enumeration.WindowPatternCardsName;
 import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.message.MoveDiceMessage;
 import it.polimi.se2018.message.SelectionMessage;
+import it.polimi.se2018.model.Game;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
+import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.VirtualView;
 import org.junit.Assert;
@@ -103,6 +106,8 @@ public class ControllerTest {
         } catch (InterruptedException e){
             System.out.println("Interrupted");
         }
+
+        //-----------------------------------------------PARTITA INIZIATA, ORA SELEZIONIAMO PATTERNCARD-------------------------------------------
         Assert.assertTrue(Server.getInstance().getOnlinePlayers().contains(p1));
         Assert.assertTrue(Server.getInstance().getOnlinePlayers().contains(p2));
         //Assert.assertEquals(2, Server.getInstance().getOnlinePlayers().size());
@@ -113,18 +118,30 @@ public class ControllerTest {
         h1.setContainer(sm1);
         h2.setContainer(sm2);
 
+        p1.setActivePatternCard(new WindowPatternCard(WindowPatternCardsName.batllo));
+        p2.setActivePatternCard(new WindowPatternCard(WindowPatternCardsName.luxAstram));
+
+        //-----------------------------------------------PARTITA REALMENTE INIZIATA------------------------------------------------------------
+
         try {
             Thread.sleep((Server.getInstance().getnOfTurn() * 2 * Server.getInstance().getDefaultMoveTimer() + 1) * 1000 );
         } catch (InterruptedException e){
             System.out.println("Interrupted");
         }
 
-        MoveDiceMessage mdm1 = new MoveDiceMessage(1, 1, 1);
-        MoveDiceMessage mdm2 = new MoveDiceMessage(1, 2, 2);
-        h1.setContainer(mdm1);
-        h1.setContainer(mdm2);
-        h2.setContainer(mdm1);
-        h2.setContainer(mdm2);
+        Game game = Server.getInstance().getActiveGames().get(0);
+
+        if(game.getActivePlayer().equals(p1)){
+            //turno di p1
+            MoveDiceMessage mdm1 = new MoveDiceMessage(1, 1, 1);
+            h1.setContainer(mdm1);
+        }
+        else if(game.getActivePlayer().equals(p2)){
+            //turno di p2
+            MoveDiceMessage mdm2 = new MoveDiceMessage(2, 1, 1);
+            h2.setContainer(mdm2);
+        }
+
 
         try {
             Thread.sleep((Server.getInstance().getnOfTurn() * 2 * Server.getInstance().getDefaultMoveTimer() + 1) * 1000 );
@@ -136,5 +153,12 @@ public class ControllerTest {
         h2.stop();
     }
 
+    private void waitATurn(){
+        try {
+            Thread.sleep((Server.getInstance().getDefaultMoveTimer()+1)*1000);
+        }catch (InterruptedException e){
+            ;
+        }
 
+    }
 }
