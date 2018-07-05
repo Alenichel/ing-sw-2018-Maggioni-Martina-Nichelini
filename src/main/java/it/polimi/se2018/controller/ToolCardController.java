@@ -42,7 +42,6 @@ public class ToolCardController {
     private void onFailure(VirtualView vv, String errorMessage){
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , errorMessage, LoggerPriority.NOTIFICATION);
         ccm.setStringMessage(errorMessage);
-        ccm.setStringMessage("Toolcard NACK.");
         vv.controllerCallback(ccm);
     }
 
@@ -222,8 +221,8 @@ public class ToolCardController {
 
         int turn = gameAssociated.getActualTurn() + 1;
 
-        if (turn - this.gameAssociated.getPlayersOrder().size() < 0 ) {
-            throw new ToolCardException("NotSecondTurn");
+        if (turn - this.gameAssociated.getPlayersOrder().size() <= 0 ) {
+            throw new ToolCardException("Not Second Turn");
         }
 
         for(Dice die: this.gameAssociated.getDiceOnTable()){
@@ -292,7 +291,7 @@ public class ToolCardController {
         else nOfTokens = 1;
 
         if (player.getActivePatternCard().getNumberOfFavorTokens() < nOfTokens) {
-            this.onFailure(observable, "Not Enough Tokens");
+            this.onFailure(observable, "Not enough tokens");
             return;
         }
         /*
@@ -356,8 +355,8 @@ public class ToolCardController {
 
             case GlazingHammer:
                 try {
-                    this.onSuccess(observable, tcn);
                     handleGlazingHammer(toolCardMessage.getParameters());
+                    this.onSuccess(observable, tcn);
                 } catch (ToolCardException | GameException e) {
                     onFailure(observable, e.getMessage());
                     return;

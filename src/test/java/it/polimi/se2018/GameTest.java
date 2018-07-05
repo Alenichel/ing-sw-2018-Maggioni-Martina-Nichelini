@@ -86,7 +86,7 @@ public class GameTest {
 
         //initialization complete getter
         game.setInitializationComplete(true);
-        Assert.assertEquals(true, game.isInitiliazationComplete());
+        Assert.assertEquals(true, game.isInitializationComplete());
 
         //players getter test
         game.getPlayers().addAll(players);

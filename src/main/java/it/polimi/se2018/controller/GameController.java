@@ -275,7 +275,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         WhatToUpdate wtu = message.getWhatToUpdate();
 
         if (wtu.equals(WhatToUpdate.Pass)){
-                if (!this.gameAssociated.isInitiliazationComplete()){
+                if (!this.gameAssociated.isInitializationComplete()){
                     ControllerCallbackMessage ccm = new ControllerCallbackMessage("PatternCard has not been selected yet.", LoggerPriority.ERROR);
                     ((View)observable).controllerCallback(ccm);
                 }

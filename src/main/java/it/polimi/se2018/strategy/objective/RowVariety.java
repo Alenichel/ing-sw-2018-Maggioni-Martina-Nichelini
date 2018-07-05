@@ -1,5 +1,6 @@
 package it.polimi.se2018.strategy.objective;
 
+import it.polimi.se2018.enumeration.VarietyType;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;

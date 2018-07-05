@@ -45,19 +45,52 @@
   <build>
     <plugins>
 
-      <!-- Export the project as a runnable JAR, with the provided mainClass -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <mainClass>it.polimi.se2018.AppServer</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>3.1.0</version>
+        <executions>
+          <execution>
+            <id>build-server</id>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <archive>
+                <manifest>
+                  <mainClass>it.polimi.se2018.AppServer</mainClass>
+                </manifest>
+              </archive>
+              <descriptors>
+                <descriptor>src/assembly/build-server.xml</descriptor>
+              </descriptors>
+              <finalName>SagradaServer</finalName>
+            </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>build-client</id>
+            <configuration>
+              <appendAssemblyId>false</appendAssemblyId>
+              <archive>
+                <manifest>
+                  <mainClass>it.polimi.se2018.AppClient</mainClass>
+                </manifest>
+              </archive>
+              <descriptors>
+                <descriptor>src/assembly/build-client.xml</descriptor>
+              </descriptors>
+              <finalName>SagradaClient</finalName>
+            </configuration>
+            <phase>package</phase>
+            <goals>
+              <goal>single</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
+
 
       <!-- Jacoco is a code coverage library that allows basic report creation -->
       <plugin>

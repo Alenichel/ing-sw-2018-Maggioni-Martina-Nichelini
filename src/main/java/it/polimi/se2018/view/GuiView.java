@@ -56,7 +56,7 @@ public class GuiView extends View implements Observer {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
         try {
             Parent root = loader.load();
-            primaryStage.setTitle("Wainting area");
+            primaryStage.setTitle("Waiting area");
             sceneWaintingRoom = new Scene(root);
 
             waitingAreaController = loader.getController();

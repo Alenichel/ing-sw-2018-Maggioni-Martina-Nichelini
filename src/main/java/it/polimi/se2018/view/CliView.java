@@ -35,23 +35,6 @@ public class CliView extends View implements Observer {
         this.notifyObservers(sm);
     }
 
-    private void handleGetCommands(String command){
-
-        switch(command){
-
-            case "connectedplayers":
-                    this.setChanged();
-                    this.notifyObservers(new RequestMessage("ConnectedPlayers"));
-                    break;
-
-            case "PlayerInGame":
-                this.setChanged();
-                this.notifyObservers(new RequestMessage("PlayerInGame"));
-                break;
-            default: break;
-        }
-    }
-
     private void handleRequestCommands(String command){
 
         switch(command){
@@ -198,14 +181,6 @@ public class CliView extends View implements Observer {
                         this.handleRequestCommands(tokens[1]);
                     } catch (IndexOutOfBoundsException e){
                         Logger.log(LoggerType.CLIENT_SIDE, ERROR, e.toString());
-                    }
-                    break;
-
-                case "get":
-                    try {
-                        this.handleGetCommands(tokens[1]);
-                    } catch (IndexOutOfBoundsException e){
-                        Logger.log(LoggerType.CLIENT_SIDE, ERROR, "not valid command found");
                     }
                     break;
 

@@ -25,7 +25,7 @@ public class Game extends Observable implements Serializable {
     private Dice dieForSwitch;
     private RoundTrack roundTrack;
     private boolean isStarted;
-    private boolean initiliazationComplete;
+    private boolean initializationComplete;
     private int actualRound = 0;
     private int actualTurn;
     private Player activePlayer = null;
@@ -150,7 +150,7 @@ public class Game extends Observable implements Serializable {
      * @param initializationComplete true if it's complete
      */
     public synchronized void setInitializationComplete(boolean initializationComplete) {
-        this.initiliazationComplete = initializationComplete;
+        this.initializationComplete = initializationComplete;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.InitializationStatus);
         um.setStringMessage("Initialization complete");
         this.setChanged();
@@ -244,8 +244,8 @@ public class Game extends Observable implements Serializable {
      * Boolean is initialization complete
      * @return true if it's complete
      */
-    public synchronized boolean isInitiliazationComplete() {
-        return initiliazationComplete;
+    public synchronized boolean isInitializationComplete() {
+        return initializationComplete;
     }
 
     /**
