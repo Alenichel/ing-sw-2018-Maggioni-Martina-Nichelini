@@ -158,14 +158,6 @@ public class GuiView extends View implements Observer {
             gameWindowController.lensCutterInUse = true;
         }
 
-        if(selectedToolCard.getToolCardName().equals(ToolCardsName.FluxRemover) || selectedToolCard.getToolCardName().equals(ToolCardsName.FluxBrush)){
-            gameWindowController.draftedSelection.setVisible(true);
-            gameWindowController.draftedSelection.setDisable(false);
-
-            gameWindowController.draftedSelection.setEffect(new DropShadow(20, Color.BLACK));
-        }
-
-
         this.toolCardTask = new ToolCardTask(selectedToolCard, this, toolcardSemaphore);
         new Thread(toolCardTask).start();
     }

@@ -364,14 +364,6 @@ public class GameWindowController implements Serializable {
                 gw.toolcardSemaphore.release();
             }
         });
-
-        bag.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                gw.toolCardDragBoard = null;
-                gw.toolcardSemaphore.release();
-            }
-        });
     }
 
     //------------------------------------------
@@ -624,9 +616,9 @@ public class GameWindowController implements Serializable {
         mouseOverRound.setVisible(false);
         lensCutterInUse = false;
 
-        this.draftedSelection.setVisible(true);
-        this.draftedSelection.setDisable(false);
-        this.draftedSelection.setEffect(new DropShadow(20, Color.BLACK));
+        this.draftedSelection.setVisible(false);
+        this.draftedSelection.setDisable(true);
+        this.draftedSelection.setStyle(null);
 
         for(ImageView imageView : toolCards)
             imageView.setEffect(null);
