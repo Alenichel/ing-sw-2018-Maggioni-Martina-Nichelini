@@ -91,7 +91,7 @@ public class ToolCard extends Card implements Serializable {
 
             this.setName(ToolCardsName.FluxRemover.toString());
             this.setToolCardName(ToolCardsName.FluxRemover);
-            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction or return to the dice bag.");
+            this.setDescription("After drafting return the die to the dice bag and pull 1 die from the bag. Choose a value and place the new die, obeying all placement restriction.");
         }
         else if(ToolCardsName.TapWheel.equals(tcn)){
             content = new ToolcardContent[]{  ToolcardContent.RunBy, ToolcardContent.Amount, ToolcardContent.firstWindowCellStart, ToolcardContent.firstWindowCellEnd, ToolcardContent.secondWindowCellStart, ToolcardContent.secondWindowCellEnd};

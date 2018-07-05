@@ -10,6 +10,7 @@ import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.utils.Security;
+import it.polimi.se2018.view.View;
 import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
@@ -221,6 +222,10 @@ public class ToolCardController {
 
         int turn = gameAssociated.getActualTurn() + 1;
 
+        /*if (gameController.getActiveRoundHandler().movableDice == 0){
+            throw new ToolCardException("Already drafted a die");
+        }*/
+
         if (turn - this.gameAssociated.getPlayersOrder().size() <= 0 ) {
             throw new ToolCardException("Not Second Turn");
         }
@@ -237,7 +242,7 @@ public class ToolCardController {
     private void handleRunningPliers(Map<ToolcardContent, Object> params) throws ToolCardException {
         Player player = Security.getUser((String)params.get(ToolcardContent.RunBy));
         if (player.hasToSkipNextTurn()) {
-            throw new ToolCardException("ToolcardAlreadyActivated");
+            throw new ToolCardException("Toolcard Already Activated");
         }
         this.gameAssociated.getAssociatedGameController().getActiveRoundHandler().movableDice++;
         player.setSkipNextTurn(true);
@@ -285,6 +290,11 @@ public class ToolCardController {
 
         Player player = observable.getClient();
         ToolCardsName tcn = toolCardMessage.getToolCardName();
+
+        if (!gameAssociated.getActivePlayer().equals(player)){
+            ((View)observable).controllerCallback(new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , "Not your turn", LoggerPriority.NOTIFICATION));
+            return;
+        }
 
         int nOfTokens = 0;
         if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;

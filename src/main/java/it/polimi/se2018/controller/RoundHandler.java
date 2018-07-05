@@ -203,6 +203,7 @@ public class RoundHandler implements TimerInterface {
                 this.movableDice--;
                 ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.MoveAck, "Move received", LoggerPriority.NOTIFICATION);
                 ((VirtualView) observable).controllerCallback(ccm);
+                gameAssociated.triggerUpdate();
 
             } catch (NotValidInsertion e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
