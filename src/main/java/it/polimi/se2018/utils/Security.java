@@ -17,8 +17,8 @@ public class Security {
     }
 
     /**
-     * This method check if the server contains an instance of a player with the same name of the one
-     * provided. If true, it returns that instance, otherwise it create a new player whit that name and
+     * This method checks if the server contains an instance of a player with the same name of the one
+     * provided. If true, it returns that instance, otherwise it creates a new player with that name and
      * returns it.
      * @param name of the player to generate
      * @return the player.
@@ -63,12 +63,11 @@ public class Security {
     }
 
     /**
-     * This method look for user configuration file and check if username and password (if required) are right. In that case
-     * it returns the instance of the authenticated player. Otherwise it returns null.
-     * @param name
-     * @param password
-     * @return
-     * @throws AuthenticationErrorException
+     * This method looks for the user configuration file and checks if username and (if required) password are correct.
+     * In that case it returns the instance of the authenticated player. Otherwise it returns null.
+     * @param name player's username
+     * @param password player's password
+     * @return instance or null
      */
     public static Player authenticateUser(String name, String password) throws AuthenticationErrorException {
 
