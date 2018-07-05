@@ -67,6 +67,9 @@ public class ControllerTest {
     public void controllerTest() {
 
         Server server = Server.getInstance();
+        server.setDefaultMatchmakingTimer(1);
+        server.setDefaultMoveTimer(1);
+        server.setnOfTurn(5);
         ServerController serverController = ServerController.getInstance();
 
         Player p1 = new Player("Alenichel");
