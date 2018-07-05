@@ -29,11 +29,6 @@ public class ToolCardTest {
         Assert.assertEquals(DiceColor.yellow, t.getDiceColor());
         Assert.assertNotEquals(DiceColor.blue, t.getDiceColor());
 
-        //game reference getter test
-        t.setGameReference(g);
-        Assert.assertEquals(g, t.getGameReference());
-        Assert.assertNotEquals(g1, t.getGameReference());
-
         //is used method test
         t.setUsed(true);
         Assert.assertEquals(true, t.isUsed());

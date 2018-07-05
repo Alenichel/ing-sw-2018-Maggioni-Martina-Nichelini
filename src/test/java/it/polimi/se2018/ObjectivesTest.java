@@ -4,6 +4,7 @@ import it.polimi.se2018.enumeration.VarietyType;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.model.Die;
+import it.polimi.se2018.model.PrivateObjectiveCard;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;
@@ -156,28 +157,6 @@ public class ObjectivesTest {
     }
 
     @Test
-    // test for private objective cards
-    public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
-        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
-
-        Die d1 = new Die(DiceColor.yellow);
-        Die d2 = new Die(DiceColor.red);
-        Die d3 = new Die(DiceColor.blue);
-        Die d4 = new Die(DiceColor.blue);
-        Die d5 = new Die(DiceColor.blue);
-
-        wpc.insertDice(d1, 0, 0, false,false,false);
-        wpc.insertDice(d2, 1,2,false,false,false);
-        wpc.insertDice(d3, 3,2,false,false,false);
-        wpc.insertDice(d4, 2,3,false,false,false);
-        wpc.insertDice(d5, 3,4,false,false,false);
-
-        PrivateShadesOfColor sp = new PrivateShadesOfColor(DiceColor.blue);
-        Assert.assertEquals(3, sp.scorePoint(wpc));
-        Assert.assertNotEquals(7, sp.scorePoint(wpc));
-    }
-
-    @Test
     // test for color diagonals objective card
     public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
@@ -196,6 +175,28 @@ public class ObjectivesTest {
         ScorePointStrategy sps = new ColorDiagonals();
         Assert.assertEquals(6, sps.scorePoint(wpc));
         Assert.assertNotEquals(5, sps.scorePoint(wpc));
+    }
+
+    @Test
+    // test for private objective cards
+    public void testPrivateObjectiveCard() throws NotValidInsertion, NotEmptyWindowCellException {
+        WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
+
+        Die d1 = new Die(DiceColor.yellow);
+        Die d2 = new Die(DiceColor.red);
+        Die d3 = new Die(DiceColor.blue);
+        Die d4 = new Die(DiceColor.blue);
+        Die d5 = new Die(DiceColor.blue);
+
+        wpc.insertDice(d1, 0, 0, false,false,false);
+        wpc.insertDice(d2, 1,2,false,false,false);
+        wpc.insertDice(d3, 3,2,false,false,false);
+        wpc.insertDice(d4, 2,3,false,false,false);
+        wpc.insertDice(d5, 3,4,false,false,false);
+
+        PrivateObjectiveCard privateObjectiveCard = new PrivateObjectiveCard(DiceColor.blue);
+        Assert.assertEquals(3, privateObjectiveCard.scorePoint(wpc));
+        Assert.assertNotEquals(7, privateObjectiveCard.scorePoint(wpc));
     }
 
     @Test
