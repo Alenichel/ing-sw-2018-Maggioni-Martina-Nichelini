@@ -76,16 +76,6 @@ public class MessageTest {
     }
 
     @Test
-    // test for room connection message
-    public void testRoomConnectionMessage(){
-        Player requester =  new Player("Player");
-        boolean isConnecting = true;
-        RoomConnectionMessage rcm = new RoomConnectionMessage(requester, isConnecting);
-        Assert.assertEquals(rcm.getRequester(), requester);
-        Assert.assertEquals(true, rcm.isConnecting());
-    }
-
-    @Test
     // test for selection message
     public void testSelectionMessage(){
         Player p1 =  new Player("Player");
