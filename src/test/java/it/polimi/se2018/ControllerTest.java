@@ -1,11 +1,9 @@
 package it.polimi.se2018;
 
-import it.polimi.se2018.controller.GameController;
 import it.polimi.se2018.controller.ServerController;
 import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.message.MoveDiceMessage;
 import it.polimi.se2018.message.SelectionMessage;
-import it.polimi.se2018.message.UpdateMessage;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.view.CliView;
@@ -13,8 +11,9 @@ import it.polimi.se2018.view.VirtualView;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.concurrent.TimeUnit;
-
+/**
+ * Tests for Server controller
+ */
 public class ControllerTest {
 
     private class Handler extends Thread{

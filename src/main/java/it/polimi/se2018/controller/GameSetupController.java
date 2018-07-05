@@ -119,7 +119,7 @@ public class GameSetupController implements Serializable {
      * This method is called later in handleSelectionMessage
      * @param cardIndex of the window pattern card
      * @param p player who chose the pattern card
-     * @throws GameException
+     * @throws GameException if the pattern card has already been chosen
      */
     private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
 
