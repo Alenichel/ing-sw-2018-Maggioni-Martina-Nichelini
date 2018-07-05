@@ -6,14 +6,6 @@ package it.polimi.se2018.model;
  */
 public class ObjectiveCard extends Card {
     protected String description;
-    private Game gameReference;
-
-    /**
-     * Objective card constructor
-     */
-    public ObjectiveCard (){
-        this.gameReference = null;
-    }
 
     /**
      * Description getter

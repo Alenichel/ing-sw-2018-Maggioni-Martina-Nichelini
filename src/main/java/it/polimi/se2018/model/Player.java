@@ -1,8 +1,6 @@
 package it.polimi.se2018.model;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.se2018.view.VirtualView;
-
 import java.io.Serializable;
 import java.util.*;
 
@@ -111,7 +109,7 @@ public class Player extends Observable implements Serializable{
      * @param windowPatternCardsPool: list of window pattern cards
      */
     public void setWindowPatternCardsPool(List<WindowPatternCard> windowPatternCardsPool) {
-        this.windowPatternCardsPool = (ArrayList<WindowPatternCard>) windowPatternCardsPool;
+        this.windowPatternCardsPool = windowPatternCardsPool;
     }
 
     /**
@@ -214,7 +212,7 @@ public class Player extends Observable implements Serializable{
      * Scores getter
      * @return scores
      */
-    public HashMap<String, Integer> getScores() {
+    public Map<String, Integer> getScores() {
         return scores;
     }
 

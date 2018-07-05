@@ -72,8 +72,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         }
         else {
             try{
-                oos.writeObject(new
-                        ErrorMessage("Authentication Error"));
+                UpdateMessage um = new UpdateMessage(null);
+                um.setStringMessage("Authentication error");
+                oos.writeObject(um);
                 socket.close();
             } catch (IOException e){
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());

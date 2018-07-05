@@ -171,7 +171,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         int score = 0;
         int pocScore = 0;
 
-        HashMap<String, Integer> scoreMap = player.getScores();
+        Map<String, Integer> scoreMap = player.getScores();
 
         for (PublicObjectiveCard poc : player.getLastGameJoined().getObjectiveCards()){
             pocScore += poc.scorePoint(player.getActivePatternCard());

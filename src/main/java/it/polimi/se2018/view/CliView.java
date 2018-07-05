@@ -316,7 +316,7 @@ public class CliView extends View implements Observer {
         }
 
         for (Player p: game.getPlayers()){
-            HashMap<String, Integer> scoreMap = p.getScores();
+            Map<String, Integer> scoreMap = p.getScores();
 
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
             for (String s: scoreMap.keySet()){

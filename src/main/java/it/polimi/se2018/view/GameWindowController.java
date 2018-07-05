@@ -24,10 +24,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 
 import javafx.scene.image.Image;
@@ -925,7 +922,7 @@ public class GameWindowController implements Serializable {
         }
 
         for (Player p: game.getPlayersOrder()){
-            HashMap<String, Integer> scoreMap = p.getScores();
+            Map<String, Integer> scoreMap = p.getScores();
             text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
 
             for (String s: scoreMap.keySet()){

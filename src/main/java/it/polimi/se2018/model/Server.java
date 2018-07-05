@@ -215,4 +215,17 @@ public class Server extends Observable implements Serializable {
         this.currentGame = currentGame;
         this.activeGames.add(currentGame);
     }
+
+    public void setDefaultMatchmakingTimer(int defaultMatchmakingTimer) {
+        this.defaultMatchmakingTimer = defaultMatchmakingTimer;
+    }
+
+    public void setDefaultMoveTimer(int defaultMoveTimer) {
+        this.defaultMoveTimer = defaultMoveTimer;
+    }
+
+    public void setnOfTurn(int nOfTurn) {
+        this.nOfTurn = nOfTurn;
+    }
+
 }
