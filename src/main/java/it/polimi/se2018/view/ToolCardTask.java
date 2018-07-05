@@ -2,6 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.enumeration.ToolCardsName;
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.Server;
@@ -69,6 +70,12 @@ public class ToolCardTask extends Task<Void> {
                 else if (tc.equals(ToolcardContent.BagDie)) continue;
 
                 else if ((tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1) continue;
+
+                else if (tc.equals(ToolcardContent.WindowCellEnd) && toolCard.getToolCardName().equals(ToolCardsName.FluxBrush)){
+                    gwc.draftedSelection.setVisible(true);
+                    gwc.draftedSelection.setDisable(false);
+                    gwc.draftedSelection.setStyle("-fx-border-color:black; -fx-background-color: white;");
+                }
 
                 this.handleGuiSetup(tc);
 
