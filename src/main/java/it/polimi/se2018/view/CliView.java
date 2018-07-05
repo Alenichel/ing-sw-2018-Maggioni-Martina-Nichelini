@@ -208,8 +208,12 @@ public class CliView extends View implements Observer {
                     break;
 
                 case "use":
+                    if (lastGameReceveid == null) {
+                        Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Game not started yet");
+                        break;
+                    }
                     try {
-                        if (tokens.length < 2){
+                        if (tokens.length !=  2){
                             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Wrong params insertion: USE command has the following structure:\n use %toolcardNumber");
                             break;
                         }
