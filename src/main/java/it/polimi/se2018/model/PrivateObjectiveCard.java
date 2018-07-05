@@ -25,7 +25,9 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
         for (WindowCell[] line : grid)
             for (WindowCell cell : line)
-                if (cell.getAssignedDie().getDiceColor().equals(this.color))  score++;
+                try {
+                    if (cell.getAssignedDie().getDiceColor().equals(this.color))  score++;
+                } catch (NullPointerException e) {continue;}
 
         return score;
     }

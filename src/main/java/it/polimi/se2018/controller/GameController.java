@@ -179,7 +179,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
         score += pocScore;
         scoreMap.put("Public Objective Score", pocScore);
 
-        score += player.getPrivateObjectiveCard().scorePoint();
+        score += player.getPrivateObjectiveCard().scorePoint(player.getActivePatternCard());
         scoreMap.put("Private Objective Score", pocScore);
 
         int diceScore = (20 - player.getActivePatternCard().getPlacedDice());

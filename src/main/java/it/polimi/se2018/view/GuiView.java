@@ -210,7 +210,7 @@ public class GuiView extends View implements Observer {
                         else if (wtu.equals(WhatToUpdate.GameStarted)){
                             toolCards = (ArrayList<ToolCard>)((Game)o).getToolCards();
                             printSelectPatternCard();
-                            selectPatternCardWindowController.printPool(primaryStage, getClient(), this);
+                            selectPatternCardWindowController.printPool(getClient(), this);
                         }
                         else if(wtu.equals(WhatToUpdate.ActivePlayer) || wtu.equals(WhatToUpdate.ToolCardUpdate)){
                             printGameWindow((Game)o, client);
