@@ -1,13 +1,7 @@
 package it.polimi.se2018.model;
 
 import it.polimi.se2018.enumeration.*;
-import it.polimi.se2018.exception.NotEmptyWindowCellException;
-import it.polimi.se2018.exception.ToolCardException;
-import it.polimi.se2018.utils.*;
-
 import java.io.Serializable;
-import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * This class implements the model side of the tool cards
@@ -16,7 +10,6 @@ public class ToolCard extends Card implements Serializable {
     private DiceColor diceColor;
     private String description;
     private boolean used;
-    private Game gameReference;
     private ToolCardsName toolCardName;
     private ToolcardContent[] content;
 
@@ -133,14 +126,6 @@ public class ToolCard extends Card implements Serializable {
     }
 
     /**
-     * Game reference setter
-     * @param gameReference reference to the game
-     */
-    public void setGameReference(Game gameReference) {
-        this.gameReference = gameReference;
-    }
-
-    /**
      * Name setter
      * @param name name
      */
@@ -170,14 +155,6 @@ public class ToolCard extends Card implements Serializable {
      */
     public boolean isUsed() {
         return used;
-    }
-
-    /**
-     * Game reference getter
-     * @return game reference
-     */
-    public Game getGameReference() {
-        return gameReference;
     }
 
     /**

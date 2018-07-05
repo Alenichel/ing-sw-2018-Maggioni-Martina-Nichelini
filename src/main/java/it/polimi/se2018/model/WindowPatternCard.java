@@ -242,8 +242,7 @@ public class WindowPatternCard extends Card implements Serializable {
                     return false;
             }
         }
-        if (counterNearDice != 0) return true;
-        return false;
+        return (counterNearDice != 0);
     }
 
     /**

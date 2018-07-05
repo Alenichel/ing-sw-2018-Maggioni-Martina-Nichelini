@@ -21,7 +21,6 @@ public class Game extends Observable implements Serializable {
     private List<ToolCard> toolCards = new Vector<>();
     private List<Player> players = new Vector<>();
     private List<Player> playersOrder = new Vector<>();
-
     private Die dieForSwitch;
     private RoundTrack roundTrack;
     private boolean isStarted;
@@ -30,13 +29,9 @@ public class Game extends Observable implements Serializable {
     private int actualTurn;
     private Player activePlayer = null;
     private int timerSecondsLeft;
-
     private HashMap scores = new HashMap<Player, Integer>();
-
     private GameController associatedGameController;
-
     private GameNames name;
-
     private Player winner = null;
 
     /**
@@ -392,6 +387,10 @@ public class Game extends Observable implements Serializable {
         this.setChanged();
         this.notifyObservers(um);
     }
+
+    /**
+     * This method is called when it's necessary to manual trigger an update.
+     */
     public synchronized void triggerUpdate(){
         this.setChanged();
         UpdateMessage um = new UpdateMessage(WhatToUpdate.ToolCardUpdate);
@@ -399,6 +398,3 @@ public class Game extends Observable implements Serializable {
         this.notifyObservers(um);
     }
 }
-
-
-

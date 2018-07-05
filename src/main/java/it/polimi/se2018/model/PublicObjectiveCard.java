@@ -10,7 +10,7 @@ import it.polimi.se2018.enumeration.ObjectiveCardsName;
 public class PublicObjectiveCard extends ObjectiveCard{
     private int points;
     private ObjectiveCardsName Name;
-    private ScorePointStrategy scorePointStrategy;
+    private transient ScorePointStrategy scorePointStrategy;
 
     /**
      * Score point strategy

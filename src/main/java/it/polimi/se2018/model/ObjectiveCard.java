@@ -4,7 +4,7 @@ package it.polimi.se2018.model;
  * This class implements ObjectiveCard which is extended by PrivateObjectiveCard &
  * PublicObjectiveCard classes
  */
-public class ObjectiveCard extends Card {
+public abstract class ObjectiveCard extends Card {
     protected String description;
 
     /**
@@ -18,9 +18,7 @@ public class ObjectiveCard extends Card {
     /**
      * Score point's method
      */
-    public int scorePoint(){
-        return 0;
-    }
+    public abstract int scorePoint(WindowPatternCard windowPatternCard);
 
     /**
      * To string method

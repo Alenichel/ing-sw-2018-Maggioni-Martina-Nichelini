@@ -4,7 +4,6 @@ import it.polimi.se2018.enumeration.VarietyType;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
 import it.polimi.se2018.model.Die;
-import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
 import it.polimi.se2018.strategy.objective.*;

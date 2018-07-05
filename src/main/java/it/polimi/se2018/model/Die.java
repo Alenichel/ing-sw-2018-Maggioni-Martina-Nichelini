@@ -18,7 +18,6 @@ public class Die implements Serializable {
     private DiceLocation location;
     private DiceColor diceColor;
     private String unicode = "";
-    public Die(){}
 
     /**
      * Die's first constructor.
@@ -140,4 +139,3 @@ public class Die implements Serializable {
         return Objects.hash(number, color, location);
     }
 }
-

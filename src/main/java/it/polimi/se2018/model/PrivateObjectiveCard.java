@@ -4,19 +4,11 @@ import it.polimi.se2018.utils.ConsoleUtils;
 import it.polimi.se2018.enumeration.DiceColor;
 
 /**
- * This class implements PrivateObjectiveCard
+ * This class implements PrivateObjectiveCard.
  */
 public class PrivateObjectiveCard extends ObjectiveCard {
 
     private DiceColor color;
-
-    /**
-     * Color getter
-     * @return color
-     */
-    public DiceColor getColor(){
-        return this.color;
-    }
 
     /**
      * Private objective card constructor
@@ -26,10 +18,26 @@ public class PrivateObjectiveCard extends ObjectiveCard {
         this.color = diceColor;
     }
 
+    @Override
+    public int scorePoint(WindowPatternCard windowPatternCard) {
+        WindowCell[][] grid = windowPatternCard.getGrid();
+        int score = 0;
+
+        for (WindowCell[] line : grid)
+            for (WindowCell cell : line)
+                if (cell.getAssignedDie().getDiceColor().equals(this.color))  score++;
+
+        return score;
+    }
+
     /**
-     * To string method
-     * @return string
+     * Color getter
+     * @return color
      */
+    public DiceColor getColor(){
+        return this.color;
+    }
+
     @Override
     public String toString() {
         ConsoleUtils c = new ConsoleUtils();

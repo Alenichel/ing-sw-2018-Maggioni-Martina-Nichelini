@@ -10,7 +10,7 @@ import java.util.*;
 public class Player extends Observable implements Serializable{
     private String nickname;
     private Boolean online = false;
-    private Boolean inGame = false;
+    private Boolean inGame;
     private Boolean skipNextTurn = false;
     private Game lastGameJoined;
     private int playerNumber;

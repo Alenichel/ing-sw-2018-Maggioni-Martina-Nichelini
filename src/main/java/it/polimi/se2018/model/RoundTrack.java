@@ -12,7 +12,7 @@ import java.util.Set;
  * This class implements the Round track, where all remaining dice at the end of the round are placed
  */
 public class RoundTrack implements Serializable{
-    private List<ArrayList<Die>> roundTrack = new ArrayList<ArrayList<Die>>();
+    private List<ArrayList<Die>> track = new ArrayList<>();
     private Set<DiceColor> colorSet = new HashSet<>();
 
     /**
@@ -21,7 +21,7 @@ public class RoundTrack implements Serializable{
     public RoundTrack(){
 
         for(int i = 0; i<=9; i++){
-            roundTrack.add(i, new ArrayList<Die>());
+            track.add(i, new ArrayList<Die>());
         }
     }
 
@@ -30,15 +30,15 @@ public class RoundTrack implements Serializable{
      * @return round track
      */
     public List<ArrayList<Die>> getTrack() {
-        return roundTrack;
+        return track;
     }
 
     /**
      * Round track setter
-     * @param roundTrack list of dice on the round track
+     * @param track list of dice on the round track
      */
-    public void setRoundTrack(List<ArrayList<Die>> roundTrack) {
-        this.roundTrack = roundTrack;
+    public void setTrack(List<ArrayList<Die>> track) {
+        this.track = track;
     }
 
     /**
@@ -47,7 +47,7 @@ public class RoundTrack implements Serializable{
      * @param round the round
      */
     public void addDice(Die d, int round){
-        roundTrack.get(round).add(d);
+        track.get(round).add(d);
     }
 
     /**
@@ -57,7 +57,7 @@ public class RoundTrack implements Serializable{
      */
     public void addDice(List<Die> d, int round){
         for(Die p : d){
-            roundTrack.get(round).add(p);
+            track.get(round).add(p);
             colorSet.add(p.getDiceColor());
         }
     }
@@ -77,34 +77,31 @@ public class RoundTrack implements Serializable{
     @Override
     public String toString() {
         String str = "";
-        int max_width = 0;
-        int currentRound = 0;
+        int maxWidth = 0;
         String verticalSeparatorTop = "═";
         String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"," "};
         int roundStri = 0;
-        for(List<Die> aD : roundTrack){
-            if(!aD.isEmpty()) {
-                if(aD.size() > max_width)
-                    max_width = aD.size();
-            }
+        for(List<Die> aD : track){
+            if(!aD.isEmpty() && aD.size() > maxWidth) maxWidth = aD.size();
         }
 
         str = str.concat((char) 27 +"[34m"+ roundStr[roundStri]+ " "  + (char) 27 + "[30m");
         roundStri++;
         str = str.concat("╔");
-        for(int i = 0; i < max_width+4; i++){
+        for(int i = 0; i < maxWidth+4; i++){
             str = str.concat(verticalSeparatorTop);
         }
         str = str.concat("╗\n");
 
-        for(List<Die> aD : roundTrack){
+        for(List<Die> aD : track){
             str = str.concat((char) 27 +"[34m" +roundStr[roundStri]+ " " + (char) 27 + "[30m");
             roundStri++;
             str = str.concat("║");
-            int nDice = 0, nSpace = 0;
+            int nDice = 0;
+            int nSpace = 0;
             if(!aD.isEmpty()) {
                 nDice = aD.size();
-                nSpace = (max_width+4-nDice-1);
+                nSpace = (maxWidth+4-nDice-1);
                 str = str.concat(" ");
                 for (Die d : aD) {
                     if (d.getNumber() != 0)
@@ -113,17 +110,16 @@ public class RoundTrack implements Serializable{
                 for(int i = 0; i < nSpace; i++){
                     str = str.concat(" ");
                 }
-                currentRound++;
             }
             else{
-                for(int i = 0; i < max_width+4; i++){
+                for(int i = 0; i < maxWidth+4; i++){
                     str = str.concat(" ");
                 }
             }
             str = str.concat("║\n");
         }
         str = str.concat("  ╚");
-        for(int i = 0; i < max_width + 4; i++){
+        for(int i = 0; i < maxWidth + 4; i++){
             str = str.concat(verticalSeparatorTop);
         }
         str = str.concat("╝\n");

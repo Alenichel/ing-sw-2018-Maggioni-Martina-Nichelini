@@ -43,7 +43,6 @@ public class Server extends Observable implements Serializable {
             } catch (FileNotFoundException e){
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR ,"Configuration file not found\n[*] Aborting..");
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR ,"Configuration file not found\n[*] Aborting..");
-                e.printStackTrace();
                 System.exit(1);
             } catch (IOException | SAXException | ParserConfigurationException e) {
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
