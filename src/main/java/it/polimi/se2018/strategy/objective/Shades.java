@@ -48,8 +48,7 @@ public class Shades implements ScorePointStrategy, Serializable {
         if(a==null) return false;
         if(a.getAssignedDie()==null) return false;
         else {
-            if (a.getAssignedDie().getNumber()== firstNumber) return true;
-            else return false;
+            return (a.getAssignedDie().getNumber()== firstNumber);
         }
     }
 
@@ -62,8 +61,7 @@ public class Shades implements ScorePointStrategy, Serializable {
         if(a==null) return false;
         if(a.getAssignedDie()==null) return false;
         else {
-            if (a.getAssignedDie().getNumber()== secondNumber) return true;
-            else return false;
+            return (a.getAssignedDie().getNumber()== secondNumber);
         }
     }
 

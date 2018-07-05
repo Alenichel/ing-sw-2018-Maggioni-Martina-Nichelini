@@ -115,21 +115,11 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
 
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 5; j++) {
-                if (isRed(grid[i][j])) {
-                    red += 1;
-                }
-                if (isYellow(grid[i][j])) {
-                    yellow +=1;
-                }
-                if (isBlue(grid[i][j])) {
-                    blue +=1;
-                }
-                if (isGreen(grid[i][j])) {
-                    green +=1;
-                }
-                if (isPurple(grid[i][j])) {
-                    purple +=1;
-                }
+                if (isRed(grid[i][j])) red += 1;
+                else if (isYellow(grid[i][j])) yellow +=1;
+                else if (isBlue(grid[i][j]))  blue +=1;
+                else if (isGreen(grid[i][j])) green +=1;
+                else if (isPurple(grid[i][j])) purple +=1;
             }
 
         scoreCounter = 4*fiveMin(red, yellow, blue, green, purple);

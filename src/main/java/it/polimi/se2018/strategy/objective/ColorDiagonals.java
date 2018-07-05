@@ -26,8 +26,7 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
         if (a == null || b == null) return false;
         if (a.getAssignedDie() == null || b.getAssignedDie() == null) return false;
         else {
-            if (a.getAssignedDie().getColor().equals(b.getAssignedDie().getColor())) return true;
-            else return false;
+            return (a.getAssignedDie().getColor().equals(b.getAssignedDie().getColor()));
         }
 
 
@@ -45,7 +44,7 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
             if (compareCellsColor(wc, cell)) equalsAdiacent.add(wc);
         }
 
-        if (equalsAdiacent.size() == 0) return cellScore;
+        if (equalsAdiacent.isEmpty()) return cellScore;
         else {
             for (WindowCell wc : equalsAdiacent) {
                 wc.getDiagonalCells().remove(cell);

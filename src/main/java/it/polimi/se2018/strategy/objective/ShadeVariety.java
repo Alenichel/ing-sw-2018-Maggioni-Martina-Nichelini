@@ -131,24 +131,16 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
 
         for (int i = 0; i < 4; i++)
             for (int j = 0; j < 5; j++) {
-                if (isOne(grid[i][j])) {
-                    one += 1;
-                }
-                if (isTwo(grid[i][j])) {
-                    two +=1;
-                }
-                if (isThree(grid[i][j])) {
-                    three +=1;
-                }
-                if (isFour(grid[i][j])) {
-                    four +=1;
-                }
-                if (isFive(grid[i][j])) {
-                    five +=1;
-                }
-                if (isSix(grid[i][j])) {
-                    six +=1;
-                }
+                if (isOne(grid[i][j])) one += 1;
+                else if (isTwo(grid[i][j])) two +=1;
+
+                else if (isThree(grid[i][j])) three +=1;
+
+                else if (isFour(grid[i][j])) four +=1;
+
+                else if (isFive(grid[i][j])) five +=1;
+
+                else if (isSix(grid[i][j])) six +=1;
             }
 
         scoreCounter = 5*sixMin(one, two, three, four, five, six);
