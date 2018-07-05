@@ -364,6 +364,14 @@ public class GameWindowController implements Serializable {
                 gw.toolcardSemaphore.release();
             }
         });
+
+        bag.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                gw.toolCardDragBoard = null;
+                gw.toolcardSemaphore.release();
+            }
+        });
     }
 
     //------------------------------------------
