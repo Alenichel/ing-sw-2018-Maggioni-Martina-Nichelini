@@ -6,29 +6,30 @@ import it.polimi.se2018.enumeration.LoggerType;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.nio.file.Path;
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 public final class Logger {
 
+    private Logger(){
+        throw new IllegalStateException("Utility class");
+    }
+
     private static final String HOME_PATH = System.getProperty("user.home");
     private static final String CLIENT_LOG = "/sagrada_client.log";
     private static final String SERVER_LOG = "/sagrada_server.log";
 
-    private static LoggerType Side;
+    private static LoggerType side;
     private static FileWriter fileWriter;
     private static PrintWriter printWriter;
-    private static boolean DebugMode;
+    private static boolean debugMode;
 
     public static void setSide(LoggerType side, boolean debugMode){
-        Side = side;
-        DebugMode = debugMode;
+        Logger.side = side;
+        Logger.debugMode = debugMode;
 
-        Path path;
         try {
-            if (Side == LoggerType.CLIENT_SIDE) fileWriter = new FileWriter(HOME_PATH + CLIENT_LOG, true);
+            if (Logger.side == LoggerType.CLIENT_SIDE) fileWriter = new FileWriter(HOME_PATH + CLIENT_LOG, true);
             else fileWriter = new FileWriter(HOME_PATH + SERVER_LOG, true);
         } catch (IOException e) {;}
         printWriter = new PrintWriter(fileWriter, true);
@@ -36,7 +37,7 @@ public final class Logger {
     }
 
     public static void log (LoggerType side, LoggerPriority priority, String toLog){
-        if (Side == side) {
+        if (Logger.side == side) {
             if (priority == LoggerPriority.NORMAL)
                 System.out.println(toLog);
 
@@ -55,7 +56,7 @@ public final class Logger {
                 System.out.println((char) 27 + "[31m"+ toLog + (char) 27 + "[3m");
                 printWriter.println(toLog);
             }
-            else if(priority == LoggerPriority.DEBUG && DebugMode){
+            else if(priority == LoggerPriority.DEBUG && debugMode){
                 toLog = "[*] DEBUG: " + toLog;
                 System.out.println(toLog);
                 printWriter.println(toLog);
