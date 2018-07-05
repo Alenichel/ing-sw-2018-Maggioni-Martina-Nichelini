@@ -92,4 +92,19 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
     public void pong () {
 	    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.DEBUG, "Received PING. PONGED");
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RMIServerImplementation that = (RMIServerImplementation) o;
+        return Objects.equals(clients, that.clients);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(super.hashCode(), clients);
+    }
 }

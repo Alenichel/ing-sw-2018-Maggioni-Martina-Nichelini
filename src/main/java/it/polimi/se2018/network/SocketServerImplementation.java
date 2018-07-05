@@ -4,7 +4,6 @@ import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.Player;
-import it.polimi.se2018.model.Server;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
@@ -29,7 +28,6 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
     //OLD VIRTUALVIEW NETWORK BRIDGE
     private Socket socket;
     private boolean clientConnected = true;
-    private boolean clientAuthenticated;
     private AtomicBoolean isClosing = new AtomicBoolean();
 
     private ObjectInputStream ois;
@@ -156,7 +154,6 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 socket.close();
             }
             catch (EOFException e){ //endOfFIle
-                Server server = Server.getInstance();
                 isClosing.set(true);
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING,"VVNB_LISTENER: Socket (for user: " + player.getNickname() +") has been closed client side");
                 associatedVirtualView.mySetChanged();
@@ -165,7 +162,6 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
                 return;
             }
             catch (SocketException e){
-                Server server = Server.getInstance();
                 Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.WARNING, "VVNB_LISTENER: " + e.toString());
                 associatedVirtualView.mySetChanged();
                 associatedVirtualView.notifyObservers(new ConnectionMessage(player, false));
@@ -188,21 +184,12 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         s.start();
     }
 
-
-
-    // ---------------> Come risolvere ?
-    public void receiver(Observable o, Object msg){
-        ;
-    }
+    @Override
+    public void receiver(Observable o, Object msg){ throw new UnsupportedOperationException(); }
 
     @Override
-    public void addClient(ClientInterface client) throws RemoteException {
-        System.out.println("ciao");
-    }
+    public void addClient(ClientInterface client) throws RemoteException {throw new UnsupportedOperationException();}
 
     @Override
-    public void pong(){
-        ;
-    }
+    public void pong(){ throw new UnsupportedOperationException(); }
 }
-

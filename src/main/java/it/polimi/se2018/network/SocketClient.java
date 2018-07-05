@@ -1,13 +1,11 @@
 package it.polimi.se2018.network;
 
-import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.exception.AuthenticationErrorException;
 import it.polimi.se2018.message.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.view.View;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.Arrays;
@@ -101,7 +99,7 @@ public class SocketClient implements Observer {
         @Override
         public void run() {
             try {
-                Message msg = new UpdateMessage(WhatToUpdate.Pass);
+                Message msg;
                 while (keepAlive) {
                     msg = (Message) queue.take();
                     oos.writeObject(msg);
@@ -129,5 +127,3 @@ public class SocketClient implements Observer {
         }
     }
 }
-
-

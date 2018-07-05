@@ -1,6 +1,9 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.model.Server;
+import it.polimi.se2018.utils.Logger;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -17,10 +20,10 @@ public class SocketServer extends Thread {
     public void run() {
         try {
             ssocket = new ServerSocket(Server.getInstance().getServerPort());
-            System.out.println("Listening");
+            Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NORMAL, "Listening");
             while (true) {
                 Socket socket = this.ssocket.accept();
-                System.out.println("[*] NOTIFICATION: new client connected");
+                Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NORMAL,"[*] NOTIFICATION: new client connected");
                 SocketServerImplementation virtualClientThread;
                 virtualClientThread = new SocketServerImplementation(socket);
                 virtualClientThread.start();
@@ -30,6 +33,3 @@ public class SocketServer extends Thread {
         }
     }
 }
-
-
-

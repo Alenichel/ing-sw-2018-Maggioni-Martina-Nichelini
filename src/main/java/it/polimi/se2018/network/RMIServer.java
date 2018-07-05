@@ -1,5 +1,9 @@
 package it.polimi.se2018.network;
 
+import it.polimi.se2018.enumeration.LoggerPriority;
+import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.utils.Logger;
+
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
@@ -13,17 +17,15 @@ public class RMIServer {
 		try {
 			LocateRegistry.createRegistry(PORT);
 		} catch (RemoteException e) {
-			System.out.println("There is already a register");
+			Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR,"There is already a register");
 		}
 		try {
 			RMIServerImplementation serverImplementation = new RMIServerImplementation();
 			Naming.rebind("//localhost/SagradaServer", serverImplementation);
 		} catch (MalformedURLException e) {
-			System.err.println("Impossible to register the given object");
+			Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR,"Impossible to register the given object");
 		} catch (RemoteException e) {
-			System.err.println("Connection error: " + e.getMessage() + "!");
-		}		
-
+			Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR,"Connection error: " + e.getMessage() + "!");
+		}
 	}
-
 }
