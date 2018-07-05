@@ -400,6 +400,9 @@ public class GameWindowController implements Serializable {
         arrowDown.setImage(new Image("red_down_arrow.png"));
         draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
         bag.setImage(new Image("dice-bag.png"));
+
+
+
     }
 
     private String getPath(Die d){
@@ -901,7 +904,7 @@ public class GameWindowController implements Serializable {
 
     private void printRoundTrack(RoundTrack rt, int round){
         gameRoundTrack = rt;
-        if(round > 1) {
+        /*if(round > 1) {
             Die d = rt.getTrack().get(round - 2).get(0);
             String path = getPath(d);
 
@@ -911,7 +914,23 @@ public class GameWindowController implements Serializable {
 
             roundTrack.get(round - 2).setBackground(new Background(myBI));
             roundTrack.get(round - 2).setCursor(Cursor.HAND);
+        }*/
+
+        for(int i = 0; i < 10; i++){
+            if(round > 1) {
+                Die d = rt.getTrack().get(round - 2).get(0);
+                String path = getPath(d);
+
+                BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
+                        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
+
+
+                roundTrack.get(round - 2).setBackground(new Background(myBI));
+                roundTrack.get(round - 2).setCursor(Cursor.HAND);
+            }
         }
+
+
     }
 
     protected void printAck(String message){
@@ -958,12 +977,18 @@ public class GameWindowController implements Serializable {
     // ---- GAME END ----
     @FXML
     private void quit(){
+        for(int i = 0; i < 10; i++){
+            roundTrack.get(i).setBackground(null);
+        }
         Platform.exit();
         System.exit(0);
     }
 
     @FXML
     private void searchNewGame(){
+        for(int i = 0; i < 10; i++){
+            roundTrack.get(i).setBackground(null);
+        }
         this.gw.searchAnotherGame();
         this.gw.setupWaintingArea();
         this.gw.printWaintingArea();
