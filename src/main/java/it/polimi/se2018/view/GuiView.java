@@ -61,8 +61,7 @@ public class GuiView extends View implements Observer {
 
             waitingAreaController = loader.getController();
         } catch (IOException e) {
-            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -75,8 +74,7 @@ public class GuiView extends View implements Observer {
 
             gameWindowController = loader.getController();
         } catch (IOException e) {
-            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
     }
 
@@ -90,8 +88,7 @@ public class GuiView extends View implements Observer {
             scenePatternCard = new Scene(root);
             selectPatternCardWindowController = loader.getController();
         }catch (IOException e){
-            //Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
-            e.printStackTrace();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
 
     }

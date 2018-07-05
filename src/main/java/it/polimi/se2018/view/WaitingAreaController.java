@@ -2,14 +2,10 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.enumeration.GameNames;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,19 +23,6 @@ public class WaitingAreaController implements Serializable{
     @FXML private transient Label player2;
     @FXML private transient Label player3;
     @FXML private transient Label player4;
-
-
-    private Scene scene;
-
-
-    protected void setupWaitingAreaController(Stage primaryStage){
-        scene = primaryStage.getScene();
-        quitItem.setOnAction(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent t) {
-                System.exit(0);
-            }
-        });
-    }
 
     public void printGameName( GameNames name ){
             gameName.setText(name.toString());

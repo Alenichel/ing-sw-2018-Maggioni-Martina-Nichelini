@@ -1,28 +1,18 @@
 package it.polimi.se2018.view;
 
-import it.polimi.se2018.message.SelectionMessage;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.WindowPatternCard;
-import javafx.application.Platform;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
 import java.io.*;
-import java.net.URL;
 import java.util.ArrayList;
 
 
 public class SelectPatternCardWindowController implements Serializable {
-    private Player player;
     private GuiView gw;
     @FXML private transient ImageView window1;
     @FXML private transient ImageView window2;
@@ -31,10 +21,8 @@ public class SelectPatternCardWindowController implements Serializable {
     @FXML protected transient Pane hadledPane;
 
 
-    protected void printPool(Stage primaryStage, Player player, GuiView gw){
+    protected void printPool(Player player, GuiView gw){
         this.gw = gw;
-        this.player = player;
-        Scene scene = primaryStage.getScene();
         ArrayList<ImageView> imageViews = new ArrayList<>();
         imageViews.add(window1);
         imageViews.add(window2);

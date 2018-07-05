@@ -2,7 +2,6 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
-import it.polimi.se2018.enumeration.ToolCardsName;
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.message.ToolCardMessage;
 import it.polimi.se2018.model.Server;
@@ -60,15 +59,16 @@ public class ToolCardTask extends Task<Void> {
         ToolcardContent[] content = toolCard.getContent();
         Map<ToolcardContent, Object> htc = new HashMap<>();
 
-        if (content != null) {
+        if (content != null)
             for (ToolcardContent tc : content) {
                 if (tc.equals(ToolcardContent.RunBy)) {
                     htc.put(tc, guiView.client.getNickname());
                     continue;
-                } else if (tc.equals(ToolcardContent.BagDie)) continue;
+                }
 
-                else if ((tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1)
-                    continue;
+                else if (tc.equals(ToolcardContent.BagDie)) continue;
+
+                else if ((tc.equals(ToolcardContent.secondWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellEnd)) && amount == 1) continue;
 
                 this.handleGuiSetup(tc);
 
@@ -77,12 +77,9 @@ public class ToolCardTask extends Task<Void> {
                     return null;
                 }
 
-                if (tc.equals(ToolcardContent.Amount)) {
-                    amount = (int) guiView.toolCardDragBoard;
-                }
+                if (tc.equals(ToolcardContent.Amount)) amount = (int) guiView.toolCardDragBoard;
 
                 htc.put(tc, guiView.toolCardDragBoard);
-            }
         }
 
         ToolCardMessage tcm = new ToolCardMessage(toolCard.getToolCardName(), htc);

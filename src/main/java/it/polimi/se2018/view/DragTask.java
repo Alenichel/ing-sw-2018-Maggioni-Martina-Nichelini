@@ -23,7 +23,6 @@ public class DragTask extends Task<Void> {
     private final GameWindowController gwc;
 
     private final Pane target;
-    private final Pane responeInsert;
     private final DragEvent event;
     private final GuiView gw;
     private final Semaphore controllerCallbackSemaphore;
@@ -35,7 +34,6 @@ public class DragTask extends Task<Void> {
     public DragTask(GameWindowController gwc, Pane target,  DragEvent event, Timeline timer, int die){
         this.gwc = gwc;
         this.target = target;
-        this.responeInsert = gwc.responseInsert;
         this.event = event;
         this.gw = gwc.gw;
         this.controllerCallbackSemaphore = gwc.controllerCallbackSemaphore;
@@ -84,7 +82,6 @@ public class DragTask extends Task<Void> {
                         target.setBackground(new Background(myBI));
                     }
                 });
-                //gwc.draggable = false;
                 gwc.printAck("CORRECT INSERTION");
                 success = true;
                 timer.setCycleCount(Timeline.INDEFINITE);

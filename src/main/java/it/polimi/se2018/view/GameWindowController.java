@@ -123,7 +123,6 @@ public class GameWindowController implements Serializable {
     private List<Die> draftPoolDice;
     protected GuiView gw;
     protected boolean draggable = false;
-    private boolean soundOn = false;
     private boolean mouseOver = true;
     private boolean toolInUse = false;
     private boolean setupped = false;
@@ -144,29 +143,6 @@ public class GameWindowController implements Serializable {
     protected Pane selectedPane;
     protected int column;
     protected int row;
-
-    private void musicSetup(){
-        Media sound = new Media("http://alenichel.eu/sagrada/musichetta.mp3");
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-        mediaPlayer.setVolume(0);
-        //soundIcon.setOpacity(0.25);
-
-        /*soundIcon.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                if(soundOn) {
-                    mediaPlayer.setVolume(0);
-                    soundIcon.setOpacity(0.25);
-                    soundOn = false;
-                } else {
-                    mediaPlayer.setVolume(1);
-                    soundIcon.setOpacity(1);
-                    soundOn = true;
-                }
-            }
-        });*/
-    }
 
     private void setupToolcards(){
         for(ImageView imageView : toolCards){
@@ -222,7 +198,6 @@ public class GameWindowController implements Serializable {
     }
 
     private void setupRoundTrack(){
-        int round = 1;
         for(Pane p : roundTrack){
             p.setOnMouseEntered(new EventHandler<MouseEvent>() {
                 @Override
@@ -264,7 +239,6 @@ public class GameWindowController implements Serializable {
                 }
             });
         }
-        round++;
     }
 
     private void handleClickOnRoundDice(int round){
@@ -344,7 +318,6 @@ public class GameWindowController implements Serializable {
                 content.putString(source.getId().substring(source.getId().length()-1));
 
                 content.putImage(source.getBackground().getImages().get(0).getImage());
-                //source.setBackground(null);
                 db.setContent(content);
                 event.consume();
                 }
@@ -416,9 +389,6 @@ public class GameWindowController implements Serializable {
 
         Pane[] selectDiceArray = {selectDice1, selectDice2, selectDice3, selectDice4, selectDice5, selectDice6};
         selectDice = new ArrayList<>(Arrays.asList(selectDiceArray));
-
-
-        //this.musicSetup();
 
         this.setupToolcards();
         this.setupPublicObjectiveCards();
@@ -589,17 +559,17 @@ public class GameWindowController implements Serializable {
         hint.setVisible(true);
         hint.setText("Please, click the number of dice to move");
 
-        String path_1 = "/constraint/number/1.png";
-        String path_2 = "/constraint/number/2.png";
+        String path1 = "/constraint/number/1.png";
+        String path2 = "/constraint/number/2.png";
 
-        BackgroundImage myBI= new BackgroundImage(new Image(path_1,60,60,false,true),
+        BackgroundImage myBI= new BackgroundImage(new Image(path1,60,60,false,true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         Pane pane = selectDice.get(0);
         pane.setBackground(new Background(myBI));
         pane.setDisable(false);
         pane.setVisible(true);
 
-        myBI= new BackgroundImage(new Image(path_2,60,60,false,true),
+        myBI= new BackgroundImage(new Image(path2,60,60,false,true),
                 BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
         Pane pane2 = selectDice.get(1);
         pane2.setBackground(new Background(myBI));
@@ -781,8 +751,6 @@ public class GameWindowController implements Serializable {
     }
 
     private void printCurrentRound( Player activePlayer){
-        int n = 0;
-
         for(GridPane g : gridPanes){
             if(g.getId().split("-")[0].equals(activePlayer.getNickname())){
                 final String cssDefault = "-fx-border-color: red;\n" + "-fx-border-width: 10;\n";
@@ -791,7 +759,6 @@ public class GameWindowController implements Serializable {
                 final String cssDefault = "-fx-border-color: black;\n" + "-fx-border-width: 10;\n";
                 g.setStyle(cssDefault);
             }
-            n++;
         }
     }
 
