@@ -128,7 +128,7 @@ public class Game extends Observable implements Serializable {
         if (started){
             this.isStarted = started;
             UpdateMessage um = new UpdateMessage(WhatToUpdate.GameStarted);
-            um.setStringMessage("Game started");
+            um.setStringMessage("Game"+ this.name +"started");
             this.setChanged();
             this.notifyObservers(um);
         }

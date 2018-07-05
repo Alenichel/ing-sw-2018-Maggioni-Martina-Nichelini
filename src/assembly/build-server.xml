@@ -14,11 +14,9 @@ http://maven.apache.org/ASSEMBLY/2.0.0 ">
             <directory>${project.build.outputDirectory}</directory>
             <outputDirectory>/</outputDirectory>
             <excludes>
-                <exclude>it/polimi/se2018/view/*</exclude>
                 <exclude>backgrounds/*</exclude>
                 <exclude>constraint/*</exclude>
                 <exclude>dice/*</exclude>
-                <exclude>patternCards/*</exclude>
                 <exclude>privateObjective/*</exclude>
                 <exclude>publicObjective/*</exclude>
                 <exclude>toolCards/*</exclude>
@@ -39,7 +37,6 @@ http://maven.apache.org/ASSEMBLY/2.0.0 ">
                     <exclude>backgrounds/*</exclude>
                     <exclude>constraint/*</exclude>
                     <exclude>dice/*</exclude>
-                    <exclude>patternCards/*</exclude>
                     <exclude>privateObjective/*</exclude>
                     <exclude>publicObjective/*</exclude>
                     <exclude>toolCards/*</exclude>

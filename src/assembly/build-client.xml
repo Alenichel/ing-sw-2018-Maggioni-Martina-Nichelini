@@ -13,8 +13,7 @@ http://maven.apache.org/ASSEMBLY/2.0.0 ">
         <fileSet>
             <directory>${project.build.outputDirectory}</directory>
             <outputDirectory>/</outputDirectory>
-            <excludes>a
-            </excludes>
+            <excludes></excludes>
         </fileSet>
     </fileSets>
     <dependencySets>
@@ -24,8 +23,7 @@ http://maven.apache.org/ASSEMBLY/2.0.0 ">
             <unpack>true</unpack>
             <scope>runtime</scope>
             <unpackOptions>
-                <excludes>
-                </excludes>
+                <excludes></excludes>
             </unpackOptions>
         </dependencySet>
     </dependencySets>
