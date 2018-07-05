@@ -2,7 +2,6 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.DiceColor;
 import it.polimi.se2018.enumeration.ToolcardContent;
-import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.enumeration.LoggerPriority;
@@ -121,7 +120,7 @@ public class GameWindowController implements Serializable {
 
     @FXML private ImageView bag;
 
-    private List<Dice> draftPoolDice;
+    private List<Die> draftPoolDice;
     protected GuiView gw;
     protected boolean draggable = false;
     private boolean soundOn = false;
@@ -231,9 +230,9 @@ public class GameWindowController implements Serializable {
                     if(p.getBackground() != null) {
                         mouseOverRound.getChildren().clear();
                         int round = Integer.parseInt(p.getId().substring(p.getId().length()-1));
-                        ArrayList<Dice> roundDice = gameRoundTrack.getTrack().get(round);
+                        ArrayList<Die> roundDice = gameRoundTrack.getTrack().get(round);
                         int n = 0;
-                        for(Dice d : roundDice){
+                        for(Die d : roundDice){
 
                             String path = getPath(d);
 
@@ -433,7 +432,7 @@ public class GameWindowController implements Serializable {
         bag.setImage(new Image("dice-bag.png"));
     }
 
-    private String getPath(Dice d){
+    private String getPath(Die d){
         return "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
     }
 
@@ -665,8 +664,8 @@ public class GameWindowController implements Serializable {
 
     private String toPath(WindowCell w){
         String str;
-        if(w.getAssignedDice() != null)
-            str = "/dice/"+w.getAssignedDice().getColor()+"/"+w.getAssignedDice().getNumber()+".png";
+        if(w.getAssignedDie() != null)
+            str = "/dice/"+w.getAssignedDie().getColor()+"/"+w.getAssignedDie().getNumber()+".png";
 
         else if(w.getColorConstraint() != null)
             str = "/constraint/color/"+w.getColorConstraint()+".png";
@@ -796,13 +795,13 @@ public class GameWindowController implements Serializable {
         }
     }
 
-    private void printDratfedDice(List<Dice> dice){
+    private void printDratfedDice(List<Die> dice){
         int n = 0;
         this.draftPoolDice = dice;
         for(Pane pane: draftedDice){
             pane.setBackground(null);
         }
-        for(Dice d : dice){
+        for(Die d : dice){
             String path = getPath(d);
             BackgroundImage myBI= new BackgroundImage(new Image(path,55,55,false,true),
                     BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
@@ -936,7 +935,7 @@ public class GameWindowController implements Serializable {
     private void printRoundTrack(RoundTrack rt, int round){
         gameRoundTrack = rt;
         if(round > 1) {
-            Dice d = rt.getTrack().get(round - 2).get(0);
+            Die d = rt.getTrack().get(round - 2).get(0);
             String path = getPath(d);
 
             BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
@@ -1046,7 +1045,7 @@ public class GameWindowController implements Serializable {
     // GETTER
     //------------------------------------------
 
-    public List<Dice> getDraftPoolDice() {
+    public List<Die> getDraftPoolDice() {
         return draftPoolDice;
     }
 

@@ -21,9 +21,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isOne(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getNumber() == 1);
+            return (a.getAssignedDie().getNumber() == 1);
         }
     }
 
@@ -34,9 +34,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isTwo(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getNumber() == 2);
+            return (a.getAssignedDie().getNumber() == 2);
         }
     }
 
@@ -47,9 +47,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isThree(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getNumber() == 3);
+            return (a.getAssignedDie().getNumber() == 3);
         }
     }
 
@@ -60,9 +60,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isFour(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getNumber() == 4);
+            return (a.getAssignedDie().getNumber() == 4);
         }
     }
 
@@ -73,9 +73,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isFive(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getNumber() == 5);
+            return (a.getAssignedDie().getNumber() == 5);
         }
     }
 
@@ -86,9 +86,9 @@ public class ShadeVariety implements ScorePointStrategy, Serializable {
      */
     private boolean isSix(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return(a.getAssignedDice().getNumber()== 6);
+            return(a.getAssignedDie().getNumber()== 6);
         }
     }
 

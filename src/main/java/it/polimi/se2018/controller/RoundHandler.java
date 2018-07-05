@@ -53,7 +53,7 @@ public class RoundHandler implements TimerInterface {
 
         if (this.actualRound != 1 ) {
             this.gameAssociated.getRoundTrack().addDice(this.gameAssociated.getDiceOnTable(), this.actualRound-2);
-            List<Dice> aD = new ArrayList<>();
+            List<Die> aD = new ArrayList<>();
             this.gameAssociated.setDiceOnTable(aD); //set empty arraylist for table
         }
 
@@ -72,11 +72,11 @@ public class RoundHandler implements TimerInterface {
     private void extractDice(){
         int nOfPlayers = this.gameAssociated.getPlayersOrder().size();
         int diceToExtract = nOfPlayers * 2 + 1; //See Sagrada's rules.
-        List<Dice> dB = this.gameAssociated.getDiceBag();
-        List<Dice> dT = this.gameAssociated.getDiceOnTable();
+        List<Die> dB = this.gameAssociated.getDiceBag();
+        List<Die> dT = this.gameAssociated.getDiceOnTable();
 
         for (int i = 0; i < diceToExtract; i++){
-            Dice d = dB.get(rand.nextInt(dB.size()));
+            Die d = dB.get(rand.nextInt(dB.size()));
             if (d.equals(this.gameAssociated.getDieForSwitch()) && this.actualRound != 10){
                 i--;
                 continue;
@@ -193,7 +193,7 @@ public class RoundHandler implements TimerInterface {
                 return;
         }
 
-            Dice d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
+            Die d = this.gameAssociated.getDiceOnTable().get(mdm.getTableCoordinate());
             d.setLocation(mdm.getEndingLocation()); //set the dice final location to the right type
             try {
                 if (this.gameAssociated.getActualRound() == 1 && this.workingPatternCard.getPlacedDice() == 0) this.workingPatternCard.insertDice(d, mdm.getEndingX(), mdm.getEndingY(), true, true, false);

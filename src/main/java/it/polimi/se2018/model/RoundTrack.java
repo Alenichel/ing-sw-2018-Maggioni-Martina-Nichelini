@@ -12,7 +12,7 @@ import java.util.Set;
  * This class implements the Round track, where all remaining dice at the end of the round are placed
  */
 public class RoundTrack implements Serializable{
-    private List<ArrayList<Dice>> roundTrack = new ArrayList<ArrayList<Dice>>();
+    private List<ArrayList<Die>> roundTrack = new ArrayList<ArrayList<Die>>();
     private Set<DiceColor> colorSet = new HashSet<>();
 
     /**
@@ -21,7 +21,7 @@ public class RoundTrack implements Serializable{
     public RoundTrack(){
 
         for(int i = 0; i<=9; i++){
-            roundTrack.add(i, new ArrayList<Dice>());
+            roundTrack.add(i, new ArrayList<Die>());
         }
     }
 
@@ -29,7 +29,7 @@ public class RoundTrack implements Serializable{
      * Round track getter
      * @return round track
      */
-    public List<ArrayList<Dice>> getTrack() {
+    public List<ArrayList<Die>> getTrack() {
         return roundTrack;
     }
 
@@ -37,7 +37,7 @@ public class RoundTrack implements Serializable{
      * Round track setter
      * @param roundTrack list of dice on the round track
      */
-    public void setRoundTrack(List<ArrayList<Dice>> roundTrack) {
+    public void setRoundTrack(List<ArrayList<Die>> roundTrack) {
         this.roundTrack = roundTrack;
     }
 
@@ -46,7 +46,7 @@ public class RoundTrack implements Serializable{
      * @param d the die
      * @param round the round
      */
-    public void addDice(Dice d, int round){
+    public void addDice(Die d, int round){
         roundTrack.get(round).add(d);
     }
 
@@ -55,8 +55,8 @@ public class RoundTrack implements Serializable{
      * @param d the list of dice
      * @param round the round
      */
-    public void addDice(List<Dice> d, int round){
-        for(Dice p : d){
+    public void addDice(List<Die> d, int round){
+        for(Die p : d){
             roundTrack.get(round).add(p);
             colorSet.add(p.getDiceColor());
         }
@@ -82,7 +82,7 @@ public class RoundTrack implements Serializable{
         String verticalSeparatorTop = "═";
         String[] roundStr = new String[]{"R","o","u","n","d","T","r","a","c","k"," "};
         int roundStri = 0;
-        for(List<Dice> aD : roundTrack){
+        for(List<Die> aD : roundTrack){
             if(!aD.isEmpty()) {
                 if(aD.size() > max_width)
                     max_width = aD.size();
@@ -97,7 +97,7 @@ public class RoundTrack implements Serializable{
         }
         str = str.concat("╗\n");
 
-        for(List<Dice> aD : roundTrack){
+        for(List<Die> aD : roundTrack){
             str = str.concat((char) 27 +"[34m" +roundStr[roundStri]+ " " + (char) 27 + "[30m");
             roundStri++;
             str = str.concat("║");
@@ -106,7 +106,7 @@ public class RoundTrack implements Serializable{
                 nDice = aD.size();
                 nSpace = (max_width+4-nDice-1);
                 str = str.concat(" ");
-                for (Dice d : aD) {
+                for (Die d : aD) {
                     if (d.getNumber() != 0)
                         str = str.concat(d.toString());
                 }

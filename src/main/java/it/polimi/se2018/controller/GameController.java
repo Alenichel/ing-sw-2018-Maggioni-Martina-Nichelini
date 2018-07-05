@@ -184,7 +184,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
         int diceScore = (20 - player.getActivePatternCard().getPlacedDice());
         score -= diceScore;
-        scoreMap.put("Dice Score", -diceScore);
+        scoreMap.put("Die Score", -diceScore);
 
         int favourTokensLeft = player.getActivePatternCard().getNumberOfFavorTokens();
         score += favourTokensLeft;

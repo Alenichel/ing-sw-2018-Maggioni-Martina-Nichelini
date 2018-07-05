@@ -1,7 +1,7 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
-import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.enumeration.DiceColor;
 import org.junit.Assert;
@@ -16,8 +16,8 @@ public class WindowCellTest {
         int column = 1;
         int wrongColumn = 4;
         DiceColor color = DiceColor.green;
-        Dice d = new Dice(color);
-        Dice wrongD = new Dice(color);
+        Die d = new Die(color);
+        Die wrongD = new Die(color);
         WindowCell wc = new WindowCell(row, column);
 
         //row getter test
@@ -29,9 +29,9 @@ public class WindowCellTest {
         Assert.assertNotEquals(wrongColumn, wc.getColumn());
 
         //assigned dice getter test
-        wc.setAssignedDice(d);
-        Assert.assertEquals(d, wc.getAssignedDice());
-        Assert.assertNotEquals(wrongD, wc.getAssignedDice());
+        wc.setAssignedDie(d);
+        Assert.assertEquals(d, wc.getAssignedDie());
+        Assert.assertNotEquals(wrongD, wc.getAssignedDie());
 
         //color constraint getter test
         String cc = "green";

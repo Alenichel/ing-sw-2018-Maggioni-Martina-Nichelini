@@ -279,7 +279,7 @@ public class CliView extends View implements Observer {
         if (wpcs != null && wpcs.size() != 0) ConsoleUtils.multiplePrint((ArrayList)wpcs, client);
 
         int i = 1;
-        for (Dice d : game.getDiceOnTable()) {
+        for (Die d : game.getDiceOnTable()) {
             System.out.print( i + ") " +d.toString() + " ");
             i++;
         }

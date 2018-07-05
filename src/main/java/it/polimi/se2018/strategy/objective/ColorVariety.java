@@ -21,9 +21,9 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
      */
     private boolean isRed(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getColor().equals("red"));
+            return (a.getAssignedDie().getColor().equals("red"));
         }
     }
 
@@ -34,9 +34,9 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
      */
     private boolean isYellow(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getColor().equals("yellow"));
+            return (a.getAssignedDie().getColor().equals("yellow"));
         }
     }
 
@@ -47,9 +47,9 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
      */
     private boolean isBlue(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getColor().equals("blue"));
+            return (a.getAssignedDie().getColor().equals("blue"));
         }
     }
 
@@ -60,9 +60,9 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
      */
     private boolean isGreen(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getColor().equals("green"));
+            return (a.getAssignedDie().getColor().equals("green"));
         }
     }
 
@@ -73,9 +73,9 @@ public class ColorVariety implements ScorePointStrategy, Serializable{
      */
     private boolean isPurple(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            return (a.getAssignedDice().getColor().equals("purple"));
+            return (a.getAssignedDie().getColor().equals("purple"));
         }
     }
 

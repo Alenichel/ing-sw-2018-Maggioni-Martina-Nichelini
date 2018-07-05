@@ -27,12 +27,12 @@ public class ColumnVariety implements ScorePointStrategy, Serializable {
     private boolean compareCells(WindowCell a, WindowCell b) {
         if (a == null || b == null) return true;
         if (a.equals(b)) return false; //ignore if the method is comparison the same cell
-        if (a.getAssignedDice() == null || b.getAssignedDice() == null) return true;
+        if (a.getAssignedDie() == null || b.getAssignedDie() == null) return true;
         else {
             if ( type == VarietyType.COLOR)
-                return (a.getAssignedDice().getColor().equals(b.getAssignedDice().getColor()));
+                return (a.getAssignedDie().getColor().equals(b.getAssignedDie().getColor()));
             else
-                return (a.getAssignedDice().getNumber() == b.getAssignedDice().getNumber());
+                return (a.getAssignedDie().getNumber() == b.getAssignedDie().getNumber());
         }
     }
 

@@ -1,6 +1,6 @@
 package it.polimi.se2018.strategy.objective;
 
-import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowCell;
 import it.polimi.se2018.model.WindowPatternCard;
@@ -24,9 +24,9 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
      */
     private boolean compareCellsColor(WindowCell a, WindowCell b) {
         if (a == null || b == null) return false;
-        if (a.getAssignedDice() == null || b.getAssignedDice() == null) return false;
+        if (a.getAssignedDie() == null || b.getAssignedDie() == null) return false;
         else {
-            if (a.getAssignedDice().getColor().equals(b.getAssignedDice().getColor())) return true;
+            if (a.getAssignedDie().getColor().equals(b.getAssignedDie().getColor())) return true;
             else return false;
         }
 
@@ -69,8 +69,8 @@ public class ColorDiagonals implements ScorePointStrategy, Serializable {
         for (WindowCell[] line : grid)
             for (WindowCell cell : line) {
                 for (WindowCell diagonalCell : cell.getDiagonalCells()) {
-                    Dice diagonalDie = diagonalCell.getAssignedDice();
-                    Dice cellDie = cell.getAssignedDice();
+                    Die diagonalDie = diagonalCell.getAssignedDie();
+                    Die cellDie = cell.getAssignedDie();
                     if ( diagonalDie == null || cellDie == null) continue;
                     if (diagonalDie.getDiceColor().equals(cellDie.getDiceColor())) {
                         diagonals.add(cell);

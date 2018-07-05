@@ -14,15 +14,15 @@ import java.util.*;
  * This class implements the model side of the game
  */
 public class Game extends Observable implements Serializable {
-    private List<Dice> diceBag = new Vector<>();
-    private List<Dice> diceOnTable = new Vector<>();
+    private List<Die> diceBag = new Vector<>();
+    private List<Die> diceOnTable = new Vector<>();
     private List<WindowPatternCard> patternCards = new Vector<>();
     private List<PublicObjectiveCard> objectiveCards = new Vector<>();
     private List<ToolCard> toolCards = new Vector<>();
     private List<Player> players = new Vector<>();
     private List<Player> playersOrder = new Vector<>();
 
-    private Dice dieForSwitch;
+    private Die dieForSwitch;
     private RoundTrack roundTrack;
     private boolean isStarted;
     private boolean initializationComplete;
@@ -67,18 +67,18 @@ public class Game extends Observable implements Serializable {
     }
 
     /**
-     * Dice bag setter
+     * Die bag setter
      * @param diceBag: list of dice in the bag
      */
-    public synchronized void setDiceBag(List<Dice> diceBag) {
+    public synchronized void setDiceBag(List<Die> diceBag) {
         this.diceBag = diceBag;
     }
 
     /**
-     * Dice on table setter
+     * Die on table setter
      * @param diceOnTable: list of dice on the table
      */
-    public synchronized void setDiceOnTable(List<Dice> diceOnTable) {
+    public synchronized void setDiceOnTable(List<Die> diceOnTable) {
         this.diceOnTable = diceOnTable;
         UpdateMessage um = new UpdateMessage(WhatToUpdate.DiceOnTable);
         um.setStringMessage("Some dice have been draft and added to the table");
@@ -212,7 +212,7 @@ public class Game extends Observable implements Serializable {
      */
     public synchronized void setDieForSwitch() {
         Random random = new Random();
-        Dice randomDie = diceBag.get(random.nextInt(diceBag.size()));
+        Die randomDie = diceBag.get(random.nextInt(diceBag.size()));
         this.dieForSwitch = randomDie;
     }
 
@@ -220,15 +220,15 @@ public class Game extends Observable implements Serializable {
      * Die for switch getter
      * @return die for switch
      */
-    public synchronized Dice getDieForSwitch() {
+    public synchronized Die getDieForSwitch() {
         return dieForSwitch;
     }
 
     /**
-     * Dice on table getter
+     * Die on table getter
      * @return dice on table
      */
-    public synchronized List<Dice> getDiceBag() {
+    public synchronized List<Die> getDiceBag() {
         return diceBag;
     }
 
@@ -236,7 +236,7 @@ public class Game extends Observable implements Serializable {
      * Boolean is initialization complete
      * @return true if it's complete
      */
-    public synchronized List<Dice> getDiceOnTable() {
+    public synchronized List<Die> getDiceOnTable() {
         return diceOnTable;
     }
 

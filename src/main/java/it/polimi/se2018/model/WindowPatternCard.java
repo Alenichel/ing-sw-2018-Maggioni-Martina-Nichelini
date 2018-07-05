@@ -221,24 +221,24 @@ public class WindowPatternCard extends Card implements Serializable {
     }
 
     /**
-     * This method checks if it's possible to place the given die on the selected cell looking for near dice
+     * This method checks if it's possible to place the given die on the selected cell looking for near die
      * @param windowCell window cell mentioned above
-     * @param dice given die mentioned above
+     * @param die given die mentioned above
      * @return true if it's a valid position, false otherwise
      */
-    private boolean isValidPosition( WindowCell windowCell, Dice dice){
+    private boolean isValidPosition( WindowCell windowCell, Die die){
         if (placedDice == 0) return true;
         int counterNearDice = 0;
 
         for (WindowCell wc : windowCell.getDiagonalCells())
-            if (wc.getAssignedDice() != null) counterNearDice++;
+            if (wc.getAssignedDie() != null) counterNearDice++;
 
         for (WindowCell wc: windowCell.getNeighbourCells()){
-            if (wc.getAssignedDice() != null) {
+            if (wc.getAssignedDie() != null) {
                 counterNearDice++;
-                Dice assignedDice = wc.getAssignedDice();
-                if ( ! dice.equals(assignedDice) && (
-                    assignedDice.getNumber() == dice.getNumber() || assignedDice.getColor().equals(dice.getColor())))
+                Die assignedDie = wc.getAssignedDie();
+                if ( ! die.equals(assignedDie) && (
+                    assignedDie.getNumber() == die.getNumber() || assignedDie.getColor().equals(die.getColor())))
                     return false;
             }
         }
@@ -249,14 +249,14 @@ public class WindowPatternCard extends Card implements Serializable {
     /**
      * This method checks the window cell color constraint
      * @param windowCell window cell
-     * @param dice die
+     * @param die die
      * @return true if it's a valid position, false otherwise
      */
-    private boolean isValidColorRestriction(WindowCell windowCell, Dice dice){
+    private boolean isValidColorRestriction(WindowCell windowCell, Die die){
         boolean colorConstraint;
 
-        if(dice.getColor() != null && windowCell.getColorConstraint() != null)
-            colorConstraint = (windowCell.getColorConstraint().equals(dice.getColor()));
+        if(die.getColor() != null && windowCell.getColorConstraint() != null)
+            colorConstraint = (windowCell.getColorConstraint().equals(die.getColor()));
         else colorConstraint = true;
 
         return colorConstraint;
@@ -265,14 +265,14 @@ public class WindowPatternCard extends Card implements Serializable {
     /**
      * This method checks the window cell number constraint
      * @param windowCell window cell
-     * @param dice die
+     * @param die die
      * @return true if it's a valid position, false otherwise
      */
-    private boolean isValidNumberRestriction(WindowCell windowCell, Dice dice){
+    private boolean isValidNumberRestriction(WindowCell windowCell, Die die){
         boolean numberConstraint;
 
-        if(dice.getNumber() != 0 && windowCell.getNumberConstraint() != 0)
-            numberConstraint =  (windowCell.getNumberConstraint() == dice.getNumber());
+        if(die.getNumber() != 0 && windowCell.getNumberConstraint() != 0)
+            numberConstraint =  (windowCell.getNumberConstraint() == die.getNumber());
         else numberConstraint = true;
 
         return numberConstraint;
@@ -280,7 +280,7 @@ public class WindowPatternCard extends Card implements Serializable {
 
     /**
      * This method checks for all the restriction and if they are met, inserts a die.
-     * @param dice the die to be inserted
+     * @param die the die to be inserted
      * @param row row index
      * @param column column index
      * @param checkColorRestriction set this to false if you want to ignore window cell color constraints
@@ -289,22 +289,22 @@ public class WindowPatternCard extends Card implements Serializable {
      * @throws NotValidInsertion if requirements are not met
      * @throws NotEmptyWindowCellException thrown if the given cell is not empty
      */
-    public void insertDice(Dice dice, int row, int column , boolean checkColorRestriction, boolean checkNumberRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
+    public void insertDice(Die die, int row, int column , boolean checkColorRestriction, boolean checkNumberRestriction, boolean checkPositionRestriction) throws NotValidInsertion, NotEmptyWindowCellException{
         boolean colorRestriction = false;
         boolean numberRestriction = false;
         boolean positionRestriction = false;
 
-        if (checkColorRestriction) colorRestriction = isValidColorRestriction(this.getCell(row,column),dice);
+        if (checkColorRestriction) colorRestriction = isValidColorRestriction(this.getCell(row,column), die);
         else colorRestriction = true;
 
-        if (checkNumberRestriction) numberRestriction = isValidNumberRestriction(this.getCell(row,column),dice);
+        if (checkNumberRestriction) numberRestriction = isValidNumberRestriction(this.getCell(row,column), die);
         else numberRestriction = true;
 
-        if (checkPositionRestriction) positionRestriction = isValidPosition(this.getCell(row,column), dice);
+        if (checkPositionRestriction) positionRestriction = isValidPosition(this.getCell(row,column), die);
         else positionRestriction = true;
 
         if (colorRestriction && numberRestriction && positionRestriction) {
-            this.getCell(row, column).setAssignedDice(dice);
+            this.getCell(row, column).setAssignedDie(die);
             this.placedDice++;
         }
         else throw new NotValidInsertion("Not valid position");
@@ -347,7 +347,7 @@ public class WindowPatternCard extends Card implements Serializable {
             string = string.concat(((Integer)row).toString()+ BACK_TO_BLACK);
             string = string.concat(" "+horizontalSeparator+ "  " );
             for (WindowCell cell : line) {
-                    if(cell.getAssignedDice() == null) {
+                    if(cell.getAssignedDie() == null) {
                         //constraint or empty cell
                         if (cell.getColorConstraint() != null){
                             //color constraint
@@ -369,7 +369,7 @@ public class WindowPatternCard extends Card implements Serializable {
                         }
                     }else{
                         // not empty cell
-                        string = string.concat(cell.getAssignedDice().toString());
+                        string = string.concat(cell.getAssignedDie().toString());
 
                         if(cell.getColorConstraint() != null || cell.getNumberConstraint() != 0){
                             //color or number constraint with a die

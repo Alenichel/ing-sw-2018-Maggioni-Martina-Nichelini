@@ -3,7 +3,7 @@ package it.polimi.se2018;
 import it.polimi.se2018.enumeration.VarietyType;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
-import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.PrivateShadesOfColor;
 import it.polimi.se2018.model.ScorePointStrategy;
 import it.polimi.se2018.model.WindowPatternCard;
@@ -23,10 +23,10 @@ public class ObjectivesTest {
     public void testColumnVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.purple);
-        Dice d2 = new Dice(DiceColor.yellow);
-        Dice d3 = new Dice(DiceColor.red);
-        Dice d4 = new Dice(DiceColor.blue);
+        Die d1 = new Die(DiceColor.purple);
+        Die d2 = new Die(DiceColor.yellow);
+        Die d3 = new Die(DiceColor.red);
+        Die d4 = new Die(DiceColor.blue);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d2, 1,0,false,false,false);
@@ -53,11 +53,11 @@ public class ObjectivesTest {
     public void testRowVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.purple);
-        Dice d2 = new Dice(DiceColor.yellow);
-        Dice d3 = new Dice(DiceColor.red);
-        Dice d4 = new Dice(DiceColor.blue);
-        Dice d5 = new Dice(DiceColor.green);
+        Die d1 = new Die(DiceColor.purple);
+        Die d2 = new Die(DiceColor.yellow);
+        Die d3 = new Die(DiceColor.red);
+        Die d4 = new Die(DiceColor.blue);
+        Die d5 = new Die(DiceColor.green);
 
         wpc.insertDice(d1, 0, 0, false,false, false);
         wpc.insertDice(d2, 0,1,false,false, false);
@@ -87,11 +87,11 @@ public class ObjectivesTest {
     public void testColorVariety() throws  NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.purple);
-        Dice d2 = new Dice(DiceColor.yellow);
-        Dice d3 = new Dice(DiceColor.red);
-        Dice d4 = new Dice(DiceColor.blue);
-        Dice d5 = new Dice(DiceColor.green);
+        Die d1 = new Die(DiceColor.purple);
+        Die d2 = new Die(DiceColor.yellow);
+        Die d3 = new Die(DiceColor.red);
+        Die d4 = new Die(DiceColor.blue);
+        Die d5 = new Die(DiceColor.green);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d2, 1,1,false,false,false);
@@ -112,12 +112,12 @@ public class ObjectivesTest {
     public void testShadeVariety() throws NotValidInsertion, NotEmptyWindowCellException{
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.purple, 1);
-        Dice d2 = new Dice(DiceColor.yellow,2);
-        Dice d3 = new Dice(DiceColor.red,3);
-        Dice d4 = new Dice(DiceColor.blue,4);
-        Dice d5 = new Dice(DiceColor.green,5);
-        Dice d6 = new Dice(DiceColor.green, 6);
+        Die d1 = new Die(DiceColor.purple, 1);
+        Die d2 = new Die(DiceColor.yellow,2);
+        Die d3 = new Die(DiceColor.red,3);
+        Die d4 = new Die(DiceColor.blue,4);
+        Die d5 = new Die(DiceColor.green,5);
+        Die d6 = new Die(DiceColor.green, 6);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d2, 1,1,false,false,false);
@@ -139,11 +139,11 @@ public class ObjectivesTest {
     public void testShades() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.red,3);
-        Dice d2 = new Dice(DiceColor.blue,4);
-        Dice d3 = new Dice(DiceColor.purple,3);
-        Dice d4 = new Dice(DiceColor.red,4);
-        Dice d5 = new Dice(DiceColor.yellow, 5);
+        Die d1 = new Die(DiceColor.red,3);
+        Die d2 = new Die(DiceColor.blue,4);
+        Die d3 = new Die(DiceColor.purple,3);
+        Die d4 = new Die(DiceColor.red,4);
+        Die d5 = new Die(DiceColor.yellow, 5);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d2, 1,1,false,false,false);
@@ -161,11 +161,11 @@ public class ObjectivesTest {
     public void testPrivateShadesOfColor() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.yellow);
-        Dice d2 = new Dice(DiceColor.red);
-        Dice d3 = new Dice(DiceColor.blue);
-        Dice d4 = new Dice(DiceColor.blue);
-        Dice d5 = new Dice(DiceColor.blue);
+        Die d1 = new Die(DiceColor.yellow);
+        Die d2 = new Die(DiceColor.red);
+        Die d3 = new Die(DiceColor.blue);
+        Die d4 = new Die(DiceColor.blue);
+        Die d5 = new Die(DiceColor.blue);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d2, 1,2,false,false,false);
@@ -183,8 +183,8 @@ public class ObjectivesTest {
     public void testColorDiagonals() throws NotValidInsertion, NotEmptyWindowCellException {
         WindowPatternCard wpc = new WindowPatternCard(WindowPatternCardsName.auroraeMagnificus);
 
-        Dice d1 = new Dice(DiceColor.purple);
-        Dice d2 = new Dice(DiceColor.yellow);
+        Die d1 = new Die(DiceColor.purple);
+        Die d2 = new Die(DiceColor.yellow);
 
         wpc.insertDice(d1, 0, 0, false,false,false);
         wpc.insertDice(d1, 1, 1, false,false,false);

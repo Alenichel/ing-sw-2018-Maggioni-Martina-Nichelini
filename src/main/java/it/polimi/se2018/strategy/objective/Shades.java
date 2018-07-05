@@ -46,9 +46,9 @@ public class Shades implements ScorePointStrategy, Serializable {
      */
     private boolean isFirst(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== firstNumber) return true;
+            if (a.getAssignedDie().getNumber()== firstNumber) return true;
             else return false;
         }
     }
@@ -60,9 +60,9 @@ public class Shades implements ScorePointStrategy, Serializable {
      */
     private boolean isSecond(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            if (a.getAssignedDice().getNumber()== secondNumber) return true;
+            if (a.getAssignedDie().getNumber()== secondNumber) return true;
             else return false;
         }
     }

@@ -26,9 +26,9 @@ public class PrivateShadesOfColor {
      */
     private boolean isColor(WindowCell a) {
         if(a==null) return false;
-        if(a.getAssignedDice()==null) return false;
+        if(a.getAssignedDie()==null) return false;
         else {
-            if (a.getAssignedDice().getColor().equals(color)) return true;
+            if (a.getAssignedDie().getColor().equals(color)) return true;
             else return false;
         }
     }

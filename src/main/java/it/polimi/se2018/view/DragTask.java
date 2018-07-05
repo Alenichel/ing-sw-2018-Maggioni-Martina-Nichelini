@@ -2,7 +2,7 @@ package it.polimi.se2018.view;
 
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
-import it.polimi.se2018.model.Dice;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.utils.Logger;
 
 import javafx.application.Platform;
@@ -29,7 +29,7 @@ public class DragTask extends Task<Void> {
     private final Semaphore controllerCallbackSemaphore;
     private final Timeline timer;
     private final int die;
-    private final List<Dice> dice;
+    private final List<Die> dice;
     private final List<Pane> dicePanes;
 
     public DragTask(GameWindowController gwc, Pane target,  DragEvent event, Timeline timer, int die){
@@ -63,7 +63,7 @@ public class DragTask extends Task<Void> {
                 timer.setCycleCount(Timeline.INDEFINITE);
                 timer.play();
 
-                Dice d = dice.get(die-1);
+                Die d = dice.get(die-1);
                 String path = "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
                 Pane p = dicePanes.get(die-1);
 

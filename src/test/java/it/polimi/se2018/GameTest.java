@@ -21,12 +21,12 @@ public class GameTest {
         Player player3 = new Player("ste");
         Player wrongPlayer = new Player("was");
 
-        Dice die1 = new Dice(DiceColor.red, 1);
-        Dice die2 = new Dice(DiceColor.red, 2);
-        Dice die3 = new Dice(DiceColor.red, 3);
-        Dice die4 = new Dice(DiceColor.red, 4);
-        Dice die5 = new Dice(DiceColor.red, 5);
-        Dice die6 = new Dice(DiceColor.red, 6);
+        Die die1 = new Die(DiceColor.red, 1);
+        Die die2 = new Die(DiceColor.red, 2);
+        Die die3 = new Die(DiceColor.red, 3);
+        Die die4 = new Die(DiceColor.red, 4);
+        Die die5 = new Die(DiceColor.red, 5);
+        Die die6 = new Die(DiceColor.red, 6);
 
         PublicObjectiveCard objective1 = new PublicObjectiveCard(ObjectiveCardsName.RowColorVariety);
         PublicObjectiveCard objective2 = new PublicObjectiveCard(ObjectiveCardsName.LightShades);
@@ -42,8 +42,8 @@ public class GameTest {
 
         ArrayList<Player> wrongPlayers = new ArrayList<>();
         ArrayList<Player> players = new ArrayList<>();
-        ArrayList<Dice> dice = new ArrayList<>();
-        ArrayList<Dice> wrongDice = new ArrayList<>();
+        ArrayList<Die> dice = new ArrayList<>();
+        ArrayList<Die> wrongDie = new ArrayList<>();
         ArrayList<PublicObjectiveCard> objectives = new ArrayList<>();
         ArrayList<ToolCard> tc = new ArrayList<>();
         ArrayList<WindowPatternCard> wpc = new ArrayList<>();
@@ -116,14 +116,14 @@ public class GameTest {
         dice.add(die5);
         dice.add(die6);
 
-        //Dice bag getter test
-        wrongDice = (ArrayList<Dice>) dice.clone();
+        //Die bag getter test
+        wrongDie = (ArrayList<Die>) dice.clone();
         game.setDiceBag(dice);
         Assert.assertEquals(dice, game.getDiceBag());
 
-        //Dice on table getter test
-        game.setDiceOnTable(wrongDice);
-        Assert.assertEquals(wrongDice, game.getDiceOnTable());
+        //Die on table getter test
+        game.setDiceOnTable(wrongDie);
+        Assert.assertEquals(wrongDie, game.getDiceOnTable());
 
         //objective cards getter test
         game.setObjectiveCards(objectives);

@@ -5,7 +5,6 @@ import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * WindowCell class represents the cell, *one square*, of the window grid.
@@ -16,7 +15,7 @@ public class WindowCell implements Serializable{
     private int column;
     private String colorConstraint;
     private int numberConstraint;
-    private Dice assignedDice;
+    private Die assignedDie;
 
     private List<WindowCell> neighbourCells = new ArrayList<>();
     private boolean neighbourhoodAssigned = false;
@@ -98,8 +97,8 @@ public class WindowCell implements Serializable{
      * Assigned die getter
      * @return assigned die
      */
-    public Dice getAssignedDice() {
-        return assignedDice;
+    public Die getAssignedDie() {
+        return assignedDie;
     }
 
     /**
@@ -118,11 +117,11 @@ public class WindowCell implements Serializable{
 
     /**
      * Assigned dice setter
-     * @param assignedDice
+     * @param assignedDie
      * @throws NotEmptyWindowCellException if the cell is already assigned with another dice
      */
-    public void setAssignedDice(Dice assignedDice) throws NotEmptyWindowCellException{
-        if (this.assignedDice == null) this.assignedDice = assignedDice;
+    public void setAssignedDie(Die assignedDie) throws NotEmptyWindowCellException{
+        if (this.assignedDie == null) this.assignedDie = assignedDie;
         else throw new NotEmptyWindowCellException("Not empty");
     }
 
@@ -130,7 +129,7 @@ public class WindowCell implements Serializable{
      * This method removes the assigned die from a window cell
      */
     public void removeDice(){
-        this.assignedDice = null;
+        this.assignedDie = null;
     }
 
     /**
@@ -138,7 +137,7 @@ public class WindowCell implements Serializable{
      * @return true if the cell is not assigned with a dice
      */
     public boolean isEmpty(){
-        return null == assignedDice;
+        return null == assignedDie;
     }
 
     /**

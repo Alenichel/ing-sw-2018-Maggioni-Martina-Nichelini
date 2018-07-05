@@ -64,7 +64,7 @@ public class ToolCardController {
      */
     private void handleGrozingPliers(Map<ToolcardContent, Object> params) throws ToolCardException{
         int tableDieIndex = (int) params.get(ToolcardContent.DraftedDie);
-        Dice tableDie = this.gameAssociated.getDiceOnTable().get(tableDieIndex);
+        Die tableDie = this.gameAssociated.getDiceOnTable().get(tableDieIndex);
         Boolean increase = (boolean) params.get(ToolcardContent.Increase);
 
 
@@ -100,7 +100,7 @@ public class ToolCardController {
             throw new ToolCardException("NotEmptyWindowCell");
 
         if (name.equals(ToolCardsName.CorkBackedStraightedge)) {
-            Dice draftedDie = this.gameAssociated.getDiceOnTable().get((int)params.get(ToolcardContent.DraftedDie));
+            Die draftedDie = this.gameAssociated.getDiceOnTable().get((int)params.get(ToolcardContent.DraftedDie));
             windowPatternCard.insertDice(draftedDie, end.getRow(), end.getColumn(), true, true, false);
             return;
         }
@@ -112,7 +112,7 @@ public class ToolCardController {
         if (start.isEmpty())
             throw new ToolCardException("EmptyWindowCell");
 
-        Dice d1 = start.getAssignedDice();
+        Die d1 = start.getAssignedDie();
 
 
         //in case this method is called by TapWheel, it's needed to check another condition
@@ -165,7 +165,7 @@ public class ToolCardController {
         } catch (ToolCardException | NotEmptyWindowCellException e){
             int[] cooEnd = (int[]) htc1.get(ToolcardContent.WindowCellEnd);
             WindowCell end = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
-            Dice d = end.getAssignedDice();
+            Die d = end.getAssignedDie();
             end.removeDice();
             int[] cooStart = (int[]) htc1.get(ToolcardContent.WindowCellStart);
             WindowCell start = windowPatternCard.getCell(cooStart[0], cooStart[1]);
@@ -185,8 +185,8 @@ public class ToolCardController {
         int rtDieIndex = rtDieCoordinates[1];
 
 
-        Dice rtDie = this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).get(rtDieIndex);
-        Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        Die rtDie = this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).get(rtDieIndex);
+        Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
 
         this.gameAssociated.getDiceOnTable().set(draftedDieIndex, rtDie);
         this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).set(rtDieIndex, draftedDie);
@@ -200,7 +200,7 @@ public class ToolCardController {
 
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
-        Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
         int[] cooEnd= (int[])params.get(ToolcardContent.WindowCellEnd);
 
         draftedDie.rollDice();
@@ -225,7 +225,7 @@ public class ToolCardController {
             throw new ToolCardException("Not Second Turn");
         }
 
-        for(Dice die: this.gameAssociated.getDiceOnTable()){
+        for(Die die: this.gameAssociated.getDiceOnTable()){
             die.rollDice();
         }
     }
@@ -249,7 +249,7 @@ public class ToolCardController {
     private void handleGrindingStone(Map<ToolcardContent, Object> params) {
 
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
-        Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
 
         draftedDie.setNumber(7 - draftedDie.getNumber());
     }
@@ -262,9 +262,9 @@ public class ToolCardController {
 
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
-        Dice draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
 
-        Dice bagDie = this.gameAssociated.getDieForSwitch();
+        Die bagDie = this.gameAssociated.getDieForSwitch();
         int number = (int) params.get(ToolcardContent.Number);
         int[] cooEnd = (int[]) params.get(ToolcardContent.WindowCellEnd);
         WindowCell wc = windowPatternCard.getCell(cooEnd[0], cooEnd[1]);
