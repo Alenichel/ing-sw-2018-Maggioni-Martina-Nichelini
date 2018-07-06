@@ -55,7 +55,7 @@ public class ToolCard extends Card implements Serializable {
             this.setDescription("After drafted swap the drafted die with a die from the round track.");
         }
         else if(ToolCardsName.FluxBrush.equals(tcn)){
-            content = new ToolcardContent[]{    ToolcardContent.RunBy, ToolcardContent.DraftedDie, ToolcardContent.WindowCellEnd  };
+            content = new ToolcardContent[]{    ToolcardContent.RunBy, ToolcardContent.DraftedDie, ToolcardContent.RolledNumber, ToolcardContent.WindowCellEnd };
 
             this.setName(ToolCardsName.FluxBrush.toString());
             this.setToolCardName(ToolCardsName.FluxBrush);

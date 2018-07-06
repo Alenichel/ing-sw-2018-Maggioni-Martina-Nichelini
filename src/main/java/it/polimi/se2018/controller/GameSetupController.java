@@ -81,9 +81,9 @@ public class GameSetupController implements Serializable {
         /*final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
             selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));*/
-        selectedToolcards.add(new ToolCard(ToolCardsName.GlazingHammer));
-        selectedToolcards.add(new ToolCard(ToolCardsName.RunningPliers));
-        selectedToolcards.add(new ToolCard(ToolCardsName.FluxRemover));
+        selectedToolcards.add(new ToolCard(ToolCardsName.CorkBackedStraightedge));
+        selectedToolcards.add(new ToolCard(ToolCardsName.FluxBrush));
+        selectedToolcards.add(new ToolCard(ToolCardsName.TapWheel));
         this.associatedGame.setToolCards(selectedToolcards);
 
     }

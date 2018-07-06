@@ -64,9 +64,13 @@ public class CliView extends View implements Observer {
             return Integer.parseInt(sinput.nextLine()) - 1;
         }
 
-        else if (tcc.equals(ToolcardContent.Increase)) {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increase or 2 to decrease: ");
-            return Integer.parseInt(sinput.nextLine()) == 1;
+        else if (tcc.equals(ToolcardContent.RoundTrackDie)) {
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a turn: ");
+            int turn = Integer.parseInt(sinput.nextLine()) - 1;
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please select a die from that turn: ");
+            int  die = Integer.parseInt(sinput.nextLine()) - 1;
+            int coo[] = {turn, die};
+            return coo;
         }
 
         else if (tcc.equals(ToolcardContent.WindowCellStart) ||
@@ -133,11 +137,20 @@ public class CliView extends View implements Observer {
 
         if (content != null) {
             for (ToolcardContent tcc : tc.getContent()) {
-                htc.put(tcc, this.handleUseIO(tcc, amountDepedentToolcard, iteration));
                 if (tcc.equals(ToolcardContent.Amount) ) {
                     amountDepedentToolcard = true;
                     iteration =  (int) htc.get(ToolcardContent.Amount);
                 }
+                if (tcc.equals(ToolcardContent.RolledNumber)) {
+                    int dieIndex = (int) htc.get(ToolcardContent.DraftedDie);
+                    Die die = lastGameReceveid.getDiceOnTable().get(dieIndex);
+                    die.rollDice();
+                    int newNumber = die.getNumber();
+                    htc.put(tcc, newNumber);
+                    printTable(lastGameReceveid);
+                    continue;
+                }
+                htc.put(tcc, this.handleUseIO(tcc, amountDepedentToolcard, iteration));
             }
         }
 

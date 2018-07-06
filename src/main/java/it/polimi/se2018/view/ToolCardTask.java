@@ -5,6 +5,7 @@ import it.polimi.se2018.enumeration.LoggerType;
 import it.polimi.se2018.enumeration.ToolCardsName;
 import it.polimi.se2018.enumeration.ToolcardContent;
 import it.polimi.se2018.message.ToolCardMessage;
+import it.polimi.se2018.model.Die;
 import it.polimi.se2018.model.Server;
 import it.polimi.se2018.model.ToolCard;
 import it.polimi.se2018.utils.Logger;
@@ -76,6 +77,22 @@ public class ToolCardTask extends Task<Void> {
                     gwc.draftedSelection.setDisable(false);
                     gwc.draftedSelection.setStyle("-fx-border-color:black; -fx-background-color: white;");
                 }
+
+                if (tc.equals(ToolcardContent.RolledNumber)) {
+                    int dieIndex = (int) htc.get(ToolcardContent.DraftedDie);
+                    Die die = guiView.lastGameReceived.getDiceOnTable().get(dieIndex);
+                    die.rollDice();
+                    int newNumber = die.getNumber();
+                    htc.put(tc, newNumber);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            gwc.printGameWindow(guiView.lastGameReceived, guiView.getClient(), guiView);
+                        }
+                    });
+                    continue;
+                }
+
 
                 this.handleGuiSetup(tc);
 

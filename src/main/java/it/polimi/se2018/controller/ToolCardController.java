@@ -153,10 +153,25 @@ public class ToolCardController {
         //define a second hashmap toolcard content only if you are dealing with Lathekin or with TapWheel with double movement.
         if ( (name.equals(ToolCardsName.Lathekin)) || ( name.equals(ToolCardsName.TapWheel) && (int)params.get(ToolcardContent.Amount) == 2) ) {
             htc2 = new HashMap<>();
+
+            //check if the dice have the same color
+            if (name.equals(ToolCardsName.TapWheel)) {
+                int cooStart1[] = (int[]) params.get(ToolcardContent.firstWindowCellStart);
+                WindowCell windowCellStart1 = windowPatternCard.getCell(cooStart1[0], cooStart1[1]);
+                int cooStart2[] = (int[]) params.get(ToolcardContent.secondWindowCellStart);
+                WindowCell windowCellStart2 = windowPatternCard.getCell(cooStart2[0], cooStart2[1]);
+                Die d1 = windowCellStart1.getAssignedDie();
+                Die d2 = windowCellStart2.getAssignedDie();
+
+                if (d1 != null && d2 != null && !d1.getColor().equals(d2.getColor()))
+                    throw new ToolCardException("Die have the same color.");
+            }
+
             htc2.put(ToolcardContent.RunBy, params.get(ToolcardContent.RunBy));
             htc2.put(ToolcardContent.WindowCellStart, params.get(ToolcardContent.secondWindowCellStart));
             htc2.put(ToolcardContent.WindowCellEnd, params.get(ToolcardContent.secondWindowCellEnd));
         }
+
 
         handleMovingDiceToolcard(name, htc1);
 
@@ -186,9 +201,14 @@ public class ToolCardController {
         int rtTurn = rtDieCoordinates[0];
         int rtDieIndex = rtDieCoordinates[1];
 
-
-        Die rtDie = this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).get(rtDieIndex);
-        Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        Die rtDie = null;
+        Die draftedDie = null;
+        try {
+            rtDie = this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).get(rtDieIndex);
+            draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            throw new ToolCardException("Wrong coordinates");
+        }
 
         this.gameAssociated.getDiceOnTable().set(draftedDieIndex, rtDie);
         this.gameAssociated.getRoundTrack().getTrack().get(rtTurn).set(rtDieIndex, draftedDie);
@@ -203,14 +223,15 @@ public class ToolCardController {
         WindowPatternCard windowPatternCard = Security.getUser((String)params.get(ToolcardContent.RunBy)).getActivePatternCard();
         int draftedDieIndex = (int) params.get(ToolcardContent.DraftedDie);
         Die draftedDie = this.gameAssociated.getDiceOnTable().get(draftedDieIndex);
+        draftedDie.setNumber((int)params.get(ToolcardContent.RolledNumber));
         int[] cooEnd= (int[])params.get(ToolcardContent.WindowCellEnd);
 
-        draftedDie.rollDice();
 
         if (params.get(ToolcardContent.WindowCellEnd) == null) {
             return;
         } else {
             windowPatternCard.insertDice(draftedDie, cooEnd[0], cooEnd[1], true, true, true);
+            windowPatternCard.getPlayer().getLastGameJoined().getDiceOnTable().remove(draftedDie);
         }
     }
 

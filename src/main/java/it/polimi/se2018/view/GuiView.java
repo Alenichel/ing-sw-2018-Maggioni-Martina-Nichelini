@@ -38,7 +38,7 @@ public class GuiView extends View implements Observer {
 
     private ArrayList<ToolCard> toolCards;
 
-
+    protected transient Game lastGameReceived = null;
     private transient Task<Void> toolCardTask;
     protected transient Semaphore toolcardSemaphore;
     protected transient Object toolCardDragBoard;
@@ -106,6 +106,7 @@ public class GuiView extends View implements Observer {
     }
 
     private void printGameWindow(Game game, Player player){
+        this.lastGameReceived = game;
         gameWindowController.printGameWindow(game, player, this);
         primaryStage.setScene(sceneGame);
         primaryStage.show();

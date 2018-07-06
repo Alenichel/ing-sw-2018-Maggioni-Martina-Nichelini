@@ -15,4 +15,5 @@ public enum ToolcardContent {
     WindowCellEnd,
     WindowPattern,
     Amount,
+    RolledNumber
 }
