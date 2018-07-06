@@ -162,6 +162,10 @@ public class CliView extends View implements Observer {
      * @param n tool card index (1, 2 or 3)
      */
     private void handleUseCommands(int n){
+        if (n > 3){
+            Logger.log(LoggerType.CLIENT_SIDE, ERROR, "There are only three toolcard");
+            return;
+        }
         ToolCard tc = toolCards.get(n-1);
         ToolCardsName tcn = tc.getToolCardName();
         boolean amountDepedentToolcard = false;
