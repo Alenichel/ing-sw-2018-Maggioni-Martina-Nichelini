@@ -1,5 +1,10 @@
 it.polimi.se2018
+it.polimi.se2018.controller
+it.polimi.se2018.enumeration
 it.polimi.se2018.exception
 it.polimi.se2018.message
+it.polimi.se2018.model
+it.polimi.se2018.network
 it.polimi.se2018.strategy.objective
-it.polimi.se2018.strategy.toolcard
+it.polimi.se2018.utils
+it.polimi.se2018.view
