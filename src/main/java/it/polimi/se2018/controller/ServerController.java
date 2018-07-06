@@ -61,7 +61,6 @@ public class ServerController implements Observer, Serializable{
         //action to perform on all the players who joined the game.
         for (Player p: game.getPlayersOrder()) {
             p.setLastGameJoined(null);
-            p.setScore(0);
         }
 
         //action to perform only to players that are still connected to the game.

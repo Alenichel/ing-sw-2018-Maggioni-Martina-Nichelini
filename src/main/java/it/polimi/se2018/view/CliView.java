@@ -395,10 +395,10 @@ public class CliView extends View implements Observer {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You LOST ************\nThe winner is: " + game.getWinner().getNickname());
         }
 
-        for (Player p: game.getPlayers()){
+        for (Player p: game.getPlayersOrder()){
             Map<String, Integer> scoreMap = p.getScores();
-
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
+            int playerScore = p.getScore();
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\nPlayer: " + p.getNickname() + " (Score " + playerScore + ")");
             for (String s: scoreMap.keySet()){
                 Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\t- " + s + ": " + scoreMap.get(s));
             }

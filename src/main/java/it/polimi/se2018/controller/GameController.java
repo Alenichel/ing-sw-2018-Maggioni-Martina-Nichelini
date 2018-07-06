@@ -133,8 +133,10 @@ public class GameController implements Observer, Serializable, TimerInterface {
                 this.gameAssociated.setStarted(false);
             }
             else {
-                for (Player p : this.gameAssociated.getPlayers())
+                for (Player p : this.gameAssociated.getPlayers()) {
                     this.gameAssociated.getPlayersOrder().add(p);
+                    p.setScore(0); //clean score in case of previous game
+                }
                 this.gameSetupController.initialize();
                 this.gameAssociated.setStarted(true);
                 serverController.resetGame();
@@ -179,8 +181,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
         score += pocScore;
         scoreMap.put("Public Objective Score", pocScore);
 
-        score += player.getPrivateObjectiveCard().scorePoint(player.getActivePatternCard());
-        scoreMap.put("Private Objective Score", pocScore);
+        int privateScore = player.getPrivateObjectiveCard().scorePoint(player.getActivePatternCard());
+        score += privateScore;
+        scoreMap.put("Private Objective Score", privateScore);
 
         int diceScore = (20 - player.getActivePatternCard().getPlacedDice());
         score -= diceScore;
@@ -249,7 +252,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
         for (Player p : gameAssociated.getPlayersOrder()) {
             p.setActivePatternCard(null);
             p.setSkipNextTurn(false);
-            p.setScore(0);
             // p.assignObjectiveCard(null);
         }
 

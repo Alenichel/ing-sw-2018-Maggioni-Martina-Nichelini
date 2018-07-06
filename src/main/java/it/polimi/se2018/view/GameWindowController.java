@@ -928,9 +928,11 @@ public class GameWindowController implements Serializable {
             text = text.concat("The winner is: " + game.getWinner().getNickname());
         }
 
+
         for (Player p: game.getPlayersOrder()){
+            int playerScore = p.getScore();
             Map<String, Integer> scoreMap = p.getScores();
-            text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + p.getScore() + ")");
+            text = text.concat("\nPlayer: " + p.getNickname() + " (Score " + playerScore + ")\n");
 
             for (String s: scoreMap.keySet()){
                 text = text.concat("\t- " + s + ": " + scoreMap.get(s)+"\n");
