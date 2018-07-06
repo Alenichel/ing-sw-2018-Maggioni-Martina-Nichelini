@@ -22,6 +22,8 @@ public class VirtualView extends View implements Observer {
 
     /**
      * Class constructor
+     * @param virtualClient virtualClient
+     * @param player player
      */
     public VirtualView(ServerInterface virtualClient, Player player) {
         this.virtualClient = virtualClient;
@@ -31,7 +33,9 @@ public class VirtualView extends View implements Observer {
     }
 
     /**
-     * Class constructor
+     * Class constructor for debug and exhaustiveness
+     * @param concreteView concreteView
+     * @param player player
      */
     public VirtualView(View concreteView, Player player){
         this.concreteView = concreteView;

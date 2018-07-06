@@ -31,6 +31,12 @@ public class SocketClient implements Observer {
 
     /**
      * Class constructor
+     * @param serverIP IP of the server
+     * @param port port of the server
+     * @param nickname nickname of the client
+     * @param password password of the client
+     * @param associatedView the associated virtual view
+     * @throws AuthenticationErrorException thrown on user already connected or wrong password
      */
     public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) throws AuthenticationErrorException, IOException, ClassNotFoundException {
         try {
