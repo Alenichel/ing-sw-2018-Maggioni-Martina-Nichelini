@@ -908,18 +908,6 @@ public class GameWindowController implements Serializable {
 
     private void printRoundTrack(RoundTrack rt, int round){
         gameRoundTrack = rt;
-        /*if(round > 1) {
-            Die d = rt.getTrack().get(round - 2).get(0);
-            String path = getPath(d);
-
-            BackgroundImage myBI = new BackgroundImage(new Image(path, 53, 53, false, true),
-                    BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.CENTER, BackgroundSize.DEFAULT);
-
-
-            roundTrack.get(round - 2).setBackground(new Background(myBI));
-            roundTrack.get(round - 2).setCursor(Cursor.HAND);
-        }*/
-
         for(int i = 0; i < 10; i++){
             if(round > 1) {
                 Die d = rt.getTrack().get(round - 2).get(0);
@@ -933,8 +921,6 @@ public class GameWindowController implements Serializable {
                 roundTrack.get(round - 2).setCursor(Cursor.HAND);
             }
         }
-
-
     }
 
     protected void printAck(String message){
