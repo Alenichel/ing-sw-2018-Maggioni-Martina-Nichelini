@@ -45,18 +45,28 @@ public class GameSetupController implements Serializable {
      */
     private void assignWindowsPatternCardsPool(){
 
-        List<WindowPatternCard> genericWindowPatternCards= new ArrayList<>(associatedGame.getPatternCards());
+        if (!Server.getInstance().isTestMode()) {
+            List<WindowPatternCard> genericWindowPatternCards = new ArrayList<>(associatedGame.getPatternCards());
 
-        for(Player p : this.associatedGame.getPlayers()){
-            List<WindowPatternCard> patternCardsPool = new ArrayList<>();
-            for(int i = 0; i < 4; i++){
-                int n = this.rand.nextInt(genericWindowPatternCards.size());
-                patternCardsPool.add(genericWindowPatternCards.get(n));
-                genericWindowPatternCards.remove(n);
+            for (Player p : this.associatedGame.getPlayers()) {
+                List<WindowPatternCard> patternCardsPool = new ArrayList<>();
+                for (int i = 0; i < 4; i++) {
+                    int n = this.rand.nextInt(genericWindowPatternCards.size());
+                    patternCardsPool.add(genericWindowPatternCards.get(n));
+                    genericWindowPatternCards.remove(n);
+                }
+                p.setWindowPatternCardsPool(patternCardsPool);
             }
-            p.setWindowPatternCardsPool(patternCardsPool);
         }
 
+        else {
+            List<WindowPatternCard> patternCardsPool = new ArrayList<>();
+            patternCardsPool.add(new WindowPatternCard(WindowPatternCardsName.virtus));
+            patternCardsPool.add(new WindowPatternCard(WindowPatternCardsName.viaLux));
+            patternCardsPool.add(new WindowPatternCard(WindowPatternCardsName.batllo));
+            patternCardsPool.add(new WindowPatternCard(WindowPatternCardsName.gravitas));
+            for (Player p: this.associatedGame.getPlayers()) p.setWindowPatternCardsPool(patternCardsPool);
+        }
 
 
     }
@@ -68,14 +78,12 @@ public class GameSetupController implements Serializable {
 
         List<ToolCard> selectedToolcards= new ArrayList<>();
 
-        final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
-        /*for (int i : ints)
+        /*final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
+        for (int i : ints)
             selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));*/
-
-        selectedToolcards.add(new ToolCard(ToolCardsName.FluxBrush));
-        selectedToolcards.add(new ToolCard(ToolCardsName.Lathekin));
-        selectedToolcards.add(new ToolCard(ToolCardsName.LensCutter));
-
+        selectedToolcards.add(new ToolCard(ToolCardsName.GlazingHammer));
+        selectedToolcards.add(new ToolCard(ToolCardsName.RunningPliers));
+        selectedToolcards.add(new ToolCard(ToolCardsName.FluxRemover));
         this.associatedGame.setToolCards(selectedToolcards);
 
     }
