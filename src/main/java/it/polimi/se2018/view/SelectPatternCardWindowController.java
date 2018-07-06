@@ -89,7 +89,9 @@ public class SelectPatternCardWindowController implements Serializable {
     }
 
     private void setButtonAction() {
+        this.loadPatternCard.setDisable(false);
         loadPatternCard.setOnAction(
+
                 new EventHandler<ActionEvent>() {
                     @Override
                     public void handle(ActionEvent event) {
@@ -115,7 +117,7 @@ public class SelectPatternCardWindowController implements Serializable {
             }
             while (!(file.getName().matches(".*[a-zA-Z0-9]+.*" + ".xml")));
         }
-        catch (NullPointerException | ParserConfigurationException | IOException | SAXException e) {
+        catch (Exception e) {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.ERROR, "Loading error. Closing..");
         }
     }
