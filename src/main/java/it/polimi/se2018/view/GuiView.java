@@ -159,7 +159,7 @@ public class GuiView extends View implements Observer {
         }
     }
 
-    protected void selectedPatternCard(int n){
+    protected void selectedPatternCard(Object n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
@@ -201,6 +201,10 @@ public class GuiView extends View implements Observer {
         ConnectionMessage cm = new ConnectionMessage();
         this.setChanged();
         this.notifyObservers(cm);
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     /**
