@@ -249,16 +249,16 @@
       <ImageView fx:id="tool3" fitHeight="152.0" fitWidth="111.0" layoutX="1143.0" layoutY="401.0" pickOnBounds="true" preserveRatio="true" />
       <Button fx:id="useTool" layoutX="1107.0" layoutY="371.0" mnemonicParsing="false" text="Use ToolCard" />
       <ImageView fx:id="mouseOverPublicObjective" disable="true" fitHeight="372.0" fitWidth="258.0" layoutX="957.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true" />
-      <Pane fx:id="winnerPane" disable="true" layoutX="247.0" layoutY="114.0" prefHeight="518.0" prefWidth="781.0" visible="false">
+      <Pane fx:id="winnerPane" disable="true" layoutX="248.0" layoutY="40.0" prefHeight="518.0" prefWidth="781.0" visible="false">
          <children>
-            <Pane layoutX="140.0" layoutY="106.0" prefHeight="405.0" prefWidth="501.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box,black , 10, 0, 0, 0);">
+            <Pane layoutX="140.0" layoutY="106.0" prefHeight="547.0" prefWidth="501.0" style="-fx-background-color: white; -fx-effect: dropshadow(three-pass-box,black , 10, 0, 0, 0);">
                <children>
                   <Text fx:id="winnerText" layoutX="14.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" wrappingWidth="736.9999788701534">
                      <font>
                         <Font size="18.0" />
                      </font></Text>
-                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#quit" text="Quit" />
-                  <Button fx:id="winnerAnoterMatch" layoutX="201.0" layoutY="371.0" mnemonicParsing="false" onMouseClicked="#searchNewGame" text="Play" />
+                  <Button fx:id="winnerEndGame" layoutX="256.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#quit" text="Quit" />
+                  <Button fx:id="winnerAnoterMatch" layoutX="201.0" layoutY="506.0" mnemonicParsing="false" onMouseClicked="#searchNewGame" text="Play" />
                </children>
             </Pane>
             <ImageView fx:id="winnerImage" fitHeight="150.0" fitWidth="737.0" layoutX="24.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
