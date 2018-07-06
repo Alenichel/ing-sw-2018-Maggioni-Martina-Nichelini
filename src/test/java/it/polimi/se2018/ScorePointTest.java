@@ -1,12 +1,10 @@
 package it.polimi.se2018;
 
+import it.polimi.se2018.enumeration.ObjectiveCardsName;
 import it.polimi.se2018.enumeration.VarietyType;
 import it.polimi.se2018.exception.NotEmptyWindowCellException;
 import it.polimi.se2018.exception.NotValidInsertion;
-import it.polimi.se2018.model.Die;
-import it.polimi.se2018.model.PrivateObjectiveCard;
-import it.polimi.se2018.model.ScorePointStrategy;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.model.*;
 import it.polimi.se2018.strategy.objective.*;
 import it.polimi.se2018.enumeration.DiceColor;
 import it.polimi.se2018.enumeration.WindowPatternCardsName;
@@ -16,7 +14,8 @@ import org.junit.Test;
 /**
  * Tests for private and public objective cards
  */
-public class ObjectivesTest {
+public class ScorePointTest {
+
 
     @Test
     // test for Column Shade Variety and Column Color Variety objective cards
@@ -209,5 +208,13 @@ public class ObjectivesTest {
         Assert.assertNotEquals(1, sps.scorePoint(wpc));
         Assert.assertEquals(0, sps2.scorePoint(wpc));
         Assert.assertNotEquals(1, sps2.scorePoint(wpc));
+    }
+
+   @Test
+    public void testPublicObjectiveCard(){
+        PublicObjectiveCard poc = new PublicObjectiveCard(ObjectiveCardsName.ColorVariety);
+        poc.getName();
+        System.out.println(poc.toString());
+        System.out.println(poc.getDescription());
     }
 }

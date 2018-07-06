@@ -1,14 +1,15 @@
 package it.polimi.se2018;
 
 import it.polimi.se2018.controller.ServerController;
-import it.polimi.se2018.enumeration.WindowPatternCardsName;
+import it.polimi.se2018.enumeration.LoggerType;
+import it.polimi.se2018.enumeration.WhatToUpdate;
 import it.polimi.se2018.message.ConnectionMessage;
 import it.polimi.se2018.message.MoveDiceMessage;
 import it.polimi.se2018.message.SelectionMessage;
-import it.polimi.se2018.model.Game;
+import it.polimi.se2018.message.UpdateMessage;
 import it.polimi.se2018.model.Player;
 import it.polimi.se2018.model.Server;
-import it.polimi.se2018.model.WindowPatternCard;
+import it.polimi.se2018.utils.Logger;
 import it.polimi.se2018.view.CliView;
 import it.polimi.se2018.view.VirtualView;
 import org.junit.Assert;
@@ -18,6 +19,8 @@ import org.junit.Test;
  * Tests for Server controller
  */
 public class ControllerTest {
+
+    int flag = 0;
 
     private class Handler extends Thread{
 
@@ -36,6 +39,8 @@ public class ControllerTest {
         @Override
         public void run () {
 
+            boolean isConnecting = true;
+
             while (true) {
                 while (container == null) {
                     try {
@@ -45,14 +50,24 @@ public class ControllerTest {
                     }
                 }
 
-                if (container instanceof ConnectionMessage) ServerController.getInstance().update(vv, container);
-                else if (container instanceof SelectionMessage || container instanceof MoveDiceMessage) {
+                if (container instanceof ConnectionMessage && isConnecting) {
+                    ServerController.getInstance().update(vv, container);
+                    isConnecting = false;
+                }
+                else if (container instanceof SelectionMessage ||
+                        container instanceof ConnectionMessage ||
+                        container instanceof MoveDiceMessage ||
+                        container instanceof UpdateMessage) {
                     System.out.println("select");
                     try {
                         Server.getInstance().getCurrentGame().getAssociatedGameController().update(vv, container);
                     }
                     catch (NullPointerException e){
-                        Server.getInstance().getActiveGames().get(0).getAssociatedGameController().update(vv, container);
+                        try {
+                            Server.getInstance().getActiveGames().get(0).getAssociatedGameController().update(vv, container);
+                        } catch (NullPointerException e2) {
+                            flag = 1;
+                        }
                     }
 
                 }
@@ -69,10 +84,12 @@ public class ControllerTest {
     @Test
     public void controllerTest() {
 
+        Logger.setSide(LoggerType.CLIENT_SIDE, false );
+
         Server server = Server.getInstance();
-        server.setDefaultMatchmakingTimer(1);
-        server.setDefaultMoveTimer(1);
-        server.setnOfTurn(5);
+        server.setDefaultMatchmakingTimer(5);
+        server.setDefaultMoveTimer(10);
+        server.setnOfTurn(1);
         ServerController serverController = ServerController.getInstance();
 
         Player p1 = new Player("Alenichel");
@@ -100,65 +117,74 @@ public class ControllerTest {
         h2.setContainer(cm2);
 
 
+        Player p3 = new Player("Valentina");
+        Object container3 = null;
+        CliView cw3 = new CliView();
+        cw3.setPlayer(p3);
+        VirtualView vv3 = new VirtualView(cw3, p3);
+        p3.setVv(vv3);
+        Handler h3 = new Handler(vv3, container3);
+        h3.start();
+
+        ConnectionMessage cm3 = new ConnectionMessage(p3, true);
+        h3.setContainer(cm3);
+
+
         try {
-            Thread.sleep((Server.getInstance().getDefaultMatchmakingTimer() + 6) * 1000 );
-            //Thread.sleep(20000 );
+            Thread.sleep((Server.getInstance().getDefaultMatchmakingTimer() + 5) * 1000 );
         } catch (InterruptedException e){
             System.out.println("Interrupted");
         }
-
-        //-----------------------------------------------PARTITA INIZIATA, ORA SELEZIONIAMO PATTERNCARD-------------------------------------------
         Assert.assertTrue(Server.getInstance().getOnlinePlayers().contains(p1));
         Assert.assertTrue(Server.getInstance().getOnlinePlayers().contains(p2));
-        //Assert.assertEquals(2, Server.getInstance().getOnlinePlayers().size());
-        //Assert.assertEquals(true, Server.getInstance().getActiveGames().get(0).isStarted());
+
 
         SelectionMessage sm1 = new SelectionMessage(0, p1,"PatternCard");
         SelectionMessage sm2 = new SelectionMessage(0, p2,"PatternCard");
+        SelectionMessage sm3 = new SelectionMessage(0, p3,"PatternCard");
         h1.setContainer(sm1);
         h2.setContainer(sm2);
-
-        p1.setActivePatternCard(new WindowPatternCard(WindowPatternCardsName.batllo));
-        p2.setActivePatternCard(new WindowPatternCard(WindowPatternCardsName.luxAstram));
-
-        //-----------------------------------------------PARTITA REALMENTE INIZIATA------------------------------------------------------------
+        h3.setContainer(sm3);
 
         try {
-            Thread.sleep((Server.getInstance().getnOfTurn() * 2 * Server.getInstance().getDefaultMoveTimer() + 1) * 1000 );
+            Thread.sleep(1100);
         } catch (InterruptedException e){
             System.out.println("Interrupted");
         }
 
-        Game game = Server.getInstance().getActiveGames().get(0);
 
-        if(game.getActivePlayer().equals(p1)){
-            //turno di p1
-            MoveDiceMessage mdm1 = new MoveDiceMessage(1, 1, 1);
-            h1.setContainer(mdm1);
-        }
-        else if(game.getActivePlayer().equals(p2)){
-            //turno di p2
-            MoveDiceMessage mdm2 = new MoveDiceMessage(2, 1, 1);
-            h2.setContainer(mdm2);
-        }
-
-
-        try {
-            Thread.sleep((Server.getInstance().getnOfTurn() * 2 * Server.getInstance().getDefaultMoveTimer() + 1) * 1000 );
-        } catch (InterruptedException e){
-            System.out.println("Interrupted");
+        while (flag != 1){
+                h1.setContainer(new UpdateMessage(WhatToUpdate.Pass));
+                try {
+                    MoveDiceMessage mdm3 = new MoveDiceMessage(1, 0, 0);
+                    h3.setContainer(mdm3);
+                    Thread.sleep(1100);
+                } catch (InterruptedException e) {
+                    System.out.println("Interrupted");
+                }
+                h2.setContainer(new UpdateMessage(WhatToUpdate.Pass));
+                try {
+                    MoveDiceMessage mdm1 = new MoveDiceMessage(1, 0, 0);
+                    h1.setContainer(mdm1);
+                    Thread.sleep(1100);
+                } catch (InterruptedException e) {
+                    System.out.println("Interrupted");
+                }
+                h3.setContainer(new UpdateMessage(WhatToUpdate.Pass));
+                try {
+                    MoveDiceMessage mdm2 = new MoveDiceMessage(1, 0, 0);
+                    h2.setContainer(mdm2);
+                    Thread.sleep(1100);
+                } catch (InterruptedException e) {
+                    System.out.println("Interrupted");
+                }
         }
 
         h1.stop();
         h2.stop();
+        h3.stop();
+        return;
     }
 
-    private void waitATurn(){
-        try {
-            Thread.sleep((Server.getInstance().getDefaultMoveTimer()+1)*1000);
-        }catch (InterruptedException e){
-            ;
-        }
 
-    }
 }

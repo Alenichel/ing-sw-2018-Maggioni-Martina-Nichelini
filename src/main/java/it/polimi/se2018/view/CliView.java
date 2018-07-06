@@ -316,7 +316,7 @@ public class CliView extends View implements Observer {
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You WON ************");
         }
         else {
-            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You LOSE ************\nThe winner is: " + game.getWinner().getNickname());
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You LOST ************\nThe winner is: " + game.getWinner().getNickname());
         }
 
         for (Player p: game.getPlayers()){

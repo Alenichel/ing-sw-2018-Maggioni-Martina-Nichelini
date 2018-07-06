@@ -242,6 +242,9 @@ public class GameController implements Observer, Serializable, TimerInterface {
             }
         }
 
+
+        this.gameAssociated.setWinner(topPlayer);
+
         //clean player from game setup references.
         for (Player p : gameAssociated.getPlayersOrder()) {
             p.setActivePatternCard(null);
@@ -251,7 +254,6 @@ public class GameController implements Observer, Serializable, TimerInterface {
         }
 
 
-        this.gameAssociated.setWinner(topPlayer);
         this.serverController.removeGame(this.gameAssociated);
         if (roundHandler != null) TimerHandler.stopTimer(roundHandler.timerID);
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Game " + this.gameAssociated.getName().toString() + " ended.");
