@@ -73,6 +73,11 @@ public class CliView extends View implements Observer {
             return coo;
         }
 
+        else if (tcc.equals(ToolcardContent.Increase)) {
+            Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "Please 1 to increase or 2 to decrease: ");
+            return Integer.parseInt(sinput.nextLine()) == 1;
+        }
+
         else if (tcc.equals(ToolcardContent.WindowCellStart) ||
                 tcc.equals(ToolcardContent.firstWindowCellStart) ||
                 (tcc.equals(ToolcardContent.secondWindowCellStart) && !amountDependentToolcard ) ||
