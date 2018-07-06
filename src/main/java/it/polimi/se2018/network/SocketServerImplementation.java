@@ -37,6 +37,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
 
     BlockingQueue queue = new LinkedBlockingQueue();
 
+    /**
+     * Class constructor
+     */
     public SocketServerImplementation(Socket socket){
         this.socket = socket;
         try {
@@ -111,6 +114,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         }
     }
 
+    /**
+     * Inner class sender
+     */
     private class Sender extends Thread{
         @Override
         public void run() {
@@ -132,7 +138,7 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
     }
 
     /**
-     * This inner class listen for messages coming from associated client and calls for notify method of the VirtualView.
+     * This inner class listens for messages coming from associated client and calls for notify method of the VirtualView.
      */
     private class VirtualListener extends Thread {
         @Override
@@ -176,6 +182,9 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         }
     }
 
+    /**
+     * run method
+     */
     @Override
     public void run(){
         VirtualListener vl = new VirtualListener();
@@ -184,12 +193,21 @@ public class SocketServerImplementation extends Thread implements ServerInterfac
         s.start();
     }
 
+    /**
+     * receiver method
+     */
     @Override
     public void receiver(Observable o, Object msg){ throw new UnsupportedOperationException(); }
 
+    /**
+     * this method adds a client
+     */
     @Override
     public void addClient(ClientInterface client) throws RemoteException {throw new UnsupportedOperationException();}
 
+    /**
+     * pong method
+     */
     @Override
     public void pong(){ throw new UnsupportedOperationException(); }
 }

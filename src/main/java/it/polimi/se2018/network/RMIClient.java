@@ -10,10 +10,20 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-
+/**
+ * Class for RMI client
+ */
 public class RMIClient {
 
-	public static RMIClientImplementation run(View view, String serverURL,String nickname, String password) {
+	/**
+	 * Run method
+	 * @param view associated view
+	 * @param serverURL server url
+	 * @param nickname player's nickname
+	 * @param password player's password
+	 * @return client
+	 */
+	public static RMIClientImplementation run(View view, String serverURL, String nickname, String password) {
 		ServerInterface server;
         RMIClientImplementation client = null;
 		try {
@@ -41,6 +51,9 @@ public class RMIClient {
         return client;
 	}
 
+	/**
+	 * Ping class
+	 */
 	private static class Ping extends Thread{
 
 	    private ServerInterface si;

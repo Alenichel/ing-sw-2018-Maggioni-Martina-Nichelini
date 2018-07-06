@@ -11,6 +11,9 @@ import java.rmi.RemoteException;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Class for RMI Client implementation
+ */
 public class RMIClientImplementation implements ClientInterface, Observer {
 
 	private final String insertedNickname;
@@ -18,6 +21,13 @@ public class RMIClientImplementation implements ClientInterface, Observer {
 	private final View associatedView;
 	private final ServerInterface server;
 
+	/**
+	 * Class constructor
+	 * @param view associated view
+	 * @param nickname player's nickname
+	 * @param password player's password
+	 * @param server server
+	 */
 	public RMIClientImplementation(View view, String nickname, String password, ServerInterface server){
 		this.insertedNickname = nickname;
 		this.insertedPassword = password;
@@ -25,16 +35,27 @@ public class RMIClientImplementation implements ClientInterface, Observer {
 		this.server = server;
 	}
 
+	/**
+	 * inserted nickname getter
+	 * @return inserted nickname
+	 */
 	@Override
 	public String getInsertedNickname(){
 		return this.insertedNickname;
 	}
 
+	/**
+	 * inserted password getter
+	 * @return inserted password
+	 */
 	@Override
 	public String getInsertedPassword(){
 		return this.insertedPassword;
 	}
 
+	/**
+	 * player setter
+	 */
 	@Override
 	public void setPlayer(Player player){
 		this.associatedView.setPlayer(player);
@@ -42,8 +63,6 @@ public class RMIClientImplementation implements ClientInterface, Observer {
 
 	/**
 	 * This method calls the server corresponding method.
-	 * @param observable
-	 * @param message
 	 */
 	@Override
 	public void update(Observable observable, Object message){
@@ -55,6 +74,9 @@ public class RMIClientImplementation implements ClientInterface, Observer {
 		}
 	}
 
+	/**
+	 * notify method
+	 */
 	@Override
 	public void notify(Message message) throws RemoteException {
 		if (message instanceof SocketUpdateContainer){

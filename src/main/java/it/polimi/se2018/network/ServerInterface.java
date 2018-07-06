@@ -6,17 +6,14 @@ import java.util.Observable;
 
 import it.polimi.se2018.message.Message;
 
+/**
+ * Class for Server interface
+ */
 public interface ServerInterface extends Remote {
-	
     void addClient(ClientInterface client) throws RemoteException;
-
     void pong() throws RemoteException;
-
-
     void controllerCallback(Message callbackMessage)throws RemoteException;
-
     void update(Observable o, Object msg)throws RemoteException;
-
     void receiver(Observable o, Object msg) throws  RemoteException;
 
 }

@@ -9,10 +9,16 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
+/**
+ * Class for RMI Server
+ */
 public class RMIServer {
 
-    private static int PORT = 1099; // porta di default
-	
+    private static int PORT = 1099; //default port
+
+	/**
+	 * Class constructor
+	 */
 	public RMIServer() {
 		try {
 			LocateRegistry.createRegistry(PORT);

@@ -18,7 +18,9 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
-
+/**
+ * RMI Server implementation
+ */
 public class RMIServerImplementation extends UnicastRemoteObject implements
 		ServerInterface {
 
@@ -27,6 +29,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
 		super(0);		
 	}
 
+    /**
+     * This method adds a client
+     * @param client client to be added
+     */
 	@Override
 	public void addClient(ClientInterface client) throws RemoteException {
         Player player;
@@ -47,6 +53,9 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         vv.notifyObservers(new ConnectionMessage(player, true));
     }
 
+    /**
+     * controller callback
+     */
 	@Override
     public void controllerCallback(Message callbackMessage){
 	    try {
@@ -58,6 +67,9 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         }
     }
 
+    /**
+     * update method
+     */
     @Override
     public void update(Observable o, Object msg){
         try {
@@ -79,6 +91,9 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         }
 	}
 
+    /**
+     * receiver method
+     */
 	@Override
 	public void receiver(Observable o, Object msg) {
         String key = ((Message)msg).getSignedBy();
@@ -88,11 +103,19 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         view.notifyObservers(/*packet.getObservable(), */msg);
     }
 
+    /**
+     * pong method
+     */
     @Override
     public void pong () {
 	    Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.DEBUG, "Received PING. PONGED");
     }
 
+    /**
+     * Equals method
+     * @param o object to be compared
+     * @return true if the condition is respected
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -102,6 +125,10 @@ public class RMIServerImplementation extends UnicastRemoteObject implements
         return Objects.equals(clients, that.clients);
     }
 
+    /**
+     * This method provides the hash code of an object
+     * @return hash code
+     */
     @Override
     public int hashCode() {
 

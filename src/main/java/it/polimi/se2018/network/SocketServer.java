@@ -16,6 +16,9 @@ public class SocketServer extends Thread {
 
     private ServerSocket ssocket;
 
+    /**
+     * Run method
+     */
     @Override
     public void run() {
         try {
