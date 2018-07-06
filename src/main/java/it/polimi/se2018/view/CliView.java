@@ -5,9 +5,11 @@ import it.polimi.se2018.message.*;
 import it.polimi.se2018.model.*;
 import it.polimi.se2018.utils.*;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import static it.polimi.se2018.enumeration.LoggerPriority.ERROR;
 import static it.polimi.se2018.enumeration.LoggerPriority.NORMAL;
+import static it.polimi.se2018.enumeration.LoggerPriority.WARNING;
 
 
 public class CliView extends View implements Observer {
@@ -171,7 +173,13 @@ public class CliView extends View implements Observer {
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "*** " + this.client.getNickname() + " ***");
 
         loop: while (true) {
-            String input = sinput.nextLine();
+            String input = null;
+            try {
+                input = sinput.nextLine();
+            } catch (NoSuchElementException e){
+                Logger.log(LoggerType.CLIENT_SIDE, WARNING, "Connectio was closed server side.");
+                System.exit(0);
+            }
             String[] tokens = input.toLowerCase().split(" ");
 
             if (gameEnd) {
