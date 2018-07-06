@@ -31,7 +31,7 @@ public class GuiView extends View implements Observer {
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
     protected transient GameWindowController gameWindowController;
 
-    protected transient Stage primaryStage;
+    private transient Stage primaryStage;
     private transient Scene sceneWaintingRoom;
     private transient Scene scenePatternCard;
     private transient Scene sceneGame;
@@ -135,7 +135,7 @@ public class GuiView extends View implements Observer {
         }
     }
 
-    protected void selectedPatternCard(int n){
+    protected void selectedPatternCard(Object n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
@@ -216,5 +216,9 @@ public class GuiView extends View implements Observer {
             break;
             default: break;
         }
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

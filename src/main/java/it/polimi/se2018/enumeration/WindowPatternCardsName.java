@@ -24,5 +24,6 @@ public enum WindowPatternCardsName {
         luxCelestial,
         ripplesOfLight,
         sunsGlory,
-        waterOfLife
+        waterOfLife,
+        customPatterCard
 }

@@ -30,6 +30,13 @@ public class WindowPatternCard extends Card implements Serializable {
 
     private int placedDice = 0;
 
+    public WindowPatternCard(String name, Document doc){
+        this.wpname = WindowPatternCardsName.customPatterCard;
+        this.name = name;
+        loadConfiguration(doc);
+        finalizeConstruction();
+    }
+
     /**
      * Class constructor
      * @param name window pattern card name
@@ -38,7 +45,7 @@ public class WindowPatternCard extends Card implements Serializable {
         this.wpname = name;
         this.name = name.toString();
         try {
-            loadConfiguration();
+            loadConfiguration(loadDoc());
         } catch (FileNotFoundException e) {
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, e.toString());
             System.exit(1);
@@ -46,6 +53,11 @@ public class WindowPatternCard extends Card implements Serializable {
             Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.ERROR, Arrays.toString(e.getStackTrace()));
         }
 
+        finalizeConstruction();
+
+    }
+
+    private void finalizeConstruction(){
         for (int x = 0; x < 4; x++){
             for (int y = 0; y < 5; y++){
                 if (grid[x][y] == null) grid[x][y] = new WindowCell(x, y);
@@ -58,7 +70,6 @@ public class WindowPatternCard extends Card implements Serializable {
                 cell.setDiagonals(grid);
             }
         }
-
     }
 
     /**
@@ -118,15 +129,17 @@ public class WindowPatternCard extends Card implements Serializable {
         this.player = player;
     }
 
-    /**
-     * This method loads the user specified pattern card from an xml file
-     */
-    private void loadConfiguration() throws ParserConfigurationException, IOException, SAXException {
+    private Document loadDoc() throws ParserConfigurationException, IOException, SAXException  {
         InputStream xmlResource = getClass().getResourceAsStream("/patternCards" + "/" + this.name + ".xml");
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = docBuilderFactory.newDocumentBuilder();
-        Document doc = documentBuilder.parse(xmlResource);
+        return documentBuilder.parse(xmlResource);
+    }
 
+    /**
+     * This method loads the user specified pattern card from an xml file
+     */
+    private void loadConfiguration(Document doc) {
         Element virtus = doc.getDocumentElement();
 
         NodeList appoNodeList = virtus.getElementsByTagName("nOfFavorTokens");

@@ -36,6 +36,7 @@ public class GameSetupController implements Serializable {
      */
     private void initializePatternCard(){
         for(WindowPatternCardsName w : WindowPatternCardsName.values()){
+            if (w.equals(WindowPatternCardsName.customPatterCard)) continue;
             this.associatedGame.getPatternCards().add(new WindowPatternCard(w));
         }
     }
@@ -81,7 +82,7 @@ public class GameSetupController implements Serializable {
         /*final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
             selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));*/
-        selectedToolcards.add(new ToolCard(ToolCardsName.CorkBackedStraightedge));
+        selectedToolcards.add(new ToolCard(ToolCardsName.GrozingPliers));
         selectedToolcards.add(new ToolCard(ToolCardsName.FluxBrush));
         selectedToolcards.add(new ToolCard(ToolCardsName.TapWheel));
         this.associatedGame.setToolCards(selectedToolcards);
@@ -133,10 +134,20 @@ public class GameSetupController implements Serializable {
      * @param p player who chose the pattern card
      * @throws GameException if the pattern card has already been chosen
      */
-    private void onPatternCardSelection(int cardIndex, Player p) throws GameException{
+    private void onPatternCardSelection(Object chosenItem, Player p) throws GameException{
 
         if (p.getActivePatternCard() == null) {
-            p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
+
+            if (chosenItem instanceof WindowPatternCard){
+                WindowPatternCard wpc = (WindowPatternCard) chosenItem;
+                p.assignPatternCard(wpc);
+            }
+
+            else {
+                int cardIndex = (int) chosenItem;
+                p.assignPatternCard(p.getWindowPatternCardsPool().get(cardIndex));
+            }
+
             p.setWindowPatternCardsPool(null);
             p.getActivePatternCard().setPlayer(p);
 
@@ -158,7 +169,7 @@ public class GameSetupController implements Serializable {
 
             case "PatternCard":
                 try {
-                    onPatternCardSelection((int)message.getChosenItem(), ((View)observable).getClient());
+                    onPatternCardSelection(message.getChosenItem(), ((View)observable).getClient());
                 }
                 catch (GameException e){
                     ControllerCallbackMessage ccm = new ControllerCallbackMessage("You have already selected a pattern card", LoggerPriority.ERROR);
