@@ -31,6 +31,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
 public class GameWindowController implements Serializable {
@@ -401,6 +402,9 @@ public class GameWindowController implements Serializable {
         draftPoolArrow.setImage(new Image("draftPoolArrow.png"));
         bag.setImage(new Image("dice-bag.png"));
 
+        this.gw.primaryStage.setOnCloseRequest((WindowEvent event) -> {
+            this.quit();
+        });
 
 
     }
