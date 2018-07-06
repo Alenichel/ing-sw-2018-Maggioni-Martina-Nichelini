@@ -63,9 +63,10 @@ public class Player extends Observable implements Serializable{
     }
 
     /**
-     * Active window pattern cards setter
+     * Active window pattern cards setter for debug ant test ONLY.
      * @param windowPatternCard: player's chosen pattern card
      */
+    @Deprecated
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
         this.activePatternCard = windowPatternCard;
     }

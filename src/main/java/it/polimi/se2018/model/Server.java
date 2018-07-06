@@ -21,6 +21,7 @@ public class Server extends Observable implements Serializable {
     private int defaultMatchmakingTimer;
     private int defaultMoveTimer;
     private boolean configurationRequired;
+    private boolean testMode = false;
     private int nOfTurn;
 
     private List<Player> onlinePlayers = new Vector<>();
@@ -30,7 +31,6 @@ public class Server extends Observable implements Serializable {
     private Game currentGame;
 
     private List<Game> activeGames = new Vector<>();
-
     private static Server instance = null;
 
     /**
@@ -227,4 +227,11 @@ public class Server extends Observable implements Serializable {
         this.nOfTurn = nOfTurn;
     }
 
+    public boolean isTestMode() {
+        return testMode;
+    }
+
+    public void setTestMode(boolean testMode) {
+        this.testMode = testMode;
+    }
 }

@@ -15,6 +15,7 @@ import it.polimi.se2018.view.VirtualView;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * This class implements the controller for the 12 Tool Cards
@@ -23,12 +24,12 @@ import java.util.Map;
 public class ToolCardController {
 
     private Game gameAssociated;
-    private GameController gameController;
     private ToolCard lastToolCardActivated = null;
+    protected AtomicBoolean activable = new AtomicBoolean();
 
     protected ToolCardController(Game gameAssociated){
         this.gameAssociated = gameAssociated;
-        this.gameController = gameAssociated.getAssociatedGameController();
+        this.activable.set(true);
     }
 
     private ToolCard retrieveToolCardFromName(ToolCardsName tcn){
@@ -51,7 +52,7 @@ public class ToolCardController {
         Player player = vv.getClient();
         player.getActivePatternCard().useToken( (toolCard.isUsed()) ? 2 : 1 );
         toolCard.setUsed(true);
-        //gameController.getActiveRoundHandler().toolcardActivated = true;
+        activable.set(false);
         Player p = vv.getClient();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "User: " + p.getNickname() + " successfully activate " + name.toString());
         ControllerCallbackMessage ccm = new ControllerCallbackMessage(CallbackMessageSubject.ToolCardAck ,LoggerPriority.NOTIFICATION);
@@ -291,14 +292,21 @@ public class ToolCardController {
         Player player = observable.getClient();
         ToolCardsName tcn = toolCardMessage.getToolCardName();
 
+        if (!activable.get()){
+            ((View)observable).controllerCallback(new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , "Toolcard already activated.", LoggerPriority.NOTIFICATION));
+            return;
+        }
+
         if (!gameAssociated.getActivePlayer().equals(player)){
             ((View)observable).controllerCallback(new ControllerCallbackMessage(CallbackMessageSubject.ToolcardNack , "Not your turn", LoggerPriority.NOTIFICATION));
             return;
         }
 
         int nOfTokens = 0;
-        if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;
-        else nOfTokens = 1;
+        if (!Server.getInstance().isTestMode()) {
+            if (retrieveToolCardFromName(tcn).isUsed()) nOfTokens = 2;
+            else nOfTokens = 1;
+        }
 
         if (player.getActivePatternCard().getNumberOfFavorTokens() < nOfTokens) {
             this.onFailure(observable, "Not enough tokens");

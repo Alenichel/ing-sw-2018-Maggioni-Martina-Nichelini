@@ -24,7 +24,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
     private ServerController serverController;
     public final Game gameAssociated;
     private GameSetupController gameSetupController;
-    private transient final ToolCardController toolCardController;
+    protected final transient ToolCardController toolCardController;
     private transient RoundHandler roundHandler;
 
     private long timerID;
