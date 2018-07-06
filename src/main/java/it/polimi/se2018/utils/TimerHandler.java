@@ -9,7 +9,7 @@ public class TimerHandler implements Serializable {
 
     /**
      * This method offers an interface to record a new timer.
-     * @param timerInterface
+     * @param timerInterface timer interface
      * @param duration of the timer to set.
      * @return the id fo the recorded timer ready to be started.
      */
@@ -42,7 +42,7 @@ public class TimerHandler implements Serializable {
     /**
      * Method to check timer status.
      * @param id of the timer to check.
-     * @return
+     * @return true if timer is alive
      */
     public static boolean checkTimer(long id){
         for (Timer timer: timerList){
