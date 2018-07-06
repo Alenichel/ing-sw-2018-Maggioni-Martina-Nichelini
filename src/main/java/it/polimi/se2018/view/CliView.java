@@ -142,10 +142,6 @@ public class CliView extends View implements Observer {
 
         if (content != null) {
             for (ToolcardContent tcc : tc.getContent()) {
-                if (tcc.equals(ToolcardContent.Amount) ) {
-                    amountDepedentToolcard = true;
-                    iteration =  (int) htc.get(ToolcardContent.Amount);
-                }
                 if (tcc.equals(ToolcardContent.RolledNumber)) {
                     int dieIndex = (int) htc.get(ToolcardContent.DraftedDie);
                     Die die = lastGameReceveid.getDiceOnTable().get(dieIndex);
@@ -156,6 +152,12 @@ public class CliView extends View implements Observer {
                     continue;
                 }
                 htc.put(tcc, this.handleUseIO(tcc, amountDepedentToolcard, iteration));
+
+                if (tcc.equals(ToolcardContent.Amount) ) {
+                    amountDepedentToolcard = true;
+                    iteration =  (int) htc.get(ToolcardContent.Amount);
+
+                }
             }
         }
 
