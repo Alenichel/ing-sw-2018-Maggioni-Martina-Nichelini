@@ -23,7 +23,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Player constructor
-     * @param nickname: player's nickname
+     * @param nickname player's nickname
      */
     public Player(String nickname) {
         this.nickname = nickname;
@@ -64,7 +64,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Active window pattern cards setter for debug ant test ONLY.
-     * @param windowPatternCard: player's chosen pattern card
+     * @param windowPatternCard player's chosen pattern card
      */
     @Deprecated
     public void setActivePatternCard(WindowPatternCard windowPatternCard){
@@ -73,7 +73,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Player number setter
-     * @param number: player number
+     * @param number player number
      */
     public void setPlayerNumber(int number){
         this.playerNumber = number;
@@ -81,7 +81,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Last game joined setter
-     * @param game: last game joined
+     * @param game last game joined
      */
     public void setLastGameJoined(Game game){
         this.lastGameJoined = game;
@@ -89,7 +89,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * This method assigns a window pattern card
-     * @param card: window pattern card assigned
+     * @param card window pattern card assigned
      */
     public void assignPatternCard(WindowPatternCard card){
         if (!inGame) throw new IllegalArgumentException();
@@ -98,7 +98,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * This method assigns a private objective card
-     * @param card: private objective card assigned
+     * @param card private objective card assigned
      */
     public void assignObjectiveCard(PrivateObjectiveCard card){
         if (!inGame ) throw  new IllegalArgumentException();
@@ -107,7 +107,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Window pattern cards pool setter
-     * @param windowPatternCardsPool: list of window pattern cards
+     * @param windowPatternCardsPool list of window pattern cards
      */
     public void setWindowPatternCardsPool(List<WindowPatternCard> windowPatternCardsPool) {
         this.windowPatternCardsPool = windowPatternCardsPool;
@@ -115,7 +115,7 @@ public class Player extends Observable implements Serializable{
 
     /**
      * Score setter
-     * @param score: player's score
+     * @param score player's score
      */
     public void setScore(int score) {
         this.score = score;

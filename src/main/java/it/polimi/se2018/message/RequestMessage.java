@@ -17,7 +17,7 @@ public class RequestMessage extends Message{
 
     /**
      * request getter
-     * @return
+     * @return request
      */
     public String getRequest() {
         return request;

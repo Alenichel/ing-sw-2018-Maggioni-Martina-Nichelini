@@ -54,7 +54,7 @@ public class ServerController implements Observer, Serializable{
 
     /**
      * This method removes a game from the active games and handles all the associated operations
-     * @param game: game to be removed
+     * @param game game to be removed
      */
     protected  void removeGame(Game game){
 

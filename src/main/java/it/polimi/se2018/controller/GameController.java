@@ -33,7 +33,7 @@ public class GameController implements Observer, Serializable, TimerInterface {
 
     /**
      * Game controller constructor
-     * @param game: associated game
+     * @param game associated game
      */
     public GameController(Game game){
         this.server = Server.getInstance();

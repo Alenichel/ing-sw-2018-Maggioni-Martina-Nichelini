@@ -65,7 +65,7 @@ public class PublicObjectiveCard extends ObjectiveCard{
 
     /**
      * Public objective cars constructor
-     * @param name: public objective card name
+     * @param name public objective card name
      */
     public PublicObjectiveCard(ObjectiveCardsName name){
         this.Name = name;
@@ -74,7 +74,7 @@ public class PublicObjectiveCard extends ObjectiveCard{
 
     /**
      * Score point method
-     * @param windowPatternCard: window pattern card under consideration
+     * @param windowPatternCard window pattern card under consideration
      */
     public int scorePoint(WindowPatternCard windowPatternCard){
         return scorePointStrategy.scorePoint(windowPatternCard);

@@ -35,7 +35,7 @@ public class RoundHandler implements TimerInterface {
 
     /**
      * Round handler constructor
-     * @param game: associated game
+     * @param game associated game
      */
     public RoundHandler (Game game){
         this.gameAssociated = game;

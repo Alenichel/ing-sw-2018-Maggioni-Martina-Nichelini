@@ -111,7 +111,7 @@ public class ToolCard extends Card implements Serializable {
 
     /**
      * Die color setter
-     * @param diceColor: red, purple, blue, green or yellow
+     * @param diceColor red, purple, blue, green or yellow
      */
     public void setDiceColor(DiceColor diceColor) {
         this.diceColor = diceColor;

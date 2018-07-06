@@ -12,7 +12,7 @@ public class PrivateObjectiveCard extends ObjectiveCard {
 
     /**
      * Private objective card constructor
-     * @param diceColor: red, blue, yellow, green or purple
+     * @param diceColor red, blue, yellow, green or purple
      */
     public PrivateObjectiveCard(DiceColor diceColor){
         this.color = diceColor;

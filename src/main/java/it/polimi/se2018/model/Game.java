@@ -63,7 +63,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Die bag setter
-     * @param diceBag: list of dice in the bag
+     * @param diceBag list of dice in the bag
      */
     public synchronized void setDiceBag(List<Die> diceBag) {
         this.diceBag = diceBag;
@@ -71,7 +71,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Die on table setter
-     * @param diceOnTable: list of dice on the table
+     * @param diceOnTable list of dice on the table
      */
     public synchronized void setDiceOnTable(List<Die> diceOnTable) {
         this.diceOnTable = diceOnTable;
@@ -83,7 +83,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Window Pattern cards setter
-     * @param patternCards: list of window pattern cards
+     * @param patternCards list of window pattern cards
      */
     public synchronized void setPatternCards(List<WindowPatternCard> patternCards) {
         this.patternCards = patternCards;
@@ -91,7 +91,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Public objective cards setter
-     * @param objectiveCards: list of public objective cards
+     * @param objectiveCards list of public objective cards
      */
     public synchronized void setObjectiveCards(List<PublicObjectiveCard> objectiveCards) {
         this.objectiveCards = objectiveCards;
@@ -99,7 +99,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Tool cards setter
-     * @param toolCards: list of tool cards
+     * @param toolCards list of tool cards
      */
     public synchronized void setToolCards(List<ToolCard> toolCards) {
         this.toolCards = toolCards;
@@ -107,7 +107,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Timer setter
-     * @param second: seconds left
+     * @param second seconds left
      */
     public synchronized void setTimerSecondLeft(int second){
         this.timerSecondsLeft = second;
@@ -154,7 +154,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Active player setter
-     * @param activePlayer: active player during the current round
+     * @param activePlayer active player during the current round
      */
     public synchronized void setActivePlayer(Player activePlayer) {
         this.activePlayer = activePlayer;
@@ -166,13 +166,13 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Active player setter
-     * @param turn: the new active turn index
+     * @param turn the new active turn index
      */
     public synchronized void setActualTurn (int turn) { this.actualTurn = turn;}
 
     /**
      * Actual round setter
-     * @param actualRound: current round
+     * @param actualRound current round
      */
     public synchronized void setActualRound(int actualRound) {
         this.actualRound = actualRound;
@@ -184,7 +184,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Winner setter
-     * @param winner: player with the higher score
+     * @param winner player with the higher score
      */
     public synchronized void setWinner(Player winner) {
         this.winner = winner;
@@ -196,7 +196,7 @@ public class Game extends Observable implements Serializable {
 
     /**
      * Players order setter
-     * @param playersOrder: list of players
+     * @param playersOrder list of players
      */
     public synchronized void setPlayersOrder(List<Player> playersOrder) {
         this.playersOrder = playersOrder;
