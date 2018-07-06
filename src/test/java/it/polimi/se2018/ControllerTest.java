@@ -94,11 +94,12 @@ public class ControllerTest {
 
         Logger.setSide(LoggerType.CLIENT_SIDE, false );
 
-        Server server = Server.getInstance();
-        server.setTestMode(true);
-        server.setDefaultMatchmakingTimer(5);
-        server.setDefaultMoveTimer(10);
-        server.setnOfTurn(2);
+        Server.getInstance().getActiveGames();
+        Server.getInstance().setTestMode(true);
+        Server.getInstance().setDefaultMatchmakingTimer(5);
+        System.out.println("setted");
+        Server.getInstance().setDefaultMoveTimer(10);
+        Server.getInstance().setnOfTurn(2);
         ServerController serverController = ServerController.getInstance();
 
         Player p1 = new Player("Alenichel");
@@ -144,7 +145,7 @@ public class ControllerTest {
 
 
         try {
-            Thread.sleep((Server.getInstance().getDefaultMatchmakingTimer() + 5) * 1000 );
+            Thread.sleep(31000);
         } catch (InterruptedException e){
             System.out.println("Interrupted");
         }

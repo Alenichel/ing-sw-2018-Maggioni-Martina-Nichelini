@@ -178,6 +178,7 @@ public class Server extends Observable implements Serializable {
      * @param player removed from online players
      */
     public void removePlayerFromOnlinePlayers(Player player){
+        if (! onlinePlayers.contains(player)) return;
         this.onlinePlayers.remove(player);
         this.offlinePlayers.add(player);
 

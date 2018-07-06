@@ -178,7 +178,7 @@ public class GuiView extends View implements Observer {
      * @param toolNumber number of the tool card
      */
     protected void useTool(int toolNumber){
-        ToolCard selectedToolCard = toolCards.get(toolNumber-1);
+        ToolCard selectedToolCard = lastGameReceived.getToolCards().get(toolNumber-1);
 
         if (this.toolCardTask != null && this.toolCardTask.isRunning()) {
             this.toolCardTask.cancel(true);
