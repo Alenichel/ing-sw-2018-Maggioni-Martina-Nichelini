@@ -17,6 +17,9 @@ import java.util.Map;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Tool card task class
+ */
 public class ToolCardTask extends Task<Void> {
 
     private final ToolCard toolCard;
@@ -24,6 +27,9 @@ public class ToolCardTask extends Task<Void> {
     private final GameWindowController gwc;
     private final Semaphore toolcardSemaphore;
 
+    /**
+     * Class constructor
+     */
     public ToolCardTask (ToolCard toolcard, GuiView guiView, Semaphore toolcardSemaphore) {
         this.toolCard = toolcard;
         this.guiView = guiView;
@@ -31,6 +37,10 @@ public class ToolCardTask extends Task<Void> {
         this.toolcardSemaphore = toolcardSemaphore;
     }
 
+    /**
+     * This method handles the gui setup
+     * @param tc tool card content
+     */
     private void handleGuiSetup (ToolcardContent tc) {
         if (tc.equals(ToolcardContent.WindowCellStart) || tc.equals(ToolcardContent.firstWindowCellStart) || tc.equals(ToolcardContent.secondWindowCellStart))
             this.gwc.toolcardWindowEffect(ToolcardContent.WindowCellStart);
@@ -55,6 +65,9 @@ public class ToolCardTask extends Task<Void> {
         }
     }
 
+    /**
+     * call method
+     */
     @Override
     protected Void call() throws Exception {
         int amount = 0;

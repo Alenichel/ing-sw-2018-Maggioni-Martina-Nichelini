@@ -11,7 +11,9 @@ import javafx.scene.layout.Pane;
 import java.io.*;
 import java.util.ArrayList;
 
-
+/**
+ * Class for selection pattern card window controller (view)
+ */
 public class SelectPatternCardWindowController implements Serializable {
     private GuiView gw;
     @FXML private transient ImageView window1;
@@ -21,6 +23,9 @@ public class SelectPatternCardWindowController implements Serializable {
     @FXML protected transient Pane hadledPane;
 
 
+    /**
+     * This method prints 4 random pattern card
+     */
     protected void printPool(Player player, GuiView gw){
         this.gw = gw;
         ArrayList<ImageView> imageViews = new ArrayList<>();
@@ -66,6 +71,10 @@ public class SelectPatternCardWindowController implements Serializable {
 
     }
 
+    /**
+     * THis method handles the player's click on the chosen pattern card
+     * @param n number of the selected pattern card
+     */
     private void handleClick(int n){
         gw.selectedPatternCard(n);
     }

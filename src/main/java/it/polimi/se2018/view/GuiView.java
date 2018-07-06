@@ -26,6 +26,9 @@ import java.util.concurrent.Semaphore;
 
 import static it.polimi.se2018.enumeration.LoggerPriority.NORMAL;
 
+/**
+ * Class for GUI view
+ */
 public class GuiView extends View implements Observer {
     private transient WaitingAreaController waitingAreaController;
     private transient SelectPatternCardWindowController selectPatternCardWindowController;
@@ -43,6 +46,9 @@ public class GuiView extends View implements Observer {
     protected transient Semaphore toolcardSemaphore;
     protected transient Object toolCardDragBoard;
 
+    /**
+     * Run method
+     */
     public void run(Stage primaryStage) {
         this.primaryStage = primaryStage;
 
@@ -52,6 +58,9 @@ public class GuiView extends View implements Observer {
         printWaintingArea();
     }
 
+    /**
+     * waiting area set up
+     */
     protected void setupWaintingArea(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WaitingArea.fxml"));
         try {
@@ -65,6 +74,9 @@ public class GuiView extends View implements Observer {
         }
     }
 
+    /**
+     * game window set up
+     */
     private void setupGameWindow(){
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameWindow.fxml"));
         try {
@@ -78,6 +90,9 @@ public class GuiView extends View implements Observer {
         }
     }
 
+    /**
+     * pattern card selection set up
+     */
     private void setupSelectPatternCard(){
         Parent root;
         FXMLLoader loader= new FXMLLoader(getClass().getResource("/SelectPatternCardWindow.fxml"));
@@ -93,18 +108,27 @@ public class GuiView extends View implements Observer {
 
     }
 
-
-
+    /**
+     * this method prints the waiting area
+     */
     protected void printWaintingArea(){
         primaryStage.setScene(sceneWaintingRoom);
         primaryStage.show();
     }
 
+    /**
+     * this method prints the pattern card selection
+     */
     private void printSelectPatternCard(){
         primaryStage.setScene(scenePatternCard);
         primaryStage.show();
     }
 
+    /**
+     * this method prints the game window
+     * @param game current game
+     * @param player current player
+     */
     private void printGameWindow(Game game, Player player){
         this.lastGameReceived = game;
         gameWindowController.printGameWindow(game, player, this);
@@ -112,8 +136,10 @@ public class GuiView extends View implements Observer {
         primaryStage.show();
     }
 
-
-
+    /**
+     * controller callback
+     * @param msg message
+     */
     @Override
     public void controllerCallback(Message msg) {
         if (msg instanceof ControllerCallbackMessage) {
@@ -135,18 +161,28 @@ public class GuiView extends View implements Observer {
         }
     }
 
+    /**
+     * selected pattern card
+     * @param n number of the pattern card
+     */
     protected void selectedPatternCard(int n){
         SelectionMessage sm = new SelectionMessage(n, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
     }
 
+    /**
+     * this method passes turn
+     */
     protected void passTurn(){
         this.setChanged();
         this.notifyObservers(new UpdateMessage(WhatToUpdate.Pass));
     }
 
-
+    /**
+     * this method lets the player use a tool card
+     * @param toolNumber number of the tool card
+     */
     protected void useTool(int toolNumber){
         ToolCard selectedToolCard = toolCards.get(toolNumber-1);
 
@@ -163,6 +199,9 @@ public class GuiView extends View implements Observer {
         new Thread(toolCardTask).start();
     }
 
+    /**
+     * this method searches for another game
+     */
     protected void searchAnotherGame(){
         Logger.log(LoggerType.CLIENT_SIDE, NORMAL, "Looking for another game..");
         ConnectionMessage cm = new ConnectionMessage();
@@ -170,6 +209,9 @@ public class GuiView extends View implements Observer {
         this.notifyObservers(cm);
     }
 
+    /**
+     * update message
+     */
     @Override
     public void update(Observable o, Object message) {
 

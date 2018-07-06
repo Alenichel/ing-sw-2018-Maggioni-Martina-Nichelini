@@ -17,7 +17,9 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import javafx.scene.image.Image;
 
-
+/**
+ * Class for drag task
+ */
 public class DragTask extends Task<Void> {
 
     private final GameWindowController gwc;
@@ -31,6 +33,9 @@ public class DragTask extends Task<Void> {
     private final List<Die> dice;
     private final List<Pane> dicePanes;
 
+    /**
+     * Class constructor
+     */
     public DragTask(GameWindowController gwc, Pane target,  DragEvent event, Timeline timer, int die){
         this.gwc = gwc;
         this.target = target;
@@ -43,6 +48,9 @@ public class DragTask extends Task<Void> {
         this.dicePanes = gwc.getDraftedDice();
     }
 
+    /**
+     * call method
+     */
     @Override
     protected Void call() throws Exception {
 

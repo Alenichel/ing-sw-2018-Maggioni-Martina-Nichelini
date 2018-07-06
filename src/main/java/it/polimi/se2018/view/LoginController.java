@@ -11,6 +11,10 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import java.io.Serializable;
 import java.rmi.RemoteException;
+
+/**
+ * Class for login controller
+ */
 public class LoginController implements Serializable{
 
     @FXML private Button button;
@@ -23,6 +27,9 @@ public class LoginController implements Serializable{
 
     String methodConnection;
 
+    /**
+     * initialize method
+     */
     @FXML
     private void initialize() {
         if (!(Server.getInstance().isConfigurationRequired())) {
@@ -49,6 +56,9 @@ public class LoginController implements Serializable{
 
     }
 
+    /**
+     * connection event method
+     */
     @FXML
     private void connectionEvent(){
         String logInUsernme = username.getText();

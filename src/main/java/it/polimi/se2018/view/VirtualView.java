@@ -12,11 +12,17 @@ import it.polimi.se2018.utils.Logger;
 import java.util.Observable;
 import java.util.Observer;
 
+/**
+ * Class for virtual view
+ */
 public class VirtualView extends View implements Observer {
 
     private transient ServerInterface virtualClient = null;
     private View concreteView = null;
 
+    /**
+     * Class constructor
+     */
     public VirtualView(ServerInterface virtualClient, Player player) {
         this.virtualClient = virtualClient;
         this.client = player;
@@ -24,6 +30,9 @@ public class VirtualView extends View implements Observer {
         Server.getInstance().addObserver(this);
     }
 
+    /**
+     * Class constructor
+     */
     public VirtualView(View concreteView, Player player){
         this.concreteView = concreteView;
         this.client = player;
@@ -31,7 +40,9 @@ public class VirtualView extends View implements Observer {
         Server.getInstance().addObserver(this);
     }
 
-
+    /**
+     * Controller callback
+     */
     public void controllerCallback(Message callbackMessage) {
         try {
             callbackMessage.setSignedBy(this.client.getNickname());
@@ -42,6 +53,9 @@ public class VirtualView extends View implements Observer {
         }
     }
 
+    /**
+     * update message
+     */
     public void update(Observable o, Object msg) {
         try {
             ((Message)msg).setSignedBy(this.client.getNickname());
