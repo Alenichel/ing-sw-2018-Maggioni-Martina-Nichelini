@@ -1005,6 +1005,7 @@ public class GameWindowController implements Serializable {
         for(int i = 0; i < 10; i++){
             roundTrack.get(i).setBackground(null);
         }
+        setupped = false;
         Platform.exit();
         System.exit(0);
     }
@@ -1014,6 +1015,7 @@ public class GameWindowController implements Serializable {
         for(int i = 0; i < 10; i++){
             roundTrack.get(i).setBackground(null);
         }
+        setupped = false;
         this.gw.searchAnotherGame();
         this.gw.setupWaintingArea();
         this.gw.printWaintingArea();
