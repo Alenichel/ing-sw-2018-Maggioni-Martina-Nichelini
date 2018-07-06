@@ -11,6 +11,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for waiting area controller
+ */
 public class WaitingAreaController implements Serializable{
 
     @FXML private transient ListView<?> onlinePlayers;
@@ -24,18 +27,34 @@ public class WaitingAreaController implements Serializable{
     @FXML private transient Label player3;
     @FXML private transient Label player4;
 
+    /**
+     * This method prints game name
+     * @param name game name
+     */
     public void printGameName( GameNames name ){
             gameName.setText(name.toString());
     }
 
+    /**
+     * This method prints player count
+     * @param n number of players
+     */
     public void printPlayerCount( int n ){
         nOfPlayers.setText(Integer.toString(n));
     }
 
+    /**
+     * This method prints the timer
+     * @param n seconds
+     */
     public void printTimer( int n ){
         waitingTimer.setText(Integer.toString(n));
     }
 
+    /**
+     * This method prints online players
+     * @param players list of online players
+     */
     public void printOnlinePlayers(List<Player> players){
         ArrayList<Label> panes = new ArrayList<>();
 

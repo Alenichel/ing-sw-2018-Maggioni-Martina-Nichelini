@@ -11,7 +11,9 @@ import static it.polimi.se2018.enumeration.LoggerPriority.ERROR;
 import static it.polimi.se2018.enumeration.LoggerPriority.NORMAL;
 import static it.polimi.se2018.enumeration.LoggerPriority.WARNING;
 
-
+/**
+ * Class for CLI view
+ */
 public class CliView extends View implements Observer {
 
     private transient Object lastObjectReceveid;
@@ -21,6 +23,9 @@ public class CliView extends View implements Observer {
     private ArrayList<ToolCard> toolCards;
     private boolean gameEnd = false;
 
+    /**
+     * This method handles the help command which explains all the other commands
+     */
     private void handleHelpCommand(){
         String help = "\n******* Help Command *******\n" +
                 "- select %i: select the pattern card with the %i index.\n" +
@@ -31,12 +36,18 @@ public class CliView extends View implements Observer {
         Logger.log(LoggerType.CLIENT_SIDE, NORMAL, help);
     }
 
+    /**
+     * This method handles the select command used to choose a pattern card
+     */
     private void handleSelectCommands(String command){
         SelectionMessage sm = new SelectionMessage(Integer.valueOf(command)-1, this.client,"PatternCard");
         this.setChanged();
         this.notifyObservers(sm);
     }
 
+    /**
+     * This method handles the request command
+     */
     private void handleRequestCommands(String command){
 
         switch(command){
@@ -52,12 +63,25 @@ public class CliView extends View implements Observer {
         }
     }
 
+    /**
+     * This method handles the take command used to select and place a die
+     * @param n die index
+     * @param endingX ending cell x
+     * @param endingY ending cell y
+     */
     private void handleTakeCommands(int n, int endingX, int endingY){
         MoveDiceMessage mdm = new MoveDiceMessage(n, endingX-1, endingY-1);
         this.setChanged();
         this.notifyObservers(mdm);
     }
 
+    /**
+     * This method handles use IO
+     * @param tcc tool card content
+     * @param amountDependentToolcard boolean
+     * @param iteration int
+     * @return Object
+     */
     private Object handleUseIO(ToolcardContent tcc, boolean amountDependentToolcard, int iteration){
         if (tcc.equals(ToolcardContent.RunBy)) return this.client.getNickname();
 
@@ -133,6 +157,10 @@ public class CliView extends View implements Observer {
         return null;
     }
 
+    /**
+     * This method handles the use command used to choose a tool card
+     * @param n tool card index (1, 2 or 3)
+     */
     private void handleUseCommands(int n){
         ToolCard tc = toolCards.get(n-1);
         ToolCardsName tcn = tc.getToolCardName();
@@ -168,6 +196,9 @@ public class CliView extends View implements Observer {
         this.notifyObservers(tcm);
     }
 
+    /**
+     * run method
+     */
     public void run() {
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "Cli started..");
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, "*** " + this.client.getNickname() + " ***");
@@ -270,11 +301,17 @@ public class CliView extends View implements Observer {
         System.exit(0);
     }
 
+    /**
+     * Request callback
+     */
     private void requestCallback(GiveMessage callbackMessage){
         this.lastObjectReceveid = callbackMessage.getGivenObject();
         Logger.log(LoggerType.SERVER_SIDE, LoggerPriority.NOTIFICATION, lastObjectReceveid.toString());
     }
 
+    /**
+     * Controller callback
+     */
     public void controllerCallback(Message callbackMessage){
         if (callbackMessage instanceof GiveMessage)  requestCallback((GiveMessage)callbackMessage);
         else if (callbackMessage instanceof ControllerCallbackMessage) {
@@ -282,6 +319,10 @@ public class CliView extends View implements Observer {
         }
     }
 
+    /**
+     * This method prints what the players sees on the CLI
+     * @param game
+     */
     private void printTable(Game game){
         RoundTrack rT = game.getRoundTrack();
         List<WindowPatternCard> wpcs = new ArrayList<>();
@@ -320,6 +361,9 @@ public class CliView extends View implements Observer {
         else System.out.println("This is the turn of player: " + playerName);
     }
 
+    /**
+     * This method is used at the beginning of the game when the selection of the pattern card takes place
+     */
     private void onGameStarted(Observable o){
         Game game = ((Game)o);
         int i = 1;
@@ -339,6 +383,10 @@ public class CliView extends View implements Observer {
         }
     }
 
+    /**
+     * This method is used at the end of the game when the winner proclamation takes place
+     * @param game
+     */
     private void onWinnerProclamation(Game game){
         if (game.getWinner().getNickname().equals(this.client.getNickname())){
             Logger.log(LoggerType.CLIENT_SIDE, LoggerPriority.NORMAL, "\n\n************ You WON ************");
@@ -360,6 +408,9 @@ public class CliView extends View implements Observer {
         this.gameEnd = true;
     }
 
+    /**
+     * Update method
+     */
     public void update(Observable o, Object msg){
         if(o instanceof Game){
             for(Player p : ((Game) o).getPlayers())

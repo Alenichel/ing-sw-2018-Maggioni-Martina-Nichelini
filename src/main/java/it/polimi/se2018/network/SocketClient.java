@@ -29,6 +29,9 @@ public class SocketClient implements Observer {
 
     private View associatedView;
 
+    /**
+     * Class constructor
+     */
     public SocketClient(String serverIP, int port, String nickname, String password , View associatedView) throws AuthenticationErrorException, IOException, ClassNotFoundException {
         try {
             this.keepAlive = true;
@@ -95,6 +98,9 @@ public class SocketClient implements Observer {
         }
     }
 
+    /**
+     * Inner class sender
+     */
     private class Sender extends Thread{
         @Override
         public void run() {
@@ -113,9 +119,7 @@ public class SocketClient implements Observer {
     }
 
     /**
-     * This method implements Observer interface and simply take updating params and sends it trough the network.
-     * @param o
-     * @param msg
+     * This method implements Observer interface and simply takes updating params and sends them trough the network.
      */
     public void update(Observable o, Object msg) {
         SocketUpdateContainer suc = new SocketUpdateContainer(o, msg);

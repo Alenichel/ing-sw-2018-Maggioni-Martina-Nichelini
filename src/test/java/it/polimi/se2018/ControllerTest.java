@@ -179,6 +179,12 @@ public class ControllerTest {
                     Thread.sleep(1100);
                 }
 
+                if (n == 2) {
+                    ConnectionMessage dcm = new ConnectionMessage(activePlayer, false);
+                    h.setContainer(dcm);
+                    Thread.sleep(1100);
+                }
+
                 if (n == 5) {
                     MoveDiceMessage mdm = new MoveDiceMessage(1, 0, 1);
                     h.setContainer(mdm);

@@ -5,16 +5,25 @@ import it.polimi.se2018.controller.RoundHandler;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
 
+/**
+ * Class for timer
+ */
 public class Timer extends Thread {
 
     private long duration;
     private TimerInterface timerInterface;
 
+    /**
+     * Class constructor
+     */
     public Timer(TimerInterface timerInterface, long duration){
         this.duration = duration;
         this.timerInterface = timerInterface;
     }
 
+    /**
+     * run method
+     */
     @Override
     public void run() {
         try {

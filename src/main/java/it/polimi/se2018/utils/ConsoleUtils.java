@@ -5,7 +5,9 @@ import it.polimi.se2018.model.WindowPatternCard;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Console utils class
+ */
 public class ConsoleUtils {
     public static void multiplePrint(List<WindowPatternCard> ws, Player player) {
         int pos = 0;

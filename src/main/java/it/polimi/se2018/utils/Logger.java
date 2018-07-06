@@ -3,6 +3,9 @@ package it.polimi.se2018.utils;
 import it.polimi.se2018.enumeration.LoggerPriority;
 import it.polimi.se2018.enumeration.LoggerType;
 
+/**
+ * Logger class
+ */
 public final class Logger {
 
     private Logger(){

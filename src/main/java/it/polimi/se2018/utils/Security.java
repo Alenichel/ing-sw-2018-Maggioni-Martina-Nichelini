@@ -8,12 +8,19 @@ import it.polimi.se2018.model.Server;
 
 import java.io.*;
 
+/**
+ * Security class
+ */
 public class Security {
 
     private Security(){
         throw new IllegalStateException("Utility class");
     }
 
+    /**
+     * user getter
+     * @return player
+     */
     public static Player getUser(String name){
         for ( Player p: Server.getInstance().getOnlinePlayers() )
             if (p.getNickname().equals(name)) return p;

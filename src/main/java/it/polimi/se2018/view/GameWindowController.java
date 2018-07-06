@@ -34,6 +34,9 @@ import javafx.scene.text.Text;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
 
+/**
+ * Game window controller (view) class
+ */
 public class GameWindowController implements Serializable {
     @FXML private AnchorPane page;
 
@@ -145,6 +148,9 @@ public class GameWindowController implements Serializable {
     protected int column;
     protected int row;
 
+    /**
+     * This method sets tool cards
+     */
     private void setupToolcards(){
         for(ImageView imageView : toolCards){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -178,6 +184,9 @@ public class GameWindowController implements Serializable {
         }
     }
 
+    /**
+     * This method sets public objective cards
+     */
     private void setupPublicObjectiveCards(){
         for(ImageView imageView : publicObjectives){
             imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -198,6 +207,9 @@ public class GameWindowController implements Serializable {
         }
     }
 
+    /**
+     * This method sets the round track
+     */
     private void setupRoundTrack(){
         for(Pane p : roundTrack){
             p.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -256,7 +268,9 @@ public class GameWindowController implements Serializable {
         }
     }
 
-
+    /**
+     * This method sets buttons
+     */
     private void setupButtons(){
         useTool.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -292,6 +306,9 @@ public class GameWindowController implements Serializable {
     // DRAG & DROP SETUP
     //------------------------------------------
 
+    /**
+     * This method sets target events
+     */
     private void setTargetEvents(){
         for(int x = 0; x<= 4; x++)
             for(int y = 0; y<=3; y++){
@@ -302,6 +319,9 @@ public class GameWindowController implements Serializable {
             }
     }
 
+    /**
+     * This method sets source events
+     */
     private void setSourceEvents(){
         for(Pane p : draftedDice){
             if (p.getBackground() != null)
@@ -369,6 +389,10 @@ public class GameWindowController implements Serializable {
 
     //------------------------------------------
 
+    /**
+     * This method sets the whole game up
+     * @param nOfPlayers number of players
+     */
     private void setup(int nOfPlayers){
         ImageView[] objectiveArray = {objective1, objective2, objective3};
         publicObjectives = new ArrayList<>(Arrays.asList(objectiveArray));
@@ -409,10 +433,19 @@ public class GameWindowController implements Serializable {
 
     }
 
+    /**
+     * path getter
+     * @param d die
+     * @return path
+     */
     private String getPath(Die d){
         return "/dice/"+d.getColor()+"/"+d.getNumber()+".png";
     }
 
+    /**
+     * This method sets the background based on the number of players
+     * @param nOfPlayers number of players
+     */
     private void setBackground(int nOfPlayers){
         String path = "/backgrounds/"+nOfPlayers+"player.png";
 
@@ -422,6 +455,10 @@ public class GameWindowController implements Serializable {
         page.setBackground(new Background(myBI));
     }
 
+    /**
+     * controller callback semaphore getter
+     * @return controller callback semaphore
+     */
     public Semaphore getControllerCallbackSemaphore() {
         return controllerCallbackSemaphore;
     }
@@ -674,9 +711,6 @@ public class GameWindowController implements Serializable {
 
     /**
      * This method is called each turn in order to print all windows.
-     * @param game
-     * @param me
-     * @param gw
      */
     protected void printGameWindow(Game game, Player me, GuiView gw) {
         this.winnerPane.setVisible(false);
@@ -965,6 +999,7 @@ public class GameWindowController implements Serializable {
 
 
     // ---- GAME END ----
+
     @FXML
     private void quit(){
         for(int i = 0; i < 10; i++){
