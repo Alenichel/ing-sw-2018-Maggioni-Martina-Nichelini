@@ -329,7 +329,8 @@ public class WindowPatternCard extends Card implements Serializable {
         String lastverticalSeparator = "\u2517\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u253B\u2501\u2501\u2501\u2501\u2501\u251B";
 
         String horizontalSeparator = "\u2503";
-        final String BACK_TO_BLACK = (char) 27 + "[30m";
+        final String BACK_TO_BLACK = (char) 27 + "[0m";
+
         string = string.concat((char) 27 + "[32m");
         try {
             string = string.concat("\" "+player.getNickname()+" \""+" - tokens: "+ BACK_TO_BLACK+player.getActivePatternCard().getNumberOfFavorTokens()+ " \t\t\t\t\n");

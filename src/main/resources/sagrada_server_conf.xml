@@ -3,5 +3,5 @@
     <defaultMatchmakingTimer>1</defaultMatchmakingTimer>
     <defaultMoveTimer>1</defaultMoveTimer>
     <requirePassword>false</requirePassword>
-    <numberOfTurn>3</numberOfTurn>
+    <numberOfTurn>10</numberOfTurn>
 </configuration>  
