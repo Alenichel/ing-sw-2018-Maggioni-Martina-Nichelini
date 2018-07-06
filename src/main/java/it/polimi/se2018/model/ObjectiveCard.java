@@ -19,13 +19,4 @@ public abstract class ObjectiveCard extends Card {
      * Score point's method
      */
     public abstract int scorePoint(WindowPatternCard windowPatternCard);
-
-    /**
-     * To string method
-     * @return string
-     */
-    @Override
-    public String toString() {
-        return this.getClass().toString();
-    }
 }
