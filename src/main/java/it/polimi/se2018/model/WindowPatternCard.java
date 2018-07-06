@@ -350,8 +350,9 @@ public class WindowPatternCard extends Card implements Serializable {
                         //constraint or empty cell
                         if (cell.getColorConstraint() != null){
                             //color constraint
-                            string = string.concat(toUnicodeColor(cell.getColorConstraint()));
-                            string = string.concat("\u25FE");
+                            string = string.concat(toUnicodeBackgroundColor(cell.getColorConstraint()));
+                            //string = string.concat("\u25FE");
+                            string = string.concat(" ");
                             string = string.concat(BACK_TO_BLACK);
                             string = string.concat("  "+horizontalSeparator+"  ");
                         }
@@ -400,6 +401,17 @@ public class WindowPatternCard extends Card implements Serializable {
             case "green":       return (char) 27 + "[32m";
             case "blue":        return (char) 27 + "[34m";
             case "purple":      return (char) 27 + "[35m";
+            default: return "";
+        }
+    }
+
+    private String toUnicodeBackgroundColor(String color){
+        switch (color.toLowerCase()){
+            case "red":         return (char) 27 + "[41m";
+            case "yellow":      return (char) 27 + "[43m";
+            case "green":       return (char) 27 + "[42m";
+            case "blue":        return (char) 27 + "[44m";
+            case "purple":      return (char) 27 + "[45m";
             default: return "";
         }
     }
