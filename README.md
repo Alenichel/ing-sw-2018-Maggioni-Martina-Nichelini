@@ -1,7 +1,7 @@
 
 **Sagrada: Prova Finale di Ingegneria del Software 2018**
 
-__Descrizione__
+**Descrizione**
 
 La prova finale consiste nella realizzazione della versione digitale del gioco in scatola “Sagrada”: le regole prevedono che ogni giocatore completi una vetrata della Sagrada Familia aggiungendo dei dadi alla propria plancia nel rispetto di determinate restrizioni.
 
@@ -22,7 +22,8 @@ Quando un giocatore si connette:
 
 **Funzionalità avanzate**
 
-Partite Multiple: è stato realizzato il server in modo che possa gestire più partite contemporaneamente, dopo la procedura di creazione della prima partita, i giocatori che accederanno al server verranno gestiti in una sala d’attesa per creare una seconda partita e così via.
+- Partite Multiple: è stato realizzato il server in modo che possa gestire più partite contemporaneamente, dopo la procedura di creazione della prima partita, i giocatori che accederanno al server verranno gestiti in una sala d’attesa per creare una seconda partita e così via.
+- Carte Schema Dinamiche: realizzato un sistema di caricamento da file di mappe di gioco personalizzate. 
 
 **Autori**
 
