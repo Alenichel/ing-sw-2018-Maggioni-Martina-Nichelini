@@ -79,14 +79,10 @@ public class GameSetupController implements Serializable {
 
         List<ToolCard> selectedToolcards= new ArrayList<>();
 
-        /*final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
+        final int[] ints = this.rand.ints(0, ToolCardsName.values().length).distinct().limit(3).toArray();
         for (int i : ints)
-            selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));*/
-        selectedToolcards.add(new ToolCard(ToolCardsName.GrozingPliers));
-        selectedToolcards.add(new ToolCard(ToolCardsName.FluxBrush));
-        selectedToolcards.add(new ToolCard(ToolCardsName.TapWheel));
+            selectedToolcards.add(new ToolCard(ToolCardsName.values()[i]));
         this.associatedGame.setToolCards(selectedToolcards);
-
     }
 
     /**
@@ -130,7 +126,7 @@ public class GameSetupController implements Serializable {
 
     /**
      * This method is called later in handleSelectionMessage
-     * @param cardIndex of the window pattern card
+     * @param chosenItem of the window pattern card
      * @param p player who chose the pattern card
      * @throws GameException if the pattern card has already been chosen
      */
