@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
+import javafx.stage.WindowEvent;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -82,6 +83,9 @@ public class SelectPatternCardWindowController implements Serializable {
 
         setButtonAction();
 
+        this.gw.getPrimaryStage().setOnCloseRequest((WindowEvent event) -> {
+            System.exit(0);
+        });
     }
 
     private void setButtonAction() {
